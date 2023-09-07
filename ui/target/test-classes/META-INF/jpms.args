@@ -1,0 +1,4 @@
+--patch-module
+project.ui=_
+--add-reads
+project.ui=ALL-UNNAMED
