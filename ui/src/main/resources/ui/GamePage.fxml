@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Circle?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: darkslategrey;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.GamePageController">
+   <children>
+      <Pane fx:id="player" layoutX="450.0" layoutY="398.0" prefHeight="127.0" prefWidth="139.0">
+         <children>
+            <Circle fx:id="profileCircle" accessibleRole="IMAGE_VIEW" layoutX="72.0" layoutY="53.0" radius="32.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" />
+            <Label layoutX="41.0" layoutY="92.0" text="Your Name" textFill="WHITE" />
+         </children></Pane>
+   </children>
+</AnchorPane>
