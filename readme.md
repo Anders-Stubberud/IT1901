@@ -17,6 +17,22 @@ Further details about the application is located in the WordDetective documentat
 #Clone the code from gitlab
 git clone https://gitlab.stud.idi.ntnu.no/it1901/groups-2023/gr2325/gr2325
 
+#Build backend application
+mvn clean install
+
+#Running of maven tests
+mvn compile
+
+mvn test
+
+mvn clean
+
 
 ```
 
+## Creators
+
+Dag Kristian Andersen
+Mads André Bårnes
+Bengt Andreas Rotheim
+Anders Stubberud
