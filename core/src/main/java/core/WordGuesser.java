@@ -38,7 +38,7 @@ public class WordGuesser {
     }
 
     public void loseLife() {
-        if (this.timer==0){
+        if (this.timer<1){
             this.life--;
         }
     }
