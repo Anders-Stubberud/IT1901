@@ -32,7 +32,7 @@ mvn clean
 
 ## Creators
 
-Dag Kristian Andersen
-Mads André Bårnes
-Bengt Andreas Rotheim
-Anders Stubberud
+- Dag Kristian Andersen
+- Mads André Bårnes
+- Bengt Andreas Rotheim
+- Anders Stubberud
