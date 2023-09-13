@@ -1,16 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: darkslategrey;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.GamePageController">
    <children>
-      <Pane fx:id="player" layoutX="450.0" layoutY="398.0" prefHeight="127.0" prefWidth="139.0">
+      <Circle fx:id="profileCircle" accessibleRole="IMAGE_VIEW" layoutX="500.0" layoutY="425.0" radius="30.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" />
+      <Label alignment="CENTER" layoutX="460.0" layoutY="460.0" prefHeight="20.0" prefWidth="80.0" text="Your Name" textFill="WHITE" />
+      <Circle fx:id="profileCircle2" accessibleRole="IMAGE_VIEW" layoutX="650.0" layoutY="425.0" radius="30.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" />
+      <Label alignment="CENTER" layoutX="610.0" layoutY="460.0" prefHeight="20.0" prefWidth="80.0" text="Your Name" textFill="WHITE" />
+      <Circle fx:id="profileCircle21" accessibleRole="IMAGE_VIEW" layoutX="800.0" layoutY="425.0" radius="30.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" />
+      <Label alignment="CENTER" layoutX="760.0" layoutY="460.0" prefHeight="20.0" prefWidth="80.0" text="Your Name" textFill="WHITE" />
+      <Circle fx:id="profileCircle22" accessibleRole="IMAGE_VIEW" layoutX="350.0" layoutY="425.0" radius="30.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" />
+      <Label alignment="CENTER" layoutX="310.0" layoutY="460.0" prefHeight="20.0" prefWidth="80.0" text="Your Name" textFill="WHITE" />
+      <Circle fx:id="profileCircle221" accessibleRole="IMAGE_VIEW" layoutX="200.0" layoutY="425.0" radius="30.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" />
+      <Label alignment="CENTER" layoutX="160.0" layoutY="460.0" prefHeight="20.0" prefWidth="80.0" text="Your Name" textFill="WHITE" />
+      <Pane layoutX="470.0" layoutY="70.0" prefHeight="60.0" prefWidth="60.0">
          <children>
-            <Circle fx:id="profileCircle" accessibleRole="IMAGE_VIEW" layoutX="72.0" layoutY="53.0" radius="32.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" />
-            <Label layoutX="41.0" layoutY="92.0" text="Your Name" textFill="WHITE" />
-         </children></Pane>
+            <Circle fx:id="WordMaster" accessibleRole="IMAGE_VIEW" layoutX="30.0" layoutY="30.0" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" />
+            <Label fx:id="letters" alignment="CENTER" layoutY="14.0" prefHeight="33.0" prefWidth="60.0" text="ASE" textFill="WHITE">
+               <font>
+                  <Font size="27.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+         </children>
+      </Pane>
+      <Label alignment="TOP_LEFT" layoutX="55.0" layoutY="41.0" maxWidth="-Infinity" text="00:30" textFill="WHITE" textOverrun="CLIP">
+         <font>
+            <Font size="35.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="426.0" layoutY="14.0" maxWidth="-Infinity" text="Category: ..." textFill="WHITE" textOverrun="CLIP">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
