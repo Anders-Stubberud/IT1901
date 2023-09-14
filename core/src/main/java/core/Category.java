@@ -38,7 +38,7 @@ public class Category
      * The "wordlistForSearch" wordlist is implemented as a hashset, which allows for search in average O(1).
      * The "wordlistForSelection" wordlist is implemented as an arraylist, which allows for accessing in O(1).
      * The reason behind having separate lists for searching and accessing is to improve time complexity.
-     * This solution does require more memory, but since wordlists does not require vast amounts of memory,
+     * This solution does require more memory, but since wordlists do not require vast amounts of memory,
      * it is a fair tradeoff in order to improve the user experience.
      * @param pickFromDefaultCategories Set to true if the category is to be chosen among the default categories.
      */
