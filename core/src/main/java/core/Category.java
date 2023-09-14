@@ -38,7 +38,7 @@ public class Category
      * The "wordlistForSearch" wordlist is implemented as a hashset, which allows for search in average O(1).
      * The "wordlistForSelection" wordlist is implemented as an arraylist, which allows for accessing in O(1).
      * The reason behind having separate lists for searching and accessing is to improve time complexity.
-     * This solution does require more memory, but since wordlists does not require vasts amount of memory,
+     * This solution does require more memory, but since wordlists does not require vast amounts of memory,
      * it is a fair tradeoff in order to improve the user experience.
      * @param pickFromDefaultCategories Set to true if the category is to be chosen among the default categories.
      */
@@ -83,8 +83,7 @@ public class Category
     /**
      * Randomly generates a substring from the randomly chosen word
      * 
-     * @param word The chosen word to generate a substring from
-     * @return A randomly generated substring from the parameter
+     * @return A randomly generated substring from the randomly chosen word
      */
     public String getRandomSubstring() {
         String word = getRandomWord();
@@ -103,8 +102,7 @@ public class Category
      */
     public boolean checkValidWord(String substring, String guess)
     {
-        //This technique might not fully utilize the hashset's O(1) search potential
-        return guess.matches(".*" + substring + ".*") && wordlistForSearch.stream().anyMatch(w -> w.equals(guess));
+        return guess.matches(".*" + substring + ".*") && wordlistForSearch.contains(guess);
     }
 
 }
