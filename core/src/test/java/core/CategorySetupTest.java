@@ -1,6 +1,8 @@
 package core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -12,7 +14,7 @@ import org.junit.jupiter.api.Test;
 public class CategorySetupTest 
 {
 
-    private CategorySetup guestUser;
+    private CategorySetup guest;
     private CategorySetup registeredUser;
     
     /**
@@ -21,8 +23,8 @@ public class CategorySetupTest
     @BeforeEach
     public void setUp()
     {
-        guestUser = new CategorySetup("guest");
-        registeredUser = new CategorySetup("example_user");
+        guest = new CategorySetup("guest");
+        registeredUser = new CategorySetup("registeredUser");
     }
 
     @Test
@@ -30,15 +32,21 @@ public class CategorySetupTest
     public void testAquireDefaultCategories()
     {
         Collection<String> defaultCategories = Arrays.asList("default_category1", "default_category2");
-        assertEquals(defaultCategories, guestUser.getDefaultCategories());
-        assertEquals(defaultCategories, registeredUser.getDefaultCategories());
+        assertTrue(defaultCategories.containsAll(guest.getDefaultCategories()));
+        assertTrue(guest.getDefaultCategories().containsAll(defaultCategories));
+        assertTrue(defaultCategories.containsAll(registeredUser.getDefaultCategories()));
+        assertTrue(registeredUser.getDefaultCategories().containsAll(defaultCategories));
     }
 
     @Test
     @DisplayName("Check query of custom categories")
     public void testAquireCustomCategories()
     {
-        
+        Collection<String> customCategoriesRegisteredUser 
+        = Arrays.asList("example_category_1", "example_category_3", "example_category_2");
+        assertNull(guest.getCustomCategories());   
+        assertTrue(customCategoriesRegisteredUser.containsAll(registeredUser.getCustomCategories()));
+        assertTrue(registeredUser.getCustomCategories().containsAll(customCategoriesRegisteredUser));
     }
 
 }
