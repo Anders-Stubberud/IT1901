@@ -47,11 +47,11 @@ public class Category
         File file;
         if (pickFromDefaultCategories)
         {
-            file = new File("./core/src/main/resources/default_categories/" + category);
+            file = new File("/gr2325/core/src/main/resources/default_categories/" + category);
         }
         else
         {
-            file = new File("./core/src/main/resources/users/" + username + "/" + category);
+            file = new File("/gr2325/core/src/main/resources/users/" + username + "/" + category);
         }
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) 
         {

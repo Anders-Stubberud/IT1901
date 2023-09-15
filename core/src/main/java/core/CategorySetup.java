@@ -1,6 +1,6 @@
 package core;
 
-import java.io.File;    
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -72,7 +72,8 @@ public class CategorySetup {
      */
     public Collection<String> getAllCategories()
     {
-        return Stream.of(defaultCategories, customCategories).flatMap(Collection::stream).collect(Collectors.toList());
+        return customCategories != null ? Stream.of(defaultCategories, customCategories)
+        .flatMap(Collection::stream).collect(Collectors.toList()) : defaultCategories;
     }
 
     /**
