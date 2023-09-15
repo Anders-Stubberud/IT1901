@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -15,7 +16,7 @@ public class Category
 
     private String category;
     private String username;
-    private Set<String> wordlistForSearch;
+    private Collection<String> wordlistForSearch;
     private List<String> wordlistForSelection;
     
     /**
@@ -47,11 +48,12 @@ public class Category
         File file;
         if (pickFromDefaultCategories)
         {
-            file = new File("/gr2325/core/src/main/resources/default_categories/" + category);
+            // System.out.println("\n\n\n\n\n" + category + "\n\n\n\n\n");
+            file = new File("/gr2325/core/src/main/resources/default_categories/" + category + ".txt");
         }
         else
         {
-            file = new File("/gr2325/core/src/main/resources/users/" + username + "/" + category);
+            file = new File("/gr2325/core/src/main/resources/users/" + username + "/" + category + ".txt");
         }
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) 
         {
@@ -108,6 +110,23 @@ public class Category
     public String getCategoryName()
     {
         return category;
+    }
+
+    public Collection<String> getWordListForSearch()
+    {
+        return wordlistForSearch;
+    }
+
+    public Collection<String> getWordlistForSelection()
+    {
+        return wordlistForSelection;
+    }
+
+    public static void main(String [] args)
+    {
+        CategorySetup a = new CategorySetup("guest");
+        a.setCategory("default_category1");
+        System.out.println(a.getCategory().getCategoryName());
     }
 
 }

@@ -6,7 +6,8 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class CategorySetup {
+public class CategorySetup 
+{
 
     private Collection<String> defaultCategories;
     private Collection<String> customCategories;
@@ -18,7 +19,8 @@ public class CategorySetup {
      * the different collections of categories.
      * @param username The username of the player if the player is registered, else username will be null
      */
-    public CategorySetup(String username) {
+    public CategorySetup(String username) 
+    {
         this.defaultCategories = createDefaultCategories();
         this.username = username;
         if (!username.equals("guest"))
@@ -94,7 +96,8 @@ public class CategorySetup {
      * 
      * @return A reference to a category based on the category chosen by the user
      */
-    public Category getCategory() {
+    public Category getCategory() 
+    {
         return category;
     }
 
