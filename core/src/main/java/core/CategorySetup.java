@@ -1,6 +1,6 @@
 package core;
 
-import java.io.File;
+import java.io.File;    
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -9,20 +9,21 @@ import java.util.stream.Stream;
 public class CategorySetup {
 
     private Collection<String> defaultCategories;
-    private Collection<String> customCategories = null;
+    private Collection<String> customCategories;
     private String username;
     private Category category;
 
     /**
-     * Constructor setting up the available cateogories
+     * Constructor setting up the available cateogories. Calls the respective functions in order to instanciate
+     * the different collections of categories.
      * @param username The username of the player if the player is registered, else username will be null
      */
     public CategorySetup(String username) {
-        this.defaultCategories = getDefaultCategories();
+        this.defaultCategories = createDefaultCategories();
         this.username = username;
-        if (username != null)
+        if (!username.equals("guest"))
         {
-            this.customCategories = getCustomCategories(username);
+            this.customCategories = createCustomCategories();
         }
     }
 
@@ -30,10 +31,13 @@ public class CategorySetup {
      * Queries and returns all default categories
      * @return All default categories
      */
-    public static Collection<String> getDefaultCategories() 
+    public Collection<String> createDefaultCategories() 
     {
-        File[] defaultCategories = new File("./core/src/main/resources/default_categories").listFiles();
-        return Arrays.asList(defaultCategories).stream().map(File::getName)
+        // File[] defaultCategoriesArray = new File("./core/src/main/resources/default_categories").listFiles();
+        // return Arrays.asList(defaultCategoriesArray).stream().map(File::getName)
+        // .map(n -> n.substring(0, n.indexOf("."))).collect(Collectors.toList());
+        File[] defaultCategoriesArray = new File("/gr2325/core/src/main/resources/default_categories").listFiles();
+        return Arrays.asList(defaultCategoriesArray).stream().map(File::getName)
         .map(n -> n.substring(0, n.indexOf("."))).collect(Collectors.toList());
     }
 
@@ -42,11 +46,24 @@ public class CategorySetup {
      * @param username The name of the user to provide custom categories for
      * @return All custom categories of given user
      */
-    public static Collection<String> getCustomCategories(String username)
+    public Collection<String> createCustomCategories()
     {
-        File[] customCategories = new File(("./core/src/main/resources/users/" + username)).listFiles();
+        // File[] customCategories = new File(("./core/src/main/resources/users/" + username)).listFiles();
+        // return Arrays.asList(customCategories).stream().map(File::getName)
+        // .map(n -> n.substring(0, n.indexOf("."))).collect(Collectors.toList());
+        File[] customCategories = new File(("/gr2325/core/src/main/resources/users/" + username)).listFiles();
         return Arrays.asList(customCategories).stream().map(File::getName)
         .map(n -> n.substring(0, n.indexOf("."))).collect(Collectors.toList());
+    }
+
+    public Collection<String> getDefaultCategories()
+    {
+        return defaultCategories;
+    }
+
+    public Collection<String> getCustomCategories()
+    {
+        return customCategories;
     }
 
     /**
@@ -78,6 +95,11 @@ public class CategorySetup {
      */
     public Category getCategory() {
         return category;
+    }
+
+    public String getUserName()
+    {
+        return username;
     }
 
 }
