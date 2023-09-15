@@ -48,7 +48,6 @@ public class Category
         File file;
         if (pickFromDefaultCategories)
         {
-            // System.out.println("\n\n\n\n\n" + category + "\n\n\n\n\n");
             file = new File("/gr2325/core/src/main/resources/default_categories/" + category + ".txt");
         }
         else
@@ -96,7 +95,7 @@ public class Category
     }
 
     /**
-     * Checks is the guess is present in wordlist and wether the substring is present
+     * Checks if the guess is present in wordlist and wether the substring is present
      * @param substring The substring used to make a guess
      * @param guess The guess provided by the user. Should contain substring, and be part of the wordlist. 
      * @return True if the guess is valid, else false.
@@ -119,13 +118,6 @@ public class Category
     public Collection<String> getWordlistForSelection()
     {
         return wordlistForSelection;
-    }
-
-    public static void main(String [] args)
-    {
-        CategorySetup a = new CategorySetup("guest");
-        a.setCategory("default_category1");
-        System.out.println(a.getCategory().getCategoryName());
     }
 
 }

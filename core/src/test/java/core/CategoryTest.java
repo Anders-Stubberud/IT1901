@@ -81,4 +81,16 @@ public class CategoryTest
         }
     }
 
+    @Test
+    @DisplayName("Check valid guess")
+    public void testCheckValidWord()
+    {
+        String wordFromGuest = "Testing";
+        String subtringFromGuest = "sti";
+
+        assertTrue(guest.getCategory().checkValidWord(subtringFromGuest, "Testing"));
+        assertTrue(guest.getCategory().checkValidWord(subtringFromGuest, "SomeThingWith_sti_AsSubstring"));
+        assertFalse(guest.getCategory().checkValidWord(subtringFromGuest, "notInListButContains_sti"));
+    }
+
 }
