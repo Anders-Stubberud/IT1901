@@ -63,4 +63,22 @@ public class CategoryTest
         assertFalse(registeredUser.getCategory().getWordListForSearch().contains(wordWhichIsNotInEitherCategory));
     }
 
+    @Test
+    @DisplayName("Check valid substring of word")
+    public void testGetRandomSubstring()
+    {
+        for (int i=0; i<1000; i++)
+        {
+            String randomWordFromGuest = guest.getCategory().getRandomWord();
+            String substringFromWordFromGuest = Category.getRandomSubstring(randomWordFromGuest);
+            String randomWordFromRegisteredUser = registeredUser.getCategory().getRandomWord();
+            String substringFromWordRegisteredUser = Category.getRandomSubstring(randomWordFromRegisteredUser);
+
+            assertTrue(randomWordFromGuest.matches(".*" + substringFromWordFromGuest + ".*"));
+            assertFalse(randomWordFromGuest.matches(".*" + "thisSubstringIsNotValidAnywhere" + ".*"));
+            assertTrue(randomWordFromRegisteredUser.matches(".*" + substringFromWordRegisteredUser + ".*"));
+            assertFalse(randomWordFromRegisteredUser.matches(".*" + "thisSubstringIsNotValidAnywhere" + ".*"));
+        }
+    }
+
 }

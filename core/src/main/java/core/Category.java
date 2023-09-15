@@ -87,8 +87,7 @@ public class Category
      * 
      * @return A randomly generated substring from the randomly chosen word
      */
-    public String getRandomSubstring() {
-        String word = getRandomWord();
+    public static String getRandomSubstring(String word) {
         int wordLength = word.length();
         int startIndexSubstring = new Random().nextInt(wordLength);
         int endIndexSubstring = new Random().nextInt(wordLength - startIndexSubstring) + startIndexSubstring + 1;
