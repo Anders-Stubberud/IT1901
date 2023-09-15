@@ -1,7 +1,9 @@
 package core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -62,6 +64,7 @@ public class CategorySetupTest
 
     /**
      * Test whether the merge of default and custom categories is the proper merge.
+     * Tests based on set equality: A ⊆ B and B ⊆ A ⇔ A = B
      */
     @Test
     @DisplayName("Check correct merge of default and custom categories")
@@ -80,6 +83,30 @@ public class CategorySetupTest
         assertTrue(allCategoriesGuest.containsAll(allCategoriesGuestSolution));
         assertTrue(allCategoriesRegisteredUserSolution.containsAll(allCategoriesRegisteredUser));
         assertTrue(allCategoriesRegisteredUser.containsAll(allCategoriesRegisteredUserSolution));
+    }
+
+    @Test
+    @DisplayName("Check correct set and get of category")
+    public void testSetCategoryAndGetCategory()
+    {
+        //tests that the chosen category gets set and retreived correctly
+        guest.setCategory("default_category1");
+        assertEquals("default_category1", guest.getCategory().getCategoryName());
+        assertNotEquals("something_else_than_default_category1", guest.getCategory().getCategoryName());
+        registeredUser.setCategory("default_category2");
+        assertEquals("default_category2", registeredUser.getCategory().getCategoryName());
+        assertNotEquals("something_else_than_default_category2", registeredUser.getCategory().getCategoryName());
+
+        //test that the guest user can not choose any custom categories
+        assertThrows(IllegalArgumentException.class, () -> 
+        {
+            guest.setCategory("example_category_1");
+        }
+        );
+
+        //test that the registered user can choose a custom category
+        registeredUser.setCategory("example_category_3");
+        assertEquals("example_category_3", registeredUser.getCategory().getCategoryName());
     }
 
 }

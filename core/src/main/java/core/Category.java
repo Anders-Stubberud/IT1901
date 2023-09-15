@@ -105,4 +105,9 @@ public class Category
         return guess.matches(".*" + substring + ".*") && wordlistForSearch.contains(guess);
     }
 
+    public String getCategoryName()
+    {
+        return category;
+    }
+
 }
