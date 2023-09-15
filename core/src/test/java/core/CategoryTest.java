@@ -33,7 +33,7 @@ public class CategoryTest
     @DisplayName("Check correct initialization of search and selection wordlists")
     public void testSetUpOfWordlists()
     {
-        Collection<String> correctWordlistForGuest = Arrays.asList("This", "Is", "For", "Testing", "Purposes");
+        Collection<String> correctWordlistForGuest = Arrays.asList("This", "Is", "For", "Testing", "Purposes", "SomeThingWith_sti_AsSubstring");
         Collection<String> correctWordlistForRegisteredUser = Arrays.asList("This", "Is", "Example", "Category", "One");
 
         assertTrue(correctWordlistForGuest.containsAll(guest.getCategory().getWordListForSearch()));
