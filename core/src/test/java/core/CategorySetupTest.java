@@ -27,6 +27,10 @@ public class CategorySetupTest
         registeredUser = new CategorySetup("registeredUser");
     }
 
+    /**
+     * Test whether the aquired default categories are equal to the actual default categories.
+     * Tests based on set equality: A ⊆ B and B ⊆ A ⇔ A = B
+     */
     @Test
     @DisplayName("Check correct query of default categories")
     public void testAquireDefaultCategories()
@@ -38,6 +42,10 @@ public class CategorySetupTest
         assertTrue(registeredUser.getDefaultCategories().containsAll(defaultCategories));
     }
 
+    /**
+     * Test whether the aquired custom categories are equal to the actual custom categories.
+     * Tests based on set equality: A ⊆ B and B ⊆ A ⇔ A = B
+     */
     @Test
     @DisplayName("Check query of custom categories")
     public void testAquireCustomCategories()
