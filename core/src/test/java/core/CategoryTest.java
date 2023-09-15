@@ -1,6 +1,7 @@
 package core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
@@ -17,7 +18,7 @@ public class CategoryTest
     private CategorySetup registeredUser;
     
     /**
-     * Sets up two instances of the CategorySetup class to be used in the tests.
+     * Sets up two instances of the Category class to be used in the tests.
      */
     @BeforeEach
     public void setUp()
@@ -44,6 +45,22 @@ public class CategoryTest
         assertTrue(registeredUser.getCategory().getWordListForSearch().containsAll(correctWordlistForRegisteredUser));
         assertTrue(correctWordlistForRegisteredUser.containsAll(registeredUser.getCategory().getWordlistForSelection()));
         assertTrue(registeredUser.getCategory().getWordlistForSelection().containsAll(correctWordlistForRegisteredUser));     
+    }
+
+    @Test
+    @DisplayName("Check valid pull of random word")
+    public void testGetRandomWord()
+    {
+        for (int i=0; i<1000; i++)
+        {
+            String randomWordFromGuest = guest.getCategory().getRandomWord();
+            String randomWordFromRegisteredUser = registeredUser.getCategory().getRandomWord();
+            assertTrue(guest.getCategory().getWordListForSearch().contains(randomWordFromGuest));
+            assertTrue(registeredUser.getCategory().getWordListForSearch().contains(randomWordFromRegisteredUser));
+        }
+        String wordWhichIsNotInEitherCategory = "thisWordIsNotInEitherCategory";
+        assertFalse(guest.getCategory().getWordListForSearch().contains(wordWhichIsNotInEitherCategory));
+        assertFalse(registeredUser.getCategory().getWordListForSearch().contains(wordWhichIsNotInEitherCategory));
     }
 
 }
