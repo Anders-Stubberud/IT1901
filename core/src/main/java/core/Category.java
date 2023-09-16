@@ -1,15 +1,18 @@
 package core;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 public class Category 
 {
@@ -45,28 +48,35 @@ public class Category
      */
     public void createWordlist(boolean pickFromDefaultCategories)
     {
-        File file;
+        Path path;
         if (pickFromDefaultCategories)
         {
-            file = new File("/gr2325/core/src/main/resources/default_categories/" + category + ".txt");
+            path = Paths.get("/gr2325/core/src/main/resources/default_categories/" + category + ".json");
         }
         else
         {
-            file = new File("/gr2325/core/src/main/resources/users/" + username + "/" + category + ".txt");
+            path = Paths.get("/gr2325/core/src/main/resources/users/" + username + "/" + category + ".json");
         }
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) 
+        try 
         {
+            //Files.readAllBytes method reads the file and closes it internally, thus no need to manually close.
+            String content = new String(Files.readAllBytes(path));
+            Gson gsonParser = new Gson();
+            JsonObject jsonObject = gsonParser.fromJson(content, JsonObject.class);
+            JsonArray wordListArray = jsonObject.get("wordlist").getAsJsonArray();
+
             wordlistForSearch = new HashSet<>();
             wordlistForSelection = new ArrayList<>();
 
-            String word;
-            while ((word = reader.readLine()) != null)
+            for (int i=0; i<wordListArray.size(); i++)
             {
-                wordlistForSearch.add(word);
-                wordlistForSelection.add(word);
+                wordlistForSearch.add(wordListArray.get(i).getAsString());
+                wordlistForSelection.add(wordListArray.get(i).getAsString());
             }
         } 
-        catch (IOException e) {
+        catch (IOException e) 
+        {
+            System.out.println("\n\n\n\n\n\n\n\n\n -------------------------------- \n\n\n\n\n\n");
             e.printStackTrace();
         }
     }
@@ -119,5 +129,28 @@ public class Category
     {
         return wordlistForSelection;
     }
+
+    // public static void main(String [] args)
+    // {
+    //     try 
+    //     {
+    //         String json = new String(Files.readAllBytes
+    //         (Paths.get("/gr2325/core/src/main/resources/default_categories/default_category1.json")));
+            
+    //         Gson gson = new Gson();
+    //         JsonObject object = gson.fromJson(json, JsonObject.class);
+    //         JsonArray name = object.get("content").getAsJsonArray();
+    //         String teste = name.get(1).getAsString();
+
+    //         String json = new String(Files.readAllBytes
+    //         (Paths.get("/gr2325/core/src/main/resources/default_categories/default_category1.json")));
+
+
+    //     } 
+    //     catch (IOException e) 
+    //     {
+    //         e.printStackTrace();
+    //     }
+    // }
 
 }

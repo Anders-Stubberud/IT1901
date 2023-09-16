@@ -26,7 +26,7 @@ public class CategoryTest
         guest = new CategorySetup("guest");
         guest.setCategory("default_category1");
         registeredUser = new CategorySetup("registeredUser");
-        registeredUser.setCategory("example_category_1");
+        registeredUser.setCategory("example_category1");
     }
 
     @Test

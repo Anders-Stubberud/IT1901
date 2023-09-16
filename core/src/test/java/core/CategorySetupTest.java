@@ -55,7 +55,7 @@ public class CategorySetupTest
     public void testAquireCustomCategories()
     {
         Collection<String> customCategoriesRegisteredUser 
-        = Arrays.asList("example_category_1", "example_category_3", "example_category_2");
+        = Arrays.asList("example_category1", "example_category3", "example_category2");
        
         assertNull(guest.getCustomCategories());   
         assertTrue(customCategoriesRegisteredUser.containsAll(registeredUser.getCustomCategories()));
@@ -72,7 +72,7 @@ public class CategorySetupTest
     {   
         Collection<String> defaultCategories = Arrays.asList("default_category1", "default_category2");
         Collection<String> customCategoriesRegisteredUser 
-        = Arrays.asList("example_category_1", "example_category_3", "example_category_2");
+        = Arrays.asList("example_category1", "example_category3", "example_category2");
         Collection<String> allCategoriesGuestSolution = new ArrayList<>(defaultCategories);
         Collection<String> allCategoriesRegisteredUserSolution = new ArrayList<>(defaultCategories);
         allCategoriesRegisteredUserSolution.addAll(customCategoriesRegisteredUser);
@@ -100,13 +100,13 @@ public class CategorySetupTest
         //test that the guest user can not choose any custom categories
         assertThrows(IllegalArgumentException.class, () -> 
         {
-            guest.setCategory("example_category_1");
+            guest.setCategory("example_category1");
         }
         );
 
         //test that the registered user can choose a custom category
-        registeredUser.setCategory("example_category_3");
-        assertEquals("example_category_3", registeredUser.getCategory().getCategoryName());
+        registeredUser.setCategory("example_category3");
+        assertEquals("example_category3", registeredUser.getCategory().getCategoryName());
     }
 
 }

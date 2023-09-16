@@ -1,6 +1,0 @@
-This
-Is
-For
-Testing
-SomeThingWith_sti_AsSubstring
-Purposes
