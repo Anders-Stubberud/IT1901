@@ -76,7 +76,6 @@ public class Category
         } 
         catch (IOException e) 
         {
-            System.out.println("\n\n\n\n\n\n\n\n\n -------------------------------- \n\n\n\n\n\n");
             e.printStackTrace();
         }
     }
@@ -129,28 +128,5 @@ public class Category
     {
         return wordlistForSelection;
     }
-
-    // public static void main(String [] args)
-    // {
-    //     try 
-    //     {
-    //         String json = new String(Files.readAllBytes
-    //         (Paths.get("/gr2325/core/src/main/resources/default_categories/default_category1.json")));
-            
-    //         Gson gson = new Gson();
-    //         JsonObject object = gson.fromJson(json, JsonObject.class);
-    //         JsonArray name = object.get("content").getAsJsonArray();
-    //         String teste = name.get(1).getAsString();
-
-    //         String json = new String(Files.readAllBytes
-    //         (Paths.get("/gr2325/core/src/main/resources/default_categories/default_category1.json")));
-
-
-    //     } 
-    //     catch (IOException e) 
-    //     {
-    //         e.printStackTrace();
-    //     }
-    // }
 
 }
