@@ -14,11 +14,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class CategorySetupTest 
+public class CategoryLogicTest 
 {
 
-    private CategorySetup guest;
-    private CategorySetup registeredUser;
+    private GameLogic guest;
+    private GameLogic registeredUser;
     
     /**
      * Sets up two instances of the CategorySetup class to be used in the tests.
@@ -26,8 +26,8 @@ public class CategorySetupTest
     @BeforeEach
     public void setUp()
     {
-        guest = new CategorySetup("guest");
-        registeredUser = new CategorySetup("registeredUser");
+        guest = new GameLogic("guest");
+        registeredUser = new GameLogic("registeredUser");
     }
 
     /**
@@ -40,10 +40,10 @@ public class CategorySetupTest
     {
         Collection<String> defaultCategories = Arrays.asList("default_category1", "default_category2");
        
-        assertTrue(defaultCategories.containsAll(guest.getDefaultCategories()));
-        assertTrue(guest.getDefaultCategories().containsAll(defaultCategories));
-        assertTrue(defaultCategories.containsAll(registeredUser.getDefaultCategories()));
-        assertTrue(registeredUser.getDefaultCategories().containsAll(defaultCategories));
+        assertTrue(defaultCategories.containsAll(guest.getCategoryLogic().getAvailableDefaultCategories()));
+        assertTrue(guest.getCategoryLogic().getAvailableDefaultCategories().containsAll(defaultCategories));
+        assertTrue(defaultCategories.containsAll(registeredUser.getCategoryLogic().getAvailableDefaultCategories()));
+        assertTrue(registeredUser.getCategoryLogic().getAvailableDefaultCategories().containsAll(defaultCategories));
     }
 
     /**
@@ -57,9 +57,9 @@ public class CategorySetupTest
         Collection<String> customCategoriesRegisteredUser 
         = Arrays.asList("example_category1", "example_category3", "example_category2");
        
-        assertNull(guest.getCustomCategories());   
-        assertTrue(customCategoriesRegisteredUser.containsAll(registeredUser.getCustomCategories()));
-        assertTrue(registeredUser.getCustomCategories().containsAll(customCategoriesRegisteredUser));
+        assertNull(guest.getCategoryLogic().getAvailableCustomCategories());   
+        assertTrue(customCategoriesRegisteredUser.containsAll(registeredUser.getCategoryLogic().getAvailableCustomCategories()));
+        assertTrue(registeredUser.getCategoryLogic().getAvailableCustomCategories().containsAll(customCategoriesRegisteredUser));
     }
 
     /**
@@ -76,8 +76,8 @@ public class CategorySetupTest
         Collection<String> allCategoriesGuestSolution = new ArrayList<>(defaultCategories);
         Collection<String> allCategoriesRegisteredUserSolution = new ArrayList<>(defaultCategories);
         allCategoriesRegisteredUserSolution.addAll(customCategoriesRegisteredUser);
-        Collection<String> allCategoriesGuest = guest.getAllCategories(); 
-        Collection<String> allCategoriesRegisteredUser = registeredUser.getAllCategories(); 
+        Collection<String> allCategoriesGuest = guest.getCategoryLogic().getAllAvailableCategories(); 
+        Collection<String> allCategoriesRegisteredUser = registeredUser.getCategoryLogic().getAllAvailableCategories(); 
 
         assertTrue(allCategoriesGuestSolution.containsAll(allCategoriesGuest));
         assertTrue(allCategoriesGuest.containsAll(allCategoriesGuestSolution));
@@ -91,11 +91,11 @@ public class CategorySetupTest
     {
         //tests that the chosen category gets set and retreived correctly
         guest.setCategory("default_category1");
-        assertEquals("default_category1", guest.getCategory().getCategoryName());
-        assertNotEquals("something_else_than_default_category1", guest.getCategory().getCategoryName());
+        assertEquals("default_category1", guest.getCategory());
+        assertNotEquals("something_else_than_default_category1", guest.getCategory());
         registeredUser.setCategory("default_category2");
-        assertEquals("default_category2", registeredUser.getCategory().getCategoryName());
-        assertNotEquals("something_else_than_default_category2", registeredUser.getCategory().getCategoryName());
+        assertEquals("default_category2", registeredUser.getCategory());
+        assertNotEquals("something_else_than_default_category2", registeredUser.getCategory());
 
         //test that the guest user can not choose any custom categories
         assertThrows(IllegalArgumentException.class, () -> 
@@ -106,7 +106,7 @@ public class CategorySetupTest
 
         //test that the registered user can choose a custom category
         registeredUser.setCategory("example_category3");
-        assertEquals("example_category3", registeredUser.getCategory().getCategoryName());
+        assertEquals("example_category3", registeredUser.getCategory());
     }
 
 }

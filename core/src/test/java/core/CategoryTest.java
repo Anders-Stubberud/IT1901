@@ -14,8 +14,8 @@ import org.junit.jupiter.api.Test;
 public class CategoryTest 
 {
 
-    private CategorySetup guest;
-    private CategorySetup registeredUser;
+    private GameLogic guest;
+    private GameLogic registeredUser;
     
     /**
      * Sets up two instances of the Category class to be used in the tests.
@@ -23,9 +23,9 @@ public class CategoryTest
     @BeforeEach
     public void setUp()
     {
-        guest = new CategorySetup("guest");
+        guest = new GameLogic("guest");
         guest.setCategory("default_category1");
-        registeredUser = new CategorySetup("registeredUser");
+        registeredUser = new GameLogic("registeredUser");
         registeredUser.setCategory("example_category1");
     }
 
@@ -36,15 +36,15 @@ public class CategoryTest
         Collection<String> correctWordlistForGuest = Arrays.asList("This", "Is", "For", "Testing", "Purposes", "SomeThingWith_sti_AsSubstring");
         Collection<String> correctWordlistForRegisteredUser = Arrays.asList("This", "Is", "Example", "Category", "One");
 
-        assertTrue(correctWordlistForGuest.containsAll(guest.getCategory().getWordListForSearch()));
-        assertTrue(guest.getCategory().getWordListForSearch().containsAll(correctWordlistForGuest));
-        assertTrue(correctWordlistForGuest.containsAll(guest.getCategory().getWordlistForSelection()));
-        assertTrue(guest.getCategory().getWordlistForSelection().containsAll(correctWordlistForGuest));    
+        assertTrue(correctWordlistForGuest.containsAll(guest.getWordListForSearch()));
+        assertTrue(guest.getWordListForSearch().containsAll(correctWordlistForGuest));
+        assertTrue(correctWordlistForGuest.containsAll(guest.getWordlistForSelection()));
+        assertTrue(guest.getWordlistForSelection().containsAll(correctWordlistForGuest));    
         
-        assertTrue(correctWordlistForRegisteredUser.containsAll(registeredUser.getCategory().getWordListForSearch()));
-        assertTrue(registeredUser.getCategory().getWordListForSearch().containsAll(correctWordlistForRegisteredUser));
-        assertTrue(correctWordlistForRegisteredUser.containsAll(registeredUser.getCategory().getWordlistForSelection()));
-        assertTrue(registeredUser.getCategory().getWordlistForSelection().containsAll(correctWordlistForRegisteredUser));     
+        assertTrue(correctWordlistForRegisteredUser.containsAll(registeredUser.getWordListForSearch()));
+        assertTrue(registeredUser.getWordListForSearch().containsAll(correctWordlistForRegisteredUser));
+        assertTrue(correctWordlistForRegisteredUser.containsAll(registeredUser.getWordlistForSelection()));
+        assertTrue(registeredUser.getWordlistForSelection().containsAll(correctWordlistForRegisteredUser));     
     }
 
     @Test
@@ -53,14 +53,14 @@ public class CategoryTest
     {
         for (int i=0; i<1000; i++)
         {
-            String randomWordFromGuest = guest.getCategory().getRandomWord();
-            String randomWordFromRegisteredUser = registeredUser.getCategory().getRandomWord();
-            assertTrue(guest.getCategory().getWordListForSearch().contains(randomWordFromGuest));
-            assertTrue(registeredUser.getCategory().getWordListForSearch().contains(randomWordFromRegisteredUser));
+            String randomWordFromGuest = guest.getRandomWord();
+            String randomWordFromRegisteredUser = registeredUser.getRandomWord();
+            assertTrue(guest.getWordListForSearch().contains(randomWordFromGuest));
+            assertTrue(registeredUser.getWordListForSearch().contains(randomWordFromRegisteredUser));
         }
         String wordWhichIsNotInEitherCategory = "thisWordIsNotInEitherCategory";
-        assertFalse(guest.getCategory().getWordListForSearch().contains(wordWhichIsNotInEitherCategory));
-        assertFalse(registeredUser.getCategory().getWordListForSearch().contains(wordWhichIsNotInEitherCategory));
+        assertFalse(guest.getWordListForSearch().contains(wordWhichIsNotInEitherCategory));
+        assertFalse(registeredUser.getWordListForSearch().contains(wordWhichIsNotInEitherCategory));
     }
 
     @Test
@@ -69,10 +69,10 @@ public class CategoryTest
     {
         for (int i=0; i<1000; i++)
         {
-            String randomWordFromGuest = guest.getCategory().getRandomWord();
-            String substringFromWordFromGuest = Category.getRandomSubstring(randomWordFromGuest);
-            String randomWordFromRegisteredUser = registeredUser.getCategory().getRandomWord();
-            String substringFromWordRegisteredUser = Category.getRandomSubstring(randomWordFromRegisteredUser);
+            String randomWordFromGuest = guest.getRandomWord();
+            String substringFromWordFromGuest = GameLogic.getRandomSubstring(randomWordFromGuest);
+            String randomWordFromRegisteredUser = registeredUser.getRandomWord();
+            String substringFromWordRegisteredUser = GameLogic.getRandomSubstring(randomWordFromRegisteredUser);
 
             assertTrue(randomWordFromGuest.matches(".*" + substringFromWordFromGuest + ".*"));
             assertFalse(randomWordFromGuest.matches(".*" + "thisSubstringIsNotValidAnywhere" + ".*"));
@@ -88,9 +88,9 @@ public class CategoryTest
         String wordFromGuest = "Testing";
         String subtringFromGuest = "sti";
 
-        assertTrue(guest.getCategory().checkValidWord(subtringFromGuest, "Testing"));
-        assertTrue(guest.getCategory().checkValidWord(subtringFromGuest, "SomeThingWith_sti_AsSubstring"));
-        assertFalse(guest.getCategory().checkValidWord(subtringFromGuest, "notInListButContains_sti"));
+        assertTrue(guest.checkValidWord(subtringFromGuest, "Testing"));
+        assertTrue(guest.checkValidWord(subtringFromGuest, "SomeThingWith_sti_AsSubstring"));
+        assertFalse(guest.checkValidWord(subtringFromGuest, "notInListButContains_sti"));
     }
 
 }
