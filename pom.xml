@@ -88,7 +88,7 @@
                 </plugin>
 
                 <!-- Adds the plugin for spotbugs -->
-                <!-- Spotbugs is a analysis tool used for identifying bugs, defects and security fauls -->
+                <!-- Spotbugs is a analysis tool used for identifying bugs, defects and security faults -->
                 <plugin>
                     <groupId>com.github.spotbugs</groupId>
                     <artifactId>spotbugs-maven-plugin</artifactId>
