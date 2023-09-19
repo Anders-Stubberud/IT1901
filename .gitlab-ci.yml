@@ -6,6 +6,7 @@ stages:
 build:
   stage: build
   script:
+    - "cd gr2325"
     - "mvn clean install"
     - "mvn compile"
 
