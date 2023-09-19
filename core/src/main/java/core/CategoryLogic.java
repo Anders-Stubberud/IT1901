@@ -55,12 +55,12 @@ public class CategoryLogic
      */
     public WordLists getWordsFromChosenCategory(String chosenCategory)
     {
-        if (!getAllAvailableCategories().contains(chosenCategory))
-        {
-            throw new IllegalArgumentException("The chosen category is not a part of the available categories.");
-        }
-        return FileIO.createWordlist
-        (getAvailableDefaultCategories().contains(chosenCategory), username, chosenCategory);
+        return FileIO.createWordlist(getAvailableDefaultCategories().contains(chosenCategory), username, chosenCategory);
+    }
+
+    public static void main(String [] args)
+    {
+        System.out.println("\n\n" + System.getProperty("user.dir") + "\n\n");
     }
 
 }

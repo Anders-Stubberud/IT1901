@@ -20,7 +20,7 @@ public class WordLists
         return wordListForSearch;
     }
 
-    public List<String> getWordListFOrSelection()
+    public List<String> getWordListForSelection()
     {
         return wordListFOrSelection;
     }

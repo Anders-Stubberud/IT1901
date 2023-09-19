@@ -19,6 +19,8 @@ import com.google.gson.JsonObject;
 
 public class FileIO 
 {
+
+    private static final String workingDirectory = "gr2325";
     
     /**
      * Queries and returns all default categories.
@@ -26,9 +28,14 @@ public class FileIO
      */
     public static Collection<String> loadDefaultCategories() 
     {
-        File[] defaultCategoriesArray = new File("/gr2325/core/src/main/resources/default_categories").listFiles();
+        Path path = Paths.get("").toAbsolutePath();
+        while (! path.endsWith(workingDirectory))
+        {
+            path = path.getParent();
+        }
+        File[] defaultCategoriesArray = new File(path.toString() + "/core/src/main/resources/default_categories").listFiles();
         return Arrays.asList(defaultCategoriesArray).stream().map(File::getName)
-        .map(n -> n.substring(0, n.indexOf("."))).collect(Collectors.toList());
+        .map(name -> name.substring(0, name.indexOf("."))).collect(Collectors.toList());
     }
 
     /**
@@ -38,7 +45,12 @@ public class FileIO
      */
     public static Collection<String> loadCustomCategories(String username)
     {
-        File[] customCategories = new File(("/gr2325/core/src/main/resources/users/" + username)).listFiles();
+        Path path = Paths.get("").toAbsolutePath();
+        while (! path.endsWith(workingDirectory))
+        {
+            path = path.getParent();
+        }
+        File[] customCategories = new File(path.toString() + "/core/src/main/resources/users/" + username).listFiles();
         return Arrays.asList(customCategories).stream().map(File::getName)
         .map(name -> name.substring(0, name.indexOf("."))).collect(Collectors.toList());
     }
@@ -54,16 +66,20 @@ public class FileIO
      */
     public static WordLists createWordlist(boolean pickFromDefaultCategories, String username, String category)
     {
-        Path path;
+        Path path = Paths.get("").toAbsolutePath();
+        while (! path.endsWith(workingDirectory))
+        {
+            path = path.getParent();
+        }
         Set<String> wordlistForSearch = null;
         List<String> wordlistForSelection = null;
         if (pickFromDefaultCategories)
         {
-            path = Paths.get("/gr2325/core/src/main/resources/default_categories/" + category + ".json");
+            path = Paths.get(path.toString() + "/core/src/main/resources/default_categories/" + category + ".json");
         }
         else
         {
-            path = Paths.get("/gr2325/core/src/main/resources/users/" + username + "/" + category + ".json");
+            path = Paths.get(path.toString() + "/core/src/main/resources/users/" + username + "/" + category + ".json");
         }
         try 
         {
@@ -87,6 +103,15 @@ public class FileIO
             e.printStackTrace();
         }
         return new WordLists(wordlistForSearch, wordlistForSelection);
+    }
+
+    public static void main(String [] args)
+    {
+        WordLists a = createWordlist(false, "registeredUser", "example_category2");
+        Collection<String> b = a.getWordListForSelection();
+        for (String string : b) {
+            System.out.println(string);
+        }
     }
 
 }
