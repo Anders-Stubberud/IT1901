@@ -41,7 +41,7 @@ public class GameLogic
         }
         this.category = category;
         wordlistForSearch = categoryLogic.getWordsFromChosenCategory(category).getWordListForSearch();
-        wordlistForSelection = categoryLogic.getWordsFromChosenCategory(category).getWordListFOrSelection();
+        wordlistForSelection = categoryLogic.getWordsFromChosenCategory(category).getWordListForSelection();
     }
 
     public String getCategory()
@@ -92,6 +92,16 @@ public class GameLogic
     public boolean checkValidWord(String substring, String guess)
     {
         return guess.matches(".*" + substring + ".*") && wordlistForSearch.contains(guess);
+    }
+
+    public static void main(String [] args)
+    {
+        GameLogic a = new GameLogic("guest");
+        a.setCategory("default_category1");
+        Collection<String> b = a.getWordListForSearch();
+        for (String string : b) {
+            System.out.println(string);
+        }
     }
 
 }
