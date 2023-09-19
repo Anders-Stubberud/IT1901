@@ -90,7 +90,7 @@
                             <goals>
                                 <goal>report</goal>
                             </goals>
-                        </excecution>
+                        </execution>
                     </executions>
                 </plugin>
 
