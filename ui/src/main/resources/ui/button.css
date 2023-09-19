@@ -1,0 +1,14 @@
+.btn {
+    
+    -fx-background-color: darkcyan; /* Darkslategray */
+    -fx-color: white;
+    -fx-border: none;
+    -fx-border-radius: 8px;
+    -fx-padding: 10px 20px;
+    /*-fx-font-size: 16px;*/
+    -fx-cursor: hand;
+}
+
+.btn:hover {
+    -fx-background-color: rgb(0, 121, 121);
+}
