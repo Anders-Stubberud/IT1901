@@ -1,45 +1,43 @@
 package ui;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.function.BinaryOperator;
-import java.util.function.UnaryOperator;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
-public class AppController {
+public final class AppController {
 
+    /**
+     * Buttons on the Front,Login page.
+     */
     @FXML
     private Button appLogInBtn, appGuestBtn, undoButton;
 
+    /**
+     * Textfield on the Front,Login page.
+     */
     @FXML
     private TextField usernameTF, passwordTF;
 
-    
-
-
     // @FXML
     // void handleLogIn() {
-    //     appGuestBtn.setVisible(false);
-    //     appLogInBtn.setVisible(false);
-    //     usernameTF.setVisible(true);
-    //     passwordTF.setVisible(true);
-    //     undoButton.setVisible(true);
+    // appGuestBtn.setVisible(false);
+    // appLogInBtn.setVisible(false);
+    // usernameTF.setVisible(true);
+    // passwordTF.setVisible(true);
+    // undoButton.setVisible(true);
     // }
 
+    /**
+     * Goes back to Frontpage.
+     */
     @FXML
-    void handleUndo() {
+    public void handleUndo() {
         undoButton.setVisible(false);
         usernameTF.setVisible(false);
         passwordTF.setVisible(false);
@@ -47,8 +45,11 @@ public class AppController {
         appLogInBtn.setVisible(true);
     }
 
+    /**
+     * Send user to game page.
+     */
     @FXML
-    void handleLogIn() {
+    public void handleLogIn() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("GamePage.fxml"));
             Parent parent = fxmlLoader.load();
