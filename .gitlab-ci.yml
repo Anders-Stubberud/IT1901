@@ -1,0 +1,27 @@
+image: maven:latest
+
+stages:
+  - build
+  - test
+  - clean
+
+build:
+  stage: build
+  script:
+    - "mvn clean install"
+    - "mvn compile"
+
+checkstyle-test:
+  stage: test
+  script:
+    - "mvn checkstyle:check"
+
+maven-test:
+  stage: test
+  script:
+    - mvn test
+
+clean-up:
+  stage: clean
+  script:
+    - "mvn clean"
