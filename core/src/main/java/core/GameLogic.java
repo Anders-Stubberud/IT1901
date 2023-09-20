@@ -68,7 +68,6 @@ public class GameLogic
     public String getRandomWord() 
     {
         String word = wordlistForSelection.get(new Random().nextInt(wordlistForSelection.size()));
-        System.out.println(word);
         return word;
     }
 
