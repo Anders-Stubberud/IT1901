@@ -111,13 +111,10 @@
                     <configuration>
                         <consoleOutput>true</consoleOutput>
                         <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                        <encoding>UTF-8</encoding>
                         <consoleOutput>true</consoleOutput>
                         <failsOnError>true</failsOnError>
                         <!-- Specifies the location of the Checkstyle configuration file -->
                         <configLocation>config/checkstyle/checkstyle.xml</configLocation>
-                        <suppressionLocation>config/checkstyle/suppressions.xml</suppressionLocation>
-                        <suppressionFileExpression>suppresion.xml</suppressionFileExpression>
                     </configuration>
                     <executions>
                         <execution>
