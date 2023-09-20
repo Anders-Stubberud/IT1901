@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 
+import core.GameLogic;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -37,6 +38,8 @@ public class GamePageController implements Initializable {
     @FXML
     private Label letters, points;
 
+    private GameLogic user;
+    private String substring;
     private List<Circle> players = new ArrayList<>();
     private List<String> categoryAnswers = new ArrayList<>(Arrays.asList("norway"));
 
@@ -105,8 +108,7 @@ public class GamePageController implements Initializable {
 
         if (ke.getCode().equals(KeyCode.ENTER)) { // If pressed Enter, then check word
             String playerGuess = PlayerInputField.getText().toLowerCase();
-            if (playerGuess.contains(letters.getText().toLowerCase())
-                    && categoryAnswers.contains(playerGuess.toLowerCase())) {
+            if (user.checkValidWord(substring, playerGuess)) {
 
                 // TODO - FileWriter add points
                 int Points = Integer.parseInt(points.getText()) + 1;
@@ -125,16 +127,15 @@ public class GamePageController implements Initializable {
      * The length of the letters is either 2 or 3.
      */
     public void rndWordMasterLetters() {
-        String rndCategoryWord = categoryAnswers.get(new Random().nextInt(categoryAnswers.size()));
-        int rndIndex = (int) Math.floor(Math.random() * (rndCategoryWord.length() - 3));
-        int strLength = (int) Math.floor(Math.random() * 2) + 2;
-        String finalString = rndCategoryWord.substring(rndIndex, rndIndex + strLength);
-        letters.setText(finalString.toUpperCase());
+        String string = user.getRandomWord();
+        substring = GameLogic.getRandomSubstring(string);
+        letters.setText(substring.toUpperCase());
     }
 
     @Override // Runs on start of the application
     public void initialize(URL location, ResourceBundle resources) {
         try {
+            user = new GameLogic("user");
             rndWordMasterLetters();
             createPlayers(true);
             PlayerInputField.requestFocus();
