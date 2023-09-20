@@ -17,9 +17,23 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+<<<<<<< core/src/main/java/core/FileIO.java
 public class FileIO {
 
     private static final String workingDirectory = "gr2325";
+
+/**
+ * This class is responsible for reading the wordlists from the files.
+ * It also provides methods for querying the available categories.
+ */
+public final class FileIO {
+
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private FileIO() {
+        throw new UnsupportedOperationException("This class should not be instantiated.");
+    }
 
     /**
      * Queries and returns all default categories.
@@ -49,8 +63,8 @@ public class FileIO {
             path = path.getParent();
         }
         File[] customCategories = new File(path.toString() + "/core/src/main/resources/users/" + username).listFiles();
-        return Arrays.asList(customCategories).stream().map(File::getName)
-                .map(name -> name.substring(0, name.indexOf("."))).collect(Collectors.toList());
+        return Arrays.asList(defaultCategoriesArray).stream().map(File::getName)
+        .map(n -> n.substring(0, n.indexOf("."))).collect(Collectors.toList());
     }
 
     /**
@@ -65,8 +79,10 @@ public class FileIO {
      * vast amounts of memory,
      * it is a fair tradeoff in order to improve the user experience.
      * 
-     * @param pickFromDefaultCategories Set to true if the category is to be chosen
-     *                                  among the default categories.
+     * @param pickFromDefaultCategories Set to true if the category is to be chosen among the default categories.
+     * @param username The username of the user, used to set up individualized games for different users.
+     * @param category The category chosen by the user.
+     * @return A WordLists object containing two wordlists.
      */
     public static WordLists createWordlist(boolean pickFromDefaultCategories, String username, String category) {
         Path path = Paths.get("").toAbsolutePath();
@@ -100,13 +116,4 @@ public class FileIO {
         }
         return new WordLists(wordlistForSearch, wordlistForSelection);
     }
-
-    public static void main(String[] args) {
-        WordLists a = createWordlist(false, "registeredUser", "example_category2");
-        Collection<String> b = a.getWordListForSelection();
-        for (String string : b) {
-            System.out.println(string);
-        }
-    }
-
 }
