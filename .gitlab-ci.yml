@@ -8,6 +8,7 @@ stages:
 build:
   stage: build
   script:
+    - "cd WordDetective"
     - "mvn clean install"
     - "mvn compile"
 
