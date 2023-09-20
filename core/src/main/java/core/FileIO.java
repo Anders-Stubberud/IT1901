@@ -128,7 +128,7 @@ public final class FileIO {
      */
     public static int getHighScore() {
         Path path = Paths.get("").toAbsolutePath();
-        while (! path.endsWith(workingDirectory)) {
+        while (! path.endsWith(WORKING_DIRECTORY)) {
             path = path.getParent();
         }
         path = Paths.get(path.toString() + "/core/src/main/resources/testUserHighscore.json");
@@ -149,7 +149,7 @@ public final class FileIO {
      */
     public static void incrementHighScore() {
         Path path = Paths.get("").toAbsolutePath();
-        while (! path.endsWith(workingDirectory)) {
+        while (! path.endsWith(WORKING_DIRECTORY)) {
             path = path.getParent();
         }
         String filePath = path.toString() + "/core/src/main/resources/testUserHighscore.json";
