@@ -25,7 +25,7 @@ public final class CategoryLogic {
     /**
      * Initializes the logic regarding the categories.
      * Delegates the task of querying the available categories to FileIO.
-     * 
+     *
      * @param username The username of the user, which is used to access the
      *                 available wordlists of the user.
      */
@@ -53,7 +53,7 @@ public final class CategoryLogic {
 
     /**
      * Combines the default and custom categories.
-     * 
+     *
      * @return A collection consisting of all default and custom categories.
      */
     public Collection<String> getAllAvailableCategories() {
@@ -67,7 +67,7 @@ public final class CategoryLogic {
     /**
      * Delegates the task of acquiring the wordlist for the chosen category to
      * FileIO.
-     * 
+     *
      * @param chosenCategory the category selected by the user.
      * @return A WorList object, which contains the wordlists for searching and
      *         selection.
