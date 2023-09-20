@@ -23,6 +23,9 @@ import com.google.gson.JsonObject;
  */
 public final class FileIO {
 
+    /**
+     * Private constructor to prevent instantiation.
+     */
     private FileIO() {
         throw new UnsupportedOperationException("This class should not be instantiated.");
     }
