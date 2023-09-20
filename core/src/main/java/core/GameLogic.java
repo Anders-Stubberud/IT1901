@@ -93,8 +93,7 @@ public class GameLogic {
      *
      * @return A randomly generated substring from the parameter.
      */
-    public String getRandomWord() 
-    {
+    public String getRandomWord() {
         String word = wordlistForSelection.get(new Random().nextInt(wordlistForSelection.size()));
         return word;
     }
