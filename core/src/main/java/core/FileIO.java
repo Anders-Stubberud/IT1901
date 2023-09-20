@@ -17,16 +17,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-<<<<<<< core/src/main/java/core/FileIO.java
-public class FileIO {
-
-    private static final String workingDirectory = "gr2325";
-
 /**
  * This class is responsible for reading the wordlists from the files.
  * It also provides methods for querying the available categories.
  */
-public final class FileIO {
+public class FileIO {
+
+    private static final String workingDirectory = "gr2325";
 
     /**
      * Private constructor to prevent instantiation.
@@ -37,7 +34,7 @@ public final class FileIO {
 
     /**
      * Queries and returns all default categories.
-     * 
+     *
      * @return All default categories.
      */
     public static Collection<String> loadDefaultCategories() {
@@ -53,7 +50,7 @@ public final class FileIO {
 
     /**
      * Queries and returns custom categories if the user is a registered user
-     * 
+     *
      * @param username The name of the user to provide custom categories for
      * @return All custom categories of given user
      */
@@ -63,8 +60,8 @@ public final class FileIO {
             path = path.getParent();
         }
         File[] customCategories = new File(path.toString() + "/core/src/main/resources/users/" + username).listFiles();
-        return Arrays.asList(defaultCategoriesArray).stream().map(File::getName)
-        .map(n -> n.substring(0, n.indexOf("."))).collect(Collectors.toList());
+        return Arrays.asList(customCategories).stream().map(File::getName)
+                .map(n -> n.substring(0, n.indexOf("."))).collect(Collectors.toList());
     }
 
     /**
@@ -78,10 +75,12 @@ public final class FileIO {
      * This solution does require more memory, but since wordlists do not require
      * vast amounts of memory,
      * it is a fair tradeoff in order to improve the user experience.
-     * 
-     * @param pickFromDefaultCategories Set to true if the category is to be chosen among the default categories.
-     * @param username The username of the user, used to set up individualized games for different users.
-     * @param category The category chosen by the user.
+     *
+     * @param pickFromDefaultCategories Set to true if the category is to be chosen
+     *                                  among the default categories.
+     * @param username                  The username of the user, used to set up
+     *                                  individualized games for different users.
+     * @param category                  The category chosen by the user.
      * @return A WordLists object containing two wordlists.
      */
     public static WordLists createWordlist(boolean pickFromDefaultCategories, String username, String category) {
