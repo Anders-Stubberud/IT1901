@@ -29,7 +29,7 @@ public final class FileIO {
     /**
      * The name of the working directory.
      */
-    private static final String WORKING_DIRECTORY = "WordDetective";
+    private static final String WORKING_DIRECTORY = "gr2325";
 
     /**
      * Private constructor to prevent instantiation.
@@ -48,7 +48,8 @@ public final class FileIO {
         while (!path.endsWith(WORKING_DIRECTORY)) {
             path = path.getParent();
         }
-        File[] defaultCategoriesArray = new File(path.toString() + "/core/src/main/resources/default_categories")
+        File[] defaultCategoriesArray = new File(
+                path.toString() + "/WordDetective/core/src/main/resources/default_categories")
                 .listFiles();
         return Arrays.asList(defaultCategoriesArray).stream().map(File::getName)
                 .map(name -> name.substring(0, name.indexOf("."))).collect(Collectors.toList());
@@ -56,6 +57,7 @@ public final class FileIO {
 
     /**
      * Queries and returns custom categories if the user is a registered user.
+     *
      * @param username The name of the user to provide custom categories for
      * @return All custom categories of given user
      */
@@ -64,7 +66,8 @@ public final class FileIO {
         while (!path.endsWith(WORKING_DIRECTORY)) {
             path = path.getParent();
         }
-        File[] customCategories = new File(path.toString() + "/core/src/main/resources/users/" + username).listFiles();
+        File[] customCategories = new File(path.toString() + "/WordDetective/core/src/main/resources/users/" + username)
+                .listFiles();
         return Arrays.asList(customCategories).stream().map(File::getName)
                 .map(n -> n.substring(0, n.indexOf("."))).collect(Collectors.toList());
     }
@@ -88,7 +91,8 @@ public final class FileIO {
      * @param category                  The category chosen by the user.
      * @return A WordLists object containing two wordlists.
      */
-    public static WordLists createWordlist(final boolean pickFromDefaultCategories, final String username, final String category) {
+    public static WordLists createWordlist(final boolean pickFromDefaultCategories, final String username,
+            final String category) {
         Path path = Paths.get("").toAbsolutePath();
         while (!path.endsWith(WORKING_DIRECTORY)) {
             path = path.getParent();
@@ -96,9 +100,11 @@ public final class FileIO {
         Set<String> wordlistForSearch = null;
         List<String> wordlistForSelection = null;
         if (pickFromDefaultCategories) {
-            path = Paths.get(path.toString() + "/core/src/main/resources/default_categories/" + category + ".json");
+            path = Paths.get(path.toString() + "/WordDetective/core/src/main/resources/default_categories/" + category
+                    + ".json");
         } else {
-            path = Paths.get(path.toString() + "/core/src/main/resources/users/" + username + "/" + category + ".json");
+            path = Paths.get(path.toString() + "/WordDetective/core/src/main/resources/users/" + username + "/"
+                    + category + ".json");
         }
         try {
             // Files.readAllBytes method reads the file and closes it internally, thus no
@@ -123,6 +129,7 @@ public final class FileIO {
 
     /**
      * Access the persistent json file which contains the current score of the game.
+     *
      * @return The current score of the game.
      */
     public static int getHighScore() {
@@ -130,7 +137,7 @@ public final class FileIO {
         while (!path.endsWith(WORKING_DIRECTORY)) {
             path = path.getParent();
         }
-        path = Paths.get(path.toString() + "/core/src/main/resources/testUserHighscore.json");
+        path = Paths.get(path.toString() + "/WordDetective/core/src/main/resources/testUserHighscore.json");
         int newHighscore = 0;
         try {
             String content = new String(Files.readAllBytes(path));
@@ -151,7 +158,7 @@ public final class FileIO {
         while (!path.endsWith(WORKING_DIRECTORY)) {
             path = path.getParent();
         }
-        String filePath = path.toString() + "/core/src/main/resources/testUserHighscore.json";
+        String filePath = path.toString() + "/WordDetective/core/src/main/resources/testUserHighscore.json";
         try {
             FileReader reader = new FileReader(filePath);
             Gson gson = new Gson();
