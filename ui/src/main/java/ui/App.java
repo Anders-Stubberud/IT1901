@@ -9,20 +9,28 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * JavaFX App
+ * JavaFX App.
  */
 public class App extends Application {
 
-
+    /**
+     * Sets up the scene and stage to display fxml.
+     */
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(final Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("App.fxml"));
         Parent parent = fxmlLoader.load();
         stage.setScene(new Scene(parent));
         stage.show();
     }
 
-    public static void main(String[] args) {
+    /**
+     * Provides a reference to start the application.
+     *
+     * @param args
+     */
+    public static void main(final String[] args) {
         launch();
     }
+
 }
