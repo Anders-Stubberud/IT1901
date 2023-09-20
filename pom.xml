@@ -108,17 +108,21 @@
                             <version>10.3.4</version>
                         </dependency>
                     </dependencies>
+                    <configuration>
+                        <consoleOutput>true</consoleOutput>
+                        <!-- <includeTestSourceDirectory>true</includeTestSourceDirectory> -->
+                        <encoding>UTF-8</encoding>
+                        <consoleOutput>true</consoleOutput>
+                        <failsOnError>true</failsOnError>
+                        <!-- Specifies the location of the Checkstyle configuration file -->
+                        <configLocation>config/checkstyle/checkstyle.xml</configLocation>
+                        <suppressionLocation>config/checkstyle/suppressions.xml</suppressionLocation>
+                        <suppressionFileExpression>suppresion.xml</suppressionFileExpression>
+                    </configuration>
                     <executions>
                         <execution>
                             <id>validate</id>
                             <phase>validate</phase>
-                            <configuration>
-                                <!-- Specifies the location of the Checkstyle configuration file -->
-                                <configLocation>checkstyle.xml</configLocation>
-                                <encoding>UTF-8</encoding>
-                                <consoleOutput>true</consoleOutput>
-                                <failsOnError>true</failsOnError>
-                            </configuration>
                             <goals>
                                 <goal>check</goal>
                             </goals>
