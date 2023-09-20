@@ -6,10 +6,24 @@ import java.util.Set;
 
 public final class GameLogic {
 
-    // TODO - Anders forklar variablene
+    /**
+     * Set of words from category.
+     * Is used to search faster in FiliIO.java.
+     */
     private Set<String> wordlistForSearch;
+
+    /**
+     * List of words from category.
+     * Is used to select random words from.
+     */
     private List<String> wordlistForSelection;
+    /**
+     * Used for getting and setting categories.
+     */
     private CategoryLogic categoryLogic;
+    /**
+     * Players chosen category.
+     */
     private String chosenCategory;
 
     /**
