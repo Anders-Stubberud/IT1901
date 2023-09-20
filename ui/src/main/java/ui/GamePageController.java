@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 
+import core.FileIO;
+import core.GameLogic;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -37,8 +39,9 @@ public class GamePageController implements Initializable {
     @FXML
     private Label letters, points;
 
+    private GameLogic user;
+    private String substring;
     private List<Circle> players = new ArrayList<>();
-    private List<String> categoryAnswers = new ArrayList<>(Arrays.asList("norway"));
 
     /**
      * Move the WordMaster (The letters) to a chosen location. Resets to original
@@ -104,12 +107,12 @@ public class GamePageController implements Initializable {
         // TODO green color on right letters and red on wrong
 
         if (ke.getCode().equals(KeyCode.ENTER)) { // If pressed Enter, then check word
-            String playerGuess = PlayerInputField.getText().toLowerCase();
-            if (playerGuess.contains(letters.getText().toLowerCase())
-                    && categoryAnswers.contains(playerGuess.toLowerCase())) {
-
+            String playerGuess = PlayerInputField.getText();
+            if (user.checkValidWord(substring, playerGuess)) {
                 // TODO - FileWriter add points
-                int Points = Integer.parseInt(points.getText()) + 1;
+                FileIO.incrementHighScore();
+                int Points = FileIO.getHighScore();
+                // int Points = Integer.parseInt(points.getText()) + 1;
                 points.setText(String.valueOf(Points));
                 rndWordMasterLetters();
             } else {
@@ -125,16 +128,17 @@ public class GamePageController implements Initializable {
      * The length of the letters is either 2 or 3.
      */
     public void rndWordMasterLetters() {
-        String rndCategoryWord = categoryAnswers.get(new Random().nextInt(categoryAnswers.size()));
-        int rndIndex = (int) Math.floor(Math.random() * (rndCategoryWord.length() - 3));
-        int strLength = (int) Math.floor(Math.random() * 2) + 2;
-        String finalString = rndCategoryWord.substring(rndIndex, rndIndex + strLength);
-        letters.setText(finalString.toUpperCase());
+        String string = user.getRandomWord();
+        substring = GameLogic.getRandomSubstring(string);
+        letters.setText(substring);
     }
 
     @Override // Runs on start of the application
     public void initialize(URL location, ResourceBundle resources) {
         try {
+            points.setText(String.valueOf(FileIO.getHighScore()));
+            user = new GameLogic("guest");
+            user.setCategory("default_category1");
             rndWordMasterLetters();
             createPlayers(true);
             PlayerInputField.requestFocus();
@@ -142,4 +146,5 @@ public class GamePageController implements Initializable {
             e.printStackTrace();
         }
     }
+
 }

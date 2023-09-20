@@ -1,6 +1,8 @@
 package core;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,8 +16,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 /**
  * This class is responsible for reading the wordlists from the files.
@@ -117,4 +121,54 @@ public final class FileIO {
         }
         return new WordLists(wordlistForSearch, wordlistForSelection);
     }
+
+    /**
+     * Access the persistent json file which contains the current score of the game.
+     * @return The current score of the game.
+     */
+    public static int getHighScore() {
+        Path path = Paths.get("").toAbsolutePath();
+        while (! path.endsWith(WORKING_DIRECTORY)) {
+            path = path.getParent();
+        }
+        path = Paths.get(path.toString() + "/core/src/main/resources/testUserHighscore.json");
+        int newHighscore = 0;
+        try {
+            String content = new String(Files.readAllBytes(path));
+            Gson gsonParser = new Gson();
+            JsonObject jsonObject = gsonParser.fromJson(content, JsonObject.class);
+            newHighscore = jsonObject.get("highscore").getAsInt();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return newHighscore;
+    }
+
+    /**
+     * Access the persistent json file and increments the current score by 1
+     */
+    public static void incrementHighScore() {
+        Path path = Paths.get("").toAbsolutePath();
+        while (! path.endsWith(WORKING_DIRECTORY)) {
+            path = path.getParent();
+        }
+        String filePath = path.toString() + "/core/src/main/resources/testUserHighscore.json";
+    
+        try {
+            FileReader reader = new FileReader(filePath);
+            Gson gson = new Gson();
+            JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
+            reader.close();
+            int oldHighscore = jsonObject.get("highscore").getAsInt();
+            int newHighscore = oldHighscore + 1;
+            jsonObject.addProperty("highscore", newHighscore);
+            FileWriter writer = new FileWriter(filePath);
+            gson = new GsonBuilder().setPrettyPrinting().create();
+            gson.toJson(jsonObject, writer);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -93,8 +93,10 @@ public class GameLogic {
      *
      * @return A randomly generated substring from the parameter.
      */
-    public String getRandomWord() {
-        return wordlistForSelection.get(new Random().nextInt(wordlistForSelection.size()));
+    public String getRandomWord() 
+    {
+        String word = wordlistForSelection.get(new Random().nextInt(wordlistForSelection.size()));
+        return word;
     }
 
     /**
@@ -105,8 +107,8 @@ public class GameLogic {
      */
     public static String getRandomSubstring(final String word) {
         int wordLength = word.length();
-        int startIndexSubstring = new Random().nextInt(wordLength);
-        int endIndexSubstring = new Random().nextInt(wordLength - startIndexSubstring) + startIndexSubstring + 1;
+        int startIndexSubstring = Math.max(new Random().nextInt(wordLength) - 2, 0);
+        int endIndexSubstring = startIndexSubstring + 2 + new Random().nextInt(2);
         String substring = word.substring(startIndexSubstring, endIndexSubstring);
         return substring;
     }

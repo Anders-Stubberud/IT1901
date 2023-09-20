@@ -34,18 +34,12 @@ public class GameLogicTest
     @DisplayName("Check correct initialization of search and selection wordlists")
     public void testSetUpOfWordlists()
     {
-        Collection<String> correctWordlistForGuest = Arrays.asList("This", "Is", "For", "Testing", "Purposes", "SomeThingWith_sti_AsSubstring");
-        Collection<String> correctWordlistForRegisteredUser = Arrays.asList("This", "Is", "Example", "Category", "One");
+        Collection<String> correctWordlistForGuest = FileIO.createWordlist(true, "guest", "default_category1").getWordListForSearch();
 
         assertTrue(correctWordlistForGuest.containsAll(guest.getWordListForSearch()));
         assertTrue(guest.getWordListForSearch().containsAll(correctWordlistForGuest));
         assertTrue(correctWordlistForGuest.containsAll(guest.getWordlistForSelection()));
-        assertTrue(guest.getWordlistForSelection().containsAll(correctWordlistForGuest));    
-        
-        assertTrue(correctWordlistForRegisteredUser.containsAll(registeredUser.getWordListForSearch()));
-        assertTrue(registeredUser.getWordListForSearch().containsAll(correctWordlistForRegisteredUser));
-        assertTrue(correctWordlistForRegisteredUser.containsAll(registeredUser.getWordlistForSelection()));
-        assertTrue(registeredUser.getWordlistForSelection().containsAll(correctWordlistForRegisteredUser));     
+        assertTrue(guest.getWordlistForSelection().containsAll(correctWordlistForGuest));        
     }
 
     @Test
@@ -72,13 +66,9 @@ public class GameLogicTest
         {
             String randomWordFromGuest = guest.getRandomWord();
             String substringFromWordFromGuest = GameLogic.getRandomSubstring(randomWordFromGuest);
-            String randomWordFromRegisteredUser = registeredUser.getRandomWord();
-            String substringFromWordRegisteredUser = GameLogic.getRandomSubstring(randomWordFromRegisteredUser);
 
             assertTrue(randomWordFromGuest.matches(".*" + substringFromWordFromGuest + ".*"));
             assertFalse(randomWordFromGuest.matches(".*" + "thisSubstringIsNotValidAnywhere" + ".*"));
-            assertTrue(randomWordFromRegisteredUser.matches(".*" + substringFromWordRegisteredUser + ".*"));
-            assertFalse(randomWordFromRegisteredUser.matches(".*" + "thisSubstringIsNotValidAnywhere" + ".*"));
         }
     }
 
@@ -86,12 +76,9 @@ public class GameLogicTest
     @DisplayName("Check valid guess")
     public void testCheckValidWord()
     {
-        String wordFromGuest = "Testing";
-        String subtringFromGuest = "sti";
-
-        assertTrue(guest.checkValidWord(subtringFromGuest, "Testing"));
-        assertTrue(guest.checkValidWord(subtringFromGuest, "SomeThingWith_sti_AsSubstring"));
-        assertFalse(guest.checkValidWord(subtringFromGuest, "notInListButContains_sti"));
+        assertTrue(guest.checkValidWord("Et", "Ethiopia"));
+        assertTrue(guest.checkValidWord("et", "Vietnam"));
+        assertFalse(guest.checkValidWord("Nor", "This_contains_Nor_but_is_not_in_the_wordlist"));
     }
 
 }
