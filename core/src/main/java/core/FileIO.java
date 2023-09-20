@@ -21,9 +21,12 @@ import com.google.gson.JsonObject;
  * This class is responsible for reading the wordlists from the files.
  * It also provides methods for querying the available categories.
  */
-public class FileIO {
+public final class FileIO {
 
-    private static final String workingDirectory = "gr2325";
+    /**
+     * The name of the working directory.
+     */
+    private static final String WORKING_DIRECTORY = "gr2325";
 
     /**
      * Private constructor to prevent instantiation.
@@ -39,7 +42,7 @@ public class FileIO {
      */
     public static Collection<String> loadDefaultCategories() {
         Path path = Paths.get("").toAbsolutePath();
-        while (!path.endsWith(workingDirectory)) {
+        while (!path.endsWith(WORKING_DIRECTORY)) {
             path = path.getParent();
         }
         File[] defaultCategoriesArray = new File(path.toString() + "/core/src/main/resources/default_categories")
@@ -49,14 +52,13 @@ public class FileIO {
     }
 
     /**
-     * Queries and returns custom categories if the user is a registered user
-     *
+     * Queries and returns custom categories if the user is a registered user.
      * @param username The name of the user to provide custom categories for
      * @return All custom categories of given user
      */
-    public static Collection<String> loadCustomCategories(String username) {
+    public static Collection<String> loadCustomCategories(final String username) {
         Path path = Paths.get("").toAbsolutePath();
-        while (!path.endsWith(workingDirectory)) {
+        while (!path.endsWith(WORKING_DIRECTORY)) {
             path = path.getParent();
         }
         File[] customCategories = new File(path.toString() + "/core/src/main/resources/users/" + username).listFiles();
@@ -83,9 +85,9 @@ public class FileIO {
      * @param category                  The category chosen by the user.
      * @return A WordLists object containing two wordlists.
      */
-    public static WordLists createWordlist(boolean pickFromDefaultCategories, String username, String category) {
+    public static WordLists createWordlist(final boolean pickFromDefaultCategories, final String username, final String category) {
         Path path = Paths.get("").toAbsolutePath();
-        while (!path.endsWith(workingDirectory)) {
+        while (!path.endsWith(WORKING_DIRECTORY)) {
             path = path.getParent();
         }
         Set<String> wordlistForSearch = null;
