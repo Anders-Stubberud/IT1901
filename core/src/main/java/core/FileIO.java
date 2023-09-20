@@ -22,19 +22,18 @@ public class FileIO {
      * Queries and returns all default categories.
      * @return All default categories.
      */
-    public static Collection<String> loadDefaultCategories() 
-    {
+    public static Collection<String> loadDefaultCategories() {
         File[] defaultCategoriesArray = new File("/gr2325/core/src/main/resources/default_categories").listFiles();
         return Arrays.asList(defaultCategoriesArray).stream().map(File::getName)
         .map(n -> n.substring(0, n.indexOf("."))).collect(Collectors.toList());
     }
 
     /**
-     * Queries and returns custom categories if the user is a registered user
+     * Queries and returns custom categories if the user is a registered user.
      * @param username The name of the user to provide custom categories for
      * @return All custom categories of given user
      */
-    public static Collection<String> loadCustomCategories(String username) {
+    public static Collection<String> loadCustomCategories(final String username) {
         File[] customCategories = new File(("/gr2325/core/src/main/resources/users/" + username)).listFiles();
         return Arrays.asList(customCategories).stream().map(File::getName)
         .map(name -> name.substring(0, name.indexOf("."))).collect(Collectors.toList());
@@ -48,8 +47,10 @@ public class FileIO {
      * This solution does require more memory, but since wordlists do not require vast amounts of memory,
      * it is a fair tradeoff in order to improve the user experience.
      * @param pickFromDefaultCategories Set to true if the category is to be chosen among the default categories.
+     * @param username The username of the user, used to set up individualized games for different users.
+     * @param category The category chosen by the user.
      */
-    public static WordLists createWordlist(boolean pickFromDefaultCategories, String username, String category) {
+    public static WordLists createWordlist(final boolean pickFromDefaultCategories, final String username, final String category) {
         Path path;
         Set<String> wordlistForSearch = null;
         List<String> wordlistForSelection = null;
@@ -69,11 +70,11 @@ public class FileIO {
             wordlistForSearch = new HashSet<>();
             wordlistForSelection = new ArrayList<>();
 
-            for (int i=0; i<wordListArray.size(); i++) {
+            for (int i = 0; i < wordListArray.size(); i++) {
                 wordlistForSearch.add(wordListArray.get(i).getAsString());
                 wordlistForSelection.add(wordListArray.get(i).getAsString());
             }
-        } 
+        }
         catch (IOException e) {
             e.printStackTrace();
         }
