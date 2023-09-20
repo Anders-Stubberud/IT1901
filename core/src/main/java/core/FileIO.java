@@ -17,7 +17,15 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-public class FileIO {
+/**
+ * This class is responsible for reading the wordlists from the files.
+ * It also provides methods for querying the available categories.
+ */
+public final class FileIO {
+
+    private FileIO() {
+        throw new UnsupportedOperationException("This class should not be instantiated.");
+    }
     /**
      * Queries and returns all default categories.
      * @return All default categories.
@@ -57,8 +65,7 @@ public class FileIO {
         List<String> wordlistForSelection = null;
         if (pickFromDefaultCategories) {
             path = Paths.get("/gr2325/core/src/main/resources/default_categories/" + category + ".json");
-        }
-        else {
+        } else {
             path = Paths.get("/gr2325/core/src/main/resources/users/" + username + "/" + category + ".json");
         }
         try {
@@ -75,8 +82,7 @@ public class FileIO {
                 wordlistForSearch.add(wordListArray.get(i).getAsString());
                 wordlistForSelection.add(wordListArray.get(i).getAsString());
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return new WordLists(wordlistForSearch, wordlistForSelection);
