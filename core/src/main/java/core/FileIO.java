@@ -49,6 +49,7 @@ public class FileIO {
      * @param pickFromDefaultCategories Set to true if the category is to be chosen among the default categories.
      * @param username The username of the user, used to set up individualized games for different users.
      * @param category The category chosen by the user.
+     * @return A WordLists object containing two wordlists.
      */
     public static WordLists createWordlist(final boolean pickFromDefaultCategories, final String username, final String category) {
         Path path;
