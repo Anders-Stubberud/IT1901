@@ -11,6 +11,15 @@ Further details about the application is located in the WordDetective documentat
 
 (Release 1, Release 2, Release 3)
 
+
+# Version Requirements
+
+**Java:** 17+
+
+**JavaFx:** 17.0.8
+
+**Apache Maven:** 3.8.1
+
 # How to Build
 
 **Build backend application**
