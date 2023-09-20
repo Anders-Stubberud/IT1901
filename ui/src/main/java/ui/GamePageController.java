@@ -90,7 +90,7 @@ public class GamePageController implements Initializable {
     /**
      * The playerCenterX is the X position of the player circle.
      */
-    private double playerCenterX = 500.0; // Default X is center
+    private static double playerCenterX = 500.0; // Default X is center
     /**
      * The bots is the number of bots in the game.
      */
@@ -163,9 +163,9 @@ public class GamePageController implements Initializable {
             if (user.checkValidWord(substring, playerGuess)) {
                 // TODO - FileWriter add points
                 FileIO.incrementHighScore();
-                int Points = FileIO.getHighScore();
+                int pointsHS = FileIO.getHighScore();
                 // int Points = Integer.parseInt(points.getText()) + 1;
-                points.setText(String.valueOf(Points));
+                points.setText(String.valueOf(pointsHS));
                 rndwordMasterLetters();
             }
             // TODO - Animate shake effect on wrong answer
