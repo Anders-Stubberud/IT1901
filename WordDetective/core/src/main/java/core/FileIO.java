@@ -29,7 +29,7 @@ public final class FileIO {
     /**
      * The name of the working directory.
      */
-    private static final String WORKING_DIRECTORY = "gr2325";
+    private static final String WORKING_DIRECTORY = "WordDetective";
 
     /**
      * Private constructor to prevent instantiation.
