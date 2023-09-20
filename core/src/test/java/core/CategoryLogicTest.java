@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,7 +16,13 @@ import org.junit.jupiter.api.Test;
 
 public class CategoryLogicTest {
 
+    /**
+     * A Game where the user is a guest.
+     */
     private GameLogic guest;
+    /**
+     * A Game where the user is a registered user.
+     */
     private GameLogic registeredUser;
 
     /**
@@ -85,6 +90,9 @@ public class CategoryLogicTest {
         assertTrue(allCategoriesRegisteredUser.containsAll(allCategoriesRegisteredUserSolution));
     }
 
+    /**
+     * Test for setting current game category.
+     */
     @Test
     @DisplayName("Check correct set and get of category")
     public void testSetCategoryAndGetCategory() {
