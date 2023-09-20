@@ -4,36 +4,37 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public final class GameLogic {
+/**
+ * The GameLogic class is responsible for the logic of the game.
+ * It will delegate certain tasks to other objects,
+ * who have more suitable functionality.
+ */
+public class GameLogic {
 
     /**
-     * Set of words from category.
-     * Is used to search faster in FiliIO.java.
+     * The wordlistForSearch is implemented as a hashset,
+     * which allows for search in average O(1).
      */
     private Set<String> wordlistForSearch;
-
     /**
-     * List of words from category.
-     * Is used to select random words from.
+     * The wordlistForSelection is implemented as an arraylist,
+     * which allows for accessing in O(1).
      */
     private List<String> wordlistForSelection;
     /**
-     * Used for getting and setting categories.
+     * The categoryLogic object is responsible for the logic of the categories.
      */
     private CategoryLogic categoryLogic;
     /**
-     * Players chosen category.
+     * The category chosen by the user.
      */
     private String chosenCategory;
 
     /**
-     * Initializes the GameLogic object,
-     * which will control the logic of the game.
-     * Certain tasks will be delegated to
-     * objects who have more suitable functionality.
-     *
+     * Initializes the GameLogic object, which will control the logic.
+     * Certain tasks will be delegated to objects with better functionality.
      * @param username The username of the user,
-     *                 used to set up individualized games for different users.
+     * used to set up individualized games for different users.
      */
     public GameLogic(final String username) {
         categoryLogic = new CategoryLogic(username);
