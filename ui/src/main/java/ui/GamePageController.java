@@ -24,7 +24,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
-public class GamePageController implements Initializable {
+public final class GamePageController implements Initializable {
 
     /**
      * The profileCircle is the circle that represents the player.
@@ -90,7 +90,7 @@ public class GamePageController implements Initializable {
     /**
      * The playerCenterX is the X position of the player circle.
      */
-    private static double playerCenterX = 500.0; // Default X is center
+    private final double pageCenter = 500.0; // Default X is center
     /**
      * The bots is the number of bots in the game.
      */
@@ -129,6 +129,7 @@ public class GamePageController implements Initializable {
      */
     public void createPlayers(final boolean haveBots) throws FileNotFoundException {
         // TODO read from active player JSON
+        double playerCenterX = pageCenter;
 
         if (haveBots) {
             double numOfBots = Math.floor(Math.random() * botsMultiplier) + 2; // minimum of 1 bot
