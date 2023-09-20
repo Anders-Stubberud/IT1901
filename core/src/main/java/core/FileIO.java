@@ -19,7 +19,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 /**
  * This class is responsible for reading the wordlists from the files.
@@ -128,7 +127,7 @@ public final class FileIO {
      */
     public static int getHighScore() {
         Path path = Paths.get("").toAbsolutePath();
-        while (! path.endsWith(WORKING_DIRECTORY)) {
+        while (!path.endsWith(WORKING_DIRECTORY)) {
             path = path.getParent();
         }
         path = Paths.get(path.toString() + "/core/src/main/resources/testUserHighscore.json");
@@ -145,15 +144,14 @@ public final class FileIO {
     }
 
     /**
-     * Access the persistent json file and increments the current score by 1
+     * Access the persistent json file and increments the current score by 1.
      */
     public static void incrementHighScore() {
         Path path = Paths.get("").toAbsolutePath();
-        while (! path.endsWith(WORKING_DIRECTORY)) {
+        while (!path.endsWith(WORKING_DIRECTORY)) {
             path = path.getParent();
         }
         String filePath = path.toString() + "/core/src/main/resources/testUserHighscore.json";
-    
         try {
             FileReader reader = new FileReader(filePath);
             Gson gson = new Gson();
