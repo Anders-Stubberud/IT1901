@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 
+import core.FileIO;
 import core.GameLogic;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
@@ -41,7 +42,6 @@ public class GamePageController implements Initializable {
     private GameLogic user;
     private String substring;
     private List<Circle> players = new ArrayList<>();
-    private List<String> categoryAnswers = new ArrayList<>(Arrays.asList("norway"));
 
     /**
      * Move the WordMaster (The letters) to a chosen location. Resets to original
@@ -107,11 +107,12 @@ public class GamePageController implements Initializable {
         // TODO green color on right letters and red on wrong
 
         if (ke.getCode().equals(KeyCode.ENTER)) { // If pressed Enter, then check word
-            String playerGuess = PlayerInputField.getText().toLowerCase();
+            String playerGuess = PlayerInputField.getText();
             if (user.checkValidWord(substring, playerGuess)) {
-
                 // TODO - FileWriter add points
-                int Points = Integer.parseInt(points.getText()) + 1;
+                FileIO.incrementHighScore();
+                int Points = FileIO.getHighScore();
+                // int Points = Integer.parseInt(points.getText()) + 1;
                 points.setText(String.valueOf(Points));
                 rndWordMasterLetters();
             } else {
@@ -129,13 +130,15 @@ public class GamePageController implements Initializable {
     public void rndWordMasterLetters() {
         String string = user.getRandomWord();
         substring = GameLogic.getRandomSubstring(string);
-        letters.setText(substring.toUpperCase());
+        letters.setText(substring);
     }
 
     @Override // Runs on start of the application
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            user = new GameLogic("user");
+            points.setText(String.valueOf(FileIO.getHighScore()));
+            user = new GameLogic("guest");
+            user.setCategory("default_category1");
             rndWordMasterLetters();
             createPlayers(true);
             PlayerInputField.requestFocus();
@@ -143,4 +146,5 @@ public class GamePageController implements Initializable {
             e.printStackTrace();
         }
     }
+
 }

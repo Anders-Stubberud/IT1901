@@ -67,7 +67,9 @@ public class GameLogic
      */
     public String getRandomWord() 
     {
-        return wordlistForSelection.get(new Random().nextInt(wordlistForSelection.size()));
+        String word = wordlistForSelection.get(new Random().nextInt(wordlistForSelection.size()));
+        System.out.println(word);
+        return word;
     }
 
     /**
@@ -77,8 +79,8 @@ public class GameLogic
      */
     public static String getRandomSubstring(String word) {
         int wordLength = word.length();
-        int startIndexSubstring = new Random().nextInt(wordLength);
-        int endIndexSubstring = new Random().nextInt(wordLength - startIndexSubstring) + startIndexSubstring + 1;
+        int startIndexSubstring = Math.max(new Random().nextInt(wordLength) - 2, 0);
+        int endIndexSubstring = startIndexSubstring + 2 + new Random().nextInt(2);
         String substring = word.substring(startIndexSubstring, endIndexSubstring);
         return substring;
     }
@@ -92,16 +94,6 @@ public class GameLogic
     public boolean checkValidWord(String substring, String guess)
     {
         return guess.matches(".*" + substring + ".*") && wordlistForSearch.contains(guess);
-    }
-
-    public static void main(String [] args)
-    {
-        GameLogic a = new GameLogic("guest");
-        a.setCategory("default_category1");
-        Collection<String> b = a.getWordListForSearch();
-        for (String string : b) {
-            System.out.println(string);
-        }
     }
 
 }
