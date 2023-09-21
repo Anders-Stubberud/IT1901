@@ -8,19 +8,20 @@ WordDetective: Substring Edition is intended to be both a resource for learning 
 The completed application will serve two versions of users: registered users and guest users.
 The guest users can only choose among the default, previously implemented wordlists.
 The registered user will be able to upload personalized wordlists, and thereby be able to play additional categories.
-The registered users will also have their scores stored persistent, so they can continue where they left off.
+The registered users will also have their scores stored to persistent memory, so they can continue where they left off.
 <br>
 Once the user has chosen a category among the respective available categories, the game begins.
-Words will be pulled randomly out of the wordlist correlating to the category, and the user will be presented with a substring from this word. The user must then guess a word which contains has the provided substring as a substring in addition to being present in the wordlist. Correct guesses increse the score. Registered users will get this stored to a persistent file, so they can continue to build their score later on.
+Words will be pulled randomly out of the wordlist correlating to the category, and the user will be presented with a substring from this word. The user must then guess a word which contains the provided substring as a substring, in addition to being present in the wordlist. Correct guesses increase the score. Registered users will get this score stored to persistent memory, so they can continue to build their score later on.
 
 ## Screenshot
 
-![Screenshot](image.png)
-_Make sure to notice that this is only the current iteration UI. Future releases will have improved UI and UX._
+![Alt text](image.png)
+<br>
+_This is only a tentative UI. The current release has a different UI. Future releases will have improved UI and UX._
 
 ## Userstories
 
-This section contains user stories intended to unravel the need of the application.
+This section contains user stories intended to unravel the needs of the application.
 <br>
 
 ### Studying for test (us-1)
@@ -30,7 +31,7 @@ This section contains user stories intended to unravel the need of the applicati
 #### _important for UI_
 
 - Intuitive section for adding categories.
-- Intuitive section for seeing all personlly added categories.
+- Intuitive section for seeing all personally added categories.
 
 #### _important for functionality_
 
