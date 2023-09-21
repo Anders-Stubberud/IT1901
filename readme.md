@@ -2,14 +2,14 @@
 
 This project contains the IT1901 project for group 25.
 
-Our application is WordDetective: Substring Edition, the main objective for our project is to create a fun and intuitive game for learning.
-Further details about the application is located in the WordDetective documentation
+Our application is "WordDetective: Substring Edition". The main objective for our project is to create a fun and intuitive game for learning.
+Further details about the application is located in the [WordDetective README](WordDetective/README.md)
 
 # Documentation
 
 ## Releases of WordDetective:
 
-(Release 1)
+([Release 1](docs/release1/README.md))
 
 # Description of content
 
