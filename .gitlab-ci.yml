@@ -1,0 +1,31 @@
+image: maven:latest
+
+stages:
+  - build
+  - test
+  - clean
+
+build:
+  stage: build
+  script:
+    - "cd WordDetective"
+    - "mvn clean install"
+    - "mvn compile"
+
+checkstyle-test:
+  stage: test
+  script:
+    - "cd WordDetective"
+    - "mvn checkstyle:check"
+
+maven-test:
+  stage: test
+  script:
+    - "cd WordDetective"
+    - mvn test
+
+clean-up:
+  stage: clean
+  script:
+    - "cd WordDetective"
+    - "mvn clean"
