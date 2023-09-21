@@ -33,8 +33,9 @@ public class GameLogic {
     /**
      * Initializes the GameLogic object, which will control the logic.
      * Certain tasks will be delegated to objects with better functionality.
+     *
      * @param username The username of the user,
-     * used to set up individualized games for different users.
+     *                 used to set up individualized games for different users.
      */
     public GameLogic(final String username) {
         categoryLogic = new CategoryLogic(username);
