@@ -34,7 +34,6 @@
             <Font size="30.0" />
          </font>
       </Label>
-      <Button layoutX="83.0" layoutY="142.0" mnemonicParsing="false" text="Button" />
       <TextField fx:id="playerInputField" alignment="CENTER" layoutX="335.0" layoutY="455.0" onKeyTyped="#checkWrittenWord" prefHeight="30.0" promptText="asdasd" style="-fx-background-color: transparent;">
          <font>
             <Font size="27.0" />
