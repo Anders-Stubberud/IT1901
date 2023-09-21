@@ -16,6 +16,7 @@ Words will be pulled randomly out of the wordlist correlating to the category, a
 ## Screenshot
 
 ![Alt text](image.png)
+<br>
 _This is only a tentative UI. The current release has a different UI. Future releases will have improved UI and UX._
 
 ## Userstories
