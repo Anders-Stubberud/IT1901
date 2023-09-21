@@ -9,7 +9,7 @@ Further details about the application is located in the [WordDetective README](W
 
 ## Releases of WordDetective:
 
-( [Release 1](docs/release1/README.md) )
+([Release 1](docs/release1/README.md))
 
 # Description of content
 
