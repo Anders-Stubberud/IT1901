@@ -19,7 +19,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
@@ -32,10 +31,10 @@ public final class GamePageController implements Initializable {
     @FXML
     private Circle profileCircle, profileCircle1, profileCircle2, profileCircle3;
     /**
-     * The wordMaster is the pane that contains the letters.
+     * The lettersCircle is the pane that contains the letters.
      */
     @FXML
-    private Pane wordMaster;
+    private Pane lettersCircle;
     /**
      * The window is the pane that contains the game.
      */
@@ -53,9 +52,9 @@ public final class GamePageController implements Initializable {
     private Label letters, points;
 
     /**
-     * The user is the GameLogic object that is used to get the words.
+     * The Wordmaster is the GameLogic object that is used to get the words.
      */
-    private GameLogic user;
+    private GameLogic wordMaster;
     /**
      * The substring is the letters that the player has to use.
      */
@@ -97,25 +96,43 @@ public final class GamePageController implements Initializable {
     private final int botsMultiplier = 5;
 
     /**
+     * Number for moving node in X-direction on shake animation.
+     */
+    private final int shakeXMovment = 4;
+
+    /**
+     * Duration of shake animation in milliseconds.
+     */
+    private final int shakeDuration = 250;
+
+    /**
+     * Pick a random player from players list.
+     */
+    public void pickPlayer() {
+
+    }
+
+    /**
      * Move the wordMaster (The letters) to a chosen location. Resets to original
      * posistion after animation.
      *
-     * @param targetX - X position of target
-     * @param targetY - Y position of target
-     * @param speed   - Speed of animation in milliseconds
+     * @param targetX  - X position of target
+     * @param targetY  - Y position of target
+     * @param duration - Duration of animation in seconds
      */
-    public void wordMasterMoveTo(final double targetX, final double targetY, final int speed) {
+    public void wordMasterMoveTo(final double targetX, final double targetY, final int duration) {
         TranslateTransition translate = new TranslateTransition();
-        translate.setNode(wordMaster);
-        translate.setDuration(Duration.millis(speed));
-        translate.setByY(targetY - wordMaster.getLayoutY() - layoutCenter); // -30 so the reference point is the center
-        translate.setByX(targetX - wordMaster.getLayoutX() - layoutCenter);
+        translate.setNode(lettersCircle);
+        translate.setDuration(Duration.seconds(duration));
+        translate.setByY(targetY - lettersCircle.getLayoutY() - layoutCenter); // -30 so the reference point is the
+                                                                               // center
+        translate.setByX(targetX - lettersCircle.getLayoutX() - layoutCenter);
         translate.play();
         translate.setOnFinished((event) -> {
-            wordMaster.setLayoutX(layoutX); // Reset layout to defualt values
-            wordMaster.setLayoutY(layoutY);
-            wordMaster.setTranslateX(0); // Move wordMaster to default value
-            wordMaster.setTranslateY(0);
+            lettersCircle.setLayoutX(layoutX); // Reset layout to defualt values
+            lettersCircle.setLayoutY(layoutY);
+            lettersCircle.setTranslateX(0); // Move lettersCircle to default value
+            lettersCircle.setTranslateY(0);
             translate.stop();
         });
 
@@ -136,7 +153,8 @@ public final class GamePageController implements Initializable {
             double centerX = window.getPrefWidth() / (numOfBots + 1);
             for (int j = 1; j < (numOfBots + 1); j++) {
                 if (j != (int) Math.ceil(numOfBots / 2)) {
-                    players.add(new Circle(centerX * j, centerY, radius, Color.BLACK));
+                    players.add(new Circle(centerX * j, centerY, radius,
+                            new ImagePattern(new Image(new FileInputStream("./assets/images/Abdulbari.png")))));
                 } else {
                     playerCenterX = centerX * j;
                 }
@@ -157,22 +175,33 @@ public final class GamePageController implements Initializable {
      * @param ke - KeyEvent
      */
     public void checkWrittenWord(final KeyEvent ke) {
-        // TODO green color on right letters and red on wrong
-
         if (ke.getCode().equals(KeyCode.ENTER)) { // If pressed Enter, then check word
             String playerGuess = playerInputField.getText();
-            if (user.checkValidWord(substring, playerGuess)) {
-                // TODO - FileWriter add points
+            if (wordMaster.checkValidWord(substring, playerGuess)) {
                 FileIO.incrementHighScore();
                 int pointsHS = FileIO.getHighScore();
                 // int Points = Integer.parseInt(points.getText()) + 1;
                 points.setText(String.valueOf(pointsHS));
                 rndwordMasterLetters();
+            } else {
+                TranslateTransition shake = new TranslateTransition();
+                shake.setDuration(Duration.millis(shakeDuration));
+                shake.setNode(playerInputField);
+                shake.setFromX(-shakeXMovment);
+                shake.setToX(shakeXMovment);
+                shake.play();
             }
-            // TODO - Animate shake effect on wrong answer
 
         }
 
+    }
+
+    /**
+     * Color the letters in the guessed word that corresponds
+     * with the Wordmaster letters in green.
+     */
+    public void colorCorrectLetters() {
+        // TODO - add Coloring in GameLogic
     }
 
     /**
@@ -180,17 +209,17 @@ public final class GamePageController implements Initializable {
      * The length of the letters is either 2 or 3.
      */
     public void rndwordMasterLetters() {
-        String string = user.getRandomWord();
+        String string = wordMaster.getRandomWord();
         substring = GameLogic.getRandomSubstring(string);
-        letters.setText(substring);
+        letters.setText(substring.toUpperCase());
     }
 
     @Override // Runs on start of the application
     public void initialize(final URL location, final ResourceBundle resources) {
         try {
             points.setText(String.valueOf(FileIO.getHighScore()));
-            user = new GameLogic("guest");
-            user.setCategory("default_category1");
+            wordMaster = new GameLogic("guest");
+            wordMaster.setCategory("default_category1");
             rndwordMasterLetters();
             createPlayers(true);
             playerInputField.requestFocus();

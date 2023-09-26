@@ -11,7 +11,7 @@
 
 <AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#checkWrittenWord" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: darkslategrey;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.GamePageController">
    <children>
-      <Pane fx:id="WordMaster" layoutX="470.0" layoutY="70.0" prefHeight="60.0" prefWidth="60.0">
+      <Pane fx:id="lettersCircle" layoutX="470.0" layoutY="70.0" prefHeight="60.0" prefWidth="60.0">
          <children>
             <Circle accessibleRole="IMAGE_VIEW" layoutX="30.0" layoutY="30.0" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" />
             <Label fx:id="letters" alignment="CENTER" ellipsisString="" layoutY="14.0" prefHeight="33.0" prefWidth="60.0" text="ASE" textFill="WHITE" textOverrun="CLIP">
