@@ -31,10 +31,10 @@ public final class GamePageController implements Initializable {
     @FXML
     private Circle profileCircle, profileCircle1, profileCircle2, profileCircle3;
     /**
-     * The wordMaster is the pane that contains the letters.
+     * The lettersCircle is the pane that contains the letters.
      */
     @FXML
-    private Pane wordMaster;
+    private Pane lettersCircle;
     /**
      * The window is the pane that contains the game.
      */
@@ -52,9 +52,9 @@ public final class GamePageController implements Initializable {
     private Label letters, points;
 
     /**
-     * The user is the GameLogic object that is used to get the words.
+     * The Wordmaster is the GameLogic object that is used to get the words.
      */
-    private GameLogic user;
+    private GameLogic Wordmaster;
     /**
      * The substring is the letters that the player has to use.
      */
@@ -116,22 +116,23 @@ public final class GamePageController implements Initializable {
      * Move the wordMaster (The letters) to a chosen location. Resets to original
      * posistion after animation.
      *
-     * @param targetX - X position of target
-     * @param targetY - Y position of target
-     * @param speed   - Speed of animation in milliseconds
+     * @param targetX  - X position of target
+     * @param targetY  - Y position of target
+     * @param duration - Duration of animation in seconds
      */
-    public void wordMasterMoveTo(final double targetX, final double targetY, final int speed) {
+    public void wordMasterMoveTo(final double targetX, final double targetY, final int duration) {
         TranslateTransition translate = new TranslateTransition();
-        translate.setNode(wordMaster);
-        translate.setDuration(Duration.millis(speed));
-        translate.setByY(targetY - wordMaster.getLayoutY() - layoutCenter); // -30 so the reference point is the center
-        translate.setByX(targetX - wordMaster.getLayoutX() - layoutCenter);
+        translate.setNode(lettersCircle);
+        translate.setDuration(Duration.seconds(duration));
+        translate.setByY(targetY - lettersCircle.getLayoutY() - layoutCenter); // -30 so the reference point is the
+                                                                               // center
+        translate.setByX(targetX - lettersCircle.getLayoutX() - layoutCenter);
         translate.play();
         translate.setOnFinished((event) -> {
-            wordMaster.setLayoutX(layoutX); // Reset layout to defualt values
-            wordMaster.setLayoutY(layoutY);
-            wordMaster.setTranslateX(0); // Move wordMaster to default value
-            wordMaster.setTranslateY(0);
+            lettersCircle.setLayoutX(layoutX); // Reset layout to defualt values
+            lettersCircle.setLayoutY(layoutY);
+            lettersCircle.setTranslateX(0); // Move lettersCircle to default value
+            lettersCircle.setTranslateY(0);
             translate.stop();
         });
 
@@ -174,12 +175,9 @@ public final class GamePageController implements Initializable {
      * @param ke - KeyEvent
      */
     public void checkWrittenWord(final KeyEvent ke) {
-        // TODO green color on right letters and red on wrong
-
         if (ke.getCode().equals(KeyCode.ENTER)) { // If pressed Enter, then check word
             String playerGuess = playerInputField.getText();
-            if (user.checkValidWord(substring, playerGuess)) {
-                // TODO - FileWriter add points
+            if (Wordmaster.checkValidWord(substring, playerGuess)) {
                 FileIO.incrementHighScore();
                 int pointsHS = FileIO.getHighScore();
                 // int Points = Integer.parseInt(points.getText()) + 1;
@@ -199,21 +197,29 @@ public final class GamePageController implements Initializable {
     }
 
     /**
+     * Color the letters in the guessed word that corresponds
+     * with the Wordmaster letters in green
+     */
+    public void colorCorrectLetters() {
+        // TODO - add Coloring in GameLogic
+    }
+
+    /**
      * Displays a random set of letters from the category answers.
      * The length of the letters is either 2 or 3.
      */
     public void rndwordMasterLetters() {
-        String string = user.getRandomWord();
+        String string = Wordmaster.getRandomWord();
         substring = GameLogic.getRandomSubstring(string);
-        letters.setText(substring);
+        letters.setText(substring.toUpperCase());
     }
 
     @Override // Runs on start of the application
     public void initialize(final URL location, final ResourceBundle resources) {
         try {
             points.setText(String.valueOf(FileIO.getHighScore()));
-            user = new GameLogic("guest");
-            user.setCategory("default_category1");
+            Wordmaster = new GameLogic("guest");
+            Wordmaster.setCategory("default_category1");
             rndwordMasterLetters();
             createPlayers(true);
             playerInputField.requestFocus();
