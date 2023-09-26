@@ -19,7 +19,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
@@ -97,6 +96,23 @@ public final class GamePageController implements Initializable {
     private final int botsMultiplier = 5;
 
     /**
+     * Number for moving node in X-direction on shake animation
+     */
+    private final int shakeXMovment = 4;
+
+    /**
+     * Duration of shake animation in milliseconds
+     */
+    private final int shakeDuration = 250;
+
+    /**
+     * Pick a random player from players list
+     */
+    public void pickPlayer() {
+
+    }
+
+    /**
      * Move the wordMaster (The letters) to a chosen location. Resets to original
      * posistion after animation.
      *
@@ -136,7 +152,8 @@ public final class GamePageController implements Initializable {
             double centerX = window.getPrefWidth() / (numOfBots + 1);
             for (int j = 1; j < (numOfBots + 1); j++) {
                 if (j != (int) Math.ceil(numOfBots / 2)) {
-                    players.add(new Circle(centerX * j, centerY, radius, Color.BLACK));
+                    players.add(new Circle(centerX * j, centerY, radius,
+                            new ImagePattern(new Image(new FileInputStream("./assets/images/Abdulbari.png")))));
                 } else {
                     playerCenterX = centerX * j;
                 }
@@ -168,8 +185,14 @@ public final class GamePageController implements Initializable {
                 // int Points = Integer.parseInt(points.getText()) + 1;
                 points.setText(String.valueOf(pointsHS));
                 rndwordMasterLetters();
+            } else {
+                TranslateTransition shake = new TranslateTransition();
+                shake.setDuration(Duration.millis(shakeDuration));
+                shake.setNode(playerInputField);
+                shake.setFromX(-shakeXMovment);
+                shake.setToX(shakeXMovment);
+                shake.play();
             }
-            // TODO - Animate shake effect on wrong answer
 
         }
 
