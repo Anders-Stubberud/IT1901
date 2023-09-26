@@ -8,15 +8,15 @@ import java.util.Collection;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class FileIOTest {
+public class FileIOTest {
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         FileIO.resetHighScore(); // Reset the highscore to 0 before each test
     }
 
     @Test
-    void testLoadDefaultCategories() {
+    public void testLoadDefaultCategories() {
         Collection<String> defaultCategories = FileIO.loadDefaultCategories();
         assertNotNull(defaultCategories);
         assertEquals(2, defaultCategories.size()); // Update the expected size as we increase number of added categories.
@@ -43,13 +43,13 @@ class FileIOTest {
     */
 
     @Test
-    void testGetHighScore() {
+    public void testGetHighScore() {
         int highScore = FileIO.getHighScore();
         assertEquals(0, highScore); // Highscore should be 0 at the start of the game.
     }
 
     @Test
-    void testIncrementHighScore() {
+    public void testIncrementHighScore() {
         int initialHighScore = FileIO.getHighScore();
         FileIO.incrementHighScore();
         int updatedHighScore = FileIO.getHighScore();
