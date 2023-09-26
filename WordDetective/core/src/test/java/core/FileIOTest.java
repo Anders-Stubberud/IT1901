@@ -10,50 +10,41 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class FileIOTest {
 
+    /**
+     * Reset the highscore to 0 before each test.
+     */
     @BeforeEach
     public void setUp() {
         FileIO.resetHighScore(); // Reset the highscore to 0 before each test
     }
 
+    /**
+     * Test the loading of default categories from the json file.
+     */
     @Test
     public void testLoadDefaultCategories() {
         Collection<String> defaultCategories = FileIO.loadDefaultCategories();
         assertNotNull(defaultCategories);
-        assertEquals(2, defaultCategories.size()); // Update the expected size as we increase number of added categories.
+        assertEquals(2, defaultCategories.size());
     }
+
     /**
-    @Test
-    void testLoadCustomCategories() {
-        String username = "testUser"; // Change to valid username as we add user functionality
-        Collection<String> customCategories = FileIO.loadCustomCategories(username);
-        assertNotNull(customCategories);
-    }
-
-
-    @Test
-    void testCreateWordlist() {
-        boolean pickFromDefaultCategories = true;
-        String username = "testUser"; // Change to valid username as we add user functionality
-        String category = "testCategory"; // Change to an existing category for your test data.
-
-        WordLists wordLists = FileIO.createWordlist(pickFromDefaultCategories, username, category);
-        assertNotNull(wordLists);
-        assertEquals(2, wordLists.getWords().size()); // Update the expected size as we increase number of added words.
-    }
-    */
-
+     * Test the loading of highscore from the json file.
+     */
     @Test
     public void testGetHighScore() {
         int highScore = FileIO.getHighScore();
         assertEquals(0, highScore); // Highscore should be 0 at the start of the game.
     }
 
+    /**
+     * Test the increment of highscore.
+     */
     @Test
     public void testIncrementHighScore() {
         int initialHighScore = FileIO.getHighScore();
         FileIO.incrementHighScore();
         int updatedHighScore = FileIO.getHighScore();
         assertEquals(initialHighScore + 1, updatedHighScore);
-        // Reset the highscore to 0 for other tests.
     }
 }
