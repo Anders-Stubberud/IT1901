@@ -1,5 +1,6 @@
 package core;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
@@ -9,6 +10,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class FileIOTest {
 
+    @BeforeEach
+    void setUp() {
+        FileIO.resetHighScore(); // Reset the highscore to 0 before each test
+    }
 
     @Test
     void testLoadDefaultCategories() {
@@ -41,7 +46,7 @@ class FileIOTest {
     @Test
     void testGetHighScore() {
         int highScore = FileIO.getHighScore();
-        assertEquals(1, highScore); // Highscore should be 0 at the start of the game, need to put 1 for now to pass test.
+        assertEquals(0, highScore); // Highscore should be 0 at the start of the game.
     }
 
     @Test

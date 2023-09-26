@@ -176,4 +176,25 @@ public final class FileIO {
         }
     }
 
+    public static void resetHighScore() {
+        Path path = Paths.get("").toAbsolutePath();
+        while (!path.endsWith(WORKING_DIRECTORY)) {
+            path = path.getParent();
+        }
+        String filePath = path.toString() + "/WordDetective/core/src/main/resources/testUserHighscore.json";
+        try {
+            FileReader reader = new FileReader(filePath);
+            Gson gson = new Gson();
+            JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
+            reader.close();
+            jsonObject.addProperty("highscore", 0); // Reset highscore to 0
+            FileWriter writer = new FileWriter(filePath);
+            gson = new GsonBuilder().setPrettyPrinting().create();
+            gson.toJson(jsonObject, writer);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
