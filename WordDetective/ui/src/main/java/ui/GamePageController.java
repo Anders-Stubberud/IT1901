@@ -54,7 +54,7 @@ public final class GamePageController implements Initializable {
     /**
      * The Wordmaster is the GameLogic object that is used to get the words.
      */
-    private GameLogic Wordmaster;
+    private GameLogic wordMaster;
     /**
      * The substring is the letters that the player has to use.
      */
@@ -96,17 +96,17 @@ public final class GamePageController implements Initializable {
     private final int botsMultiplier = 5;
 
     /**
-     * Number for moving node in X-direction on shake animation
+     * Number for moving node in X-direction on shake animation.
      */
     private final int shakeXMovment = 4;
 
     /**
-     * Duration of shake animation in milliseconds
+     * Duration of shake animation in milliseconds.
      */
     private final int shakeDuration = 250;
 
     /**
-     * Pick a random player from players list
+     * Pick a random player from players list.
      */
     public void pickPlayer() {
 
@@ -177,7 +177,7 @@ public final class GamePageController implements Initializable {
     public void checkWrittenWord(final KeyEvent ke) {
         if (ke.getCode().equals(KeyCode.ENTER)) { // If pressed Enter, then check word
             String playerGuess = playerInputField.getText();
-            if (Wordmaster.checkValidWord(substring, playerGuess)) {
+            if (wordMaster.checkValidWord(substring, playerGuess)) {
                 FileIO.incrementHighScore();
                 int pointsHS = FileIO.getHighScore();
                 // int Points = Integer.parseInt(points.getText()) + 1;
@@ -198,7 +198,7 @@ public final class GamePageController implements Initializable {
 
     /**
      * Color the letters in the guessed word that corresponds
-     * with the Wordmaster letters in green
+     * with the Wordmaster letters in green.
      */
     public void colorCorrectLetters() {
         // TODO - add Coloring in GameLogic
@@ -209,7 +209,7 @@ public final class GamePageController implements Initializable {
      * The length of the letters is either 2 or 3.
      */
     public void rndwordMasterLetters() {
-        String string = Wordmaster.getRandomWord();
+        String string = wordMaster.getRandomWord();
         substring = GameLogic.getRandomSubstring(string);
         letters.setText(substring.toUpperCase());
     }
@@ -218,8 +218,8 @@ public final class GamePageController implements Initializable {
     public void initialize(final URL location, final ResourceBundle resources) {
         try {
             points.setText(String.valueOf(FileIO.getHighScore()));
-            Wordmaster = new GameLogic("guest");
-            Wordmaster.setCategory("default_category1");
+            wordMaster = new GameLogic("guest");
+            wordMaster.setCategory("default_category1");
             rndwordMasterLetters();
             createPlayers(true);
             playerInputField.requestFocus();
