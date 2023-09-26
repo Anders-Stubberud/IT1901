@@ -28,9 +28,8 @@ class FileIOTest {
         Collection<String> customCategories = FileIO.loadCustomCategories(username);
         assertNotNull(customCategories);
     }
-    */
 
-    /**
+
     @Test
     void testCreateWordlist() {
         boolean pickFromDefaultCategories = true;
@@ -39,7 +38,7 @@ class FileIOTest {
 
         WordLists wordLists = FileIO.createWordlist(pickFromDefaultCategories, username, category);
         assertNotNull(wordLists);
-        assertEquals(2, wordLists.getWords().size()); // Update when user gets Added TODO
+        assertEquals(2, wordLists.getWords().size()); // Update the expected size as we increase number of added words.
     }
     */
 

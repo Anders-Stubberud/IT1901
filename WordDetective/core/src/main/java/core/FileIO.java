@@ -176,6 +176,9 @@ public final class FileIO {
         }
     }
 
+    /**
+     * Access the persistent json file and resets the current score to 0.
+     */
     public static void resetHighScore() {
         Path path = Paths.get("").toAbsolutePath();
         while (!path.endsWith(WORKING_DIRECTORY)) {
