@@ -32,7 +32,7 @@ public class GameLogic {
     private String chosenCategory;
 
     /**
-     * List containing players in the game
+     * List containing players in the game.
      */
     private List<String> players = new ArrayList<>(); // TODO - change to user and bot
 
@@ -97,7 +97,7 @@ public class GameLogic {
     }
 
     /**
-     * Return players in this game
+     * Return players in this game.
      *
      * @return List of users
      */
@@ -142,6 +142,11 @@ public class GameLogic {
         return guess.matches(".*" + substring + ".*") && wordlistForSearch.contains(guess);
     }
 
+    /**
+     * Picks random player from players list.
+     * @return - a random player
+     *
+     */
     public String pickRndPlayer() {
         return players.get(new Random().nextInt(players.size()));
     }

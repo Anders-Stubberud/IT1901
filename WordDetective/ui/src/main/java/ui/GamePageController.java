@@ -19,7 +19,6 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -57,7 +56,7 @@ public final class GamePageController implements Initializable {
     private Label letters, points, categoryDisplay;
 
     /**
-     * Outputfield of what the player writes
+     * Outputfield of what the player writes.
      */
     @FXML
     private TextFlow outputField;
@@ -213,6 +212,9 @@ public final class GamePageController implements Initializable {
     /**
      * Color the letters in the guessed word that corresponds
      * with the Wordmaster letters in green.
+     *
+     * @param playerInput - The string the player has written
+     * @param textFlow    - where to place the output string
      */
     public void colorCorrectLetters(final TextField playerInput, final TextFlow textFlow) {
         textFlow.getChildren().clear();
