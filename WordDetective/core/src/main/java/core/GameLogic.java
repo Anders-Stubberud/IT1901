@@ -98,7 +98,7 @@ public class GameLogic {
 
     /**
      * Return players in this game
-     * 
+     *
      * @return List of users
      */
     public List<String> getPlayers() { // TODO change to user or bot
@@ -142,8 +142,7 @@ public class GameLogic {
         return guess.matches(".*" + substring + ".*") && wordlistForSearch.contains(guess);
     }
 
-    public String pickPlayer() {
+    public String pickRndPlayer() {
         return players.get(new Random().nextInt(players.size()));
     }
-
 }
