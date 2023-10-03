@@ -19,7 +19,6 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -278,10 +277,10 @@ public final class GamePageController implements Initializable {
         letters.setText(substring.toUpperCase());
     }
 
-    /*
+    /**
      * Opens or closes the HowToPlay window.
      */
-    public void HowToPlay() {
+    public void howToPlay() {
         if (showHowToPlay) {
             howToPlay.setVisible(false);
             showHowToPlay = false;
