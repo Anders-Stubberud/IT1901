@@ -213,4 +213,28 @@ public final class FileIO {
         }
     }
 
+    /**
+     * Helper method to count the number of default categories.
+     * This method is used to verify that the default categories are loaded
+     * correctly.
+     */
+    public static int getNumberOfDefaultCategories() {
+        Path path = Paths.get("").toAbsolutePath();
+        while (!path.endsWith(WORKING_DIRECTORY)) {
+            path = path.getParent();
+        }
+
+        File defaultCategoriesDirectory = new File(
+                path.toString() + "/WordDetective/core/src/main/resources/default_categories");
+
+        if (defaultCategoriesDirectory.exists() && defaultCategoriesDirectory.isDirectory()) {
+            File[] defaultCategoriesArray = defaultCategoriesDirectory.listFiles();
+            if (defaultCategoriesArray != null) {
+                return defaultCategoriesArray.length;
+            }
+        }
+
+        return 0; // Default categories directory is empty or doesn't exist
+    }
+
 }

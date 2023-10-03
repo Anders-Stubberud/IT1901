@@ -25,7 +25,8 @@ public class FileIOTest {
     public void testLoadDefaultCategories() {
         Collection<String> defaultCategories = FileIO.loadDefaultCategories();
         assertNotNull(defaultCategories);
-        assertEquals(2, defaultCategories.size());
+        int expectedSize = FileIO.getNumberOfDefaultCategories();
+        assertEquals(expectedSize, defaultCategories.size());
     }
 
     /**
