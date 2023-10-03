@@ -51,8 +51,15 @@ public final class FileIO {
         File[] defaultCategoriesArray = new File(
                 path.toString() + "/WordDetective/core/src/main/resources/default_categories")
                 .listFiles();
-        return Arrays.asList(defaultCategoriesArray).stream().map(File::getName)
-                .map(name -> name.substring(0, name.indexOf("."))).collect(Collectors.toList());
+        return Arrays.asList(defaultCategoriesArray).stream()
+                .map(File::getName)
+                .map(name -> name.substring(0, name.indexOf("."))) // Remove file extension
+                .map(name -> name.replace('_', ' ')) // Replace underscores with spaces
+                .collect(Collectors.toList());
+    }
+
+    public static void main(String[] args) {
+        System.out.println(loadDefaultCategories());
     }
 
     /**
