@@ -1,5 +1,6 @@
 package core;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -31,6 +32,11 @@ public class GameLogic {
     private String chosenCategory;
 
     /**
+     * List containing players in the game.
+     */
+    private List<String> players = new ArrayList<>(); // TODO - change to user and bot
+
+    /**
      * Initializes the GameLogic object, which will control the logic.
      * Certain tasks will be delegated to objects with better functionality.
      *
@@ -38,6 +44,7 @@ public class GameLogic {
      *                 used to set up individualized games for different users.
      */
     public GameLogic(final String username) {
+        players.add(username);
         categoryLogic = new CategoryLogic(username);
     }
 
@@ -76,7 +83,7 @@ public class GameLogic {
     }
 
     /**
-     * @return a set of strings containing all words...?? TODO
+     * @return a set of strings containing all words from chosen category
      */
     public Set<String> getWordListForSearch() {
         return wordlistForSearch;
@@ -87,6 +94,15 @@ public class GameLogic {
      */
     public List<String> getWordlistForSelection() {
         return wordlistForSelection;
+    }
+
+    /**
+     * Return players in this game.
+     *
+     * @return List of users
+     */
+    public List<String> getPlayers() { // TODO change to user or bot
+        return players;
     }
 
     /**
@@ -126,4 +142,12 @@ public class GameLogic {
         return guess.matches(".*" + substring + ".*") && wordlistForSearch.contains(guess);
     }
 
+    /**
+     * Picks random player from players list.
+     * @return - a random player
+     *
+     */
+    public String pickRndPlayer() {
+        return players.get(new Random().nextInt(players.size()));
+    }
 }

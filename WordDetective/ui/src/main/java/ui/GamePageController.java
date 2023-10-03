@@ -14,13 +14,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
 
 public final class GamePageController implements Initializable {
@@ -46,10 +50,16 @@ public final class GamePageController implements Initializable {
     @FXML
     private TextField playerInputField;
     /**
-     * The letters is the label that contains the letters.
+     * Labels on the game page.
      */
     @FXML
-    private Label letters, points;
+    private Label letters, points, categoryDisplay;
+
+    /**
+     * Outputfield of what the player writes.
+     */
+    @FXML
+    private TextFlow outputField;
 
     /**
      * The Wordmaster is the GameLogic object that is used to get the words.
@@ -107,9 +117,11 @@ public final class GamePageController implements Initializable {
 
     /**
      * Pick a random player from players list.
+     *
+     * @return the chosen player
      */
-    public void pickPlayer() {
-
+    public String pickPlayer() {
+        return wordMaster.pickRndPlayer();
     }
 
     /**
@@ -175,6 +187,7 @@ public final class GamePageController implements Initializable {
      * @param ke - KeyEvent
      */
     public void checkWrittenWord(final KeyEvent ke) {
+        colorCorrectLetters(playerInputField, outputField);
         if (ke.getCode().equals(KeyCode.ENTER)) { // If pressed Enter, then check word
             String playerGuess = playerInputField.getText();
             if (wordMaster.checkValidWord(substring, playerGuess)) {
@@ -199,9 +212,41 @@ public final class GamePageController implements Initializable {
     /**
      * Color the letters in the guessed word that corresponds
      * with the Wordmaster letters in green.
+     *
+     * @param playerInput - The string the player has written
+     * @param textFlow    - where to place the output string
      */
-    public void colorCorrectLetters() {
-        // TODO - add Coloring in GameLogic
+    public void colorCorrectLetters(final TextField playerInput, final TextFlow textFlow) {
+        textFlow.getChildren().clear();
+        boolean isFrstUsed = false, isScndUsed = false, isThirdUsed = false;
+        String playerString = playerInput.getText();
+        char[] correctLetters = substring.toCharArray();
+
+        for (int i = 0; i < playerString.length(); i++) {
+            char[] inputArray = playerString.toCharArray();
+            Text coloredLetter = new Text(String.valueOf(inputArray[i]));
+            try {
+                if (inputArray[i] == correctLetters[0] && !isFrstUsed) {
+                    coloredLetter.setFill(Color.GREEN);
+                    isFrstUsed = true;
+                } else if (inputArray[i - 1] == correctLetters[0] && inputArray[i] == correctLetters[1]
+                        && !isScndUsed) {
+                    coloredLetter.setFill(Color.GREEN);
+                    isScndUsed = true;
+                } else if (inputArray[i - 2] == correctLetters[0]
+                        && inputArray[i - 1] == correctLetters[1]
+                        && inputArray[i] == correctLetters[2]
+                        && !isThirdUsed) {
+                    coloredLetter.setFill(Color.GREEN);
+                    isThirdUsed = true;
+                } else {
+                    coloredLetter.setFill(Color.WHITE);
+                }
+            } catch (Exception e) {
+                coloredLetter.setFill(Color.WHITE);
+            }
+            textFlow.getChildren().add(coloredLetter);
+        }
     }
 
     /**
@@ -217,15 +262,20 @@ public final class GamePageController implements Initializable {
     @Override // Runs on start of the application
     public void initialize(final URL location, final ResourceBundle resources) {
         try {
-            points.setText(String.valueOf(FileIO.getHighScore()));
             wordMaster = new GameLogic("guest");
             wordMaster.setCategory("us states");
             rndwordMasterLetters();
             createPlayers(true);
+            outputField.setStyle("-fx-font: 24 arial;");
+            // Change textfield format till uppercase
+            playerInputField.setTextFormatter(new TextFormatter<>((change) -> {
+                change.setText(change.getText().toUpperCase());
+                playerInputField.setStyle("-fx-opacity: 0");
+                return change;
+            }));
             playerInputField.requestFocus();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
-
 }
