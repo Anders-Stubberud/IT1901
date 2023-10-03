@@ -58,10 +58,6 @@ public final class FileIO {
                 .collect(Collectors.toList());
     }
 
-    public static void main(String[] args) {
-        System.out.println(loadDefaultCategories());
-    }
-
     /**
      * Queries and returns custom categories if the user is a registered user.
      *
