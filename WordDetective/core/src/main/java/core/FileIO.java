@@ -51,8 +51,11 @@ public final class FileIO {
         File[] defaultCategoriesArray = new File(
                 path.toString() + "/WordDetective/core/src/main/resources/default_categories")
                 .listFiles();
-        return Arrays.asList(defaultCategoriesArray).stream().map(File::getName)
-                .map(name -> name.substring(0, name.indexOf("."))).collect(Collectors.toList());
+        return Arrays.asList(defaultCategoriesArray).stream()
+                .map(File::getName)
+                .map(name -> name.substring(0, name.indexOf("."))) // Remove file extension
+                .map(name -> name.replace('_', ' ')) // Replace underscores with spaces
+                .collect(Collectors.toList());
     }
 
     /**
@@ -99,12 +102,14 @@ public final class FileIO {
         }
         Set<String> wordlistForSearch = null;
         List<String> wordlistForSelection = null;
+        String chosenCategory = category.replace(' ', '_');
         if (pickFromDefaultCategories) {
-            path = Paths.get(path.toString() + "/WordDetective/core/src/main/resources/default_categories/" + category
-                    + ".json");
+            path = Paths.get(
+                    path.toString() + "/WordDetective/core/src/main/resources/default_categories/" + chosenCategory
+                            + ".json");
         } else {
             path = Paths.get(path.toString() + "/WordDetective/core/src/main/resources/users/" + username + "/"
-                    + category + ".json");
+                    + chosenCategory + ".json");
         }
         try {
             // Files.readAllBytes method reads the file and closes it internally, thus no
@@ -126,6 +131,14 @@ public final class FileIO {
         }
         return new WordLists(wordlistForSearch, wordlistForSelection);
     }
+
+    // public static void main(String[] args) {
+    // WordLists a = (createWordlist(true, null, "chemical elements"));
+    // List<String> b = a.getWordListForSelection();
+    // for (String string : b) {
+    // System.out.println(string);
+    // }
+    // }
 
     /**
      * Access the persistent json file which contains the current score of the game.

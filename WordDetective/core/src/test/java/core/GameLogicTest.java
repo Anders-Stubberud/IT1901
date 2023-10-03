@@ -21,13 +21,14 @@ public class GameLogicTest {
      * Digit for number of tests.
      */
     private static final int NUMBER_OF_TESTS = 1000;
+
     /**
      * Sets up two instances of the Category class to be used in the tests.
      */
     @BeforeEach
     public void setUp() {
         guest = new GameLogic("guest");
-        guest.setCategory("default_category1");
+        guest.setCategory("countries");
         registeredUser = new GameLogic("registeredUser");
         registeredUser.setCategory("example_category1");
     }
@@ -39,7 +40,7 @@ public class GameLogicTest {
     @DisplayName("Check correct initialization of search and selection wordlists")
     public void testSetUpOfWordlists() {
         Collection<String> correctWordlistForGuest = FileIO
-        .createWordlist(true, "guest", "default_category1").getWordListForSearch();
+                .createWordlist(true, "guest", "countries").getWordListForSearch();
         assertTrue(correctWordlistForGuest.containsAll(guest.getWordListForSearch()));
         assertTrue(guest.getWordListForSearch().containsAll(correctWordlistForGuest));
         assertTrue(correctWordlistForGuest.containsAll(guest.getWordlistForSelection()));
@@ -47,7 +48,8 @@ public class GameLogicTest {
     }
 
     /**
-     * Checks that a randomly pulled word from the selection list is contained in the search list.
+     * Checks that a randomly pulled word from the selection list is contained in
+     * the search list.
      */
     @Test
     @DisplayName("Check valid pull of random word")
@@ -85,9 +87,9 @@ public class GameLogicTest {
     @Test
     @DisplayName("Check valid guess")
     public void testCheckValidWord() {
-        assertTrue(guest.checkValidWord("Et", "Ethiopia"));
-        assertTrue(guest.checkValidWord("et", "Vietnam"));
-        assertFalse(guest.checkValidWord("Nor", "This_contains_Nor_but_is_not_in_the_wordlist"));
+        assertTrue(guest.checkValidWord("ET", "ETHIOPIA"));
+        assertTrue(guest.checkValidWord("ET", "VIETNAM"));
+        assertFalse(guest.checkValidWord("NOR", "THIS_CONTAINS_NOR_BUT_IS_NOT_IN_WORDLIST"));
     }
 
 }

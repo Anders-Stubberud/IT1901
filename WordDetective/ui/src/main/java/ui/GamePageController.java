@@ -263,10 +263,7 @@ public final class GamePageController implements Initializable {
     public void initialize(final URL location, final ResourceBundle resources) {
         try {
             wordMaster = new GameLogic("guest");
-
-            points.setText(String.valueOf(FileIO.getHighScore()));
-            wordMaster.setCategory("default_category1");
-            categoryDisplay.setText("Category: " + wordMaster.getChosenCategory());
+            wordMaster.setCategory("us states");
             rndwordMasterLetters();
             createPlayers(true);
             outputField.setStyle("-fx-font: 24 arial;");
