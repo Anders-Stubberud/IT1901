@@ -102,14 +102,14 @@ public final class FileIO {
         }
         Set<String> wordlistForSearch = null;
         List<String> wordlistForSelection = null;
-        String chosen_category = category.replace(' ', '_');
+        String chosenCategory = category.replace(' ', '_');
         if (pickFromDefaultCategories) {
             path = Paths.get(
-                    path.toString() + "/WordDetective/core/src/main/resources/default_categories/" + chosen_category
+                    path.toString() + "/WordDetective/core/src/main/resources/default_categories/" + chosenCategory
                             + ".json");
         } else {
             path = Paths.get(path.toString() + "/WordDetective/core/src/main/resources/users/" + username + "/"
-                    + chosen_category + ".json");
+                    + chosenCategory + ".json");
         }
         try {
             // Files.readAllBytes method reads the file and closes it internally, thus no
