@@ -24,6 +24,12 @@ maven-test:
     - "cd WordDetective"
     - mvn test
 
+spotbugs-test:
+  stage: test
+  script:
+    - "cd WordDetective"
+    - "mvn spotbugs:spotbugs"
+
 clean-up:
   stage: clean
   script:
