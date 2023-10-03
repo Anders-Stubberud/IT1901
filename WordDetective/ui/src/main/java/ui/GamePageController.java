@@ -12,6 +12,7 @@ import core.GameLogic;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
@@ -43,7 +44,7 @@ public final class GamePageController implements Initializable {
      * The window is the pane that contains the game.
      */
     @FXML
-    private AnchorPane window;
+    private Pane window;
     /**
      * The playerInputField is the textfield where the player writes the word.
      */
@@ -60,6 +61,18 @@ public final class GamePageController implements Initializable {
      */
     @FXML
     private TextFlow outputField;
+
+    /**
+     * The HowToPlay window.
+     */
+    @FXML
+    private Pane howToPlay;
+
+    /**
+     * Buttons for opening and closing HowToPlay window.
+     */
+    @FXML
+    private Button closeHTPBtn, openHTPBtn;
 
     /**
      * The Wordmaster is the GameLogic object that is used to get the words.
@@ -114,6 +127,12 @@ public final class GamePageController implements Initializable {
      * Duration of shake animation in milliseconds.
      */
     private final int shakeDuration = 250;
+
+    /**
+     * Boolean that determines if HowToPlay window should be opened or closed.
+     * Start value is true because of automatic pop-up on screen on game start.
+     */
+    private boolean showHowToPlay = true;
 
     /**
      * Pick a random player from players list.
@@ -193,13 +212,13 @@ public final class GamePageController implements Initializable {
             if (wordMaster.checkValidWord(substring, playerGuess)) {
                 FileIO.incrementHighScore();
                 int pointsHS = FileIO.getHighScore();
-                // int Points = Integer.parseInt(points.getText()) + 1;
                 points.setText(String.valueOf(pointsHS));
                 rndwordMasterLetters();
             } else {
+                // Shake inputfield
                 TranslateTransition shake = new TranslateTransition();
                 shake.setDuration(Duration.millis(shakeDuration));
-                shake.setNode(playerInputField);
+                shake.setNode(outputField);
                 shake.setFromX(-shakeXMovment);
                 shake.setToX(shakeXMovment);
                 shake.play();
@@ -257,6 +276,19 @@ public final class GamePageController implements Initializable {
         String string = wordMaster.getRandomWord();
         substring = GameLogic.getRandomSubstring(string);
         letters.setText(substring.toUpperCase());
+    }
+
+    /*
+     * Opens or closes the HowToPlay window.
+     */
+    public void HowToPlay() {
+        if (showHowToPlay) {
+            howToPlay.setVisible(false);
+            showHowToPlay = false;
+        } else {
+            howToPlay.setVisible(true);
+            showHowToPlay = true;
+        }
     }
 
     @Override // Runs on start of the application
