@@ -219,7 +219,7 @@ public final class GamePageController implements Initializable {
         try {
             points.setText(String.valueOf(FileIO.getHighScore()));
             wordMaster = new GameLogic("guest");
-            wordMaster.setCategory("default_category1");
+            wordMaster.setCategory("us states");
             rndwordMasterLetters();
             createPlayers(true);
             playerInputField.requestFocus();
