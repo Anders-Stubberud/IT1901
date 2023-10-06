@@ -214,9 +214,7 @@ public final class FileIO {
     }
 
     /**
-     * Helper method to count the number of default categories.
-     * This method is used to verify that the default categories are loaded
-     * correctly.
+     * Number of default categories.
      *
      * @return Integer of how many default Categories.
      */
