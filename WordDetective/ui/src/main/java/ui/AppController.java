@@ -54,7 +54,7 @@ public final class AppController {
             FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
             // må ha en tilsvarende metode som leser inn brukernavnet som ble skrevet inn og
             // bruker det som parameter
-            fxmlLoader.setControllerFactory(new CustomControllerFactory("guest"));
+            fxmlLoader.setControllerFactory(new ControllerFactory("guest"));
             Parent parent = fxmlLoader.load();
             Stage stage = (Stage) appGuestBtn.getScene().getWindow();
             stage.setScene(new Scene(parent));

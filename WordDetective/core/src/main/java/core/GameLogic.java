@@ -1,7 +1,6 @@
 package core;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -35,7 +34,7 @@ public class GameLogic {
     /**
      * List containing players in the game.
      */
-    private List<String> players = Arrays.asList("test");// Launch crashes if this list is empty
+    private List<String> players = new ArrayList<String>();
 
     /**
      * Initializes the GameLogic object, which will control the logic.
@@ -145,7 +144,7 @@ public class GameLogic {
 
     /**
      * Picks random player from players list.
-     * 
+     *
      * @return - a random player
      *
      */
