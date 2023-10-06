@@ -24,19 +24,12 @@ import com.google.gson.JsonObject;
  * This class is responsible for reading the wordlists from the files.
  * It also provides methods for querying the available categories.
  */
-public final class FileIO {
+public abstract class FileIO {
 
     /**
      * The name of the working directory.
      */
     private static final String WORKING_DIRECTORY = "gr2325";
-
-    /**
-     * Private constructor to prevent instantiation.
-     */
-    private FileIO() {
-        throw new UnsupportedOperationException("This class should not be instantiated.");
-    }
 
     /**
      * Queries and returns all default categories.
