@@ -34,7 +34,7 @@ public class GameLogic {
     /**
      * List containing players in the game.
      */
-    private List<String> players = new ArrayList<>(); // TODO - change to user and bot
+    private List<String> players = new ArrayList<String>();
 
     /**
      * Initializes the GameLogic object, which will control the logic.
@@ -144,6 +144,7 @@ public class GameLogic {
 
     /**
      * Picks random player from players list.
+     *
      * @return - a random player
      *
      */

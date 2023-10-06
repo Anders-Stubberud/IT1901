@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="vBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: darkslategrey;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.CategoryController">
+   <children>
+      <ScrollPane layoutX="329.0" layoutY="83.0" prefHeight="491.0" prefWidth="342.0" style="-fx-background-color: white;">
+         <padding>
+            <Insets left="15.0" top="15.0" />
+         </padding>
+         <content>
+            <VBox fx:id="vbox" alignment="CENTER" prefHeight="460.0" prefWidth="310.0" style="-fx-background-color: white;">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>

@@ -32,26 +32,32 @@ public final class GamePageController implements Initializable {
     /**
      * The profileCircle is the circle that represents the player.
      */
+
     @FXML
     private Circle profileCircle, profileCircle1, profileCircle2, profileCircle3;
+
     /**
      * The lettersCircle is the pane that contains the letters.
      */
+
     @FXML
     private Pane lettersCircle;
     /**
      * The window is the pane that contains the game.
      */
+
     @FXML
     private Pane window;
     /**
      * The playerInputField is the textfield where the player writes the word.
      */
+
     @FXML
     private TextField playerInputField;
     /**
      * Labels on the game page.
      */
+
     @FXML
     private Label letters, points, categoryDisplay;
 
@@ -132,6 +138,27 @@ public final class GamePageController implements Initializable {
      * Start value is true because of automatic pop-up on screen on game start.
      */
     private boolean showHowToPlay = true;
+
+    /**
+     * Variable holding the username of the current player.
+     */
+    private String username;
+
+    /**
+     * Variable holding the category of the given game.
+     */
+    private String category;
+
+    /**
+     * Constructor initializing the object.
+     *
+     * @param usernameParameter username,'guest' if guest, else provided username.
+     * @param categoryParameter category of the given game.
+     */
+    public GamePageController(final String usernameParameter, final String categoryParameter) {
+        this.username = usernameParameter;
+        this.category = categoryParameter;
+    }
 
     /**
      * Pick a random player from players list.
@@ -293,8 +320,8 @@ public final class GamePageController implements Initializable {
     @Override // Runs on start of the application
     public void initialize(final URL location, final ResourceBundle resources) {
         try {
-            wordMaster = new GameLogic("guest");
-            wordMaster.setCategory("us states");
+            wordMaster = new GameLogic(username);
+            wordMaster.setCategory(category);
             rndwordMasterLetters();
             createPlayers(true);
             outputField.setStyle("-fx-font: 24 arial;");
