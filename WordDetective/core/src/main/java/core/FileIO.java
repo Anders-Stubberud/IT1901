@@ -64,8 +64,11 @@ public abstract class FileIO {
         }
         File[] customCategories = new File(path.toString() + "/WordDetective/core/src/main/resources/users/" + username)
                 .listFiles();
-        return Arrays.asList(customCategories).stream().map(File::getName)
-                .map(n -> n.substring(0, n.indexOf("."))).collect(Collectors.toList());
+        return Arrays.asList(customCategories).stream()
+                .map(File::getName)
+                .map(name -> name.substring(0, name.indexOf(".")))
+                .map(name -> name.replace('_', ' '))
+                .collect(Collectors.toList());
     }
 
     /**

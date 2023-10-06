@@ -30,7 +30,7 @@ public class GameLogicTest {
         guest = new GameLogic("guest");
         guest.setCategory("countries");
         registeredUser = new GameLogic("registeredUser");
-        registeredUser.setCategory("example_category1");
+        registeredUser.setCategory("example category1");
     }
 
     /**

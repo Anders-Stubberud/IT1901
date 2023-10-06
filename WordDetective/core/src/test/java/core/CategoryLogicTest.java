@@ -60,8 +60,8 @@ public class CategoryLogicTest {
     @Test
     @DisplayName("Check query of custom categories")
     public void testAquireCustomCategories() {
-        Collection<String> customCategoriesRegisteredUser = Arrays.asList("example_category1", "example_category3",
-                "example_category2");
+        Collection<String> customCategoriesRegisteredUser = Arrays.asList("example category1", "example category3",
+                "example category2");
 
         assertNull(guest.getCategoryLogic().getAvailableCustomCategories());
         assertTrue(customCategoriesRegisteredUser
@@ -79,8 +79,8 @@ public class CategoryLogicTest {
     public void testMergeDefaultAndCustomCategories() {
         Collection<String> defaultCategories = Arrays.asList("100 most common carbrands", "chemical elements", "colors",
                 "countries", "fruits", "major oceans and lakes", "programming languages", "us states");
-        Collection<String> customCategoriesRegisteredUser = Arrays.asList("example_category1", "example_category3",
-                "example_category2");
+        Collection<String> customCategoriesRegisteredUser = Arrays.asList("example category1", "example category3",
+                "example category2");
         Collection<String> allCategoriesGuestSolution = new ArrayList<>(defaultCategories);
         Collection<String> allCategoriesRegisteredUserSolution = new ArrayList<>(defaultCategories);
         allCategoriesRegisteredUserSolution.addAll(customCategoriesRegisteredUser);
@@ -113,8 +113,8 @@ public class CategoryLogicTest {
         });
 
         // test that the registered user can choose a custom category
-        registeredUser.setCategory("example_category3");
-        assertEquals("example_category3", registeredUser.getChosenCategory());
+        registeredUser.setCategory("example category3");
+        assertEquals("example category3", registeredUser.getChosenCategory());
     }
 
 }
