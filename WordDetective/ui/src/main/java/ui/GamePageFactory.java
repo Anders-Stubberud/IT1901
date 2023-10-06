@@ -29,7 +29,8 @@ public final class GamePageFactory implements Callback<Class<?>, Object> {
     }
 
     /**
-     * Provides a reference to an instance of GamePageController with the designated
+     * Provides a reference to an instance of the GamePageController with the
+     * designated
      * username and category.
      */
     @Override
