@@ -217,6 +217,8 @@ public final class FileIO {
      * Helper method to count the number of default categories.
      * This method is used to verify that the default categories are loaded
      * correctly.
+     *
+     * @return Integer of how many default Categories.
      */
     public static int getNumberOfDefaultCategories() {
         Path path = Paths.get("").toAbsolutePath();
