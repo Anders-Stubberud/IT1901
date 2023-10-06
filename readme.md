@@ -23,6 +23,61 @@ The "core" folder contains the backend java files and their correlating tests.
 <br>
 The "ui" folder contains files related to the frontend of the application, such as fxml files and their respective java controller files.
 
+_Tentative sketch of folder structure_
+
+```
+WordDetective
+│
+└── core
+│   │
+│   └── src
+│      ├── main
+│      │   └── java
+│      │       └── core
+│      │
+│      ├── test
+│      │   └── java
+│      │       └── core
+│      │
+│      └── resources
+│
+│
+│
+└── persistence
+│   │
+│   └── src
+│      ├── main
+│      │   └── java
+│      │       └── persistence
+│      │           │
+│      │           └── (Filtilgangs- og JSON-håndteringsklasser)
+│      │
+│      ├── test
+│      │   └── java
+│      │       └── persistence
+│      │           │
+│      │           └── (Tester for filtilgangskode)
+│      │
+│      └── resources
+│
+└── ui
+    │
+    └──  src
+       ├── main
+       │   └── java
+       │       └── ui
+       │           │
+       │           └── (GUI-klasser og kontrollere)
+       │
+       ├── test
+       │   └── java
+       │       └── ui
+       │           │
+       │           └── (Tester for brukergrensesnittskode)
+       │
+       └── resources
+```
+
 ## Version Requirements
 
 **Java:** 17+
@@ -73,9 +128,13 @@ The "ui" folder contains files related to the frontend of the application, such 
 # Creators
 
 ````
+
 - Dag Kristian Andersen
 - Mads André Bårnes
 - Bengt Andreas Rotheim
 - Anders Stubberud
+
+```
+
 ```
 ````
