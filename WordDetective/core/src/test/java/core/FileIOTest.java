@@ -33,6 +33,15 @@ public class FileIOTest {
     }
 
     /**
+     * Test the number of default categories.
+     */
+    @Test
+    public void testgetDefaultCategoryLength() {
+        int expectedSize = getDefaultCategoryLength();
+        assertEquals(expectedSize, FileIO.getNumberOfDefaultCategories());
+    }
+
+    /**
      * Test the loading of highscore from the json file.
      */
     @Test
