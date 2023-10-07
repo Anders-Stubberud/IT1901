@@ -7,15 +7,19 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: darkslategrey;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.RegistrationController">
    <children>
-      <TextField fx:id="newUsername" layoutX="493.0" layoutY="197.0" promptText="New Username" />
-      <PasswordField fx:id="newPassword" layoutX="493.0" layoutY="257.0" promptText="New Password" />
-      <Button fx:id="signUp" layoutX="542.0" layoutY="330.0" mnemonicParsing="false" onAction="#fireSignUp" text="Sign Up" />
-      <Label layoutX="507.0" layoutY="113.0" text="SIGN UP" textFill="WHITE">
+      <TextField fx:id="newUsername" layoutX="468.0" layoutY="197.0" promptText="New Username" />
+      <PasswordField fx:id="newPassword" layoutX="468.0" layoutY="260.0" promptText="New Password" />
+      <Button fx:id="signUp" layoutX="513.0" layoutY="328.0" mnemonicParsing="false" onAction="#fireSignUp" text="Sign Up" />
+      <Label layoutX="478.0" layoutY="107.0" text="SIGN UP" textFill="WHITE">
          <font>
             <Font size="34.0" />
+         </font>
+      </Label>
+      <Label fx:id="usernameTaken" layoutX="462.0" layoutY="157.0" opacity="0.0" text="username is taken" textFill="WHITE">
+         <font>
+            <Font size="20.0" />
          </font>
       </Label>
    </children>

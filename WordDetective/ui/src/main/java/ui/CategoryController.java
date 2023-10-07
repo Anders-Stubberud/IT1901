@@ -1,11 +1,14 @@
 package ui;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.ResourceBundle;
 
 import core.FileIO;
+import core.UserInfoIO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,8 +17,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public final class CategoryController implements Initializable {
@@ -31,6 +37,35 @@ public final class CategoryController implements Initializable {
      */
     @FXML
     private VBox vbox;
+
+    @FXML
+    private Button customCategory, upload;
+
+    @FXML
+    private ScrollPane scrollpane;
+
+    @FXML
+    private Pane pane;
+
+    @FXML
+    public void loadCustomCategory() {
+        if (pane.isVisible()) {
+            pane.setVisible(false);
+        } else {
+            pane.setVisible(true);
+        }
+    }
+
+    @FXML
+    public void uploadFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+        File selectedFile = fileChooser.showOpenDialog(new Stage());
+        System.out.println(selectedFile.getAbsolutePath());
+        if (selectedFile != null) {
+            UserInfoIO.uploadFile(selectedFile.getAbsolutePath(), username);
+        }
+    }
 
     /**
      * Constructor used for controlling whether or not to retrieve custom
@@ -58,6 +93,7 @@ public final class CategoryController implements Initializable {
      */
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
+        pane.setVisible(false);
         Collection<String> categories = FileIO.loadDefaultCategories();
         if (!username.equals("guest")) {
             categories.addAll(FileIO.loadCustomCategories(username));

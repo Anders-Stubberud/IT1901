@@ -8,11 +8,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class RegistrationController {
+
+    @FXML
+    private Label usernameTaken;
 
     @FXML
     private TextField newUsername;
@@ -28,7 +32,18 @@ public class RegistrationController {
         String providedUsername = newUsername.getText();
         String providedPassword = newPassword.getText();
         if (UserInfoIO.getAllUsernames().contains(providedUsername)) {
-            // Animasjon som blinker rødt ellerno
+
+            usernameTaken.setOpacity(1);
+
+            new java.util.Timer().schedule(
+                    new java.util.TimerTask() {
+                        @Override
+                        public void run() {
+                            usernameTaken.setOpacity(0);
+                        }
+                    },
+                    3000);
+
             throw new IllegalStateException("Brukernavnet er opptatt");
         } else {
             UserInfoIO.insertNewUser(providedUsername, providedPassword);

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -60,6 +61,7 @@ public class UserInfoIO {
         String path = getPath().toString() + "/WordDetective/core/src/main/resources/users/" + username;
         new File(path).mkdirs();
         new File(path + "/categories").mkdirs();
+        new File(path + "/categories/.gitkeep");
         new File(path + "/stats").mkdirs();
         UserInfo userInfo = new UserInfo(0, password);
         try (FileWriter writer = new FileWriter(path + "/stats/stats.json")) {
@@ -70,8 +72,16 @@ public class UserInfoIO {
         }
     }
 
-    public static void main(String[] args) {
-        insertNewUser("finaltest", "password12345");
+    public static void uploadFile(final String absolutePath, final String username) {
+        String destinationPath = getPath().toString() + "/WordDetective/core/src/main/resources/users/" + username
+                + "/categories";
+        try (FileWriter writer = new FileWriter(destinationPath)) {
+            Path sourceFile = Path.of(absolutePath);
+            Path destinationFile = Path.of(destinationPath, sourceFile.getFileName().toString());
+            Files.copy(sourceFile, destinationFile, StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
