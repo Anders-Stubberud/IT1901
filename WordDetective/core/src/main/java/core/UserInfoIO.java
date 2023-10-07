@@ -95,11 +95,4 @@ public class UserInfoIO {
         }
     }
 
-    public static void main(String[] args) {
-        uploadFile(
-                "C:\\gr2325\\WordDetective\\core\\src\\main\\resources\\eksempel.json",
-                "Anders",
-                "eksempel.json");
-    }
-
 }

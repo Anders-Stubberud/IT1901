@@ -105,7 +105,6 @@ public abstract class FileIO {
         try {
             // Files.readAllBytes method reads the file and closes it internally, thus no
             // need to manually close.
-            System.out.println(path);
             String content = new String(Files.readAllBytes(path));
             Gson gsonParser = new Gson();
             JsonObject jsonObject = gsonParser.fromJson(content, JsonObject.class);
@@ -133,65 +132,94 @@ public abstract class FileIO {
         }
     }
 
+    public static JsonObject getHighScoreObject(final String username) {
+        String path = getPathToStats(username);
+        try {
+            FileReader reader = new FileReader(path);
+            Gson gson = new Gson();
+            JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
+            return jsonObject;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static void writeToHighScoreObject(final String username, final int score) {
+        JsonObject jsonObject = getHighScoreObject(username);
+        try {
+            jsonObject.addProperty("highscore", score);
+            FileWriter writer = new FileWriter(getPathToStats(username));
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            gson.toJson(jsonObject, writer);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Access the persistent json file which contains the current score of the game.
      *
      * @return The current score of the game.
      */
     public static int getHighScore(final String username) {
-        Path path = Paths.get(getPathToStats(username));
-        int newHighscore = 0;
-        try {
-            String content = new String(Files.readAllBytes(path));
-            Gson gsonParser = new Gson();
-            JsonObject jsonObject = gsonParser.fromJson(content, JsonObject.class);
-            newHighscore = jsonObject.get("highscore").getAsInt();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return newHighscore;
+        return getHighScoreObject(username).get("highscore").getAsInt();
+        // Path path = Paths.get(getPathToStats(username));
+        // int newHighscore = 0;
+        // try {
+        // String content = new String(Files.readAllBytes(path));
+        // Gson gsonParser = new Gson();
+        // JsonObject jsonObject = gsonParser.fromJson(content, JsonObject.class);
+        // newHighscore = jsonObject.get("highscore").getAsInt();
+        // } catch (IOException e) {
+        // e.printStackTrace();
+        // }
+        // return newHighscore;
     }
 
     /**
      * Access the persistent json file and increments the current score by 1.
      */
     public static void incrementHighScore(final String username) {
-        String path = getPathToStats(username);
-        try {
-            FileReader reader = new FileReader(path);
-            Gson gson = new Gson();
-            JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
-            reader.close();
-            int oldHighscore = jsonObject.get("highscore").getAsInt();
-            int newHighscore = oldHighscore + 1;
-            jsonObject.addProperty("highscore", newHighscore);
-            FileWriter writer = new FileWriter(path);
-            gson = new GsonBuilder().setPrettyPrinting().create();
-            gson.toJson(jsonObject, writer);
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        writeToHighScoreObject(username, getHighScore(username) + 1);
+        // String path = getPathToStats(username);
+        // try {
+        // FileReader reader = new FileReader(path);
+        // Gson gson = new Gson();
+        // JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
+        // reader.close();
+        // int oldHighscore = jsonObject.get("highscore").getAsInt();
+        // int newHighscore = oldHighscore + 1;
+        // jsonObject.addProperty("highscore", newHighscore);
+        // FileWriter writer = new FileWriter(path);
+        // gson = new GsonBuilder().setPrettyPrinting().create();
+        // gson.toJson(jsonObject, writer);
+        // writer.close();
+        // } catch (IOException e) {
+        // e.printStackTrace();
+        // }
     }
 
     /**
      * Access the persistent json file and resets the current score to 0.
      */
     public static void resetHighScore(final String username) {
-        String path = getPathToStats(username);
-        try {
-            FileReader reader = new FileReader(path);
-            Gson gson = new Gson();
-            JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
-            reader.close();
-            jsonObject.addProperty("highscore", 0); // Reset highscore to 0
-            FileWriter writer = new FileWriter(path);
-            gson = new GsonBuilder().setPrettyPrinting().create();
-            gson.toJson(jsonObject, writer);
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        writeToHighScoreObject(username, 0);
+        // String path = getPathToStats(username);
+        // try {
+        // FileReader reader = new FileReader(path);
+        // Gson gson = new Gson();
+        // JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
+        // reader.close();
+        // jsonObject.addProperty("highscore", 0); // Reset highscore to 0
+        // FileWriter writer = new FileWriter(path);
+        // gson = new GsonBuilder().setPrettyPrinting().create();
+        // gson.toJson(jsonObject, writer);
+        // writer.close();
+        // } catch (IOException e) {
+        // e.printStackTrace();
+        // }
     }
 
     /**
