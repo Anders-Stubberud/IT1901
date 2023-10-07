@@ -61,8 +61,14 @@ public class UserInfoIO {
     public static void insertNewUser(String username, String password) {
         String path = getPath().toString() + "/WordDetective/core/src/main/resources/users/" + username;
         new File(path).mkdirs();
-        new File(path + "/categories").mkdirs();
-        new File(path + "/categories/.gitkeep");
+        File categoryDirectory = new File(path + "/categories");
+        categoryDirectory.mkdirs();
+        File gitkeepFile = new File(categoryDirectory, ".gitkeep");
+        try {
+            gitkeepFile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         new File(path + "/stats").mkdirs();
         UserInfo userInfo = new UserInfo(0, password);
         try (FileWriter writer = new FileWriter(path + "/stats/stats.json")) {

@@ -1,4 +1,4 @@
 {
-    "hishscore" : 0,
-    "password" : "password123"
+  "highscore": 5,
+  "password": "password123"
 }

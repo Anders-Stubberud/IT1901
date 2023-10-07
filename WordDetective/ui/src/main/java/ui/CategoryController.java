@@ -1,7 +1,6 @@
 package ui;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
@@ -67,6 +66,7 @@ public final class CategoryController implements Initializable {
         System.out.println("filename: " + filename);
         if (selectedFile != null) {
             UserInfoIO.uploadFile(selectedFile.getAbsolutePath(), username, filename);
+            renderCategories();
         }
     }
 
@@ -96,6 +96,10 @@ public final class CategoryController implements Initializable {
      */
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
+        renderCategories();
+    }
+
+    public void renderCategories() {
         pane.setVisible(false);
         Collection<String> categories = FileIO.loadDefaultCategories();
         if (!username.equals("guest")) {
