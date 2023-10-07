@@ -39,13 +39,22 @@ public class LoginController {
                 e.printStackTrace();
             }
         } else {
-            System.out.println("miss");
+            // Blinke rødt ellerno
+            System.out.println("feil burkernavn og/eller passord");
         }
     }
 
     @FXML
     public void registerNewUser() {
-
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Registration.fxml"));
+            Parent parent = fxmlLoader.load();
+            Stage stage = (Stage) login.getScene().getWindow();
+            stage.setScene(new Scene(parent));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

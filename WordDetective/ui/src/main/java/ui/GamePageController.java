@@ -301,6 +301,7 @@ public final class GamePageController implements Initializable {
      */
     public void rndwordMasterLetters() {
         String string = wordMaster.getRandomWord();
+        System.out.println(string);
         substring = GameLogic.getRandomSubstring(string);
         letters.setText(substring.toUpperCase());
     }
