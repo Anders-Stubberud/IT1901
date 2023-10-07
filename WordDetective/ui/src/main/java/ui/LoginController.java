@@ -2,6 +2,7 @@ package ui;
 
 import java.io.IOException;
 
+import core.UserInfoIO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,10 +27,10 @@ public class LoginController {
     public void performLogin() {
         String providedUsername = username.getText();
         String providedPassword = password.getText();
-        if (providedUsername.equals("registeredUser") && providedPassword.equals("password123")) {
+        if (UserInfoIO.correctUsernameAndPassword(providedUsername, providedPassword)) {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
-                fxmlLoader.setControllerFactory(new CategoryFactory("registeredUser"));
+                fxmlLoader.setControllerFactory(new CategoryFactory(providedUsername));
                 Parent parent = fxmlLoader.load();
                 Stage stage = (Stage) login.getScene().getWindow();
                 stage.setScene(new Scene(parent));
@@ -37,6 +38,8 @@ public class LoginController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } else {
+            System.out.println("miss");
         }
     }
 

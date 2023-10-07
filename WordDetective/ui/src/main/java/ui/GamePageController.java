@@ -237,8 +237,8 @@ public final class GamePageController implements Initializable {
         if (ke.getCode().equals(KeyCode.ENTER)) { // If pressed Enter, then check word
             String playerGuess = playerInputField.getText();
             if (wordMaster.checkValidWord(substring, playerGuess)) {
-                FileIO.incrementHighScore();
-                int pointsHS = FileIO.getHighScore();
+                FileIO.incrementHighScore(username);
+                int pointsHS = FileIO.getHighScore(username);
                 points.setText(String.valueOf(pointsHS));
                 rndwordMasterLetters();
             } else {

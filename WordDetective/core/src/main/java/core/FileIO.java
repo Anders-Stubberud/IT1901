@@ -62,7 +62,8 @@ public abstract class FileIO {
         while (!path.endsWith(WORKING_DIRECTORY)) {
             path = path.getParent();
         }
-        File[] customCategories = new File(path.toString() + "/WordDetective/core/src/main/resources/users/" + username)
+        File[] customCategories = new File(path.toString() +
+                "/WordDetective/core/src/main/resources/users/" + username + "/categories")
                 .listFiles();
         return Arrays.asList(customCategories).stream()
                 .map(File::getName)
@@ -104,8 +105,8 @@ public abstract class FileIO {
                     path.toString() + "/WordDetective/core/src/main/resources/default_categories/" + chosenCategory
                             + ".json");
         } else {
-            path = Paths.get(path.toString() + "/WordDetective/core/src/main/resources/users/" + username + "/"
-                    + chosenCategory + ".json");
+            path = Paths.get(path.toString() + "/WordDetective/core/src/main/resources/users/" + username
+                    + "/categories/" + chosenCategory + ".json");
         }
         try {
             // Files.readAllBytes method reads the file and closes it internally, thus no
@@ -141,12 +142,17 @@ public abstract class FileIO {
      *
      * @return The current score of the game.
      */
-    public static int getHighScore() {
+    public static int getHighScore(final String username) {
         Path path = Paths.get("").toAbsolutePath();
         while (!path.endsWith(WORKING_DIRECTORY)) {
             path = path.getParent();
         }
-        path = Paths.get(path.toString() + "/WordDetective/core/src/main/resources/testUserHighscore.json");
+        if (username.equals("guest")) {
+            path = Paths.get(path.toString() + "/WordDetective/core/src/main/resources/default_stats/stats.json");
+        } else {
+            path = Paths.get(
+                    path.toString() + "/WordDetective/core/src/main/resources/users/" + username + "/stats/stats.json");
+        }
         int newHighscore = 0;
         try {
             String content = new String(Files.readAllBytes(path));
@@ -162,12 +168,18 @@ public abstract class FileIO {
     /**
      * Access the persistent json file and increments the current score by 1.
      */
-    public static void incrementHighScore() {
+    public static void incrementHighScore(final String username) {
         Path path = Paths.get("").toAbsolutePath();
         while (!path.endsWith(WORKING_DIRECTORY)) {
             path = path.getParent();
         }
-        String filePath = path.toString() + "/WordDetective/core/src/main/resources/testUserHighscore.json";
+        String filePath;
+        if (username.equals("guest")) {
+            filePath = path.toString() + "/WordDetective/core/src/main/resources/default_stats/stats.json";
+        } else {
+            filePath = path.toString() + "/WordDetective/core/src/main/resources/users/" + username
+                    + "/stats/stats.json";
+        }
         try {
             FileReader reader = new FileReader(filePath);
             Gson gson = new Gson();
@@ -188,12 +200,19 @@ public abstract class FileIO {
     /**
      * Access the persistent json file and resets the current score to 0.
      */
-    public static void resetHighScore() {
+    public static void resetHighScore(final String username) {
         Path path = Paths.get("").toAbsolutePath();
         while (!path.endsWith(WORKING_DIRECTORY)) {
             path = path.getParent();
         }
-        String filePath = path.toString() + "/WordDetective/core/src/main/resources/testUserHighscore.json";
+        String filePath;
+        if (username.equals("guest")) {
+            filePath = path.toString() +
+                    "/WordDetective/core/src/main/resources/default_stats/stats.json";
+        } else {
+            filePath = path.toString() +
+                    "/WordDetective/core/src/main/resources/users/" + username + "/stats/" + "stats.json";
+        }
         try {
             FileReader reader = new FileReader(filePath);
             Gson gson = new Gson();
