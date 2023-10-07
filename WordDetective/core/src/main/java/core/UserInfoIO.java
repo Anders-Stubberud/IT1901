@@ -1,6 +1,7 @@
 package core;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -72,16 +73,27 @@ public class UserInfoIO {
         }
     }
 
-    public static void uploadFile(final String absolutePath, final String username) {
+    public static void uploadFile(final String absolutePath, final String username, String filename) {
         String destinationPath = getPath().toString() + "/WordDetective/core/src/main/resources/users/" + username
-                + "/categories";
-        try (FileWriter writer = new FileWriter(destinationPath)) {
-            Path sourceFile = Path.of(absolutePath);
-            Path destinationFile = Path.of(destinationPath, sourceFile.getFileName().toString());
-            Files.copy(sourceFile, destinationFile, StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception e) {
+                + "/categories/" + filename;
+        try (FileReader reader = new FileReader(absolutePath)) {
+            Gson gson = new Gson();
+            JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
+            reader.close();
+            FileWriter writer = new FileWriter(destinationPath);
+            gson = new GsonBuilder().setPrettyPrinting().create();
+            gson.toJson(jsonObject, writer);
+            writer.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) {
+        uploadFile(
+                "C:\\gr2325\\WordDetective\\core\\src\\main\\resources\\eksempel.json",
+                "Anders",
+                "eksempel.json");
     }
 
 }
