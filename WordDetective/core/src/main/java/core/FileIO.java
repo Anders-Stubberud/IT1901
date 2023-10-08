@@ -18,7 +18,9 @@ import java.util.stream.Collectors;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 
 /**
  * This class is responsible for reading the wordlists from the files.
@@ -46,6 +48,27 @@ public abstract class FileIO {
         } else {
             return path + "users/" + username + "/categories/";
         }
+    }
+
+    public static String getPathToStats(String username) {
+        String path = getPath();
+        if (username.equals("guest")) {
+            return path + "default_stats/stats.json";
+        } else {
+            return path + "users/" + username + "/stats/stats.json";
+        }
+    }
+
+    public static JsonObject getJsonObject(String path) {
+        JsonObject jsonObject = null;
+        // Try-with-resources closes file automatically, thus no need to manually close.
+        try (FileReader reader = new FileReader(path)) {
+            Gson gsonParser = new Gson();
+            jsonObject = gsonParser.fromJson(reader, JsonObject.class);
+        } catch (JsonSyntaxException | JsonIOException | IOException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
     }
 
     public static Collection<String> loadCategories(boolean defaultCategory, String username) {
@@ -99,50 +122,22 @@ public abstract class FileIO {
     public static WordLists createWordlist(final boolean defaultCategory, final String username,
             final String category) {
         String chosenCategory = category.replace(' ', '_');
-        Path path = Paths.get(getPathToCategory(defaultCategory, username) + chosenCategory + ".json");
         Set<String> wordlistForSearch = null;
         List<String> wordlistForSelection = null;
-        try {
-            // Files.readAllBytes method reads the file and closes it internally, thus no
-            // need to manually close.
-            String content = new String(Files.readAllBytes(path));
-            Gson gsonParser = new Gson();
-            JsonObject jsonObject = gsonParser.fromJson(content, JsonObject.class);
-            JsonArray wordListArray = jsonObject.get("wordlist").getAsJsonArray();
-
-            wordlistForSearch = new HashSet<>();
-            wordlistForSelection = new ArrayList<>();
-
-            for (int i = 0; i < wordListArray.size(); i++) {
-                wordlistForSearch.add(wordListArray.get(i).getAsString());
-                wordlistForSelection.add(wordListArray.get(i).getAsString());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        String path = getPathToCategory(defaultCategory, username) + chosenCategory + ".json";
+        JsonObject jsonObject = getJsonObject(path);
+        JsonArray wordListArray = jsonObject.get("wordlist").getAsJsonArray();
+        wordlistForSearch = new HashSet<>();
+        wordlistForSelection = new ArrayList<>();
+        for (int i = 0; i < wordListArray.size(); i++) {
+            wordlistForSearch.add(wordListArray.get(i).getAsString());
+            wordlistForSelection.add(wordListArray.get(i).getAsString());
         }
         return new WordLists(wordlistForSearch, wordlistForSelection);
     }
 
-    public static String getPathToStats(String username) {
-        String path = getPath();
-        if (username.equals("guest")) {
-            return path + "default_stats/stats.json";
-        } else {
-            return path + "users/" + username + "/stats/stats.json";
-        }
-    }
-
     public static JsonObject getHighScoreObject(final String username) {
-        String path = getPathToStats(username);
-        try {
-            FileReader reader = new FileReader(path);
-            Gson gson = new Gson();
-            JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
-            return jsonObject;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return getJsonObject(getPathToStats(username));
     }
 
     public static void writeToHighScoreObject(final String username, final int score) {
@@ -165,17 +160,6 @@ public abstract class FileIO {
      */
     public static int getHighScore(final String username) {
         return getHighScoreObject(username).get("highscore").getAsInt();
-        // Path path = Paths.get(getPathToStats(username));
-        // int newHighscore = 0;
-        // try {
-        // String content = new String(Files.readAllBytes(path));
-        // Gson gsonParser = new Gson();
-        // JsonObject jsonObject = gsonParser.fromJson(content, JsonObject.class);
-        // newHighscore = jsonObject.get("highscore").getAsInt();
-        // } catch (IOException e) {
-        // e.printStackTrace();
-        // }
-        // return newHighscore;
     }
 
     /**
@@ -183,22 +167,6 @@ public abstract class FileIO {
      */
     public static void incrementHighScore(final String username) {
         writeToHighScoreObject(username, getHighScore(username) + 1);
-        // String path = getPathToStats(username);
-        // try {
-        // FileReader reader = new FileReader(path);
-        // Gson gson = new Gson();
-        // JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
-        // reader.close();
-        // int oldHighscore = jsonObject.get("highscore").getAsInt();
-        // int newHighscore = oldHighscore + 1;
-        // jsonObject.addProperty("highscore", newHighscore);
-        // FileWriter writer = new FileWriter(path);
-        // gson = new GsonBuilder().setPrettyPrinting().create();
-        // gson.toJson(jsonObject, writer);
-        // writer.close();
-        // } catch (IOException e) {
-        // e.printStackTrace();
-        // }
     }
 
     /**
@@ -206,20 +174,6 @@ public abstract class FileIO {
      */
     public static void resetHighScore(final String username) {
         writeToHighScoreObject(username, 0);
-        // String path = getPathToStats(username);
-        // try {
-        // FileReader reader = new FileReader(path);
-        // Gson gson = new Gson();
-        // JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
-        // reader.close();
-        // jsonObject.addProperty("highscore", 0); // Reset highscore to 0
-        // FileWriter writer = new FileWriter(path);
-        // gson = new GsonBuilder().setPrettyPrinting().create();
-        // gson.toJson(jsonObject, writer);
-        // writer.close();
-        // } catch (IOException e) {
-        // e.printStackTrace();
-        // }
     }
 
     /**
