@@ -15,18 +15,39 @@ import javafx.stage.Stage;
 
 public class RegistrationController {
 
+    /**
+     * Duration of the error displayed useed if username is taken.
+     */
+    private static final int DISPLAY_ERROR_DURATION_MS = 3000;
+
+    /**
+     * FXML component used to display error if provided username is taken.
+     */
     @FXML
     private Label usernameTaken;
 
+    /**
+     * FXML component used for providing new username.
+     */
     @FXML
     private TextField newUsername;
 
+    /**
+     * FXML component for providing new password.
+     */
     @FXML
     private PasswordField newPassword;
 
+    /**
+     * FXML component used for signing up.
+     */
     @FXML
     private Button signUp;
 
+    /**
+     * Method fired when "signUp" is pressed. Launches category selection if
+     * username is not taken.
+     */
     @FXML
     public void fireSignUp() {
         String providedUsername = newUsername.getText();
@@ -42,7 +63,7 @@ public class RegistrationController {
                             usernameTaken.setOpacity(0);
                         }
                     },
-                    3000);
+                    DISPLAY_ERROR_DURATION_MS);
 
             throw new IllegalStateException("Brukernavnet er opptatt");
         } else {

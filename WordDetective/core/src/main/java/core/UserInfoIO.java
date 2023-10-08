@@ -4,11 +4,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
@@ -17,29 +18,64 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
-public class UserInfoIO {
+public final class UserInfoIO {
 
+    /**
+     * Private defalt constructor, indicating that this utility class should not be
+     * instantiated.
+     */
+    private UserInfoIO() {
+        throw new AssertionError("Utility class - do not instantiate.");
+    }
+
+    /**
+     * Indicates the root folder of the project, used for file navigation.
+     */
     private static final String WORKING_DIRECTORY = "gr2325";
 
+    /**
+     * Provides absolute path to current working directory.
+     *
+     * @return absolute path to current working directory.
+     */
     public static String getPath() {
         Path path = Paths.get("").toAbsolutePath();
         while (!path.endsWith(WORKING_DIRECTORY)) {
             path = path.getParent();
+            if (path == null) {
+                throw new IllegalStateException("Working directory not found.");
+            }
         }
         return path.toString() + "/WordDetective/core/src/main/resources/users";
     }
 
+    /**
+     * Provides all registered usernames.
+     *
+     * @return A collection of the usernames of all registered users.
+     */
     public static Collection<String> getAllUsernames() {
-        return Arrays.asList(
-                new File(getPath().toString())
-                        .listFiles())
-                .stream().map(File::getName).collect(Collectors.toList());
+        File[] userDirectories = new File(getPath()).listFiles();
+
+        if (userDirectories != null) {
+            return Arrays.stream(userDirectories)
+                    .map(File::getName)
+                    .collect(Collectors.toList());
+        } else {
+            return Collections.emptyList();
+        }
     }
 
-    public static JsonObject getJsonObject(String path) {
+    /**
+     * Provides a reference to a specific json file.
+     *
+     * @param path the absolute path of the requested json file
+     * @return JsonObject representing the requested json file.
+     */
+    public static JsonObject getJsonObject(final String path) {
         JsonObject jsonObject = null;
         // Try-with-resources closes file automatically, thus no need to manually close.
-        try (FileReader reader = new FileReader(path)) {
+        try (FileReader reader = new FileReader(path, StandardCharsets.UTF_8)) {
             Gson gsonParser = new Gson();
             jsonObject = gsonParser.fromJson(reader, JsonObject.class);
         } catch (JsonSyntaxException | JsonIOException | IOException e) {
@@ -48,6 +84,14 @@ public class UserInfoIO {
         return jsonObject;
     }
 
+    /**
+     * Checks if the provided username if registered, and if so, if the correlating
+     * password is correct.
+     *
+     * @param username the username provided by the user
+     * @param password the password provided by the user.
+     * @return a boolean indicating if the username and password is a match.
+     */
     public static boolean correctUsernameAndPassword(final String username, final String password) {
         if (getAllUsernames().contains(username)) {
             String path = getPath() + "/" + username + "/stats/stats.json";
@@ -61,31 +105,55 @@ public class UserInfoIO {
         return false;
     }
 
-    public static void insertNewUser(String username, String password) {
+    /**
+     * Registers a new user.
+     *
+     * @param username the username of the new user.
+     * @param password the password of the new user.
+     */
+    public static void insertNewUser(final String username, final String password) {
         String path = getPath() + "/" + username;
-        new File(path).mkdirs();
+        File userDirectory = new File(path);
+        if (!userDirectory.mkdirs()) {
+            throw new RuntimeException("Failed to create the user directory: " + path);
+        }
         File categoryDirectory = new File(path + "/categories");
-        categoryDirectory.mkdirs();
+        if (!categoryDirectory.mkdirs()) {
+            throw new RuntimeException("Failed to create the categories directory.");
+        }
         File gitkeepFile = new File(categoryDirectory, ".gitkeep");
         try {
             gitkeepFile.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        new File(path + "/stats").mkdirs();
-        UserInfo userInfo = new UserInfo(0, password);
-        try (FileWriter writer = new FileWriter(path + "/stats/stats.json")) {
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            gson.toJson(userInfo, writer);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (new File(path + "/stats").mkdirs()) {
+            UserInfo userInfo = new UserInfo(password);
+            try (FileWriter writer = new FileWriter(path + "/stats/stats.json", StandardCharsets.UTF_8)) {
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                gson.toJson(userInfo, writer);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            throw new RuntimeException("Failed to create the user directory: " + path + "/stats");
         }
     }
 
-    public static void uploadFile(final String absolutePath, final String username, String filename) {
+    /**
+     * Upload a json file containing a custom wordlist to the custom-categories of
+     * the given user.
+     *
+     * @param absolutePath the absolute path to the file containing the custom
+     *                     wordlist.
+     * @param username     the username of the user requesting to upload a custom
+     *                     wordlist.
+     * @param filename     the name of the file.
+     */
+    public static void uploadFile(final String absolutePath, final String username, final String filename) {
         String destinationPath = getPath() + "/" + username + "/categories/" + filename;
         JsonObject jsonObject = getJsonObject(absolutePath);
-        try (FileWriter writer = new FileWriter(destinationPath)) {
+        try (FileWriter writer = new FileWriter(destinationPath, StandardCharsets.UTF_8)) {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             gson.toJson(jsonObject, writer);
             writer.close();

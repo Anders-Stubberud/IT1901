@@ -1,14 +1,44 @@
 package core;
 
-public class UserInfo {
+public final class UserInfo {
 
-    public int highscore;
+    /**
+     * The highscore of the given player; initalized to 0 in the constructor.
+     */
+    private int highscore;
 
-    public String password;
+    /**
+     * The password of the given player; initialized in the constructor.
+     */
+    private String password;
 
-    public UserInfo(final int highscore, final String password) {
+    /**
+     * Constructor setting up a new UserInfo object to be injected into correlating
+     * json file.
+     *
+     * @param passwordParameter
+     */
+    public UserInfo(final String passwordParameter) {
         this.highscore = 0;
-        this.password = password;
+        this.password = passwordParameter;
+    }
+
+    /**
+     * Returns the highscore of the given user.
+     *
+     * @return The highscore of the given user.
+     */
+    public int getHighScore() {
+        return highscore;
+    }
+
+    /**
+     * Returns the password of the given user.
+     *
+     * @return The password of the given user.
+     */
+    public String getPassword() {
+        return password;
     }
 
 }

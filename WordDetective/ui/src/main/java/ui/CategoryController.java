@@ -37,15 +37,29 @@ public final class CategoryController implements Initializable {
     @FXML
     private VBox vbox;
 
+    /**
+     * FXML buttons for respectively displaying the upload informatin, and to upload
+     * a file.
+     */
     @FXML
     private Button customCategory, upload;
 
+    /**
+     * FXML component providing scrolling throught the available categories.
+     */
     @FXML
     private ScrollPane scrollpane;
 
+    /**
+     * FXML component containing the file-uploading information.
+     */
     @FXML
     private Pane pane;
 
+    /**
+     * Toggles the visibility of the option for the user to upload a custom
+     * category.
+     */
     @FXML
     public void loadCustomCategory() {
         if (pane.isVisible()) {
@@ -55,13 +69,16 @@ public final class CategoryController implements Initializable {
         }
     }
 
+    /**
+     * Uploads the file selected in the GUI.
+     */
     @FXML
     public void uploadFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
         File selectedFile = fileChooser.showOpenDialog(new Stage());
-        String filename = selectedFile.getName();
         if (selectedFile != null) {
+            String filename = selectedFile.getName();
             UserInfoIO.uploadFile(selectedFile.getAbsolutePath(), username, filename);
             renderCategories();
         }
@@ -96,6 +113,9 @@ public final class CategoryController implements Initializable {
         renderCategories();
     }
 
+    /**
+     * Renders the available categories in the GUI.
+     */
     public void renderCategories() {
         pane.setVisible(false);
         Collection<String> categories = FileIO.loadDefaultCategories();

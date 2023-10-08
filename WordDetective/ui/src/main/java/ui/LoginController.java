@@ -14,15 +14,28 @@ import javafx.stage.Stage;
 
 public class LoginController {
 
+    /**
+     * FXML component for enabling user to provide username.
+     */
     @FXML
     private TextField username;
 
+    /**
+     * FXML component for enabling user to provide password.
+     */
     @FXML
     private PasswordField password;
 
+    /**
+     * FXML buttons providing access to respectively "performLogin" and
+     * "registerNewUser".
+     */
     @FXML
     private Button login, registerUser;
 
+    /**
+     * Method fired when pressing the "login" button. Loads the category window.
+     */
     @FXML
     public void performLogin() {
         String providedUsername = username.getText();
@@ -44,6 +57,10 @@ public class LoginController {
         }
     }
 
+    /**
+     * Method fired when pressing the "registerUser" button. Loads the registration
+     * window.
+     */
     @FXML
     public void registerNewUser() {
         try {

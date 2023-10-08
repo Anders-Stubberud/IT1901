@@ -4,12 +4,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -33,15 +34,31 @@ public abstract class FileIO {
      */
     private static final String WORKING_DIRECTORY = "gr2325";
 
+    /**
+     * Provides absolute path to current working directory.
+     *
+     * @return Absolute path to current working directory.
+     */
     public static String getPath() {
         Path path = Paths.get("").toAbsolutePath();
         while (!path.endsWith(WORKING_DIRECTORY)) {
             path = path.getParent();
+            if (path == null) {
+                throw new IllegalStateException("Working directory not found.");
+            }
         }
         return path.toString() + "/WordDetective/core/src/main/resources/";
     }
 
-    public static String getPathToCategory(boolean defaultCategory, String username) {
+    /**
+     * Provides the path to the requested category.
+     *
+     * @param defaultCategory Boolean indicating if the category is amongst the
+     *                        default categories.
+     * @param username        Username of the current user.
+     * @return The absolute path to a category storage.
+     */
+    public static String getPathToCategory(final boolean defaultCategory, final String username) {
         String path = getPath();
         if (defaultCategory) {
             return path + "default_categories/";
@@ -50,7 +67,13 @@ public abstract class FileIO {
         }
     }
 
-    public static String getPathToStats(String username) {
+    /**
+     * Provides the path to the stats.json file of the current user.
+     *
+     * @param username The username of the current user
+     * @return The absolute path to the stats.json file of the current user.
+     */
+    public static String getPathToStats(final String username) {
         String path = getPath();
         if (username.equals("guest")) {
             return path + "default_stats/stats.json";
@@ -59,10 +82,16 @@ public abstract class FileIO {
         }
     }
 
-    public static JsonObject getJsonObject(String path) {
+    /**
+     * Provides access to the json file at the given absolute path.
+     *
+     * @param path The absolute path of which the json file is located.
+     * @return A JsonObject representing the json file.
+     */
+    public static JsonObject getJsonObject(final String path) {
         JsonObject jsonObject = null;
         // Try-with-resources closes file automatically, thus no need to manually close.
-        try (FileReader reader = new FileReader(path)) {
+        try (FileReader reader = new FileReader(path, StandardCharsets.UTF_8)) {
             Gson gsonParser = new Gson();
             jsonObject = gsonParser.fromJson(reader, JsonObject.class);
         } catch (JsonSyntaxException | JsonIOException | IOException e) {
@@ -71,9 +100,22 @@ public abstract class FileIO {
         return jsonObject;
     }
 
-    public static Collection<String> loadCategories(boolean defaultCategory, String username) {
+    /**
+     * Displays the currently available categories.
+     *
+     * @param defaultCategory Boolean indicating if the category is amongst the
+     *                        default categories.
+     * @param username        The username of which to display the currently
+     *                        available categories.
+     * @return A collection containing all currently available categories.
+     */
+    public static Collection<String> loadCategories(final boolean defaultCategory, final String username) {
         File[] categories = new File(getPathToCategory(defaultCategory, username)).listFiles();
-        return Arrays.asList(categories).stream()
+        if (categories == null) {
+            return Collections.emptyList();
+        }
+
+        return Arrays.stream(categories)
                 .map(File::getName)
                 .filter(name -> !name.equals(".gitkeep"))
                 .map(name -> name.substring(0, name.indexOf(".")))
@@ -112,11 +154,11 @@ public abstract class FileIO {
      * vast amounts of memory,
      * it is a fair tradeoff in order to improve the user experience.
      *
-     * @param pickFromDefaultCategories Set to true if the category is to be chosen
-     *                                  among the default categories.
-     * @param username                  The username of the user, used to set up
-     *                                  individualized games for different users.
-     * @param category                  The category chosen by the user.
+     * @param username        The username of the user, used to set up
+     *                        individualized games for different users.
+     * @param category        The category chosen by the user.
+     * @param defaultCategory Boolean indicating if the gicen wordlist is
+     *                        located amongst the default categories.
      * @return A WordLists object containing two wordlists.
      */
     public static WordLists createWordlist(final boolean defaultCategory, final String username,
@@ -136,15 +178,29 @@ public abstract class FileIO {
         return new WordLists(wordlistForSearch, wordlistForSelection);
     }
 
+    /**
+     * Provides a reference to the json file containing the highscore statistics.
+     *
+     * @param username The username of the user to retrieve the highscore statistics
+     *                 of.
+     * @return A JsonObject representing the json file containing the highscore
+     *         statistics.
+     */
     public static JsonObject getHighScoreObject(final String username) {
         return getJsonObject(getPathToStats(username));
     }
 
+    /**
+     * Writes the provided score to the statistics fo the given user.
+     *
+     * @param username The username of the user to provide a hoghscore for.
+     * @param score    The score to persistently store.
+     */
     public static void writeToHighScoreObject(final String username, final int score) {
         JsonObject jsonObject = getHighScoreObject(username);
         try {
             jsonObject.addProperty("highscore", score);
-            FileWriter writer = new FileWriter(getPathToStats(username));
+            FileWriter writer = new FileWriter(getPathToStats(username), StandardCharsets.UTF_8);
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             gson.toJson(jsonObject, writer);
             writer.close();
@@ -156,6 +212,7 @@ public abstract class FileIO {
     /**
      * Access the persistent json file which contains the current score of the game.
      *
+     * @param username The username of the user to get the score of.
      * @return The current score of the game.
      */
     public static int getHighScore(final String username) {
@@ -164,6 +221,8 @@ public abstract class FileIO {
 
     /**
      * Access the persistent json file and increments the current score by 1.
+     *
+     * @param username The username of the user to increment the score of.
      */
     public static void incrementHighScore(final String username) {
         writeToHighScoreObject(username, getHighScore(username) + 1);
@@ -171,6 +230,8 @@ public abstract class FileIO {
 
     /**
      * Access the persistent json file and resets the current score to 0.
+     *
+     * @param username The username of the user to reset the highscore of.
      */
     public static void resetHighScore(final String username) {
         writeToHighScoreObject(username, 0);

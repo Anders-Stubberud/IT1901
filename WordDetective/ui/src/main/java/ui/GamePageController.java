@@ -6,7 +6,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Set;
 
 import core.FileIO;
 import core.GameLogic;
@@ -221,7 +220,8 @@ public final class GamePageController implements Initializable {
         Circle activePlayer = new Circle(playerCenterX, centerY, radius,
                 new ImagePattern(new Image(new FileInputStream("./assets/images/Brage.png"))));
 
-        players.add(((int) Math.floor(players.size() / 2)), activePlayer);
+        // players.add(((int) Math.floor(players.size() / 2)), activePlayer);
+        players.add((int) (players.size() / 2), activePlayer);
         window.getChildren().addAll(players);
 
     }
