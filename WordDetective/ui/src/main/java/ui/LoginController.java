@@ -40,7 +40,7 @@ public class LoginController {
             }
         } else {
             // Blinke rødt ellerno
-            System.out.println("feil burkernavn og/eller passord");
+            System.out.println("feil brukernavn og/eller passord");
         }
     }
 

@@ -61,9 +61,6 @@ public final class CategoryController implements Initializable {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
         File selectedFile = fileChooser.showOpenDialog(new Stage());
         String filename = selectedFile.getName();
-        System.out.println("path: " + selectedFile.getAbsolutePath());
-        System.out.println("username: " + username);
-        System.out.println("filename: " + filename);
         if (selectedFile != null) {
             UserInfoIO.uploadFile(selectedFile.getAbsolutePath(), username, filename);
             renderCategories();

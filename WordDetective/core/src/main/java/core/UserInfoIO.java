@@ -7,59 +7,62 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 
 public class UserInfoIO {
 
     private static final String WORKING_DIRECTORY = "gr2325";
 
-    public static Path getPath() {
+    public static String getPath() {
         Path path = Paths.get("").toAbsolutePath();
         while (!path.endsWith(WORKING_DIRECTORY)) {
             path = path.getParent();
         }
-        return path;
+        return path.toString() + "/WordDetective/core/src/main/resources/users";
     }
 
     public static Collection<String> getAllUsernames() {
         return Arrays.asList(
-                new File(getPath().toString() + "/WordDetective/core/src/main/resources/users")
+                new File(getPath().toString())
                         .listFiles())
                 .stream().map(File::getName).collect(Collectors.toList());
     }
 
+    public static JsonObject getJsonObject(String path) {
+        JsonObject jsonObject = null;
+        // Try-with-resources closes file automatically, thus no need to manually close.
+        try (FileReader reader = new FileReader(path)) {
+            Gson gsonParser = new Gson();
+            jsonObject = gsonParser.fromJson(reader, JsonObject.class);
+        } catch (JsonSyntaxException | JsonIOException | IOException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
     public static boolean correctUsernameAndPassword(final String username, final String password) {
         if (getAllUsernames().contains(username)) {
-            try {
-                Path path = Paths.get(getPath().toString() +
-                        "/WordDetective/core/src/main/resources/users/" + username
-                        + "/stats/stats.json");
-                String content = new String(Files.readAllBytes(path));
-                Gson gsonParser = new Gson();
-                JsonObject jsonObject = gsonParser.fromJson(content, JsonObject.class);
-                String actualPassword = jsonObject.get("password").toString();
-                actualPassword = actualPassword.substring(1, actualPassword.length() - 1);
-                if (password.equals(actualPassword)) {
-                    return true;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+            String path = getPath() + "/" + username + "/stats/stats.json";
+            JsonObject jsonObject = getJsonObject(path);
+            String actualPassword = jsonObject.get("password").toString();
+            actualPassword = actualPassword.substring(1, actualPassword.length() - 1);
+            if (password.equals(actualPassword)) {
+                return true;
             }
         }
         return false;
     }
 
     public static void insertNewUser(String username, String password) {
-        String path = getPath().toString() + "/WordDetective/core/src/main/resources/users/" + username;
+        String path = getPath() + "/" + username;
         new File(path).mkdirs();
         File categoryDirectory = new File(path + "/categories");
         categoryDirectory.mkdirs();
@@ -80,14 +83,10 @@ public class UserInfoIO {
     }
 
     public static void uploadFile(final String absolutePath, final String username, String filename) {
-        String destinationPath = getPath().toString() + "/WordDetective/core/src/main/resources/users/" + username
-                + "/categories/" + filename;
-        try (FileReader reader = new FileReader(absolutePath)) {
-            Gson gson = new Gson();
-            JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
-            reader.close();
-            FileWriter writer = new FileWriter(destinationPath);
-            gson = new GsonBuilder().setPrettyPrinting().create();
+        String destinationPath = getPath() + "/" + username + "/categories/" + filename;
+        JsonObject jsonObject = getJsonObject(absolutePath);
+        try (FileWriter writer = new FileWriter(destinationPath)) {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
             gson.toJson(jsonObject, writer);
             writer.close();
         } catch (IOException e) {
