@@ -21,7 +21,8 @@ public final class User {
      * Constructor setting up a new UserInfo object to be injected into correlating
      * json file.
      *
-     * @param passwordParameter
+     * @param usernameParameter The username of the new user.
+     * @param passwordParameter The password of the new user.
      */
     public User(final String usernameParameter, final String passwordParameter) {
         this.highscore = 0;
@@ -40,8 +41,8 @@ public final class User {
 
     /**
      * Returns the username of the given user.
-     * 
-     * @return
+     *
+     * @return The username of the give user.
      */
     public String getUsername() {
         return username;
