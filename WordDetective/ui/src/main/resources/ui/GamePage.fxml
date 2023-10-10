@@ -47,7 +47,7 @@
                   <Font size="23.0" />
                </font>
             </Label>
-            <TextFlow fx:id="outputField" layoutX="353.0" layoutY="478.0" prefHeight="45.0" prefWidth="294.5" textAlignment="CENTER" />
+            <TextFlow fx:id="outputField" layoutX="353.0" layoutY="478.0" prefHeight="45.0" prefWidth="294.5" style="-fx-border-color: black;" textAlignment="CENTER" />
             <Button fx:id="openHTPBtn" layoutX="461.0" layoutY="556.0" mnemonicParsing="false" onAction="#howToPlay" style="-fx-background-color: black; -fx-text-fill: white;" text="How to Play">
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -56,7 +56,7 @@
                   <DropShadow height="18.05" radius="6.315" width="9.21" />
                </effect>
             </Button>
-            <Label fx:id="displayCategory" layoutX="512.0" layoutY="9.0" text="countries" textFill="WHITE">
+            <Label fx:id="displayCategory" layoutX="512.0" layoutY="9.0" textFill="WHITE">
                <font>
                   <Font size="30.0" />
                </font>

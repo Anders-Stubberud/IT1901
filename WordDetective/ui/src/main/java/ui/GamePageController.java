@@ -250,7 +250,7 @@ public final class GamePageController implements Initializable {
                 shake.setToX(shakeXMovment);
                 shake.play();
             }
-
+            playerInputField.setText("");
         }
 
     }
@@ -324,6 +324,7 @@ public final class GamePageController implements Initializable {
         try {
             wordMaster = new GameLogic(username);
             wordMaster.setCategory(category);
+            displayCategory.setText(category);
             rndwordMasterLetters();
             createPlayers(true);
             outputField.setStyle("-fx-font: 24 arial;");
