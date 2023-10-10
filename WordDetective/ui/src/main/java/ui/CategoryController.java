@@ -1,11 +1,13 @@
 package ui;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.ResourceBundle;
 
 import core.FileIO;
+import core.UserIO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,8 +16,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public final class CategoryController implements Initializable {
@@ -31,6 +36,53 @@ public final class CategoryController implements Initializable {
      */
     @FXML
     private VBox vbox;
+
+    /**
+     * FXML buttons for respectively displaying the upload informatin, and to upload
+     * a file.
+     */
+    @FXML
+    private Button customCategory, upload;
+
+    /**
+     * FXML component providing scrolling throught the available categories.
+     */
+    @FXML
+    private ScrollPane scrollpane;
+
+    /**
+     * FXML component containing the file-uploading information.
+     */
+    @FXML
+    private Pane pane;
+
+    /**
+     * Toggles the visibility of the option for the user to upload a custom
+     * category.
+     */
+    @FXML
+    public void loadCustomCategory() {
+        if (pane.isVisible()) {
+            pane.setVisible(false);
+        } else {
+            pane.setVisible(true);
+        }
+    }
+
+    /**
+     * Uploads the file selected in the GUI.
+     */
+    @FXML
+    public void uploadFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+        File selectedFile = fileChooser.showOpenDialog(new Stage());
+        if (selectedFile != null) {
+            String filename = selectedFile.getName();
+            UserIO.uploadFile(selectedFile.getAbsolutePath(), username, filename);
+            renderCategories();
+        }
+    }
 
     /**
      * Constructor used for controlling whether or not to retrieve custom
@@ -58,6 +110,14 @@ public final class CategoryController implements Initializable {
      */
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
+        renderCategories();
+    }
+
+    /**
+     * Renders the available categories in the GUI.
+     */
+    public void renderCategories() {
+        pane.setVisible(false);
         Collection<String> categories = FileIO.loadDefaultCategories();
         if (!username.equals("guest")) {
             categories.addAll(FileIO.loadCustomCategories(username));

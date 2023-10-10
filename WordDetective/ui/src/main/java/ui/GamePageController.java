@@ -220,7 +220,8 @@ public final class GamePageController implements Initializable {
         Circle activePlayer = new Circle(playerCenterX, centerY, radius,
                 new ImagePattern(new Image(new FileInputStream("./assets/images/Brage.png"))));
 
-        players.add(((int) Math.floor(players.size() / 2)), activePlayer);
+        // players.add(((int) Math.floor(players.size() / 2)), activePlayer);
+        players.add((int) (players.size() / 2), activePlayer);
         window.getChildren().addAll(players);
 
     }
@@ -236,8 +237,8 @@ public final class GamePageController implements Initializable {
         if (ke.getCode().equals(KeyCode.ENTER)) { // If pressed Enter, then check word
             String playerGuess = playerInputField.getText();
             if (wordMaster.checkValidWord(substring, playerGuess)) {
-                FileIO.incrementHighScore();
-                int pointsHS = FileIO.getHighScore();
+                FileIO.incrementHighScore(username);
+                int pointsHS = FileIO.getHighScore(username);
                 points.setText(String.valueOf(pointsHS));
                 rndwordMasterLetters();
             } else {
@@ -300,6 +301,7 @@ public final class GamePageController implements Initializable {
      */
     public void rndwordMasterLetters() {
         String string = wordMaster.getRandomWord();
+        System.out.println(string);
         substring = GameLogic.getRandomSubstring(string);
         letters.setText(substring.toUpperCase());
     }

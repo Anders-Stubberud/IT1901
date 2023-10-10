@@ -18,7 +18,7 @@ public class FileIOTest {
      */
     @BeforeEach
     public void setUp() {
-        FileIO.resetHighScore(); // Reset the highscore to 0 before each test
+        FileIO.resetHighScore("guest"); // Reset the highscore to 0 before each test
     }
 
     /**
@@ -46,7 +46,7 @@ public class FileIOTest {
      */
     @Test
     public void testGetHighScore() {
-        int highScore = FileIO.getHighScore();
+        int highScore = FileIO.getHighScore("guest");
         assertEquals(0, highScore); // Highscore should be 0 at the start of the game.
     }
 
@@ -55,9 +55,9 @@ public class FileIOTest {
      */
     @Test
     public void testIncrementHighScore() {
-        int initialHighScore = FileIO.getHighScore();
-        FileIO.incrementHighScore();
-        int updatedHighScore = FileIO.getHighScore();
+        int initialHighScore = FileIO.getHighScore("guest");
+        FileIO.incrementHighScore("guest");
+        int updatedHighScore = FileIO.getHighScore("guest");
         assertEquals(initialHighScore + 1, updatedHighScore);
     }
 

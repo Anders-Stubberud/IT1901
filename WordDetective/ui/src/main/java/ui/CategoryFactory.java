@@ -2,7 +2,7 @@ package ui;
 
 import javafx.util.Callback;
 
-public final class ControllerFactory implements Callback<Class<?>, Object> {
+public final class CategoryFactory implements Callback<Class<?>, Object> {
 
     /**
      * Variable for holding the username used to create the category controller
@@ -15,7 +15,7 @@ public final class ControllerFactory implements Callback<Class<?>, Object> {
      *
      * @param usernameParameter
      */
-    public ControllerFactory(final String usernameParameter) {
+    public CategoryFactory(final String usernameParameter) {
         this.username = usernameParameter;
     }
 

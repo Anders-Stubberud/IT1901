@@ -1,6 +1,7 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -35,6 +36,11 @@ public class GameLogic {
      * List containing players in the game.
      */
     private List<String> players = new ArrayList<String>();
+
+    /**
+     * Random object used to provide random numbers.
+     */
+    private static Random random = new Random();
 
     /**
      * Initializes the GameLogic object, which will control the logic.
@@ -86,14 +92,14 @@ public class GameLogic {
      * @return a set of strings containing all words from chosen category
      */
     public Set<String> getWordListForSearch() {
-        return wordlistForSearch;
+        return new HashSet<>(wordlistForSearch);
     }
 
     /**
      * @return a list of strings containing all words from the chosen category
      */
     public List<String> getWordlistForSelection() {
-        return wordlistForSelection;
+        return new ArrayList<>(wordlistForSelection);
     }
 
     /**
@@ -102,7 +108,7 @@ public class GameLogic {
      * @return List of users
      */
     public List<String> getPlayers() { // TODO change to user or bot
-        return players;
+        return new ArrayList<>(players);
     }
 
     /**
@@ -111,7 +117,7 @@ public class GameLogic {
      * @return A randomly generated substring from the parameter.
      */
     public String getRandomWord() {
-        String word = wordlistForSelection.get(new Random().nextInt(wordlistForSelection.size()));
+        String word = wordlistForSelection.get(random.nextInt(wordlistForSelection.size()));
         return word;
     }
 
@@ -123,8 +129,8 @@ public class GameLogic {
      */
     public static String getRandomSubstring(final String word) {
         int wordLength = word.length();
-        int startIndexSubstring = Math.max(new Random().nextInt(wordLength) - 2, 0);
-        int endIndexSubstring = startIndexSubstring + 2 + new Random().nextInt(2);
+        int startIndexSubstring = Math.max(random.nextInt(wordLength) - 2, 0);
+        int endIndexSubstring = startIndexSubstring + 2 + random.nextInt(2);
         String substring = word.substring(startIndexSubstring, endIndexSubstring);
         return substring;
     }
@@ -149,6 +155,6 @@ public class GameLogic {
      *
      */
     public String pickRndPlayer() {
-        return players.get(new Random().nextInt(players.size()));
+        return players.get(random.nextInt(players.size()));
     }
 }
