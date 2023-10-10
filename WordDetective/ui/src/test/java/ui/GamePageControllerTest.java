@@ -15,7 +15,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
-public class GameTest extends ApplicationTest {
+public class GamePageControllerTest extends ApplicationTest {
 
   /**
    * The root of the application is used as reference to the DOM.

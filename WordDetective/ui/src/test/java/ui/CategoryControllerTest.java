@@ -13,7 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 
-public class CategoryTest extends ApplicationTest {
+public class CategoryControllerTest extends ApplicationTest {
 
     /**
      * The root of the application is used as reference to the DOM.
