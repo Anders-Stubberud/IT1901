@@ -18,13 +18,13 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
-public final class UserInfoIO {
+public final class UserIO {
 
     /**
      * Private defalt constructor, indicating that this utility class should not be
      * instantiated.
      */
-    private UserInfoIO() {
+    private UserIO() {
         throw new AssertionError("Utility class - do not instantiate.");
     }
 
@@ -128,7 +128,7 @@ public final class UserInfoIO {
             e.printStackTrace();
         }
         if (new File(path + "/stats").mkdirs()) {
-            UserInfo userInfo = new UserInfo(password);
+            User userInfo = new User(username, password);
             try (FileWriter writer = new FileWriter(path + "/stats/stats.json", StandardCharsets.UTF_8)) {
                 Gson gson = new GsonBuilder().setPrettyPrinting().create();
                 gson.toJson(userInfo, writer);

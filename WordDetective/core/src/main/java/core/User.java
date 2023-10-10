@@ -1,11 +1,16 @@
 package core;
 
-public final class UserInfo {
+public final class User {
 
     /**
      * The highscore of the given player; initalized to 0 in the constructor.
      */
     private int highscore;
+
+    /**
+     * The username of the given player; initialized in the constructor.
+     */
+    private String username;
 
     /**
      * The password of the given player; initialized in the constructor.
@@ -18,8 +23,9 @@ public final class UserInfo {
      *
      * @param passwordParameter
      */
-    public UserInfo(final String passwordParameter) {
+    public User(final String usernameParameter, final String passwordParameter) {
         this.highscore = 0;
+        this.username = usernameParameter;
         this.password = passwordParameter;
     }
 
@@ -30,6 +36,15 @@ public final class UserInfo {
      */
     public int getHighScore() {
         return highscore;
+    }
+
+    /**
+     * Returns the username of the given user.
+     * 
+     * @return
+     */
+    public String getUsername() {
+        return username;
     }
 
     /**
