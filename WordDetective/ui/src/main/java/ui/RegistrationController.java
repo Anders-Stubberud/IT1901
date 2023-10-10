@@ -2,7 +2,7 @@ package ui;
 
 import java.io.IOException;
 
-import core.UserInfoIO;
+import core.UserIO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -52,7 +52,7 @@ public class RegistrationController {
     public void fireSignUp() {
         String providedUsername = newUsername.getText();
         String providedPassword = newPassword.getText();
-        if (UserInfoIO.getAllUsernames().contains(providedUsername)) {
+        if (UserIO.getAllUsernames().contains(providedUsername)) {
 
             usernameTaken.setOpacity(1);
 
@@ -67,7 +67,7 @@ public class RegistrationController {
 
             throw new IllegalStateException("Brukernavnet er opptatt");
         } else {
-            UserInfoIO.insertNewUser(providedUsername, providedPassword);
+            UserIO.insertNewUser(providedUsername, providedPassword);
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
                 fxmlLoader.setControllerFactory(new CategoryFactory(providedUsername));

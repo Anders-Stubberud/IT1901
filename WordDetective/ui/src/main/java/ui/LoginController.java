@@ -2,7 +2,7 @@ package ui;
 
 import java.io.IOException;
 
-import core.UserInfoIO;
+import core.UserIO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -40,7 +40,7 @@ public class LoginController {
     public void performLogin() {
         String providedUsername = username.getText();
         String providedPassword = password.getText();
-        if (UserInfoIO.correctUsernameAndPassword(providedUsername, providedPassword)) {
+        if (UserIO.correctUsernameAndPassword(providedUsername, providedPassword)) {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
                 fxmlLoader.setControllerFactory(new CategoryFactory(providedUsername));

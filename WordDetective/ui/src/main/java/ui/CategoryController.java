@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.ResourceBundle;
 
 import core.FileIO;
-import core.UserInfoIO;
+import core.UserIO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -79,7 +79,7 @@ public final class CategoryController implements Initializable {
         File selectedFile = fileChooser.showOpenDialog(new Stage());
         if (selectedFile != null) {
             String filename = selectedFile.getName();
-            UserInfoIO.uploadFile(selectedFile.getAbsolutePath(), username, filename);
+            UserIO.uploadFile(selectedFile.getAbsolutePath(), username, filename);
             renderCategories();
         }
     }
