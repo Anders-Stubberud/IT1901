@@ -7,6 +7,7 @@ stages:
   - clean
 
 variables:
+  GIT_DEPTH: "0"
   MAVEN_OPTS: "-DskipTests"
   SKIP_UI_TESTS: "true"
 
