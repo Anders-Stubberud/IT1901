@@ -34,11 +34,6 @@
                   <Font size="35.0" />
                </font>
             </Label>
-            <Label fx:id="categoryDisplay" alignment="CENTER" contentDisplay="CENTER" layoutX="157.0" layoutY="13.0" maxWidth="-Infinity" prefHeight="37.0" prefWidth="690.0" text="Category: ..." textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP">
-               <font>
-                  <Font size="30.0" />
-               </font>
-            </Label>
             <TextField fx:id="playerInputField" alignment="CENTER" layoutX="363.0" layoutY="478.0" onKeyTyped="#checkWrittenWord" promptText="Write here" style="-fx-background-color: transparent;">
                <font>
                   <Font size="24.0" />
@@ -52,7 +47,7 @@
                   <Font size="23.0" />
                </font>
             </Label>
-            <TextFlow fx:id="outputField" layoutX="353.0" layoutY="478.0" prefHeight="45.0" prefWidth="294.5" textAlignment="CENTER" />
+            <TextFlow fx:id="outputField" layoutX="353.0" layoutY="478.0" prefHeight="45.0" prefWidth="294.5" style="-fx-border-color: black;" textAlignment="CENTER" />
             <Button fx:id="openHTPBtn" layoutX="461.0" layoutY="556.0" mnemonicParsing="false" onAction="#howToPlay" style="-fx-background-color: black; -fx-text-fill: white;" text="How to Play">
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -61,9 +56,19 @@
                   <DropShadow height="18.05" radius="6.315" width="9.21" />
                </effect>
             </Button>
+            <Label fx:id="displayCategory" layoutX="512.0" layoutY="9.0" textFill="WHITE">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+            <Label fx:id="categoryDisplay" alignment="CENTER" contentDisplay="CENTER" layoutX="353.0" layoutY="9.0" maxWidth="-Infinity" prefHeight="45.0" prefWidth="178.0" text="Category:" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
-      <Pane fx:id="howToPlay" layoutX="250.0" layoutY="50.0" prefHeight="458.0" prefWidth="500.0" style="-fx-background-color: darkslategray; -fx-background-radius: 20px;">
+      <Pane fx:id="howToPlay" layoutX="250.0" layoutY="50.0" opacity="0.0" prefHeight="458.0" prefWidth="500.0" style="-fx-background-color: darkslategray; -fx-background-radius: 20px;">
          <effect>
             <DropShadow />
          </effect>

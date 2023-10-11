@@ -1,15 +1,21 @@
 image: maven:latest
+# image: krissrex/docker-java8-maven-testfxmonocle:1.0
 
 stages:
   - build
   - test
   - clean
 
+variables:
+  GIT_DEPTH: "0"
+  MAVEN_OPTS: "-DskipTests"
+  SKIP_UI_TESTS: "true"
+
 build:
   stage: build
   script:
     - "cd WordDetective"
-    - "mvn clean install -U"
+    - "mvn clean install -Pskip-ui-tests"
     - "mvn compile"
 
 checkstyle-test:
@@ -18,18 +24,18 @@ checkstyle-test:
     - "cd WordDetective"
     - "mvn checkstyle:check"
 
-maven-test:
-  stage: test
-  script:
-    - "cd WordDetective"
-    - mvn test
-
 spotbugs-test:
   stage: test
   script:
     - "cd WordDetective"
-    - "mvn clean install -U"
+    - "mvn clean install -DskipTests"
     - "mvn spotbugs:spotbugs"
+
+maven-test:
+  stage: test
+  script:
+    - "cd WordDetective"
+    - mvn test -Pskip-ui-tests
 
 clean-up:
   stage: clean
