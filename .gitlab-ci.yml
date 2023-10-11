@@ -21,14 +21,13 @@ checkstyle-test:
 maven-test:
   stage: test
   script:
-    - "cd WordDetective"
-    - mvn test -Pexlude-ui-tests
+    - "cd WordDetective/core"
+    - mvn test
 
 spotbugs-test:
   stage: test
   script:
     - "cd WordDetective"
-    - "mvn clean install -U -Pexclude-ui-tests"
     - "mvn spotbugs:spotbugs"
 
 clean-up:
