@@ -28,7 +28,7 @@ spotbugs-test:
   stage: test
   script:
     - "cd WordDetective"
-    - "mvn clean install -U"
+    - "mvn clean install -U -Pexclude-ui-tests"
     - "mvn spotbugs:spotbugs"
 
 clean-up:
