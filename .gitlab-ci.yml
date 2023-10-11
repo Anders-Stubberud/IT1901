@@ -19,8 +19,10 @@ build:
     - "mvn compile"
 
 checkstyle-test:
-  - "cd WordDetective"
-  - "mvn checkstyle:check"
+  stage: test
+  script:
+    - "cd WordDetective"
+    - "mvn checkstyle:check"
 
 spotbugs-test:
   stage: test
@@ -37,3 +39,6 @@ maven-test:
 
 clean-up:
   stage: clean
+  script:
+    - "cd WordDetective"
+    - "mvn clean"
