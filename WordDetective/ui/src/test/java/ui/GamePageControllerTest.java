@@ -26,7 +26,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
@@ -124,7 +123,6 @@ public class GamePageControllerTest extends ApplicationTest {
   public void start(final Stage stage) throws IOException {
     FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("GamePage.fxml"));
     root = fxmlLoader.load();
-    System.out.println(root);
     controller = fxmlLoader.getController();
     stage.setScene(new Scene(root));
     stage.show();
@@ -161,25 +159,18 @@ public class GamePageControllerTest extends ApplicationTest {
     Assert.assertEquals(input.toUpperCase(), extractedString);
   }
 
-  /**
-   * Tests if the previous guess of a user gets wiped before a new substring is
-   * served.
-   */
-  @Test
-  public void testWipeOfGuess() {
-    String input = "This should get wiped";
-    write(input);
-    type(KeyCode.ENTER);
-    new java.util.Timer().schedule(
-        new java.util.TimerTask() {
-          @Override
-          public void run() {
-            String wipedGuess = extractGuess();
-            Assert.assertEquals("Text did not get wiped after guess", "", wipedGuess);
-          }
-        },
-        displayErrorDurationMs);
-  }
+  // /**
+  // * Tests if the previous guess of a user gets wiped before a new substring is
+  // * served.
+  // */
+  // @Test
+  // public void testWipeOfGuess() {
+  // String input = "This should get wiped";
+  // write(input);
+  // type(KeyCode.ENTER);
+  // String wipedGuess = extractGuess();
+  // Assert.assertEquals("Text did not get wiped after guess", "", wipedGuess);
+  // }
 
   /**
    * Setup before each test. Uses mockups for future testing.

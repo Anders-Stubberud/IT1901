@@ -5,13 +5,9 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
-import org.loadui.testfx.GuiTest;
-import org.testfx.api.FxRobotInterface;
 import org.testfx.framework.junit5.ApplicationTest;
 
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -26,10 +22,13 @@ public class LoginControllerTest extends ApplicationTest {
    */
   private Parent root;
 
-  LoginController controller;
+  /**
+   * The loader used for instantiation.
+   */
+  private FXMLLoader fxmlLoader;
 
   /**
-   * Properties t0 get the gitlab CI pipeline to run headless for Integration
+   * Properties to get the gitlab CI pipeline to run headless for Integration
    * tests.
    */
   @BeforeClass
@@ -50,9 +49,8 @@ public class LoginControllerTest extends ApplicationTest {
    */
   @Override
   public void start(final Stage stage) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("LoginPage.fxml"));
+    fxmlLoader = new FXMLLoader(this.getClass().getResource("LoginPage.fxml"));
     root = fxmlLoader.load();
-    controller = fxmlLoader.getController();
     stage.setScene(new Scene(root));
     stage.show();
   }
@@ -85,10 +83,20 @@ public class LoginControllerTest extends ApplicationTest {
     clickOn("#password", MouseButton.PRIMARY);
     write("password123");
     clickOn("#login");
-    // The vBox element is part of the categories page, so if login is successful,
-    // it will be present.
+    // The vBox element is part of the categories page, so if login is
+    // successful, it will be present.
     Node elementPresentInCategory = lookup("#vBox").query();
     Assert.assertNotNull(elementPresentInCategory);
+  }
+
+  /**
+   * Tests that a user with valid credentials can be instantiated.
+   */
+  @Test
+  public void testRegisterNew() {
+    clickOn("#registerUser", MouseButton.PRIMARY);
+    Node elementPresentInRegistration = lookup("#newUsername").query();
+    Assert.assertNotNull(elementPresentInRegistration);
   }
 
 }

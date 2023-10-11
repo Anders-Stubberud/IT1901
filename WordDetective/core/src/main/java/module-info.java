@@ -3,4 +3,6 @@ module project.core {
 
     // requires com.google.gson;
     requires transitive com.google.gson;
+
+    opens core to com.google.gson;
 }

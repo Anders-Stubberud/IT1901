@@ -43,7 +43,7 @@ public class LoginController {
     /**
      * Constant for display of incorrect password.
      */
-    private int DISPLAY_ERROR_DURATION_MS = 3000;
+    private static final int DISPLAY_ERROR_DURATION_MS = 3000;
 
     /**
      * Method fired when pressing the "login" button. Loads the category window.
@@ -93,14 +93,6 @@ public class LoginController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public TextField clickOnUsernameField() {
-        return username;
-    }
-
-    public PasswordField clickOnPasswordField() {
-        return password;
     }
 
 }

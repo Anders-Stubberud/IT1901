@@ -1,20 +1,25 @@
 package core;
 
+import com.google.gson.annotations.SerializedName;
+
 public final class User {
 
     /**
      * The highscore of the given player; initalized to 0 in the constructor.
      */
+    @SerializedName("highscore")
     private int highscore;
 
     /**
      * The username of the given player; initialized in the constructor.
      */
+    @SerializedName("username")
     private String username;
 
     /**
      * The password of the given player; initialized in the constructor.
      */
+    @SerializedName("password")
     private String password;
 
     /**
