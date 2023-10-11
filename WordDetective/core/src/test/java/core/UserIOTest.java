@@ -19,8 +19,7 @@ public class UserIOTest {
   public void testCorrectPath() {
     String correctPath = "gr2325/WordDetective/core/src/main/resources/users";
     String absolutePath = UserIO.getPath();
-    String pathFromRoot = absolutePath.substring(absolutePath.indexOf("gr2325"));
-    assertEquals(correctPath, pathFromRoot, "correct path from root is" + correctPath);
+    assertTrue(absolutePath.contains(correctPath));
   }
 
   /**
