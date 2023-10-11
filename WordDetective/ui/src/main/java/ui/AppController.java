@@ -24,14 +24,11 @@ public final class AppController {
     @FXML
     private TextField usernameTF, passwordTF;
 
-    // @FXML
-    // void handleLogIn() {
-    // appGuestBtn.setVisible(false);
-    // appLogInBtn.setVisible(false);
-    // usernameTF.setVisible(true);
-    // passwordTF.setVisible(true);
-    // undoButton.setVisible(true);
-    // }
+    /**
+     * Reference to the given loader.
+     */
+    @FXML
+    private FXMLLoader fxmlLoader;
 
     /**
      * Goes back to Frontpage.
@@ -51,7 +48,7 @@ public final class AppController {
     @FXML
     public void handleLogIn() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("LoginPage.fxml"));
+            fxmlLoader = new FXMLLoader(this.getClass().getResource("LoginPage.fxml"));
             Stage stage = (Stage) appLogInBtn.getScene().getWindow();
             Parent parent = fxmlLoader.load();
             stage.setScene(new Scene(parent));
@@ -64,7 +61,7 @@ public final class AppController {
     @FXML
     void launchGame() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
+            fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
             fxmlLoader.setControllerFactory(new CategoryFactory("guest"));
             Parent parent = fxmlLoader.load();
             Stage stage = (Stage) appGuestBtn.getScene().getWindow();

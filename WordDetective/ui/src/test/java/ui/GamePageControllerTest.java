@@ -61,6 +61,7 @@ public class GamePageControllerTest extends ApplicationTest {
   private GamePageController controller;
   /**
    * Gamelogic object.
+   *
    */
   private GameLogic gameMock;
 
@@ -81,7 +82,7 @@ public class GamePageControllerTest extends ApplicationTest {
   /**
    * Constant used for extraction fo player input.
    */
-  private static int DISPLAY_ERROR_DURATION_MS = 1100;
+  private final int displayErrorDurationMs = 1100;
 
   /**
    * Closes the HowToPlay popup window.
@@ -100,14 +101,14 @@ public class GamePageControllerTest extends ApplicationTest {
 
   }
 
-  /**
-   * Write a str in input field.
-   *
-   * @param str - The string to write
-   */
-  private void writeInput(final String str) {
-    ((TextField) getRootNode().lookup("#playerInputField")).setText(str);
-  }
+  // /**
+  // * Write a str in input field.
+  // *
+  // * @param str - The string to write
+  // */
+  // private void writeInput(final String str) {
+  // ((TextField) getRootNode().lookup("#playerInputField")).setText(str);
+  // }
 
   /**
    * Clean inputfield.
@@ -177,7 +178,7 @@ public class GamePageControllerTest extends ApplicationTest {
             Assert.assertEquals("Text did not get wiped after guess", "", wipedGuess);
           }
         },
-        DISPLAY_ERROR_DURATION_MS);
+        displayErrorDurationMs);
   }
 
   /**
@@ -186,7 +187,7 @@ public class GamePageControllerTest extends ApplicationTest {
   @BeforeEach
   public void setUp() {
     gameMock = mock(GameLogic.class);
-    controller.setGame(gameMock);
+    // controller.setGame(gameMock);
     gameMock.setCategory("Testing");
     gameMock.setWordList(testList);
     closeHowToPlay();
@@ -216,7 +217,8 @@ public class GamePageControllerTest extends ApplicationTest {
   @ParameterizedTest
   @MethodSource
   public void testWriteWords(final String word, final boolean isCorrect) {
-    writeInput(word);
+    write(word);
+    System.out.println(getInput());
     isCorrect(getInput(), isCorrect);
     cleanInput();
   }

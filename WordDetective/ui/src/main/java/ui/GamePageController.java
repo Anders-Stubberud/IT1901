@@ -150,11 +150,6 @@ public final class GamePageController implements Initializable {
     private String category;
 
     /**
-     * constant for erasing word after incorrect guess.
-     */
-    private final int DISPLAY_ERROR_DURATION_MS = 1000;
-
-    /**
      * Constructor initializing the object.
      *
      * @param usernameParameter provided username.
@@ -262,9 +257,6 @@ public final class GamePageController implements Initializable {
                 shake.setNode(outputField);
                 shake.setFromX(-shakeXMovment);
                 shake.setToX(shakeXMovment);
-                shake.setOnFinished(event -> {
-                    playerInputField.setText("");
-                });
                 shake.play();
             }
         }
@@ -357,21 +349,21 @@ public final class GamePageController implements Initializable {
         }
     }
 
-    /**
-     * Get GameLogic.
-     *
-     * @return GameLogic object
-     */
-    public GameLogic getGame() {
-        return game;
-    }
+    // /**
+    // * Get GameLogic.
+    // *
+    // * @return GameLogic object
+    // */
+    // public GameLogic getGame() {
+    // return game;
+    // }
 
-    /**
-     * Set GameLogic.
-     *
-     * @param newGame - the new GameLogic
-     */
-    public void setGame(final GameLogic newGame) {
-        this.game = newGame;
-    }
+    // /**
+    // * Set GameLogic.
+    // *
+    // * @param newGame - the new GameLogic
+    // */
+    // public void setGame(final GameLogic newGame) {
+    // this.game = newGame;
+    // }
 }
