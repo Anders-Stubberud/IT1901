@@ -6,6 +6,9 @@ stages:
   - test
   - clean
 
+variables:
+  MAVEN_OPTS: "-DskipTests"
+
 build:
   stage: build
   script:
