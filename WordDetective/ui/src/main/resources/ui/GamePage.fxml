@@ -68,7 +68,7 @@
             </Label>
          </children>
       </Pane>
-      <Pane fx:id="howToPlay" layoutX="250.0" layoutY="50.0" opacity="0.0" prefHeight="458.0" prefWidth="500.0" style="-fx-background-color: darkslategray; -fx-background-radius: 20px;">
+      <Pane fx:id="howToPlay" layoutX="250.0" layoutY="50.0" prefHeight="458.0" prefWidth="500.0" style="-fx-background-color: darkslategray; -fx-background-radius: 20px;">
          <effect>
             <DropShadow />
          </effect>
