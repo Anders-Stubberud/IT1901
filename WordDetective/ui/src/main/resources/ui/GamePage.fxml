@@ -61,7 +61,7 @@
                   <Font size="30.0" />
                </font>
             </Label>
-            <Label fx:id="categoryDisplay" alignment="CENTER" contentDisplay="CENTER" layoutX="353.0" layoutY="9.0" maxWidth="-Infinity" prefHeight="45.0" prefWidth="178.0" text="Category:" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP">
+            <Label fx:id="categoryDisplay" alignment="CENTER" contentDisplay="CENTER" layoutX="161.0" layoutY="9.0" maxWidth="-Infinity" prefHeight="45.0" prefWidth="679.0" text="Category:" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP">
                <font>
                   <Font size="30.0" />
                </font>
