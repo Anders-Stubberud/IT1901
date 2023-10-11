@@ -150,6 +150,11 @@ public final class GamePageController implements Initializable {
     private String category;
 
     /**
+     * constant for erasing word after incorrect guess.
+     */
+    private final int DISPLAY_ERROR_DURATION_MS = 1000;
+
+    /**
      * Constructor initializing the object.
      *
      * @param usernameParameter provided username.
@@ -249,6 +254,7 @@ public final class GamePageController implements Initializable {
                 int pointsHS = FileIO.getHighScore(username);
                 points.setText(String.valueOf(pointsHS));
                 rndwordMasterLetters();
+                playerInputField.setText("");
             } else {
                 // Shake inputfield
                 TranslateTransition shake = new TranslateTransition();
@@ -256,9 +262,11 @@ public final class GamePageController implements Initializable {
                 shake.setNode(outputField);
                 shake.setFromX(-shakeXMovment);
                 shake.setToX(shakeXMovment);
+                shake.setOnFinished(event -> {
+                    playerInputField.setText("");
+                });
                 shake.play();
             }
-            playerInputField.setText("");
         }
 
     }
@@ -317,6 +325,7 @@ public final class GamePageController implements Initializable {
     /**
      * Opens or closes the HowToPlay window.
      */
+    @FXML
     public void howToPlay() {
         if (showHowToPlay) {
             howToPlay.setVisible(false);
@@ -332,6 +341,7 @@ public final class GamePageController implements Initializable {
         try {
             game = new GameLogic(username);
             game.setCategory(category);
+            displayCategory.setText(category);
             rndwordMasterLetters();
             createPlayers(true);
             outputField.setStyle("-fx-font: 24 arial;");
