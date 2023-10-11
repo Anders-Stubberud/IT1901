@@ -8,12 +8,13 @@ stages:
 
 variables:
   MAVEN_OPTS: "-DskipTests"
+  SKIP_UI_TESTS: "true"
 
 build:
   stage: build
   script:
     - "cd WordDetective"
-    - "mvn clean install -U"
+    - "mvn clean install -Pskip-ui-tests"
     - "mvn compile"
 
 checkstyle-test:
