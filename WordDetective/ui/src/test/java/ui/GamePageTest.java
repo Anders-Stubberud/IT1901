@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,6 +15,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.testfx.framework.junit5.ApplicationTest;
+import org.testfx.matcher.control.LabeledMatchers;
 
 import core.GameLogic;
 import javafx.fxml.FXMLLoader;
@@ -50,6 +50,7 @@ public class GamePageTest extends ApplicationTest {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("GamePage.fxml"));
         root = fxmlLoader.load();
+        System.out.println(root);
         controller = fxmlLoader.getController();
         stage.setScene(new Scene(root));
         stage.show();
@@ -64,13 +65,17 @@ public class GamePageTest extends ApplicationTest {
         return root;
     }
 
+    public void closeHowToPlay() {
+        clickOn(LabeledMatchers.hasText("Close"));
+    }
+
     /**
      * Get current input in textfield.
      *
      * @return String in input field
      */
     private String getInput() {
-        return ((TextField) root.lookup("playerInputField")).getText();
+        return ((TextField) root.lookup("#playerInputField")).getText();
 
     }
 
@@ -80,14 +85,14 @@ public class GamePageTest extends ApplicationTest {
      * @param str - The string to write
      */
     private void writeInput(final String str) {
-        ((TextField) getRootNode().lookup("#innerWindow").lookup("#playerInputField")).setText(str);
+        ((TextField) getRootNode().lookup("#playerInputField")).setText(str);
     }
 
     /**
      * Clean inputfield.
      */
     private void cleanInput() {
-        ((TextField) getRootNode().lookup("#innerWindow").lookup("#playerInputField")).setText("");
+        ((TextField) getRootNode().lookup("#playerInputField")).setText("");
     }
 
     /**
@@ -99,6 +104,7 @@ public class GamePageTest extends ApplicationTest {
         controller.setGame(gameMock);
         gameMock.setCategory("Testing");
         gameMock.setWordList(testList);
+        closeHowToPlay();
     }
 
     /**
