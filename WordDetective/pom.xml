@@ -12,6 +12,27 @@
         <maven.compiler.target>16</maven.compiler.target>
         <skipTests>false</skipTests>
     </properties>
+    <profiles>
+        <!-- Profile for exluding UI tests. Used in pipeline because Gitlab can't run javaFX application -->
+        <profile>
+            <id>exclude-ui-tests</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>3.0.0-M5</version>
+                        <configuration>
+                            <excludes>
+                                <exclude>**/ui/*Test.java</exclude>
+                            </excludes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 
     <dependencyManagement>
         <dependencies>
