@@ -24,18 +24,18 @@ checkstyle-test:
     - "cd WordDetective"
     - "mvn checkstyle:check"
 
-maven-test:
-  stage: test
-  script:
-    - "cd WordDetective"
-    - mvn test -Pskip-ui-tests
-
 spotbugs-test:
   stage: test
   script:
     - "cd WordDetective"
     # - "mvn clean install -Pskip-ui-tests"
     - "mvn spotbugs:spotbugs"
+
+maven-test:
+  stage: test
+  script:
+    - "cd WordDetective"
+    - mvn test -Pskip-ui-tests
 
 clean-up:
   stage: clean
