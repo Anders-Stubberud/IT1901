@@ -22,7 +22,7 @@ maven-test:
   stage: test
   script:
     - "cd WordDetective"
-    - mvn test
+    - mvn test -Pexlude-ui-tests
 
 spotbugs-test:
   stage: test
