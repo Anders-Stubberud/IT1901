@@ -9,8 +9,9 @@ build:
   stage: build
   script:
     - "cd WordDetective"
-    - "mvn clean install -U"
-    - "mvn compile"
+    - "mvn clean install"
+    # - "mvn clean install -U"
+    # - "mvn compile"
 
 checkstyle-test:
   stage: test
