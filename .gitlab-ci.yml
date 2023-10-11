@@ -1,4 +1,5 @@
-image: maven:latest
+# image: maven:latest
+image: krissrex/docker-java8-maven-testfxmonocle:1.0
 
 stages:
   - build
@@ -9,9 +10,8 @@ build:
   stage: build
   script:
     - "cd WordDetective"
-    - "mvn clean install"
-    # - "mvn clean install -U"
-    # - "mvn compile"
+    - "mvn clean install -U"
+    - "mvn compile"
 
 checkstyle-test:
   stage: test

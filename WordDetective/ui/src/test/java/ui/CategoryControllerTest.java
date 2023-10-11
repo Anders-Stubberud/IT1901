@@ -3,6 +3,7 @@ package ui;
 import java.io.IOException;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
@@ -19,6 +20,23 @@ public class CategoryControllerTest extends ApplicationTest {
      * The root of the application is used as reference to the DOM.
      */
     private Parent root;
+
+    /**
+     * Properties t0 get the gitlab CI pipeline to run headless for Integration
+     * tests.
+     */
+    @BeforeClass
+    public static void headless() {
+        System.setProperty("prism.verbose", "true");
+        System.setProperty("java.awt.headless", "true");
+        System.setProperty("testfx.robot", "glass");
+        System.setProperty("testfx.headless", "true");
+        System.setProperty("glass.platform", "Monocle");
+        System.setProperty("monocle.platform", "Headless");
+        System.setProperty("prism.order", "sw");
+        System.setProperty("prism.text", "t2k");
+        System.setProperty("testfx.setup.timeout", "2500");
+    }
 
     /**
      * Instantiates the stage.
