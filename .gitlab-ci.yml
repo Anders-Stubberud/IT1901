@@ -28,7 +28,7 @@ spotbugs-test:
   stage: test
   script:
     - "cd WordDetective"
-    - "mvn compile"
+    - "mvn clean install -DskipTests"
     - "mvn spotbugs:spotbugs"
 
 maven-test:
