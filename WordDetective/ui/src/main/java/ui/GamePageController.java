@@ -68,13 +68,13 @@ public final class GamePageController implements Initializable {
     private TextFlow outputField;
 
     /**
-     * The HowToPlay innerW
+     * The HowToPlay window.
      */
     @FXML
     private Pane howToPlay;
 
     /**
-     * Buttons for opening and closing HowToPlay innerW
+     * Buttons for opening and closing HowToPlay window.
      */
     @FXML
     private Button closeHTPBtn, openHTPBtn;
