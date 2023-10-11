@@ -27,7 +27,7 @@ maven-test:
   stage: test
   script:
     - "cd WordDetective"
-    - "mvn test -Pskip-ui-tests"
+    - mvn test -Pskip-ui-tests
 
 spotbugs-test:
   stage: test
