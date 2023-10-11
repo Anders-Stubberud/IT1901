@@ -24,7 +24,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class GamePageTest extends ApplicationTest {
+public final class GamePageTest extends ApplicationTest {
 
     /**
      * Controller for GamePage.
@@ -47,7 +47,7 @@ public class GamePageTest extends ApplicationTest {
      * Start application.
      */
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(final Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("GamePage.fxml"));
         root = fxmlLoader.load();
         System.out.println(root);
@@ -65,6 +65,9 @@ public class GamePageTest extends ApplicationTest {
         return root;
     }
 
+    /**
+     * Closes the HowToPlay popup window.
+     */
     public void closeHowToPlay() {
         clickOn(LabeledMatchers.hasText("Close"));
     }
@@ -113,7 +116,7 @@ public class GamePageTest extends ApplicationTest {
      * @param word          - The word to check
      * @param wordIsCorrect - If the word is meant to be correct
      */
-    private void isCorrect(String word, boolean wordIsCorrect) {
+    private void isCorrect(final String word, final boolean wordIsCorrect) {
         if (wordIsCorrect) {
             assertTrue(testList.contains(word));
         } else {
@@ -123,21 +126,21 @@ public class GamePageTest extends ApplicationTest {
     }
 
     /**
-     * Test writing a word input
+     * Test writing a word input.
      *
      * @param word      - The word to write
      * @param isCorrect - Is word correct
      */
     @ParameterizedTest
     @MethodSource
-    public void testWriteWords(String word, boolean isCorrect) {
+    public void testWriteWords(final String word, final boolean isCorrect) {
         writeInput(word);
         isCorrect(getInput(), isCorrect);
         cleanInput();
     }
 
     /**
-     * Stram of arguments for writing words
+     * Stram of arguments for writing words.
      *
      * @return - Stream of Arguments
      */

@@ -103,7 +103,7 @@ public class GameLogic {
     }
 
     /**
-     * Set new wordlist
+     * Set new wordlist.
      *
      * @param newWordList
      */

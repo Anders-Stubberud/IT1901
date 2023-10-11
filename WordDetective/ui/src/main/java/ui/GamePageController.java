@@ -80,7 +80,7 @@ public final class GamePageController implements Initializable {
     private Button closeHTPBtn, openHTPBtn;
 
     /**
-     * a GameLogic object used to controll the game
+     * a GameLogic object used to controll the game.
      */
     private GameLogic game;
     /**
@@ -161,7 +161,7 @@ public final class GamePageController implements Initializable {
     }
 
     /**
-     * Empty Constuctor for initialising controller
+     * Empty Constuctor for initialising controller.
      */
     public GamePageController() {
         this.username = "guest";
@@ -347,11 +347,21 @@ public final class GamePageController implements Initializable {
         }
     }
 
+    /**
+     * Get GameLogic.
+     *
+     * @return GameLogic object
+     */
     public GameLogic getGame() {
         return game;
     }
 
-    public void setGame(final GameLogic game) {
-        this.game = game;
+    /**
+     * Set GameLogic.
+     *
+     * @param newGame - the new GameLogic
+     */
+    public void setGame(final GameLogic newGame) {
+        this.game = newGame;
     }
 }
