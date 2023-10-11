@@ -80,9 +80,9 @@ public final class GamePageController implements Initializable {
     private Button closeHTPBtn, openHTPBtn;
 
     /**
-     * The Wordmaster is the GameLogic object that is used to get the words.
+     * a GameLogic object used to controll the game.
      */
-    private GameLogic wordMaster;
+    private GameLogic game;
     /**
      * The substring is the letters that the player has to use.
      */
@@ -92,15 +92,15 @@ public final class GamePageController implements Initializable {
      */
     private List<Circle> players = new ArrayList<>();
     /**
-     * The layoutX is the X position of the wordMaster.
+     * The layoutX is the X position of the game.
      */
     private final int layoutX = 470;
     /**
-     * The layoutY is the Y position of the wordMaster.
+     * The layoutY is the Y position of the game.
      */
     private final int layoutY = 30;
     /**
-     * The layoutCenter is the center of the wordMaster.
+     * The layoutCenter is the center of the game.
      */
     private final int layoutCenter = 30;
 
@@ -152,7 +152,7 @@ public final class GamePageController implements Initializable {
     /**
      * Constructor initializing the object.
      *
-     * @param usernameParameter username,'guest' if guest, else provided username.
+     * @param usernameParameter provided username.
      * @param categoryParameter category of the given game.
      */
     public GamePageController(final String usernameParameter, final String categoryParameter) {
@@ -161,23 +161,31 @@ public final class GamePageController implements Initializable {
     }
 
     /**
+     * Empty Constuctor for initialising controller.
+     */
+    public GamePageController() {
+        this.username = "guest";
+        this.category = "us states";
+    }
+
+    /**
      * Pick a random player from players list.
      *
      * @return the chosen player
      */
     public String pickPlayer() {
-        return wordMaster.pickRndPlayer();
+        return game.pickRndPlayer();
     }
 
     /**
-     * Move the wordMaster (The letters) to a chosen location. Resets to original
+     * Move the game (The letters) to a chosen location. Resets to original
      * posistion after animation.
      *
      * @param targetX  - X position of target
      * @param targetY  - Y position of target
      * @param duration - Duration of animation in seconds
      */
-    public void wordMasterMoveTo(final double targetX, final double targetY, final int duration) {
+    public void moveLettersTo(final double targetX, final double targetY, final int duration) {
         TranslateTransition translate = new TranslateTransition();
         translate.setNode(lettersCircle);
         translate.setDuration(Duration.seconds(duration));
@@ -227,8 +235,8 @@ public final class GamePageController implements Initializable {
     }
 
     /**
-     * wordMaster checks if player written word is correct. If right add 1 point
-     * else shake wordMaster.
+     * game checks if player written word is correct. If right add 1 point
+     * else shake game.
      *
      * @param ke - KeyEvent
      */
@@ -236,7 +244,7 @@ public final class GamePageController implements Initializable {
         colorCorrectLetters(playerInputField, outputField);
         if (ke.getCode().equals(KeyCode.ENTER)) { // If pressed Enter, then check word
             String playerGuess = playerInputField.getText();
-            if (wordMaster.checkValidWord(substring, playerGuess)) {
+            if (game.checkValidWord(substring, playerGuess)) {
                 FileIO.incrementHighScore(username);
                 int pointsHS = FileIO.getHighScore(username);
                 points.setText(String.valueOf(pointsHS));
@@ -300,7 +308,7 @@ public final class GamePageController implements Initializable {
      * The length of the letters is either 2 or 3.
      */
     public void rndwordMasterLetters() {
-        String string = wordMaster.getRandomWord();
+        String string = game.getRandomWord();
         System.out.println(string);
         substring = GameLogic.getRandomSubstring(string);
         letters.setText(substring.toUpperCase());
@@ -322,9 +330,8 @@ public final class GamePageController implements Initializable {
     @Override // Runs on start of the application
     public void initialize(final URL location, final ResourceBundle resources) {
         try {
-            wordMaster = new GameLogic(username);
-            wordMaster.setCategory(category);
-            displayCategory.setText(category);
+            game = new GameLogic(username);
+            game.setCategory(category);
             rndwordMasterLetters();
             createPlayers(true);
             outputField.setStyle("-fx-font: 24 arial;");
@@ -338,5 +345,23 @@ public final class GamePageController implements Initializable {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Get GameLogic.
+     *
+     * @return GameLogic object
+     */
+    public GameLogic getGame() {
+        return game;
+    }
+
+    /**
+     * Set GameLogic.
+     *
+     * @param newGame - the new GameLogic
+     */
+    public void setGame(final GameLogic newGame) {
+        this.game = newGame;
     }
 }

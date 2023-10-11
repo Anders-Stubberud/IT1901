@@ -103,6 +103,16 @@ public class GameLogic {
     }
 
     /**
+     * Set new wordlist.
+     *
+     * @param newWordList
+     */
+    public void setWordList(final List<String> newWordList) {
+        this.wordlistForSelection = newWordList;
+        this.wordlistForSearch = Set.copyOf(newWordList);
+    }
+
+    /**
      * Return players in this game.
      *
      * @return List of users

@@ -14,7 +14,7 @@
 
 <AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#checkWrittenWord" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: darkslategrey;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.GamePageController">
    <children>
-      <Pane fx:id="window" layoutX="1.0" prefHeight="600.0" prefWidth="1000.0">
+      <Pane fx:id="innerWindow" layoutX="1.0" prefHeight="600.0" prefWidth="1000.0">
          <children>
             <Pane fx:id="lettersCircle" layoutX="470.0" layoutY="71.0" prefHeight="60.0" prefWidth="60.0">
                <children>
