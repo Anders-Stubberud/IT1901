@@ -1,5 +1,5 @@
-# image: maven:latest
-image: krissrex/docker-java8-maven-testfxmonocle:1.0
+image: maven:latest
+# image: krissrex/docker-java8-maven-testfxmonocle:1.0
 
 stages:
   - build
