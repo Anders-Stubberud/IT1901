@@ -342,6 +342,7 @@ public final class GamePageController implements Initializable {
                 return change;
             }));
             playerInputField.requestFocus();
+            categoryDisplay.setText("Category: " + game.getChosenCategory().toUpperCase());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
