@@ -47,7 +47,7 @@ public final class GamePageController implements Initializable {
      */
 
     @FXML
-    private Pane window;
+    private Pane innerWindow;
     /**
      * The playerInputField is the textfield where the player writes the word.
      */
@@ -68,13 +68,13 @@ public final class GamePageController implements Initializable {
     private TextFlow outputField;
 
     /**
-     * The HowToPlay window.
+     * The HowToPlay innerW
      */
     @FXML
     private Pane howToPlay;
 
     /**
-     * Buttons for opening and closing HowToPlay window.
+     * Buttons for opening and closing HowToPlay innerW
      */
     @FXML
     private Button closeHTPBtn, openHTPBtn;
@@ -215,7 +215,7 @@ public final class GamePageController implements Initializable {
 
         if (haveBots) {
             double numOfBots = Math.floor(Math.random() * botsMultiplier) + 2; // minimum of 1 bot
-            double centerX = window.getPrefWidth() / (numOfBots + 1);
+            double centerX = innerWindow.getPrefWidth() / (numOfBots + 1);
             for (int j = 1; j < (numOfBots + 1); j++) {
                 if (j != (int) Math.ceil(numOfBots / 2)) {
                     players.add(new Circle(centerX * j, centerY, radius,
@@ -230,7 +230,7 @@ public final class GamePageController implements Initializable {
 
         // players.add(((int) Math.floor(players.size() / 2)), activePlayer);
         players.add((int) (players.size() / 2), activePlayer);
-        window.getChildren().addAll(players);
+        innerWindow.getChildren().addAll(players);
 
     }
 
@@ -248,6 +248,7 @@ public final class GamePageController implements Initializable {
                 FileIO.incrementHighScore(username);
                 int pointsHS = FileIO.getHighScore(username);
                 points.setText(String.valueOf(pointsHS));
+                playerInputField.setText("");
                 rndwordMasterLetters();
             } else {
                 // Shake inputfield
@@ -258,7 +259,6 @@ public final class GamePageController implements Initializable {
                 shake.setToX(shakeXMovment);
                 shake.play();
             }
-            playerInputField.setText("");
         }
 
     }
