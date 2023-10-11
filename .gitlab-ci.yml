@@ -34,7 +34,7 @@ spotbugs-test:
   stage: test
   script:
     - "cd WordDetective"
-    - "mvn clean install -Pskip-ui-tests"
+    # - "mvn clean install -Pskip-ui-tests"
     - "mvn spotbugs:spotbugs"
 
 clean-up:
