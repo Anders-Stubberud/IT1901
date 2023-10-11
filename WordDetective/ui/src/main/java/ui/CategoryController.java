@@ -124,6 +124,8 @@ public final class CategoryController implements Initializable {
         }
         for (String category : categories) {
             Button button = new Button(category);
+            button.setId(category);
+            button.setUserData(category);
             button.setPadding(new Insets(VERTICAL_PADDING, HORIZONTAL_PADDING, VERTICAL_PADDING, HORIZONTAL_PADDING));
             button.setFont(new Font(VERTICAL_PADDING));
             vbox.getChildren().add(button);
