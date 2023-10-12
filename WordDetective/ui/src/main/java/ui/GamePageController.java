@@ -59,7 +59,7 @@ public final class GamePageController implements Initializable {
      */
 
     @FXML
-    private Label letters, points, categoryDisplay, displayCategory;
+    private Label letters, points, categoryDisplay;
 
     /**
      * Outputfield of what the player writes.
@@ -249,7 +249,6 @@ public final class GamePageController implements Initializable {
                 int pointsHS = FileIO.getHighScore(username);
                 points.setText(String.valueOf(pointsHS));
                 rndwordMasterLetters();
-                playerInputField.setText("");
             } else {
                 // Shake inputfield
                 TranslateTransition shake = new TranslateTransition();
@@ -333,7 +332,6 @@ public final class GamePageController implements Initializable {
         try {
             game = new GameLogic(username);
             game.setCategory(category);
-            displayCategory.setText(category);
             rndwordMasterLetters();
             createPlayers(true);
             outputField.setStyle("-fx-font: 24 arial;");

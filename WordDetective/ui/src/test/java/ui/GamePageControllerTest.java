@@ -100,15 +100,6 @@ public class GamePageControllerTest extends ApplicationTest {
 
   }
 
-  // /**
-  // * Write a str in input field.
-  // *
-  // * @param str - The string to write
-  // */
-  // private void writeInput(final String str) {
-  // ((TextField) getRootNode().lookup("#playerInputField")).setText(str);
-  // }
-
   /**
    * Clean inputfield.
    */
@@ -158,19 +149,6 @@ public class GamePageControllerTest extends ApplicationTest {
     String extractedString = extractGuess();
     Assert.assertEquals(input.toUpperCase(), extractedString);
   }
-
-  // /**
-  // * Tests if the previous guess of a user gets wiped before a new substring is
-  // * served.
-  // */
-  // @Test
-  // public void testWipeOfGuess() {
-  // String input = "This should get wiped";
-  // write(input);
-  // type(KeyCode.ENTER);
-  // String wipedGuess = extractGuess();
-  // Assert.assertEquals("Text did not get wiped after guess", "", wipedGuess);
-  // }
 
   /**
    * Setup before each test. Uses mockups for future testing.
