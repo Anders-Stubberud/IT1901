@@ -1,6 +1,6 @@
 # Group gr2325 repository
 
-[Open in che]()
+[Open in che](https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2023/gr2325/gr2325?new)
 <br>
 _NB! Che is not compatible with UI tests, so install with:_ `mvn clean install -Pskip-ui-tests` to run in che.
 <br>
