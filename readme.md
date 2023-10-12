@@ -3,13 +3,17 @@
 This project contains the IT1901 project for group 25.
 
 Our application is "WordDetective: Substring Edition". The main objective for our project is to create a fun and intuitive game for learning.
+
+### TL;DR
+WordDetective is about <code>writing words</code> that <code>contains</code> a certain <code>substring</code>. For example if the category is **fruits** and the substring is **"PL"**. Then one answer can be **Pineap<span style="color: green;">pl</span>e**
+
 Further details about the application is located in the [WordDetective README](WordDetective/README.md).
 
 # Documentation
 
 ## Releases of WordDetective:
 
-([Release 1](docs/release1/README.md))
+([Release 1](docs/release1/README.md))([Release 2](docs/release2/README.md))
 
 # Description of content
 
@@ -78,7 +82,7 @@ WordDetective
        └── resources
 ```
 
-## Version Requirements
+# Version Requirements
 
 **Java:** 17+
 
@@ -86,7 +90,7 @@ WordDetective
 
 **Apache Maven:** 3.8.1
 
-## Building the project
+# Building the project
 
 **Clone code**
 <br>
@@ -98,28 +102,34 @@ WordDetective
 <br>
 <code>mvn clean install</code>
 
-## Running application
+# Running application
 
 **Run application**
 <br>
 <code>mvn -f ui/pom.xml javafx:run</code>
 
-## Running WordDetective test suite
-
+# Running WordDetective test suite
+### Tests
 **Run tests**
 <br>
 <code>mvn test</code>
-
-**Run checkstyle test**
-<br>
-<code>mvn checkstyle:check</code>
 
 **Generate jacoco report**
 (The report can be found in target/site/jacoco)
 <br>
 <code>mvn jacoco:report</code>
 
-## Clean project
+### Quality tests
+**Run checkstyle test**
+<br>
+<code>mvn checkstyle:check</code>
+
+**Run spotbugs test**
+<br>
+<code>mvn spotbugs:check</code>
+
+
+# Clean project
 
 **Clean up downloaded dependencies**
 <br>
@@ -134,7 +144,4 @@ WordDetective
 - Bengt Andreas Rotheim
 - Anders Stubberud
 
-```
-
-```
 ````
