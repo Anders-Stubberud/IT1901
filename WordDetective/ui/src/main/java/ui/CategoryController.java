@@ -74,13 +74,15 @@ public final class CategoryController implements Initializable {
      */
     @FXML
     public void uploadFile() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
-        File selectedFile = fileChooser.showOpenDialog(new Stage());
-        if (selectedFile != null) {
-            String filename = selectedFile.getName();
-            UserIO.uploadFile(selectedFile.getAbsolutePath(), username, filename);
-            renderCategories();
+        if (!username.equals("guest")) {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+            File selectedFile = fileChooser.showOpenDialog(new Stage());
+            if (selectedFile != null) {
+                String filename = selectedFile.getName();
+                UserIO.uploadFile(selectedFile.getAbsolutePath(), username, filename);
+                renderCategories();
+            }
         }
     }
 
@@ -111,6 +113,9 @@ public final class CategoryController implements Initializable {
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         renderCategories();
+        if (username.equals("guest")) {
+            upload.setOpacity(0);
+        }
     }
 
     /**

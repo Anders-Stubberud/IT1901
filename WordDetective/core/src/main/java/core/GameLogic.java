@@ -108,7 +108,7 @@ public class GameLogic {
      * @param newWordList
      */
     public void setWordList(final List<String> newWordList) {
-        this.wordlistForSelection = newWordList;
+        this.wordlistForSelection = new ArrayList<>(newWordList);
         this.wordlistForSearch = Set.copyOf(newWordList);
     }
 

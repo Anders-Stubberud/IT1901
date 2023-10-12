@@ -14,28 +14,22 @@ variables:
 build:
   stage: build
   script:
-    - cd WordDetective
-    - mvn clean install -U -Pexclude-ui-tests
-    - mvn compile
+    - "cd WordDetective"
+    - "mvn clean install -Pskip-ui-tests"
+    - "mvn compile"
 
 checkstyle-test:
   stage: test
   script:
-    - cd WordDetective
-    - mvn checkstyle:check
-
-maven-test:
-  stage: test
-  script:
-    - cd WordDetective/core
-    - mvn test
+    - "cd WordDetective"
+    - "mvn checkstyle:check"
 
 spotbugs-test:
   stage: test
   script:
-    - cd WordDetective
-    - mvn clean install -U -Pexclude-ui-tests
-    - mvn spotbugs:spotbugs
+    - "cd WordDetective"
+    - "mvn clean install -DskipTests"
+    - "mvn spotbugs:spotbugs"
 
 maven-test:
   stage: test
@@ -46,5 +40,5 @@ maven-test:
 clean-up:
   stage: clean
   script:
-    - cd WordDetective
-    - mvn clean
+    - "cd WordDetective"
+    - "mvn clean"

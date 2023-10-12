@@ -128,15 +128,35 @@ public final class UserIO {
             e.printStackTrace();
         }
         if (new File(path + "/stats").mkdirs()) {
-            User userInfo = new User(username, password);
+            User user = new User(username, password);
             try (FileWriter writer = new FileWriter(path + "/stats/stats.json", StandardCharsets.UTF_8)) {
                 Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                gson.toJson(userInfo, writer);
+                gson.toJson(user, writer);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
             throw new RuntimeException("Failed to create the user directory: " + path + "/stats");
+        }
+    }
+
+    /**
+     * Deletes a user.
+     *
+     * @param folder the folder of the user to be deleted.
+     */
+    public static void deleteUser(final File folder) {
+        if (folder.isDirectory()) {
+            File[] files = folder.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    deleteUser(file);
+                }
+            }
+        }
+        boolean deleted = folder.delete();
+        if (!deleted) {
+            System.err.println("Failed to delete: " + folder.getAbsolutePath());
         }
     }
 

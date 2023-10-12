@@ -65,7 +65,6 @@ public class RegistrationController {
                     },
                     DISPLAY_ERROR_DURATION_MS);
 
-            throw new IllegalStateException("Brukernavnet er opptatt");
         } else {
             UserIO.insertNewUser(providedUsername, providedPassword);
             try {
