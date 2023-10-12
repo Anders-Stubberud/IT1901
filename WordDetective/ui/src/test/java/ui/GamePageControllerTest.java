@@ -187,7 +187,6 @@ public class GamePageControllerTest extends ApplicationTest {
   @MethodSource
   public void testWriteWords(final String word, final boolean isCorrect) {
     write(word);
-    System.out.println(getInput());
     isCorrect(getInput(), isCorrect);
     cleanInput();
   }
