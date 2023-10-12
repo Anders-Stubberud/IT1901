@@ -1,5 +1,11 @@
 # Group gr2325 repository
 
+[Open in che]()
+<br>
+_NB! Che is not compatible with UI tests, so install with:_ `mvn clean install -Pskip-ui-tests` to run in che.
+<br>
+_This will also skip the jacoco report for the UI module. Install locally for full testing and full report._
+
 This project contains the IT1901 project for group 25.
 
 Our application is "WordDetective: Substring Edition". The main objective for our project is to create a fun and intuitive game for learning.
@@ -88,7 +94,9 @@ WordDetective
 
 **Build backend application**
 <br>
-<code>mvn clean install</code>
+<i>locally: </i><code>mvn clean install</code>
+<br>
+<i>for che: </i><code>mvn clean install -Pskip-ui-tests<code>
 
 # Running application
 
