@@ -5,6 +5,7 @@ This project contains the IT1901 project for group 25.
 Our application is "WordDetective: Substring Edition". The main objective for our project is to create a fun and intuitive game for learning.
 
 ### TL;DR
+
 WordDetective is about <code>writing words</code> that <code>contains</code> a certain <code>substring</code>. For example if the category is **fruits** and the substring is **"PL"**. Then one answer can be **Pineap<span style="color: green;">pl</span>e**
 
 Further details about the application is located in the [WordDetective README](WordDetective/README.md).
@@ -36,33 +37,21 @@ WordDetective
 │   │
 │   └── src
 │      ├── main
-│      │   └── java
-│      │       └── core
-│      │
-│      ├── test
-│      │   └── java
-│      │       └── core
-│      │
-│      └── resources
+│      │   ├── java
+│      │   │   └── core
+│      │   │        └── contains core logic files and persistence with gson files
+│      │   │
+│      │   └── resources
+│      │              ├── default_categories
+│      │              │                    └── contains all the default categories, in JSON files
+│      │              ├──default_stats
+│      │              │              └── contains stats contributed by all guest users, in JSON format.
+│      │              ├──users
+│      ├── test              └── contains all registered user along with their information, in JSON format.
+│          └── java
+│              └── core
+│                  └── contains test classes for core logic and persistence
 │
-│
-│
-└── persistence
-│   │
-│   └── src
-│      ├── main
-│      │   └── java
-│      │       └── persistence
-│      │           │
-│      │           └── (Filtilgangs- og JSON-håndteringsklasser)
-│      │
-│      ├── test
-│      │   └── java
-│      │       └── persistence
-│      │           │
-│      │           └── (Tester for filtilgangskode)
-│      │
-│      └── resources
 │
 └── ui
     │
@@ -70,16 +59,15 @@ WordDetective
        ├── main
        │   └── java
        │       └── ui
-       │           │
-       │           └── (GUI-klasser og kontrollere)
+       │           └── contains controller files and factory files
        │
        ├── test
        │   └── java
        │       └── ui
-       │           │
-       │           └── (Tester for brukergrensesnittskode)
+       │           └── contains ui tests
        │
        └── resources
+                   └── contains fxml files
 ```
 
 # Version Requirements
@@ -109,7 +97,9 @@ WordDetective
 <code>mvn -f ui/pom.xml javafx:run</code>
 
 # Running WordDetective test suite
+
 ### Tests
+
 **Run tests**
 <br>
 <code>mvn test</code>
@@ -120,6 +110,7 @@ WordDetective
 <code>mvn jacoco:report</code>
 
 ### Quality tests
+
 **Run checkstyle test**
 <br>
 <code>mvn checkstyle:check</code>
@@ -127,7 +118,6 @@ WordDetective
 **Run spotbugs test**
 <br>
 <code>mvn spotbugs:check</code>
-
 
 # Clean project
 
@@ -137,11 +127,11 @@ WordDetective
 
 # Creators
 
-````
+```
 
 - Dag Kristian Andersen
 - Mads André Bårnes
 - Bengt Andreas Rotheim
 - Anders Stubberud
 
-````
+```
