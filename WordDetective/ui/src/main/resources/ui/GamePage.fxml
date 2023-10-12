@@ -61,7 +61,7 @@
                   <Font size="30.0" />
                </font>
             </Label>
-            <Label fx:id="categoryDisplay" alignment="CENTER" contentDisplay="CENTER" layoutX="353.0" layoutY="9.0" maxWidth="-Infinity" prefHeight="45.0" prefWidth="178.0" text="Category:" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP">
+            <Label fx:id="categoryDisplay" alignment="CENTER" contentDisplay="CENTER" layoutX="161.0" layoutY="9.0" maxWidth="-Infinity" prefHeight="45.0" prefWidth="679.0" text="Category:" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP">
                <font>
                   <Font size="30.0" />
                </font>
@@ -84,7 +84,7 @@
                </font>
             </Label>
             <Line endX="234.611083984375" layoutX="196.0" layoutY="88.0" startX="-119.52337646484375" stroke="#868686" />
-            <Label alignment="CENTER" contentDisplay="TOP" layoutX="28.0" layoutY="148.0" prefHeight="51.0" prefWidth="452.0" text="2. Your task is to write a word containing those letters " textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" wrapText="true">
+            <Label alignment="CENTER" contentDisplay="TOP" layoutX="28.0" layoutY="148.0" prefHeight="51.0" prefWidth="452.0" text="2. Your task is to write a word containing those letters in the order given" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" wrapText="true">
                <font>
                   <Font size="15.0" />
                </font>

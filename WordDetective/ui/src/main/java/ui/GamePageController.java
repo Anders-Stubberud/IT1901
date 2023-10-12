@@ -43,7 +43,7 @@ public final class GamePageController implements Initializable {
      */
 
     @FXML
-    private Pane window;
+    private Pane innerWindow;
     /**
      * The playerInputField is the textfield where the player writes the word.
      */
@@ -250,6 +250,7 @@ public final class GamePageController implements Initializable {
                 FileIO.incrementHighScore(username);
                 int pointsHS = FileIO.getHighScore(username);
                 points.setText(String.valueOf(pointsHS));
+                playerInputField.setText("");
                 rndwordMasterLetters();
             } else {
                 // Shake inputfield
