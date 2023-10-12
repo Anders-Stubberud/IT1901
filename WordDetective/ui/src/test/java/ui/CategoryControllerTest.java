@@ -1,8 +1,6 @@
 package ui;
 
 import java.io.IOException;
-
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
