@@ -1,5 +1,6 @@
 package core;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -41,14 +42,17 @@ public final class CategoryLogic {
      * @return Collection of default categories as strings
      */
     public Collection<String> getAvailableDefaultCategories() {
-        return availableDefaultCategories;
+        return new ArrayList<>(availableDefaultCategories);
     }
 
     /**
      * @return Collection of custom categories as strings
      */
     public Collection<String> getAvailableCustomCategories() {
-        return availableCustomCategories;
+        if (availableCustomCategories == null) {
+            return null;
+        }
+        return new ArrayList<>(availableCustomCategories);
     }
 
     /**

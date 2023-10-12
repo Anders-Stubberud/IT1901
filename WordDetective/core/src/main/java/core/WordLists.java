@@ -1,5 +1,7 @@
 package core;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -27,22 +29,22 @@ public class WordLists {
      *                      words used for functionality.
      */
     public WordLists(final Set<String> searchList, final List<String> selectionList) {
-        this.wordListForSearch = searchList;
-        this.wordListForSelection = selectionList;
+        this.wordListForSearch = new HashSet<String>(searchList);
+        this.wordListForSelection = new ArrayList<String>(selectionList);
     }
 
     /**
      * @return Set of words
      */
     public Set<String> getWordListForSearch() {
-        return wordListForSearch;
+        return new HashSet<>(wordListForSearch);
     }
 
     /**
      * @return List of words
      */
     public List<String> getWordListForSelection() {
-        return wordListForSelection;
+        return new ArrayList<>(wordListForSelection);
     }
 
 }

@@ -10,6 +10,24 @@
         <relativePath>..</relativePath>
     </parent>
 
+    <profiles>
+        <!-- Profile to skip UI tests (for use in GitLab CI) -->
+        <profile>
+            <id>skip-ui-tests</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <skipTests>true</skipTests>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
     <dependencies>
 
         <dependency>
@@ -43,6 +61,14 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
         </dependency>
+        <!-- Mockito for testing using mockups -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.4.0</version>
+            <scope>test</scope>
+        </dependency>
+
 
         <!-- test javafx with TextFX -->
 		<dependency>
@@ -63,7 +89,11 @@
             <version>2.2</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.loadui</groupId>
+            <artifactId>testFx</artifactId>
+            <version>3.1.2</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -76,9 +106,10 @@
                 <groupId>org.apache.maven.plugins</groupId>
         		<artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <argLine>
-                    --add-opens project.ui/ui=ALL-UNNAMED --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
-                    </argLine>
+                    <systemPropertyVariables>
+                        <user.dir>${project.basedir}</user.dir>
+                    </systemPropertyVariables>
+                    <argLine>@{argLine} --add-opens project.ui/ui=ALL-UNNAMED --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</argLine>
                 </configuration>
 	        </plugin>
             <plugin>
@@ -92,6 +123,16 @@
                     <mainClass>project.ui/ui.App</mainClass>
                 </configuration>
             </plugin>
+
+            <!-- Configure jacoco code coverage -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <configuration>
+                    <propertyName>argLine</propertyName>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 </project>
