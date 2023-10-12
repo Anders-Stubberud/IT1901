@@ -104,24 +104,25 @@ public final class GamePageController implements Initializable {
      */
     private final int layoutCenter = 30;
 
-    /**
-     * The radius is the radius of the player circle.
-     */
-    private final int radius = 30;
+    // might be used in later release
+    // /**
+    // * The radius is the radius of the player circle.
+    // */
+    // private final int radius = 30;
 
-    /**
-     * The centerY is the default Y position of the player circle.
-     */
-    private final int centerY = 425; // Default Y position
+    // /**
+    // * The centerY is the default Y position of the player circle.
+    // */
+    // private final int centerY = 425; // Default Y position
 
-    /**
-     * The playerCenterX is the X position of the player circle.
-     */
-    private final double pageCenter = 500.0; // Default X is center
-    /**
-     * The bots is the number of bots in the game.
-     */
-    private final int botsMultiplier = 5;
+    // /**
+    // * The playerCenterX is the X position of the player circle.
+    // */
+    // private final double pageCenter = 500.0; // Default X is center
+    // /**
+    // * The bots is the number of bots in the game.
+    // */
+    // private final int botsMultiplier = 5;
 
     /**
      * Number for moving node in X-direction on shake animation.
@@ -203,36 +204,41 @@ public final class GamePageController implements Initializable {
 
     }
 
-    /**
-     * Create players and draw them on the fxml.
-     *
-     * @param haveBots - If true add 1-4 bots
-     * @throws FileNotFoundException If player pictures is not found
-     */
-    public void createPlayers(final boolean haveBots) throws FileNotFoundException {
-        // TODO read from active player JSON
-        double playerCenterX = pageCenter;
+    // Might be inplemented later.
+    // /**
+    // * Create players and draw them on the fxml.
+    // *
+    // * @param haveBots - If true add 1-4 bots
+    // * @throws FileNotFoundException If player pictures is not found
+    // */
+    // public void createPlayers(final boolean haveBots) throws
+    // FileNotFoundException {
+    // // TODO read from active player JSON
+    // double playerCenterX = pageCenter;
 
-        if (haveBots) {
-            double numOfBots = Math.floor(Math.random() * botsMultiplier) + 2; // minimum of 1 bot
-            double centerX = window.getPrefWidth() / (numOfBots + 1);
-            for (int j = 1; j < (numOfBots + 1); j++) {
-                if (j != (int) Math.ceil(numOfBots / 2)) {
-                    players.add(new Circle(centerX * j, centerY, radius,
-                            new ImagePattern(new Image(new FileInputStream("./assets/images/Abdulbari.png")))));
-                } else {
-                    playerCenterX = centerX * j;
-                }
-            }
-        }
-        Circle activePlayer = new Circle(playerCenterX, centerY, radius,
-                new ImagePattern(new Image(new FileInputStream("./assets/images/Brage.png"))));
+    // if (haveBots) {
+    // double numOfBots = Math.floor(Math.random() * botsMultiplier) + 2; // minimum
+    // of 1 bot
+    // double centerX = window.getPrefWidth() / (numOfBots + 1);
+    // for (int j = 1; j < (numOfBots + 1); j++) {
+    // if (j != (int) Math.ceil(numOfBots / 2)) {
+    // players.add(new Circle(centerX * j, centerY, radius,
+    // new ImagePattern(new Image(new
+    // FileInputStream("./assets/images/Abdulbari.png")))));
+    // } else {
+    // playerCenterX = centerX * j;
+    // }
+    // }
+    // }
+    // Circle activePlayer = new Circle(playerCenterX, centerY, radius,
+    // new ImagePattern(new Image(new
+    // FileInputStream("./assets/images/Brage.png"))));
 
-        // players.add(((int) Math.floor(players.size() / 2)), activePlayer);
-        players.add((int) (players.size() / 2), activePlayer);
-        window.getChildren().addAll(players);
+    // // players.add(((int) Math.floor(players.size() / 2)), activePlayer);
+    // players.add((int) (players.size() / 2), activePlayer);
+    // window.getChildren().addAll(players);
 
-    }
+    // }
 
     /**
      * game checks if player written word is correct. If right add 1 point
@@ -329,39 +335,18 @@ public final class GamePageController implements Initializable {
 
     @Override // Runs on start of the application
     public void initialize(final URL location, final ResourceBundle resources) {
-        try {
-            game = new GameLogic(username);
-            game.setCategory(category);
-            rndwordMasterLetters();
-            createPlayers(true);
-            outputField.setStyle("-fx-font: 24 arial;");
-            // Change textfield format till uppercase
-            playerInputField.setTextFormatter(new TextFormatter<>((change) -> {
-                change.setText(change.getText().toUpperCase());
-                playerInputField.setStyle("-fx-opacity: 0");
-                return change;
-            }));
-            playerInputField.requestFocus();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        game = new GameLogic(username);
+        game.setCategory(category);
+        rndwordMasterLetters();
+        // createPlayers(true);
+        outputField.setStyle("-fx-font: 24 arial;");
+        // Change textfield format till uppercase
+        playerInputField.setTextFormatter(new TextFormatter<>((change) -> {
+            change.setText(change.getText().toUpperCase());
+            playerInputField.setStyle("-fx-opacity: 0");
+            return change;
+        }));
+        playerInputField.requestFocus();
     }
 
-    // /**
-    // * Get GameLogic.
-    // *
-    // * @return GameLogic object
-    // */
-    // public GameLogic getGame() {
-    // return game;
-    // }
-
-    // /**
-    // * Set GameLogic.
-    // *
-    // * @param newGame - the new GameLogic
-    // */
-    // public void setGame(final GameLogic newGame) {
-    // this.game = newGame;
-    // }
 }
