@@ -16,7 +16,6 @@ cache:
 
 build:
   stage: build
-  when: manual
   script:
     - "cd WordDetective; mvn clean install $MAVEN_CLI_OPTS"
 
