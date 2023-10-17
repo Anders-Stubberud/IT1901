@@ -18,7 +18,7 @@
   <profiles>
     <!-- Profile for exluding UI tests. Used in pipeline because Gitlab can't run javaFX application -->
     <profile>
-      <id>exclude-ui-tests</id>
+      <id>skip-ui-tests</id>
       <build>
         <plugins>
           <plugin>
