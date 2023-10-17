@@ -1,22 +1,36 @@
-image: maven:latest
-# image: krissrex/docker-java8-maven-testfxmonocle:1.0
+image: maven:3.8.3-openjdk-17
+
+variables:
+  MAVEN_OPTS: "-Djava.awt.headless=true -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+  MAVEN_CLI_OPTS: "--batch-mode -P headless -DskipUiTests=true"
 
 stages:
   - build
   - test
   - clean
 
-variables:
-  GIT_DEPTH: "0"
-  MAVEN_OPTS: "-DskipTests"
-  SKIP_UI_TESTS: "true"
+cache:
+  paths:
+    - .m2/repository
+  key: "$CI_BUILD_REF_NAME"
 
 build:
   stage: build
+  when: manual
+  script:
+    - "cd WordDetective; mvn clean install $MAVEN_CLI_OPTS"
+
+maven-test:
+  stage: test
+  script:
+    - "cd WordDetective; mvn clean test $MAVEN_CLI_OPTS"
+
+spotbugs-test:
+  stage: test
   script:
     - "cd WordDetective"
-    - "mvn clean install -Pskip-ui-tests"
-    - "mvn compile"
+    - "mvn clean install $MAVEN_CLI_OPTS"
+    - "mvn spotbugs:spotbugs"
 
 checkstyle-test:
   stage: test
@@ -24,18 +38,6 @@ checkstyle-test:
     - "cd WordDetective"
     - "mvn checkstyle:check"
 
-spotbugs-test:
-  stage: test
-  script:
-    - "cd WordDetective"
-    - "mvn clean install -Pskip-ui-tests"
-    - "mvn spotbugs:spotbugs"
-
-maven-test:
-  stage: test
-  script:
-    - "cd WordDetective"
-    - mvn test -Pskip-ui-tests
 
 clean-up:
   stage: clean
