@@ -9,7 +9,6 @@ import java.util.Collection;
 import org.junit.jupiter.api.Test;
 import com.google.gson.JsonObject;
 
-import persistence.UserIO;
 
 public class UserIOTest {
 
