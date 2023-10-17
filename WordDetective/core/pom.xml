@@ -63,17 +63,6 @@
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.0.0-M5</version> <!-- Use the latest version -->
-                <configuration>
-                    <!-- Set the working directory to the project's root directory -->
-                    <systemPropertyVariables>
-                        <user.dir>${project.basedir}</user.dir>
-                    </systemPropertyVariables>
-                </configuration>
-            </plugin>
 
             <!-- Configure jacoco code coverage -->
             <plugin>
