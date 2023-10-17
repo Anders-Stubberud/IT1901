@@ -1,7 +1,9 @@
-package core;
+package persistence;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import persistence.FileIO;
 
 import java.io.File;
 import java.nio.file.Path;
