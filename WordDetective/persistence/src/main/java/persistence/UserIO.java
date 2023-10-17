@@ -47,7 +47,7 @@ public final class UserIO {
                 throw new IllegalStateException("Working directory not found.");
             }
         }
-        return path.toString() + "/WordDetective/core/src/main/resources/users";
+        return path.toString() + "/WordDetective/persistence/src/main/resources/users";
     }
 
     /**

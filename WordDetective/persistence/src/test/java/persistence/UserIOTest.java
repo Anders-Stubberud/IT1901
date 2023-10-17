@@ -18,7 +18,7 @@ public class UserIOTest {
    */
   @Test
   public void testCorrectPath() {
-    String correctPath = "gr2325/WordDetective/core/src/main/resources/users";
+    String correctPath = "gr2325/WordDetective/persistence/src/main/resources/users";
     String absolutePath = UserIO.getPath();
     assertTrue(absolutePath.contains(correctPath));
   }
