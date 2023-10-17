@@ -73,7 +73,7 @@ public class GameLogic {
      */
     public void setCategory(final String category) {
         if (!getCategoryLogic().getAllAvailableCategories().contains(category)) {
-            throw new IllegalArgumentException("The chosen category is not a part of the available categories.");
+            throw new IllegalArgumentException(category + " is not a part of the available categories.");
         }
         this.chosenCategory = category;
         wordlistForSearch = categoryLogic.getWordsFromChosenCategory(category).getWordListForSearch();
