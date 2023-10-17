@@ -84,6 +84,18 @@ public class GamePageControllerTest extends ApplicationTest {
   private final int displayErrorDurationMs = 1100;
 
   /**
+   * Setup before each test. Uses mockups for future testing.
+   */
+  @BeforeEach
+  public void setUp() {
+    gameMock = mock(GameLogic.class);
+    // controller.setGame(gameMock);
+    gameMock.setCategory("us states");
+    gameMock.setWordList(testList);
+    closeHowToPlay();
+  }
+
+  /**
    * Closes the HowToPlay popup window.
    */
   public void closeHowToPlay() {
@@ -148,18 +160,6 @@ public class GamePageControllerTest extends ApplicationTest {
     write(input);
     String extractedString = extractGuess();
     Assert.assertEquals(input.toUpperCase(), extractedString);
-  }
-
-  /**
-   * Setup before each test. Uses mockups for future testing.
-   */
-  @BeforeEach
-  public void setUp() {
-    gameMock = mock(GameLogic.class);
-    // controller.setGame(gameMock);
-    gameMock.setCategory("Testing");
-    gameMock.setWordList(testList);
-    closeHowToPlay();
   }
 
   /**
