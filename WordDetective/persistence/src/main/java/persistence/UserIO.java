@@ -1,4 +1,4 @@
-package core;
+package persistence;
 
 import java.io.File;
 import java.io.FileReader;
@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
@@ -46,7 +47,7 @@ public final class UserIO {
                 throw new IllegalStateException("Working directory not found.");
             }
         }
-        return path.toString() + "/WordDetective/core/src/main/resources/users";
+        return path.toString() + "/WordDetective/persistence/src/main/resources/users";
     }
 
     /**
@@ -128,7 +129,11 @@ public final class UserIO {
             e.printStackTrace();
         }
         if (new File(path + "/stats").mkdirs()) {
-            User user = new User(username, password);
+            HashMap<String, Object> user = new HashMap<>();
+            user.put("username", username);
+            user.put("password", password);
+            user.put("highscore", 0);
+
             try (FileWriter writer = new FileWriter(path + "/stats/stats.json", StandardCharsets.UTF_8)) {
                 Gson gson = new GsonBuilder().setPrettyPrinting().create();
                 gson.toJson(user, writer);

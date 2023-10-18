@@ -1,4 +1,4 @@
-package core;
+package persistence;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -9,6 +9,7 @@ import java.util.Collection;
 import org.junit.jupiter.api.Test;
 import com.google.gson.JsonObject;
 
+
 public class UserIOTest {
 
   /**
@@ -16,7 +17,7 @@ public class UserIOTest {
    */
   @Test
   public void testCorrectPath() {
-    String correctPath = "gr2325/WordDetective/core/src/main/resources/users";
+    String correctPath = "gr2325/WordDetective/persistence/src/main/resources/users";
     String absolutePath = UserIO.getPath();
     assertTrue(absolutePath.contains(correctPath));
   }

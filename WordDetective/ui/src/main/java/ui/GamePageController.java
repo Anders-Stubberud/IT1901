@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import core.FileIO;
 import core.GameLogic;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
@@ -26,6 +25,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
+import persistence.FileIO;
 
 public final class GamePageController implements Initializable {
 

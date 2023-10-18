@@ -1,4 +1,4 @@
-package core;
+package persistence;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -75,7 +75,7 @@ public class FileIOTest {
         }
 
         File defaultCategoriesDirectory = new File(
-                path.toString() + "/WordDetective/core/src/main/resources/default_categories");
+                path.toString() + "/WordDetective/persistence/src/main/resources/default_categories");
 
         if (defaultCategoriesDirectory.exists() && defaultCategoriesDirectory.isDirectory()) {
             File[] defaultCategoriesArray = defaultCategoriesDirectory.listFiles();

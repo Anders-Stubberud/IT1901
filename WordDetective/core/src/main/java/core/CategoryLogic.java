@@ -5,6 +5,9 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import persistence.FileIO;
+import persistence.WordLists;
+
 /**
  * A class containing the logic of getting and setting categories.
  */

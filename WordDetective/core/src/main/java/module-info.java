@@ -1,8 +1,8 @@
 module project.core {
     exports core;
 
-    // requires com.google.gson;
     requires transitive com.google.gson;
+    requires project.persistence;
 
     opens core to com.google.gson;
 }

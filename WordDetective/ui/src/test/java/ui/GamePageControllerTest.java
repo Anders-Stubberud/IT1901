@@ -2,8 +2,6 @@ package ui;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,9 +77,15 @@ public class GamePageControllerTest extends ApplicationTest {
   }
 
   /**
-   * Constant used for extraction fo player input.
+   * Setup before each test. Uses mockups for future testing.
    */
-  private final int displayErrorDurationMs = 1100;
+  @BeforeEach
+  public void setUp() {
+    gameMock = new GameLogic("guest");
+    gameMock.setCategory("us states");
+    gameMock.setWordList(testList);
+    closeHowToPlay();
+  }
 
   /**
    * Closes the HowToPlay popup window.
@@ -148,18 +152,6 @@ public class GamePageControllerTest extends ApplicationTest {
     write(input);
     String extractedString = extractGuess();
     Assert.assertEquals(input.toUpperCase(), extractedString);
-  }
-
-  /**
-   * Setup before each test. Uses mockups for future testing.
-   */
-  @BeforeEach
-  public void setUp() {
-    gameMock = mock(GameLogic.class);
-    // controller.setGame(gameMock);
-    gameMock.setCategory("Testing");
-    gameMock.setWordList(testList);
-    closeHowToPlay();
   }
 
   /**

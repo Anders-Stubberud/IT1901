@@ -8,13 +8,13 @@ import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
-import core.UserIO;
 import javafx.scene.control.Label;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
+import persistence.UserIO;
 
 public class RegistrationControllerTest extends ApplicationTest {
 

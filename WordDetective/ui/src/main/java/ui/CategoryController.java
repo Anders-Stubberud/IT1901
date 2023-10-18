@@ -6,8 +6,6 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.ResourceBundle;
 
-import core.FileIO;
-import core.UserIO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,6 +20,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import persistence.FileIO;
+import persistence.UserIO;
 
 public final class CategoryController implements Initializable {
 

@@ -1,5 +1,6 @@
 module project.ui {
     requires project.core;
+    requires project.persistence;
     requires javafx.controls;
     requires javafx.fxml;
 

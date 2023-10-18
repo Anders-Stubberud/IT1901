@@ -1,4 +1,4 @@
-package core;
+package persistence;
 
 import java.io.File;
 import java.io.FileReader;
@@ -47,7 +47,7 @@ public abstract class FileIO {
                 throw new IllegalStateException("Working directory not found.");
             }
         }
-        return path.toString() + "/WordDetective/core/src/main/resources/";
+        return path.toString() + "/WordDetective/persistence/src/main/resources/";
     }
 
     /**

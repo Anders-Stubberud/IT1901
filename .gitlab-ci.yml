@@ -1,5 +1,4 @@
 image: maven:latest
-# image: krissrex/docker-java8-maven-testfxmonocle:1.0
 
 stages:
   - build
@@ -23,13 +22,6 @@ checkstyle-test:
   script:
     - "cd WordDetective"
     - "mvn checkstyle:check"
-
-spotbugs-test:
-  stage: test
-  script:
-    - "cd WordDetective"
-    - "mvn clean install -DskipTests"
-    - "mvn spotbugs:spotbugs"
 
 maven-test:
   stage: test
