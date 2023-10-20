@@ -25,7 +25,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
-import persistence.FileIO;
+import persistence.JsonIO;
 
 public final class GamePageController implements Initializable {
 
@@ -248,8 +248,8 @@ public final class GamePageController implements Initializable {
         if (ke.getCode().equals(KeyCode.ENTER)) { // If pressed Enter, then check word
             String playerGuess = playerInputField.getText();
             if (game.checkValidWord(substring, playerGuess)) {
-                FileIO.incrementHighScore(username);
-                int pointsHS = FileIO.getHighScore(username);
+                JsonIO.incrementHighScore(username);
+                int pointsHS = JsonIO.getHighScore(username);
                 points.setText(String.valueOf(pointsHS));
                 playerInputField.setText("");
                 rndwordMasterLetters();

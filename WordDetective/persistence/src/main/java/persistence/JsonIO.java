@@ -27,12 +27,12 @@ import com.google.gson.JsonSyntaxException;
  * This class is responsible for reading the wordlists from the files.
  * It also provides methods for querying the available categories.
  */
-public abstract class FileIO {
+public abstract class JsonIO {
 
     /**
      * The name of the working directory.
      */
-    private static final String WORKING_DIRECTORY = "gr2325";
+    private static final String path = "gr2325//WordDetective/persistence/src/main/resources/";
 
     /**
      * Provides absolute path to current working directory.
@@ -41,7 +41,7 @@ public abstract class FileIO {
      */
     public static String getPath() {
         Path path = Paths.get("").toAbsolutePath();
-        while (!path.endsWith(WORKING_DIRECTORY)) {
+        while (!path.endsWith(path)) {
             path = path.getParent();
             if (path == null) {
                 throw new IllegalStateException("Working directory not found.");
@@ -143,39 +143,28 @@ public abstract class FileIO {
     }
 
     /**
-     * initializes two wordlists.
-     * The "wordlistForSearch" wordlist is implemented as a hashset, which allows
-     * for search in average O(1).
-     * The "wordlistForSelection" wordlist is implemented as an arraylist, which
-     * allows for accessing in O(1).
-     * The reason behind having separate lists for searching and accessing is to
-     * improve time complexity.
-     * This solution does require more memory, but since wordlists do not require
-     * vast amounts of memory,
-     * it is a fair tradeoff in order to improve the user experience.
+     * Get category from
      *
-     * @param username        The username of the user, used to set up
-     *                        individualized games for different users.
-     * @param category        The category chosen by the user.
-     * @param defaultCategory Boolean indicating if the gicen wordlist is
-     *                        located amongst the default categories.
+     * @param username          The username of the user, used to set up
+     *                          individualized games for different users.
+     * @param category          The category chosen by the user.
+     * @param isDefaultCategory Boolean indicating if the gicen wordlist is
+     *                          located amongst the default categories.
      * @return A WordLists object containing two wordlists.
      */
-    public static WordLists createWordlist(final boolean defaultCategory, final String username,
-            final String category) {
-        String chosenCategory = category.replace(' ', '_');
-        Set<String> wordlistForSearch = null;
-        List<String> wordlistForSelection = null;
-        String path = getPathToCategory(defaultCategory, username) + chosenCategory + ".json";
+    public static List<String> getCategory(final String username, final String category,
+            final boolean isDefaultCategory) {
+        List<String> result = new ArrayList<>();
+        // String path = getPathToCategory(defaultCategory, username) + chosenCategory +
+        // ".json";
         JsonObject jsonObject = getJsonObject(path);
         JsonArray wordListArray = jsonObject.get("wordlist").getAsJsonArray();
-        wordlistForSearch = new HashSet<>();
-        wordlistForSelection = new ArrayList<>();
-        for (int i = 0; i < wordListArray.size(); i++) {
-            wordlistForSearch.add(wordListArray.get(i).getAsString());
-            wordlistForSelection.add(wordListArray.get(i).getAsString());
-        }
-        return new WordLists(wordlistForSearch, wordlistForSelection);
+
+        // for (int i = 0; i < wordListArray.size(); i++) {
+        // wordlistForSearch.add(wordListArray.get(i).getAsString());
+        // wordlistForSelection.add(wordListArray.get(i).getAsString());
+        // }
+        return result;
     }
 
     /**

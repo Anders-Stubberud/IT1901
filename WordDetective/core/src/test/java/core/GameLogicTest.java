@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import persistence.FileIO;
+import persistence.JsonIO;
 
 public class GameLogicTest {
 
@@ -41,7 +41,7 @@ public class GameLogicTest {
     @Test
     @DisplayName("Check correct initialization of search and selection wordlists")
     public void testSetUpOfWordlists() {
-        Collection<String> correctWordlistForGuest = FileIO
+        Collection<String> correctWordlistForGuest = JsonIO
                 .createWordlist(true, "guest", "countries").getWordListForSearch();
         assertTrue(correctWordlistForGuest.containsAll(guest.getWordListForSearch()));
         assertTrue(guest.getWordListForSearch().containsAll(correctWordlistForGuest));

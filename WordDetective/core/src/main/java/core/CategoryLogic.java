@@ -5,8 +5,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import persistence.FileIO;
-import persistence.WordLists;
+import persistence.JsonIO;
 
 /**
  * A class containing the logic of getting and setting categories.
@@ -35,9 +34,9 @@ public final class CategoryLogic {
      */
     public CategoryLogic(final String username) {
         this.currentUser = username;
-        availableDefaultCategories = FileIO.loadDefaultCategories();
+        availableDefaultCategories = JsonIO.loadDefaultCategories();
         if (!username.equals("guest")) {
-            availableCustomCategories = FileIO.loadCustomCategories(username);
+            availableCustomCategories = JsonIO.loadCustomCategories(username);
         }
     }
 
@@ -79,10 +78,5 @@ public final class CategoryLogic {
      * @return A WorList object, which contains the wordlists for searching and
      *         selection.
      */
-    public WordLists getWordsFromChosenCategory(final String chosenCategory) {
-        return FileIO
-                .createWordlist(getAvailableDefaultCategories()
-                        .contains(chosenCategory), currentUser, chosenCategory);
-    }
 
 }

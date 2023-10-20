@@ -18,7 +18,7 @@ public class FileIOTest {
      */
     @BeforeEach
     public void setUp() {
-        FileIO.resetHighScore("guest"); // Reset the highscore to 0 before each test
+        JsonIO.resetHighScore("guest"); // Reset the highscore to 0 before each test
     }
 
     /**
@@ -26,7 +26,7 @@ public class FileIOTest {
      */
     @Test
     public void testLoadDefaultCategories() {
-        Collection<String> defaultCategories = FileIO.loadDefaultCategories();
+        Collection<String> defaultCategories = JsonIO.loadDefaultCategories();
         assertNotNull(defaultCategories);
         int expectedSize = getDefaultCategoryLength();
         assertEquals(expectedSize, defaultCategories.size());
@@ -38,7 +38,7 @@ public class FileIOTest {
     @Test
     public void testgetDefaultCategoryLength() {
         int expectedSize = getDefaultCategoryLength();
-        assertEquals(expectedSize, FileIO.getNumberOfDefaultCategories());
+        assertEquals(expectedSize, JsonIO.getNumberOfDefaultCategories());
     }
 
     /**
@@ -46,7 +46,7 @@ public class FileIOTest {
      */
     @Test
     public void testGetHighScore() {
-        int highScore = FileIO.getHighScore("guest");
+        int highScore = JsonIO.getHighScore("guest");
         assertEquals(0, highScore); // Highscore should be 0 at the start of the game.
     }
 
@@ -55,9 +55,9 @@ public class FileIOTest {
      */
     @Test
     public void testIncrementHighScore() {
-        int initialHighScore = FileIO.getHighScore("guest");
-        FileIO.incrementHighScore("guest");
-        int updatedHighScore = FileIO.getHighScore("guest");
+        int initialHighScore = JsonIO.getHighScore("guest");
+        JsonIO.incrementHighScore("guest");
+        int updatedHighScore = JsonIO.getHighScore("guest");
         assertEquals(initialHighScore + 1, updatedHighScore);
     }
 

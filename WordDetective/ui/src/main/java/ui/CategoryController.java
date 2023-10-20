@@ -20,7 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import persistence.FileIO;
+import persistence.JsonIO;
 import persistence.UserIO;
 
 public final class CategoryController implements Initializable {
@@ -123,9 +123,9 @@ public final class CategoryController implements Initializable {
      */
     public void renderCategories() {
         pane.setVisible(false);
-        Collection<String> categories = FileIO.loadDefaultCategories();
+        Collection<String> categories = JsonIO.loadDefaultCategories();
         if (!username.equals("guest")) {
-            categories.addAll(FileIO.loadCustomCategories(username));
+            categories.addAll(JsonIO.loadCustomCategories(username));
         }
         for (String category : categories) {
             Button button = new Button(category);
