@@ -19,19 +19,19 @@ public class CategoryLogicTest {
     /**
      * A Game where the user is a guest.
      */
-    private GameLogic guest;
+    private Game guest;
     /**
      * A Game where the user is a registered user.
      */
-    private GameLogic registeredUser;
+    private Game registeredUser;
 
     /**
      * Sets up two instances of the CategorySetup class to be used in the tests.
      */
     @BeforeEach
     public void setUp() {
-        guest = new GameLogic("guest");
-        registeredUser = new GameLogic("registeredUser");
+        guest = new Game("guest");
+        registeredUser = new Game("registeredUser");
     }
 
     /**
