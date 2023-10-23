@@ -62,14 +62,23 @@ public final class JsonIO implements AbstractJsonIO {
 
     @Override
     public void deleteUser(String username) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteUser'");
+        File user = new File(path + "/users/" + username + ".json");
+        if (user.delete()) {
+            System.out.println(username + " deleted successfully");
+        } else {
+            System.out.println("Error when deleting this file");
+        }
     }
 
     @Override
     public User getUser(String username) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getUser'");
+        try {
+            String jsonString = Files.readString(Paths.get(path + "/users/" + username + ".json"));
+            return gson.fromJson(jsonString, User.class);
+        } catch (IOException e) {
+            System.out.println("Couldn't get user " + username + "because: " + e.getMessage());
+            return null;
+        }
     }
 
     @Override
@@ -93,9 +102,7 @@ public final class JsonIO implements AbstractJsonIO {
     public static void main(String args[]) {
         JsonIO js = new JsonIO();
         User user = new User("Bob", "Bob123");
-        user.addCustomCategories("Test1", Arrays.asList("2", "3", "3", "1"));
-        user.addCustomCategories("Test2", Arrays.asList("2", "3", "3", "1"));
-        js.addUser(user);
+
     }
 
     /**
