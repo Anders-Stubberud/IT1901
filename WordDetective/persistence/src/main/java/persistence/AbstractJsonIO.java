@@ -29,6 +29,13 @@ public interface AbstractJsonIO {
   public User getUser(String username);
 
   /**
+   * Update user and store new data in database.
+   *
+   * @param username - The new user object to override the old
+   */
+  public void updateUser(User user);
+
+  /**
    * Get a defaultCategory as a {@link List}.
    *
    * @param category - The category to get
@@ -38,6 +45,7 @@ public interface AbstractJsonIO {
 
   /**
    * Get all the current default categories.
+   *
    * @return - A {@link HashMap} of category names and respective answers
    */
   public HashMap<String, List<String>> getAllDefaultCategories();
