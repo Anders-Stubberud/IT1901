@@ -5,12 +5,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,223 +25,94 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
+import types.User;
+
 /**
  * This class is responsible for reading the wordlists from the files.
  * It also provides methods for querying the available categories.
  */
-public abstract class JsonIO {
+public final class JsonIO implements AbstractJsonIO {
 
     /**
-     * The name of the working directory.
+     * The path where the files will be read/written.
      */
-    private static final String path = "gr2325//WordDetective/persistence/src/main/resources/";
+    private final String path;
+    /**
+     * Gson instance for serialization/deserialization.
+     */
+    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+    /**
+     * Constructor used for writing/reading to and from json file.
+     * Initializes with default path for storage
+     */
+    public JsonIO() {
+        this.path = getAbsolutePath("gr2325") + "/WordDetective/persistence/src/main/resources/";
+    }
+
+    @Override
+    public void addUser(User user) {
+        try (FileWriter fw = new FileWriter(path + "users/" + user.getUsername() + ".json", StandardCharsets.UTF_8)) {
+            gson.toJson(user, fw);
+            System.out.println("User " + user.getUsername() + " successfully created.");
+        } catch (IOException e) {
+            System.out.println("Couldn't add user " + user.getUsername() + " because: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void deleteUser(String username) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteUser'");
+    }
+
+    @Override
+    public User getUser(String username) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getUser'");
+    }
+
+    @Override
+    public void updateUser(String username) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateUser'");
+    }
+
+    @Override
+    public List<String> getDefaultCategory(String category) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getDefaultCategory'");
+    }
+
+    @Override
+    public HashMap<String, List<String>> getAllDefaultCategories() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllDefaultCategories'");
+    }
+
+    public static void main(String args[]) {
+        JsonIO js = new JsonIO();
+        User user = new User("Bob", "Bob123");
+        user.addCustomCategories("Test1", Arrays.asList("2", "3", "3", "1"));
+        user.addCustomCategories("Test2", Arrays.asList("2", "3", "3", "1"));
+        js.addUser(user);
+    }
 
     /**
      * Provides absolute path to current working directory.
      *
-     * @return Absolute path to current working directory.
+     * @param directory - The directory to find the path to.
+     * @return absolute path to current working directory as {@link String}.
      */
-    public static String getPath() {
+    private String getAbsolutePath(String directory) {
         Path path = Paths.get("").toAbsolutePath();
-        while (!path.endsWith(path)) {
+        while (!path.endsWith(directory)) {
             path = path.getParent();
             if (path == null) {
                 throw new IllegalStateException("Working directory not found.");
             }
         }
-        return path.toString() + "/WordDetective/persistence/src/main/resources/";
-    }
-
-    /**
-     * Provides the path to the requested category.
-     *
-     * @param defaultCategory Boolean indicating if the category is amongst the
-     *                        default categories.
-     * @param username        Username of the current user.
-     * @return The absolute path to a category storage.
-     */
-    public static String getPathToCategory(final boolean defaultCategory, final String username) {
-        String path = getPath();
-        if (defaultCategory) {
-            return path + "default_categories/";
-        } else {
-            return path + "users/" + username + "/categories/";
-        }
-    }
-
-    /**
-     * Provides the path to the stats.json file of the current user.
-     *
-     * @param username The username of the current user
-     * @return The absolute path to the stats.json file of the current user.
-     */
-    public static String getPathToStats(final String username) {
-        String path = getPath();
-        if (username.equals("guest")) {
-            return path + "default_stats/stats.json";
-        } else {
-            return path + "users/" + username + "/stats/stats.json";
-        }
-    }
-
-    /**
-     * Provides access to the json file at the given absolute path.
-     *
-     * @param path The absolute path of which the json file is located.
-     * @return A JsonObject representing the json file.
-     */
-    public static JsonObject getJsonObject(final String path) {
-        JsonObject jsonObject = null;
-        // Try-with-resources closes file automatically, thus no need to manually close.
-        try (FileReader reader = new FileReader(path, StandardCharsets.UTF_8)) {
-            Gson gsonParser = new Gson();
-            jsonObject = gsonParser.fromJson(reader, JsonObject.class);
-        } catch (JsonSyntaxException | JsonIOException | IOException e) {
-            e.printStackTrace();
-        }
-        return jsonObject;
-    }
-
-    /**
-     * Displays the currently available categories.
-     *
-     * @param defaultCategory Boolean indicating if the category is amongst the
-     *                        default categories.
-     * @param username        The username of which to display the currently
-     *                        available categories.
-     * @return A collection containing all currently available categories.
-     */
-    public static Collection<String> loadCategories(final boolean defaultCategory, final String username) {
-        File[] categories = new File(getPathToCategory(defaultCategory, username)).listFiles();
-        if (categories == null) {
-            return Collections.emptyList();
-        }
-
-        return Arrays.stream(categories)
-                .map(File::getName)
-                .filter(name -> !name.equals(".gitkeep"))
-                .map(name -> name.substring(0, name.indexOf(".")))
-                .map(name -> name.replace('_', ' '))
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * Queries and returns all default categories.
-     *
-     * @return All default categories.
-     */
-    public static Collection<String> loadDefaultCategories() {
-        return loadCategories(true, "guest");
-    }
-
-    /**
-     * Queries and returns custom categories if the user is a registered user.
-     *
-     * @param username The name of the user to provide custom categories for
-     * @return All custom categories of given user
-     */
-    public static Collection<String> loadCustomCategories(final String username) {
-        return loadCategories(false, username);
-    }
-
-    /**
-     * Get category from
-     *
-     * @param username          The username of the user, used to set up
-     *                          individualized games for different users.
-     * @param category          The category chosen by the user.
-     * @param isDefaultCategory Boolean indicating if the gicen wordlist is
-     *                          located amongst the default categories.
-     * @return A WordLists object containing two wordlists.
-     */
-    public static List<String> getCategory(final String username, final String category,
-            final boolean isDefaultCategory) {
-        List<String> result = new ArrayList<>();
-        // String path = getPathToCategory(defaultCategory, username) + chosenCategory +
-        // ".json";
-        JsonObject jsonObject = getJsonObject(path);
-        JsonArray wordListArray = jsonObject.get("wordlist").getAsJsonArray();
-
-        // for (int i = 0; i < wordListArray.size(); i++) {
-        // wordlistForSearch.add(wordListArray.get(i).getAsString());
-        // wordlistForSelection.add(wordListArray.get(i).getAsString());
-        // }
-        return result;
-    }
-
-    /**
-     * Provides a reference to the json file containing the highscore statistics.
-     *
-     * @param username The username of the user to retrieve the highscore statistics
-     *                 of.
-     * @return A JsonObject representing the json file containing the highscore
-     *         statistics.
-     */
-    public static JsonObject getHighScoreObject(final String username) {
-        return getJsonObject(getPathToStats(username));
-    }
-
-    /**
-     * Writes the provided score to the statistics fo the given user.
-     *
-     * @param username The username of the user to provide a hoghscore for.
-     * @param score    The score to persistently store.
-     */
-    public static void writeToHighScoreObject(final String username, final int score) {
-        JsonObject jsonObject = getHighScoreObject(username);
-        try {
-            jsonObject.addProperty("highscore", score);
-            FileWriter writer = new FileWriter(getPathToStats(username), StandardCharsets.UTF_8);
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            gson.toJson(jsonObject, writer);
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Access the persistent json file which contains the current score of the game.
-     *
-     * @param username The username of the user to get the score of.
-     * @return The current score of the game.
-     */
-    public static int getHighScore(final String username) {
-        return getHighScoreObject(username).get("highscore").getAsInt();
-    }
-
-    /**
-     * Access the persistent json file and increments the current score by 1.
-     *
-     * @param username The username of the user to increment the score of.
-     */
-    public static void incrementHighScore(final String username) {
-        writeToHighScoreObject(username, getHighScore(username) + 1);
-    }
-
-    /**
-     * Access the persistent json file and resets the current score to 0.
-     *
-     * @param username The username of the user to reset the highscore of.
-     */
-    public static void resetHighScore(final String username) {
-        writeToHighScoreObject(username, 0);
-    }
-
-    /**
-     * Number of default categories.
-     *
-     * @return Integer of how many default Categories.
-     */
-    public static int getNumberOfDefaultCategories() {
-        File defaultCategoriesDirectory = new File(getPathToCategory(true, "guest"));
-        if (defaultCategoriesDirectory.exists() && defaultCategoriesDirectory.isDirectory()) {
-            File[] defaultCategoriesArray = defaultCategoriesDirectory.listFiles();
-            if (defaultCategoriesArray != null) {
-                return defaultCategoriesArray.length;
-            }
-        }
-        return 0; // Default categories directory is empty or doesn't exist
+        return path.toString();
     }
 
 }
