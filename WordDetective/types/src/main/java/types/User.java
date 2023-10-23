@@ -7,43 +7,44 @@ import com.google.gson.annotations.SerializedName;
 
 public final class User {
     /**
-     * The highscore of the given player
+     * The highscore of the given player.
      */
     @SerializedName("highscore")
     private int highscore;
     /**
-     * The username of the given player
+     * The username of the given player.
      */
     @SerializedName("username")
-    private String username;
+    private String name;
 
     /**
-     * The password of the given player
+     * The password of the given player.
      */
     @SerializedName("password")
-    private String password;
+    private String pwd;
 
     /**
-     * The user's custom categories
+     * The user's custom categories.
      */
+    @SerializedName("customCategories")
     private HashMap<String, List<String>> customCategories;
 
     /**
-     * Constructor setting up a new User object to be injected into correlating
+     * Constructor setting up a new User object to be injected into correlating.
      * json file.
      *
-     * @param usernameParameter The username of the new user.
-     * @param passwordParameter The password of the new user.
+     * @param username The username of the new user.
+     * @param password The password of the new user.
      */
-    public User(final String usernameParameter, final String passwordParameter) {
+    public User(final String username, final String password) {
         this.customCategories = new HashMap<>();
         this.highscore = 0;
-        this.username = usernameParameter;
-        this.password = passwordParameter;
+        this.name = username;
+        this.pwd = password;
     }
 
     /**
-     * Get user's highscore
+     * Get user's highscore.
      *
      * @return The highscore of the given user as an Integer.
      */
@@ -52,12 +53,12 @@ public final class User {
     }
 
     /**
-     * Get user's username
+     * Get user's username.
      *
      * @return The username of the given user as String.
      */
     public String getUsername() {
-        return username;
+        return name;
     }
 
     /**
@@ -66,11 +67,11 @@ public final class User {
      * @return The password of the given user as a string.
      */
     public String getPassword() {
-        return password;
+        return pwd;
     }
 
     /**
-     * Get user's custom categories
+     * Get user's custom categories.
      *
      * @return a HashMap containing the user's custom categories
      */
@@ -79,40 +80,39 @@ public final class User {
     }
 
     /**
-     * Set the user's highscore
+     * Set the user's highscore.
      *
-     * @param highscore - The highscore to set
+     * @param score - The highscore to set
      */
-    public void setHighscore(int highscore) {
-        this.highscore = highscore;
+    public void setHighscore(final int score) {
+        this.highscore = score;
     }
 
     /**
-     * Set the user's custom categories
+     * Set the user's custom categories.
      *
-     * @param customCategories - a HashMap with all the categories
+     * @param newCustomCategories - a HashMap with all the categories
      */
-    public void setCustomCategories(HashMap<String, List<String>> customCategories) {
-        this.customCategories = customCategories;
+    public void setCustomCategories(final HashMap<String, List<String>> newCustomCategories) {
+        this.customCategories = newCustomCategories;
     }
 
     /**
-     * Add a custom category to user
+     * Add a custom category to user.
      *
-     * @param name           - Name of category
+     * @param categoryName   - Name of category
      * @param customCategory - List of all answers in category
      */
-    public void addCustomCategories(final String name, final List<String> customCategory) {
-        this.customCategories.put(name, customCategory);
+    public void addCustomCategories(final String categoryName, final List<String> customCategory) {
+        this.customCategories.put(categoryName, customCategory);
     }
 
     /**
-     * Delete a custom category from user's custom categories
-     * 
+     * Delete a custom category from user's custom categories.
+     *
      * @param category - The category to delete
      */
     public void deleteCustomCategories(final String category) {
         this.customCategories.remove(category);
     }
-
 }
