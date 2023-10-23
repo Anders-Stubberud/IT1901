@@ -47,12 +47,12 @@ public final class JsonIO implements AbstractJsonIO {
      * Initializes with default path for storage
      */
     public JsonIO() {
-        this.path = getAbsolutePath("gr2325") + "/WordDetective/persistence/src/main/resources/";
+        this.path = getAbsolutePath("gr2325") + "/WordDetective/persistence/src/main/resources";
     }
 
     @Override
     public void addUser(User user) {
-        try (FileWriter fw = new FileWriter(path + "users/" + user.getUsername() + ".json", StandardCharsets.UTF_8)) {
+        try (FileWriter fw = new FileWriter(path + "/users/" + user.getUsername() + ".json", StandardCharsets.UTF_8)) {
             gson.toJson(user, fw);
             System.out.println("User " + user.getUsername() + " successfully created.");
         } catch (IOException e) {
@@ -82,9 +82,18 @@ public final class JsonIO implements AbstractJsonIO {
     }
 
     @Override
-    public void updateUser(String username) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateUser'");
+    public void updateUser(User user) {
+        if (new File(path + "/users/" + user.getUsername() + ".json").exists()) {
+            try (FileWriter fw = new FileWriter(path + "/users/" + user.getUsername() + ".json",
+                    StandardCharsets.UTF_8)) {
+                gson.toJson(user, fw);
+                System.out.println("User " + user.getUsername() + " successfully updated.");
+            } catch (IOException e) {
+                System.out.println("Couldn't update user " + user.getUsername() + " because: " + e.getMessage());
+            }
+        } else {
+            System.out.println("User: " + user.getUsername() + " not found");
+        }
     }
 
     @Override
@@ -101,7 +110,9 @@ public final class JsonIO implements AbstractJsonIO {
 
     public static void main(String args[]) {
         JsonIO js = new JsonIO();
-        User user = new User("Bob", "Bob123");
+        User user = new User("Crayon", "Bob123");
+        user.addCustomCategories("Test", Arrays.asList("1", "2"));
+        js.updateUser(user);
 
     }
 
