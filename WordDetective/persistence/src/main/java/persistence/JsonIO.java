@@ -1,29 +1,18 @@
 package persistence;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 import types.User;
 
@@ -56,7 +45,7 @@ public final class JsonIO implements AbstractJsonIO {
             gson.toJson(user, fw);
             System.out.println("User " + user.getUsername() + " successfully created.");
         } catch (IOException e) {
-            System.out.println("Couldn't add user " + user.getUsername() + " because: " + e.getMessage());
+            System.out.println("Couldn't add user " + user.getUsername() + " because: " + e.getLocalizedMessage());
         }
     }
 
@@ -76,7 +65,7 @@ public final class JsonIO implements AbstractJsonIO {
             String jsonString = Files.readString(Paths.get(path + "/users/" + username + ".json"));
             return gson.fromJson(jsonString, User.class);
         } catch (IOException e) {
-            System.out.println("Couldn't get user " + username + "because: " + e.getMessage());
+            System.out.println("Couldn't get user " + username + "because: " + e.getLocalizedMessage());
             return null;
         }
     }
@@ -89,7 +78,8 @@ public final class JsonIO implements AbstractJsonIO {
                 gson.toJson(user, fw);
                 System.out.println("User " + user.getUsername() + " successfully updated.");
             } catch (IOException e) {
-                System.out.println("Couldn't update user " + user.getUsername() + " because: " + e.getMessage());
+                System.out
+                        .println("Couldn't update user " + user.getUsername() + " because: " + e.getLocalizedMessage());
             }
         } else {
             System.out.println("User: " + user.getUsername() + " not found");
@@ -98,8 +88,15 @@ public final class JsonIO implements AbstractJsonIO {
 
     @Override
     public List<String> getDefaultCategory(String category) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDefaultCategory'");
+        try {
+            Type listOfStrings = new TypeToken<List<String>>() {
+            }.getClass();
+            String answers = Files.readString(Paths.get(path + "/default_categories/" + category + ".json"));
+            return gson.fromJson(answers, listOfStrings);
+        } catch (IOException e) {
+            System.out.println("Couldn't find default category: " + category + " because " + e.getLocalizedMessage());
+            return null;
+        }
     }
 
     @Override
@@ -111,8 +108,8 @@ public final class JsonIO implements AbstractJsonIO {
     public static void main(String args[]) {
         JsonIO js = new JsonIO();
         User user = new User("Crayon", "Bob123");
-        user.addCustomCategories("Test", Arrays.asList("1", "2"));
-        js.updateUser(user);
+        List<String> list = js.getDefaultCategory("us_states");
+        System.out.println(list.toString());
 
     }
 
