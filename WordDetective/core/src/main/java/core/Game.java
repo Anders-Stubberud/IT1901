@@ -11,7 +11,7 @@ import java.util.Set;
  * It will delegate certain tasks to other objects,
  * who have more suitable functionality.
  */
-public class GameLogic {
+public class Game {
 
     /**
      * The wordlistForSearch is implemented as a hashset,
@@ -49,17 +49,10 @@ public class GameLogic {
      * @param username The username of the user,
      *                 used to set up individualized games for different users.
      */
-    public GameLogic(final String username) {
+    public Game(final String username) {
         players.add(username);
-        categoryLogic = new CategoryLogic(username);
     }
 
-    /**
-     * @return this CategoryLogic class for getting and setting categories.
-     */
-    public CategoryLogic getCategoryLogic() {
-        return categoryLogic;
-    }
 
     /**
      * Sets up up the chosen category.
@@ -76,8 +69,6 @@ public class GameLogic {
             throw new IllegalArgumentException(category + " is not a part of the available categories.");
         }
         this.chosenCategory = category;
-        wordlistForSearch = categoryLogic.getWordsFromChosenCategory(category).getWordListForSearch();
-        wordlistForSelection = categoryLogic.getWordsFromChosenCategory(category).getWordListForSelection();
     }
 
     /**
@@ -161,10 +152,12 @@ public class GameLogic {
     /**
      * Picks random player from players list.
      *
-     * @return - a random player
+     * @return - a random player'
      *
      */
     public String pickRndPlayer() {
         return players.get(random.nextInt(players.size()));
     }
+
+
 }
