@@ -11,10 +11,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import persistence.UserIO;
+import types.User;
 
 public class LoginController {
-
+    /**
+     * The current user
+     */
+    private User user;
     /**
      * Label for marking of incorrect password.
      */
@@ -50,12 +53,11 @@ public class LoginController {
      */
     @FXML
     public void performLogin() {
-        String providedUsername = username.getText();
-        String providedPassword = password.getText();
-        if (UserIO.correctUsernameAndPassword(providedUsername, providedPassword)) {
+        User newUser = new User(username.getText(), password.getText());
+        if (newUser.isCorrectUsername() && newUser.isCorrectPassword()) {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
-                fxmlLoader.setControllerFactory(new CategoryFactory(providedUsername));
+                fxmlLoader.setControllerFactory(new CategoryFactory(newUser));
                 Parent parent = fxmlLoader.load();
                 Stage stage = (Stage) login.getScene().getWindow();
                 stage.setScene(new Scene(parent));
