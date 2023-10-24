@@ -21,7 +21,7 @@ public interface AbstractGame {
   /**
    * Set new wordlist.
    *
-   * @param newWordList
+   * @param newWordList - a {@link List} containing answers
    */
   void setWordList(List<String> newWordList);
 
@@ -57,5 +57,13 @@ public interface AbstractGame {
    * @return True if the guess is valid, else false.
    */
   boolean checkValidWord(String substring, String guess);
+
+  /**
+   * Save the current players highscore to database.
+   * Will not save if player is guest.
+   *
+   * @param highscore - The highscore to save
+   */
+  void savePlayerHighscore(int highscore);
 
 }
