@@ -28,7 +28,7 @@
          <children>
             <TextArea layoutX="40.0" layoutY="39.0" prefHeight="95.0" prefWidth="231.0" text="You can upload you own custom category.To do this, you need to provide a JSON file on the format (all words in the wordlist must be capitalized):" wrapText="true" />
             <Label layoutX="31.0" layoutY="137.0" text="{&#10;&#9;&quot;category&quot; : &quot;NAME OF YOUR CATEGORY&quot;&#10;&#9;&quot;wordlist&quot; : [&#10;&#9;&#9;&quot;WORD1&quot;,&#10;&#9;&#9;&quot;WORD2&quot;,&#10;&#9;&#9;etc...&#10;&#9;]&#10;}" textFill="WHITE" />
-            <Button fx:id="upload" layoutX="128.0" layoutY="8.0" mnemonicParsing="false" onAction="#uploadFile" text="Upload" />
+            <Button fx:id="upload" layoutX="128.0" layoutY="8.0" mnemonicParsing="false" onAction="#uploadCategory" text="Upload" />
          </children>
       </Pane>
    </children>
