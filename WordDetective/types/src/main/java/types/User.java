@@ -7,11 +7,6 @@ import com.google.gson.annotations.SerializedName;
 
 public final class User {
     /**
-     * The highscore of the given player.
-     */
-    @SerializedName("highscore")
-    private int highscore;
-    /**
      * The username of the given player.
      */
     @SerializedName("username")
@@ -22,6 +17,12 @@ public final class User {
      */
     @SerializedName("password")
     private String pwd;
+
+    /**
+     * The highscore of the given player.
+     */
+    @SerializedName("highscore")
+    private int highscore;
 
     /**
      * The user's custom categories.
@@ -41,6 +42,14 @@ public final class User {
         this.highscore = 0;
         this.name = username;
         this.pwd = password;
+    }
+
+    /**
+     * Empty constructor for guests users.
+     * Also used to initiate class for Json file reading
+     */
+    public User() {
+        this("guest", "");
     }
 
     /**
