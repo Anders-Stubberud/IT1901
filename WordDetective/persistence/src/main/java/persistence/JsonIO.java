@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import com.google.gson.Gson;
@@ -90,6 +91,16 @@ public final class JsonIO implements AbstractJsonIO {
         } else {
             System.out.println("User: " + user.getUsername() + " not found");
         }
+    }
+
+    @Override
+    public List<String> getAllUsernames() {
+        List<String> result = new ArrayList<>();
+        File[] nameFiles = new File(path + "/users").listFiles();
+        for (File file : nameFiles) {
+            result.add(file.getName().replace(".json", ""));
+        }
+        return result;
     }
 
     @Override
