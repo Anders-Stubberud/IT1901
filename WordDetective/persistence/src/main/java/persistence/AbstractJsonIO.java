@@ -30,7 +30,7 @@ public interface AbstractJsonIO {
 
   /**
    * Update user and store new data in database.
-   * 
+   *
    * @param user - The new user object to override the old
    */
   void updateUser(User user);
