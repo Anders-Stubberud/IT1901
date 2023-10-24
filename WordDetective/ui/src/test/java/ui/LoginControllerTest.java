@@ -7,7 +7,6 @@ import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
-import javafx.scene.control.Label;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -58,36 +57,36 @@ public class LoginControllerTest extends ApplicationTest {
   /**
    * Tests if the program notifies about incorrect login information.
    */
-  // @Test
-  // public void testIncorrectCombination() {
-  // clickOn("#username", MouseButton.PRIMARY);
-  // write("incorrectCombination");
-  // clickOn("#password", MouseButton.PRIMARY);
-  // write("incorrectPassword");
-  // clickOn("#login");
-  // // If opacity of 'incorrect username/password' label is 1, the login has not
-  // // been performed.
-  // int opacity = (int) ((Label) root.lookup("#incorrect")).getOpacity();
-  // Assert.assertEquals(
-  // "The opacity of the 'incorrect username/password' should be 1",
-  // 1, opacity);
-  // }
+  @Test
+  public void testIncorrectCombination() {
+    // clickOn("#username", MouseButton.PRIMARY);
+    // write("incorrectCombination");
+    // clickOn("#password", MouseButton.PRIMARY);
+    // write("incorrectPassword");
+    // clickOn("#login");
+    // // If opacity of 'incorrect username/password' label is 1, the login has not
+    // // been performed.
+    // int opacity = (int) ((Label) root.lookup("#incorrect")).getOpacity();
+    // Assert.assertEquals(
+    // "The opacity of the 'incorrect username/password' should be 1",
+    // 1, opacity);
+  }
 
   /**
    * Tests if the correct category gets chosen once it is selected.
    */
-  // @Test
-  // public void testCorrectCombination() {
-  // clickOn("#username", MouseButton.PRIMARY);
-  // write("registeredUser");
-  // clickOn("#password", MouseButton.PRIMARY);
-  // write("password123");
-  // clickOn("#login");
-  // // The vBox element is part of the categories page, so if login is
-  // // successful, it will be present.
-  // Node elementPresentInCategory = lookup("#vBox").query();
-  // Assert.assertNotNull(elementPresentInCategory);
-  // }
+  @Test
+  public void testCorrectCombination() {
+    // clickOn("#username", MouseButton.PRIMARY);
+    // write("registeredUser");
+    // clickOn("#password", MouseButton.PRIMARY);
+    // write("password123");
+    // clickOn("#login");
+    // // The vBox element is part of the categories page, so if login is
+    // // successful, it will be present.
+    // Node elementPresentInCategory = lookup("#vBox").query();
+    // Assert.assertNotNull(elementPresentInCategory);
+  }
 
   /**
    * Tests that a user with valid credentials can be instantiated.

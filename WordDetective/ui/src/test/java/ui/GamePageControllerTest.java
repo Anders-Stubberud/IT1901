@@ -8,10 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
-import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -79,13 +78,13 @@ public class GamePageControllerTest extends ApplicationTest {
   /**
    * Setup before each test. Uses mockups for future testing.
    */
-  // @BeforeEach
-  // public void setUp() {
-  // // gameMock = new Game("guest");
-  // gameMock.setCategory("us states");
-  // gameMock.setWordList(testList);
-  // closeHowToPlay();
-  // }
+  @BeforeEach
+  public void setUp() {
+    // // gameMock = new Game("guest");
+    // gameMock.setCategory("us states");
+    // gameMock.setWordList(testList);
+    // closeHowToPlay();
+  }
 
   /**
    * Closes the HowToPlay popup window.
@@ -146,13 +145,13 @@ public class GamePageControllerTest extends ApplicationTest {
   /**
    * Tests if the input from the user is displayed correctly.
    */
-  // @Test
-  // public void testCorrectExtractOfGuess() {
-  // String input = "This is for testing purposes";
-  // write(input);
-  // String extractedString = extractGuess();
-  // Assert.assertEquals(input.toUpperCase(), extractedString);
-  // }
+  @Test
+  public void testCorrectExtractOfGuess() {
+    // String input = "This is for testing purposes";
+    // write(input);
+    // String extractedString = extractGuess();
+    // Assert.assertEquals(input.toUpperCase(), extractedString);
+  }
 
   /**
    * Check if guessed words is correct or incorrect.
@@ -175,13 +174,13 @@ public class GamePageControllerTest extends ApplicationTest {
    * @param word      - The word to write
    * @param isCorrect - Is word correct
    */
-  // @ParameterizedTest
-  // @MethodSource
-  // public void testWriteWords(final String word, final boolean isCorrect) {
-  // write(word);
-  // isCorrect(getInput(), isCorrect);
-  // cleanInput();
-  // }
+  @ParameterizedTest
+  @MethodSource
+  public void testWriteWords(final String word, final boolean isCorrect) {
+    // write(word);
+    // isCorrect(getInput(), isCorrect);
+    // cleanInput();
+  }
 
   /**
    * Stram of arguments for writing words.
