@@ -32,7 +32,7 @@ public final class AppController {
     private FXMLLoader fxmlLoader;
 
     /**
-     * Guest user if player is guest
+     * Guest user if player is guest.
      */
     private User user = new User();
 

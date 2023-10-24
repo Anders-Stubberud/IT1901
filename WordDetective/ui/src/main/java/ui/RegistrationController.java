@@ -22,9 +22,9 @@ public class RegistrationController {
     private static final int DISPLAY_ERROR_DURATION_MS = 3000;
 
     /**
-     * Database to read and write to
+     * Database to read and write to.
      */
-    private JsonIO database;
+    private JsonIO database = new JsonIO();
 
     /**
      * FXML component used to display error if provided username is taken.
@@ -58,8 +58,7 @@ public class RegistrationController {
     public void fireSignUp() {
         User newUser = new User(newUsername.getText(), newPassword.getText());
         if (database.getAllUsernames().contains(newUser.getUsername())
-                || !newUser.isCorrectUsername()
-                || !newUser.isCorrectPassword()) {
+                || !(newUser.isCorrectPassword())) {
 
             usernameTaken.setOpacity(1);
             new java.util.Timer().schedule(

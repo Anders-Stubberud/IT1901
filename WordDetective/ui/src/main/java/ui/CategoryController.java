@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -28,10 +27,14 @@ import types.User;
 public final class CategoryController implements Initializable {
 
     /**
-     * The current user
+     * The current user.
      */
     private User user;
 
+    /**
+     * Database to get all default categories.
+     */
+    private JsonIO database = new JsonIO();
     /**
      * Reference to the FXML box containing available categories.
      */
@@ -61,7 +64,7 @@ public final class CategoryController implements Initializable {
      * Constructor used for controlling whether or not to retrieve custom
      * categories.
      *
-     * @param usernameParameter 'guest' if guest user, else the provided username.
+     * @param newUser - A user
      */
     public CategoryController(final User newUser) {
         this.user = newUser;
@@ -128,6 +131,7 @@ public final class CategoryController implements Initializable {
         if (!user.getUsername().equals("guest")) {
             categories.addAll(user.getCustomCategories().keySet());
         }
+        categories.addAll(database.getAllDefaultCategories().keySet());
         for (String category : categories) {
             Button button = new Button(category);
             button.setId(category);

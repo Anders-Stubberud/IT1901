@@ -13,7 +13,7 @@ public final class CategoryFactory implements Callback<Class<?>, Object> {
     /**
      * Constructor constructing the factory object.
      *
-     * @param usernameParameter
+     * @param newUser - the user to store for the game
      */
     public CategoryFactory(final User newUser) {
         this.user = newUser;
