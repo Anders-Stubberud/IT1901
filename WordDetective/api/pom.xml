@@ -98,6 +98,12 @@
         <version>0.0.1-SNAPSHOT</version>
     </dependency>
 
+    <dependency>
+        <groupId>it1901</groupId>
+        <artifactId>modules-types</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+
   </dependencies>
 
   <build>

@@ -3,6 +3,7 @@ package api.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -22,10 +23,10 @@ public class GamePageController {
    *
    * @param username The username.
    */
-  @RequestMapping(value = "/GamePageController/newGame/{username}", method = RequestMethod.GET)
+  @RequestMapping(value = "/GamePageController/newGame", method = RequestMethod.POST)
   @ResponseStatus(HttpStatus.OK)
-  public void newGameLogic(@PathVariable final String username) {
-    game = new Game(new User());
+  public void newGameLogic(@RequestBody final User user) {
+    game = new Game(user);
   }
 
   /**
@@ -33,9 +34,9 @@ public class GamePageController {
    *
    * @param category The username.
    */
-  @RequestMapping(value = "/GamePageController/setCategory/{category}", method = RequestMethod.GET)
+  @RequestMapping(value = "/GamePageController/setCategory", method = RequestMethod.POST)
   @ResponseStatus(HttpStatus.OK)
-  public void setCategory(@PathVariable final String category) {
+  public void setCategory(@RequestBody final String category) {
     game.setCategory(category);
   }
 
@@ -43,6 +44,18 @@ public class GamePageController {
   @ResponseStatus(HttpStatus.OK)
   public String getRandomWord() {
     return game.getRandomWord();
+  }
+
+  @RequestMapping(value = "GamePageController/getSubstring/{string}", method = RequestMethod.GET)
+  @ResponseStatus(HttpStatus.OK)
+  public String getSubstring(@PathVariable String string) {
+    return game.getRandomSubstring(string);
+  }
+
+  @RequestMapping(value = "GamePageController/checkValidWord/{substring}/{guess}", method = RequestMethod.GET)
+  @ResponseStatus(HttpStatus.OK)
+  public boolean checkValidWord(@PathVariable String substring, @PathVariable String guess) {
+    return game.checkValidWord(substring, guess);
   }
 
 }

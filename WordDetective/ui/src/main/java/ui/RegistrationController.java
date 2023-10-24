@@ -56,7 +56,7 @@ public class RegistrationController {
      */
     @FXML
     public void fireSignUp() {
-        User newUser = new User(newUsername.getText(), newPassword.getText());
+        User newUser = new User(newUsername.getText(), newPassword.getText()); //Registrere ny bruker før det sjekkes om en identisk eksisterer?
         if (database.getAllUsernames().contains(newUser.getUsername())
                 || !(newUser.isCorrectPassword())) {
 
@@ -71,15 +71,15 @@ public class RegistrationController {
                     DISPLAY_ERROR_DURATION_MS);
 
         } else {
-            database.addUser(newUser);
             try {
+                ApiConfig.registrationControllerAddUser(newUser);
                 FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
                 fxmlLoader.setControllerFactory(new CategoryFactory(newUser));
                 Parent parent = fxmlLoader.load();
                 Stage stage = (Stage) signUp.getScene().getWindow();
                 stage.setScene(new Scene(parent));
                 stage.show();
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         }

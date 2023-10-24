@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
+import java.net.http.HttpRequest.BodyPublisher;
+import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
-import java.util.Collection;
 import com.google.gson.Gson;
 
-import core.Game;
 import types.User;
 
 public final class ApiConfig {
@@ -38,8 +38,17 @@ public final class ApiConfig {
     throw new AssertionError("Utility class - do not instantiate.");
   }
 
-  private static HttpResponse<String> performRequest(final String url) throws IOException, InterruptedException {
+  private static HttpResponse<String> performGetRequest(final String url) throws IOException, InterruptedException {
     HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).build();
+    return CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+  }
+
+  private static HttpResponse<String> performPostRequest(String url, String type, BodyPublisher content) throws IOException, InterruptedException {
+    HttpRequest request = HttpRequest.newBuilder()
+    .uri(URI.create(url))
+    .header("Content-Type", type) 
+    .POST(content)
+    .build();
     return CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
   }
 
@@ -55,46 +64,72 @@ public final class ApiConfig {
   protected static User loginControllerPerformLogin(final String username)
       throws IOException, InterruptedException {
     String url = BASEURL + "LoginController/performLogin/" + username;
-    HttpResponse<String> response = performRequest(url);
+    HttpResponse<String> response = performGetRequest(url);
+    //Må her sende all brukerinfo (inkludert custom wordlists) gjennom API'et, samtidig som alt sendes tilbake (uten at wordlists er berørt) i instansieringen av nytt Game-objekt. 
     return gson.fromJson(response.body(), User.class);
   }
 
   protected static boolean registrationControllerFireSignUp(final String username)
       throws IOException, InterruptedException {
-    String url = BASEURL + "RegistrationController/fireSignUp/username";
-    HttpResponse<String> response = performRequest(url);
+    String url = BASEURL + "RegistrationController/fireSignUp" + username;
+    HttpResponse<String> response = performGetRequest(url);
     return Boolean.parseBoolean(response.body());
   }
 
-  protected static void gamePageControllerNewGameLogic(String username)
+  protected static void gamePageControllerNewGame(User user)
       throws IOException, InterruptedException {
-    performRequest(BASEURL + "GamePageController/newGameLogic/" + username);
+      //Sender all brukerinfo (inkludert uberørte custom lists) tilbake gjennom API'et. Kunne ha instansiert det på serversiden uten å sende det til client først. 
+      String url = BASEURL + "GamePageController/newGame";
+      String type = "application/json";
+      BodyPublisher body = HttpRequest.BodyPublishers.ofString(gson.toJson(user));
+      performPostRequest(url, type, body);
   }
 
   protected static void gamePageControllerSetCategory(String category)
       throws IOException, InterruptedException {
-    performRequest(BASEURL + "GamePageController/setCategory/" + category);
+      String url = BASEURL + "GamePageController/setCategory";
+      String type = "text/plain";
+      BodyPublisher body = BodyPublishers.ofString(category); 
+      performPostRequest(url, type, body).body();
   }
 
   protected static String gamePageControllerGetRandomWord()
       throws IOException, InterruptedException {
     String url = BASEURL + "GamePageController/getRandomWord";
-    HttpResponse<String> response = performRequest(url);
+    HttpResponse<String> response = performGetRequest(url);
     return response.body();
   }
 
+  protected static String gamePageControllerGetSubstring(String string) throws IOException, InterruptedException {
+    String url = BASEURL + "GamePageController/getSubstring/" + string;
+    return performGetRequest(url).body();
+  }
+
+  protected static boolean gamePageControllerCheckValidWord(String substring, String guess) throws IOException, InterruptedException {
+    String url = BASEURL + "GamePageController/checkValidWord/" + substring + "/" + guess;
+    HttpResponse<String> response = performGetRequest(url);
+    return Boolean.parseBoolean(response.body());
+  }
+
+  protected static void registrationControllerAddUser(User user) throws IOException, InterruptedException {
+    String url = BASEURL + "registrationController/addUser";
+    String type = "application/json";
+    BodyPublisher body = HttpRequest.BodyPublishers.ofString(gson.toJson(user));
+    performPostRequest(url, type, body);
+  }
+
   public static void main(String[] args) {
-    try {
-      gamePageControllerNewGameLogic("Anders");
-      gamePageControllerSetCategory("custom");
-      System.out.println(gamePageControllerGetRandomWord());
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (InterruptedException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    // User guest = new User();
+    // User username = new User("username", "password");
+    // try {
+    //   gamePageControllerNewGame(username);
+    //   game
+    //   gamePageControllerSetCategory("countries");
+    //   System.out.println(gamePageControllerGetRandomWord());
+    // } catch (IOException | InterruptedException e) {
+    //   // TODO Auto-generated catch block
+    //   e.printStackTrace();
+    // }
   }
 
 }

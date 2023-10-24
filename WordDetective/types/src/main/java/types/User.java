@@ -144,4 +144,9 @@ public final class User {
         return getPassword().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{4,}$");
     }
 
+    public static void main(String[] args) {
+        System.out.println("newUser".matches("^(?!guest)[a-zA-Z0-9_ ]{2,}$"));
+        System.out.println("newPassword123!".matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{4,}$"));
+    }
+
 }

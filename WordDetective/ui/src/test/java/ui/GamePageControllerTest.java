@@ -168,19 +168,19 @@ public class GamePageControllerTest extends ApplicationTest {
 
   }
 
-  /**
-   * Test writing a word input.
-   *
-   * @param word      - The word to write
-   * @param isCorrect - Is word correct
-   */
-  @ParameterizedTest
-  @MethodSource
-  public void testWriteWords(final String word, final boolean isCorrect) {
+  // /**
+  //  * Test writing a word input.
+  //  *
+  //  * @param word      - The word to write
+  //  * @param isCorrect - Is word correct
+  //  */
+  // @ParameterizedTest
+  // @MethodSource
+  // public void testWriteWords(final String word, final boolean isCorrect) {
     // write(word);
     // isCorrect(getInput(), isCorrect);
     // cleanInput();
-  }
+  // }
 
   /**
    * Stram of arguments for writing words.

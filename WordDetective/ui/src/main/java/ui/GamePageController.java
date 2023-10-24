@@ -2,6 +2,7 @@ package ui;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -197,20 +198,24 @@ public final class GamePageController implements Initializable {
         colorCorrectLetters(playerInputField, outputField);
         if (ke.getCode().equals(KeyCode.ENTER)) { // If pressed Enter, then check word
             String playerGuess = playerInputField.getText();
-            if (game.checkValidWord(substring, playerGuess)) {
-                int newPoints = Integer.valueOf(points.getText()) + 1;
-                user.setHighscore(newPoints);
-                points.setText(String.valueOf(newPoints));
-                playerInputField.setText("");
-                rndwordMasterLetters();
-            } else {
-                // Shake inputfield
-                TranslateTransition shake = new TranslateTransition();
-                shake.setDuration(Duration.millis(shakeDuration));
-                shake.setNode(outputField);
-                shake.setFromX(-shakeXMovment);
-                shake.setToX(shakeXMovment);
-                shake.play();
+            try {
+                if (ApiConfig.gamePageControllerCheckValidWord(playerGuess, playerGuess)) {
+                    int newPoints = Integer.valueOf(points.getText()) + 1;
+                    user.setHighscore(newPoints);
+                    points.setText(String.valueOf(newPoints));
+                    playerInputField.setText("");
+                    rndwordMasterLetters();
+                } else {
+                    // Shake inputfield
+                    TranslateTransition shake = new TranslateTransition();
+                    shake.setDuration(Duration.millis(shakeDuration));
+                    shake.setNode(outputField);
+                    shake.setFromX(-shakeXMovment);
+                    shake.setToX(shakeXMovment);
+                    shake.play();
+                }
+            } catch (NumberFormatException | IOException | InterruptedException e) {
+                e.printStackTrace();
             }
         }
 
@@ -261,10 +266,13 @@ public final class GamePageController implements Initializable {
      * The length of the letters is either 2 or 3.
      */
     public void rndwordMasterLetters() {
-        String string = game.getRandomWord();
-        System.out.println(string);
-        substring = game.getRandomSubstring(string);
-        letters.setText(substring.toUpperCase());
+        try {
+            String string = ApiConfig.gamePageControllerGetRandomWord();
+            substring = game.getRandomSubstring(string);
+            letters.setText(substring.toUpperCase());
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -284,8 +292,13 @@ public final class GamePageController implements Initializable {
     @Override // Runs on start of the application
     public void initialize(final URL location, final ResourceBundle resources) {
         try {
-            game = new Game(user);
-            game.setCategory(currentCategory);
+            // game = new Game(user);
+            try {
+                ApiConfig.gamePageControllerNewGame(user);
+                ApiConfig.gamePageControllerSetCategory(currentCategory);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
             rndwordMasterLetters();
             Circle activePlayer = new Circle(centerX, centerY, radius,
                     new ImagePattern(new Image(new FileInputStream("./assets/images/Brage.png"))));
