@@ -21,15 +21,21 @@ import types.User;
  * It also provides methods for querying the available categories.
  */
 public final class JsonIO implements AbstractJsonIO {
-
     /**
      * The path where the files will be read/written.
      */
     private final String path;
+
     /**
      * Gson instance for serialization/deserialization.
      */
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+    /**
+     * Type of a {@link List} of strings used for deserialitzing in gson.
+     */
+    private Type listOfStringsType = new TypeToken<List<String>>() {
+    }.getType();
 
     /**
      * Constructor used for writing/reading to and from json file.
@@ -40,17 +46,17 @@ public final class JsonIO implements AbstractJsonIO {
     }
 
     @Override
-    public void addUser(User user) {
+    public void addUser(final User user) {
         try (FileWriter fw = new FileWriter(path + "/users/" + user.getUsername() + ".json", StandardCharsets.UTF_8)) {
             gson.toJson(user, fw);
             System.out.println("User " + user.getUsername() + " successfully created.");
         } catch (IOException e) {
-            System.out.println("Couldn't add user " + user.getUsername() + " because: " + e.getLocalizedMessage());
+            System.out.println("Couldn't add user " + user.getUsername() + " because: " + e.getMessage());
         }
     }
 
     @Override
-    public void deleteUser(String username) {
+    public void deleteUser(final String username) {
         File user = new File(path + "/users/" + username + ".json");
         if (user.delete()) {
             System.out.println(username + " deleted successfully");
@@ -60,18 +66,18 @@ public final class JsonIO implements AbstractJsonIO {
     }
 
     @Override
-    public User getUser(String username) {
+    public User getUser(final String username) {
         try {
             String jsonString = Files.readString(Paths.get(path + "/users/" + username + ".json"));
             return gson.fromJson(jsonString, User.class);
         } catch (IOException e) {
-            System.out.println("Couldn't get user " + username + "because: " + e.getLocalizedMessage());
+            System.out.println("Couldn't get user " + username + "because: " + e.getMessage());
             return null;
         }
     }
 
     @Override
-    public void updateUser(User user) {
+    public void updateUser(final User user) {
         if (new File(path + "/users/" + user.getUsername() + ".json").exists()) {
             try (FileWriter fw = new FileWriter(path + "/users/" + user.getUsername() + ".json",
                     StandardCharsets.UTF_8)) {
@@ -79,7 +85,7 @@ public final class JsonIO implements AbstractJsonIO {
                 System.out.println("User " + user.getUsername() + " successfully updated.");
             } catch (IOException e) {
                 System.out
-                        .println("Couldn't update user " + user.getUsername() + " because: " + e.getLocalizedMessage());
+                        .println("Couldn't update user " + user.getUsername() + " because: " + e.getMessage());
             }
         } else {
             System.out.println("User: " + user.getUsername() + " not found");
@@ -87,30 +93,31 @@ public final class JsonIO implements AbstractJsonIO {
     }
 
     @Override
-    public List<String> getDefaultCategory(String category) {
+    public List<String> getDefaultCategory(final String category) {
         try {
-            Type listOfStrings = new TypeToken<List<String>>() {
-            }.getClass();
             String answers = Files.readString(Paths.get(path + "/default_categories/" + category + ".json"));
-            return gson.fromJson(answers, listOfStrings);
+            return gson.fromJson(answers, listOfStringsType);
         } catch (IOException e) {
-            System.out.println("Couldn't find default category: " + category + " because " + e.getLocalizedMessage());
+            System.out.println("Couldn't find default category: " + category + " because " + e.getMessage());
             return null;
         }
     }
 
     @Override
     public HashMap<String, List<String>> getAllDefaultCategories() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllDefaultCategories'");
-    }
-
-    public static void main(String args[]) {
-        JsonIO js = new JsonIO();
-        User user = new User("Crayon", "Bob123");
-        List<String> list = js.getDefaultCategory("us_states");
-        System.out.println(list.toString());
-
+        try {
+            HashMap<String, List<String>> result = new HashMap<>();
+            File[] categories = new File(path + "/default_categories").listFiles();
+            for (File category : categories) {
+                result.put(category.getName().replace(".json", ""),
+                        gson.fromJson(Files.readString(Paths.get(category.toString())),
+                                listOfStringsType));
+            }
+            return result;
+        } catch (Exception e) {
+            System.out.println("Couldn't get all default categories because: " + e.getMessage());
+            return null;
+        }
     }
 
     /**
@@ -119,15 +126,15 @@ public final class JsonIO implements AbstractJsonIO {
      * @param directory - The directory to find the path to.
      * @return absolute path to current working directory as {@link String}.
      */
-    private String getAbsolutePath(String directory) {
-        Path path = Paths.get("").toAbsolutePath();
-        while (!path.endsWith(directory)) {
-            path = path.getParent();
-            if (path == null) {
+    private String getAbsolutePath(final String directory) {
+        Path absolutePath = Paths.get("").toAbsolutePath();
+        while (!absolutePath.endsWith(directory)) {
+            absolutePath = absolutePath.getParent();
+            if (absolutePath == null) {
                 throw new IllegalStateException("Working directory not found.");
             }
         }
-        return path.toString();
+        return absolutePath.toString();
     }
 
 }
