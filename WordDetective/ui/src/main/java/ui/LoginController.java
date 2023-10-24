@@ -56,6 +56,7 @@ public class LoginController {
     @FXML
     public void performLogin() {
         User newUser = database.getUser(username.getText());
+        // Gir NullPointerException og utfører ikke else-blokken.
         if (newUser.getPassword().equals(password.getText())) {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));

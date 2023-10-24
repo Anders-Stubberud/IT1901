@@ -87,6 +87,7 @@ public final class CategoryController implements Initializable {
      * Uploads a category selected in the GUI and stores in database.
      */
     @FXML
+    // Ser ikke ut som at files lastes inn.
     public void uploadCategory() {
         if (!user.getUsername().equals("guest")) {
             FileChooser fileChooser = new FileChooser();

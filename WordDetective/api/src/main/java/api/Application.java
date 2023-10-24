@@ -5,8 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
-
-import core.GameLogic;
+import persistence.JsonIO;
+import core.Game;
 
 /**
  *
@@ -27,8 +27,15 @@ public class Application {
     @Primary
     @Bean
     @Scope("session")
-    public GameLogic gameLogic() {
-        return new GameLogic();
+    public Game game() {
+        return new Game();
+    }
+
+    @Primary
+    @Bean
+    @Scope("session")
+    public JsonIO jsonIO() {
+        return new JsonIO();
     }
 
 }

@@ -6,10 +6,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import persistence.UserIO;
+import persistence.JsonIO;
+import types.User;
 
 @RestController
 public class LoginController {
+
+  private JsonIO jsonIO;
 
   /**
    * Check if username and password is a match.
@@ -18,10 +21,10 @@ public class LoginController {
    * @param password The password from the URL.
    * @return true if the login is successful; false otherwise.
    */
-  @RequestMapping(value = "/LoginController/performLogin/{username}/{password}", method = RequestMethod.GET)
+  @RequestMapping(value = "/LoginController/performLogin/{username}", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
-  public boolean performLogin(final @PathVariable String username, final @PathVariable String password) {
-    return UserIO.correctUsernameAndPassword(username, password);
+  public User performLogin(final @PathVariable String username) {
+    return jsonIO.getUser(username);
   }
 
 }

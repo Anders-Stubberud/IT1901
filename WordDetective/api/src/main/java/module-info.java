@@ -1,7 +1,9 @@
 module project.api {
 
-  // requires project.core;
+  exports api.controllers;
+  
   requires project.persistence;
+  requires project.types;
   requires spring.boot;
   requires spring.boot.autoconfigure;
   requires spring.core;
@@ -10,8 +12,6 @@ module project.api {
   requires spring.web;
   requires spring.webmvc;
   requires transitive project.core;
-
-  exports api.controllers;
 
   opens api;
 }

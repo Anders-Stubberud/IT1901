@@ -6,16 +6,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import persistence.UserIO;
+import persistence.JsonIO;
 
 @RestController
 public class RegistrationController {
+
+  private JsonIO jsonIO;
 
   @RequestMapping(value = "/RegistrationController/fireSignUp/{username}", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public boolean fireSignUp(final @PathVariable String username,
       final @PathVariable String password) {
-    return UserIO.getAllUsernames().contains(username);
+    return jsonIO.getAllUsernames().contains(username);
   }
 
 }

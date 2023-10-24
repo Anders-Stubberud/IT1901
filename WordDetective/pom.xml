@@ -178,5 +178,6 @@
     <module>ui</module>
     <module>persistence</module>
     <module>types</module>
+    <module>api</module>
   </modules>
 </project>

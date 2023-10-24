@@ -8,25 +8,24 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.Collection;
-
-import core.CategoryLogic;
-import core.GameLogic;
+import types.User;
+import core.Game;
 
 @RestController
 public class GamePageController {
 
   // @Autowired
-  private GameLogic gameLogic;
+  private Game game;
 
   /**
    * The provided username.
    *
    * @param username The username.
    */
-  @RequestMapping(value = "/GamePageController/newGameLogic/{username}", method = RequestMethod.GET)
+  @RequestMapping(value = "/GamePageController/newGame/{username}", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public void newGameLogic(@PathVariable final String username) {
-    gameLogic = new GameLogic(username);
+    game = new Game(new User());
   }
 
   /**
@@ -37,13 +36,13 @@ public class GamePageController {
   @RequestMapping(value = "/GamePageController/setCategory/{category}", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public void setCategory(@PathVariable final String category) {
-    gameLogic.setCategory(category);
+    game.setCategory(category);
   }
 
   @RequestMapping(value = "/GamePageController/getRandomWord", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public String getRandomWord() {
-    return gameLogic.getRandomWord();
+    return game.getRandomWord();
   }
 
 }
