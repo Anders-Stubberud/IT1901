@@ -29,6 +29,13 @@ public interface AbstractJsonIO {
   User getUser(String username);
 
   /**
+   * get all the user's usernames in the database.
+   *
+   * @return - a {@link List} of strings containing all usernames
+   */
+  List<String> getAllUsernames();
+
+  /**
    * Update user and store new data in database.
    *
    * @param user - The new user object to override the old
