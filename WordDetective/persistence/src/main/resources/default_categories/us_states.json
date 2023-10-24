@@ -1,6 +1,4 @@
-{
-    "category": "US states",
-    "wordlist": [
+[
         "ALABAMA",
         "ALASKA",
         "ARIZONA",
@@ -51,5 +49,5 @@
         "WEST VIRGINIA",
         "WISCONSIN",
         "WYOMING"
-    ]
-}
+]
+

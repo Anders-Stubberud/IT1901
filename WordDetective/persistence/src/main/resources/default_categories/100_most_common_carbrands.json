@@ -1,6 +1,4 @@
-{
-    "category": "100 most common carbrands",
-    "wordlist": [
+[
         "TOYOTA",
         "FORD",
         "HONDA",
@@ -98,5 +96,4 @@
         "BENTLEY",
         "BUGATTI",
         "LAMBORGHINI"
-    ]
-}
+]

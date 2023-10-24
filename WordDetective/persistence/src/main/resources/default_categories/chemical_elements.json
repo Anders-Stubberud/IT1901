@@ -1,6 +1,4 @@
-{
-    "category": "chemical elements",
-    "wordlist": [
+[
         "HYDROGEN",
         "HELIUM",
         "LITHIUM",
@@ -120,4 +118,4 @@
         "TENNESSINE",
         "OGANESSON"
     ]
-}
+
