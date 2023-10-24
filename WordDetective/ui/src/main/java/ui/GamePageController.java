@@ -3,8 +3,6 @@ package ui;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import core.Game;
@@ -25,7 +23,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
-import persistence.JsonIO;
 import types.User;
 
 public final class GamePageController implements Initializable {
@@ -89,7 +86,7 @@ public final class GamePageController implements Initializable {
      */
     private String substring;
     /**
-     * The current user
+     * The current user.
      */
     private User user;
     /**
@@ -148,8 +145,8 @@ public final class GamePageController implements Initializable {
     /**
      * Constructor initializing the object.
      *
-     * @param usernameParameter provided username.
-     * @param categoryParameter category of the given game.
+     * @param newUser  username.
+     * @param category category of the given game.
      */
     public GamePageController(final User newUser, final String category) {
         this.user = newUser;
@@ -202,6 +199,7 @@ public final class GamePageController implements Initializable {
             String playerGuess = playerInputField.getText();
             if (game.checkValidWord(substring, playerGuess)) {
                 int newPoints = Integer.valueOf(points.getText()) + 1;
+                user.setHighscore(newPoints);
                 points.setText(String.valueOf(newPoints));
                 playerInputField.setText("");
                 rndwordMasterLetters();
@@ -303,6 +301,14 @@ public final class GamePageController implements Initializable {
             }));
             playerInputField.requestFocus();
             categoryDisplay.setText("Category: " + game.getChosenCategory().toUpperCase());
+            // Add shutdownhook that updates user highscore when closing application
+            Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+                public void run() {
+                    if (!user.getUsername().equals("guest")) {
+                        game.savePlayerHighscore(Integer.valueOf(points.getText()));
+                    }
+                }
+            }, "Shutdown-thread"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
