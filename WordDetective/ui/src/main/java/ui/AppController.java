@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import types.User;
 
 public final class AppController {
 
@@ -29,6 +30,11 @@ public final class AppController {
      */
     @FXML
     private FXMLLoader fxmlLoader;
+
+    /**
+     * Guest user if player is guest.
+     */
+    private User user = new User();
 
     /**
      * Goes back to Frontpage.
@@ -62,7 +68,7 @@ public final class AppController {
     void launchGame() {
         try {
             fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
-            fxmlLoader.setControllerFactory(new CategoryFactory("guest"));
+            fxmlLoader.setControllerFactory(new CategoryFactory(user));
             Parent parent = fxmlLoader.load();
             Stage stage = (Stage) appGuestBtn.getScene().getWindow();
             stage.setScene(new Scene(parent));

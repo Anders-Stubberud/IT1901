@@ -3,7 +3,8 @@ package ui;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -20,17 +21,20 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import persistence.FileIO;
-import persistence.UserIO;
+import persistence.JsonIO;
+import types.User;
 
 public final class CategoryController implements Initializable {
 
     /**
-     * Username of the current user. Assigned to 'guest' if guest, else the provided
-     * username.
+     * The current user.
      */
-    private String username;
+    private User user;
 
+    /**
+     * Database to get all default categories.
+     */
+    private JsonIO database = new JsonIO();
     /**
      * Reference to the FXML box containing available categories.
      */
@@ -57,6 +61,16 @@ public final class CategoryController implements Initializable {
     private Pane pane;
 
     /**
+     * Constructor used for controlling whether or not to retrieve custom
+     * categories.
+     *
+     * @param newUser - A user
+     */
+    public CategoryController(final User newUser) {
+        this.user = newUser;
+    }
+
+    /**
      * Toggles the visibility of the option for the user to upload a custom
      * category.
      */
@@ -70,30 +84,20 @@ public final class CategoryController implements Initializable {
     }
 
     /**
-     * Uploads the file selected in the GUI.
+     * Uploads a category selected in the GUI and stores in database.
      */
     @FXML
-    public void uploadFile() {
-        if (!username.equals("guest")) {
+    public void uploadCategory() {
+        if (!user.getUsername().equals("guest")) {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
             File selectedFile = fileChooser.showOpenDialog(new Stage());
             if (selectedFile != null) {
                 String filename = selectedFile.getName();
-                UserIO.uploadFile(selectedFile.getAbsolutePath(), username, filename);
+
                 renderCategories();
             }
         }
-    }
-
-    /**
-     * Constructor used for controlling whether or not to retrieve custom
-     * categories.
-     *
-     * @param usernameParameter 'guest' if guest user, else the provided username.
-     */
-    public CategoryController(final String usernameParameter) {
-        this.username = usernameParameter;
     }
 
     /**
@@ -113,7 +117,7 @@ public final class CategoryController implements Initializable {
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         renderCategories();
-        if (username.equals("guest")) {
+        if (user.getUsername().equals("guest")) {
             upload.setOpacity(0);
         }
     }
@@ -123,10 +127,11 @@ public final class CategoryController implements Initializable {
      */
     public void renderCategories() {
         pane.setVisible(false);
-        Collection<String> categories = FileIO.loadDefaultCategories();
-        if (!username.equals("guest")) {
-            categories.addAll(FileIO.loadCustomCategories(username));
+        List<String> categories = new ArrayList<>();
+        if (!user.getUsername().equals("guest")) {
+            categories.addAll(user.getCustomCategories().keySet());
         }
+        categories.addAll(database.getAllDefaultCategories().keySet());
         for (String category : categories) {
             Button button = new Button(category);
             button.setId(category);
@@ -141,7 +146,7 @@ public final class CategoryController implements Initializable {
             button.setOnAction(event -> {
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("GamePage.fxml"));
-                    fxmlLoader.setControllerFactory(new GamePageFactory(username, category));
+                    fxmlLoader.setControllerFactory(new GamePageFactory(user, category));
                     Parent parent = fxmlLoader.load();
                     Stage stage = (Stage) button.getScene().getWindow();
                     stage.setScene(new Scene(parent));

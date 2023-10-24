@@ -1,6 +1,7 @@
 package ui;
 
 import javafx.util.Callback;
+import types.User;
 
 public final class GamePageFactory implements Callback<Class<?>, Object> {
 
@@ -8,7 +9,7 @@ public final class GamePageFactory implements Callback<Class<?>, Object> {
      * Variable for holding the username used to create the gamepage's controller.
      * object.
      */
-    private final String username;
+    private final User user;
 
     /**
      * Variable for holding the category used to create the gamepage's controller.
@@ -19,13 +20,13 @@ public final class GamePageFactory implements Callback<Class<?>, Object> {
     /**
      * Constructor constructing the factory object.
      *
-     * @param usernameParameter used to set up correct instance fo the game.
-     * @param categoryParameter used to load the wordlist correlating to the
-     *                          category.
+     * @param newUser     - The user for game
+     * @param newCategory -used to load the wordlist correlating to the
+     *                    category.
      */
-    public GamePageFactory(final String usernameParameter, final String categoryParameter) {
-        this.username = usernameParameter;
-        this.category = categoryParameter;
+    public GamePageFactory(final User newUser, final String newCategory) {
+        this.user = newUser;
+        this.category = newCategory;
     }
 
     /**
@@ -36,7 +37,7 @@ public final class GamePageFactory implements Callback<Class<?>, Object> {
     @Override
     public Object call(final Class<?> type) {
         if (type == GamePageController.class) {
-            return new GamePageController(username, category);
+            return new GamePageController(user, category);
         }
         return null;
     }

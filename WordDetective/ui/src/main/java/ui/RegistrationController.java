@@ -11,7 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import persistence.UserIO;
+import persistence.JsonIO;
+import types.User;
 
 public class RegistrationController {
 
@@ -19,6 +20,11 @@ public class RegistrationController {
      * Duration of the error displayed useed if username is taken.
      */
     private static final int DISPLAY_ERROR_DURATION_MS = 3000;
+
+    /**
+     * Database to read and write to.
+     */
+    private JsonIO database = new JsonIO();
 
     /**
      * FXML component used to display error if provided username is taken.
@@ -50,12 +56,11 @@ public class RegistrationController {
      */
     @FXML
     public void fireSignUp() {
-        String providedUsername = newUsername.getText();
-        String providedPassword = newPassword.getText();
-        if (UserIO.getAllUsernames().contains(providedUsername)) {
+        User newUser = new User(newUsername.getText(), newPassword.getText());
+        if (database.getAllUsernames().contains(newUser.getUsername())
+                || !(newUser.isCorrectPassword())) {
 
             usernameTaken.setOpacity(1);
-
             new java.util.Timer().schedule(
                     new java.util.TimerTask() {
                         @Override
@@ -66,10 +71,10 @@ public class RegistrationController {
                     DISPLAY_ERROR_DURATION_MS);
 
         } else {
-            UserIO.insertNewUser(providedUsername, providedPassword);
+            database.addUser(newUser);
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
-                fxmlLoader.setControllerFactory(new CategoryFactory(providedUsername));
+                fxmlLoader.setControllerFactory(new CategoryFactory(newUser));
                 Parent parent = fxmlLoader.load();
                 Stage stage = (Stage) signUp.getScene().getWindow();
                 stage.setScene(new Scene(parent));

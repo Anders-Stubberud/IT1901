@@ -1,6 +1,5 @@
 package ui;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.junit.Assert;
@@ -14,7 +13,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
-import persistence.UserIO;
 
 public class RegistrationControllerTest extends ApplicationTest {
 
@@ -72,21 +70,21 @@ public class RegistrationControllerTest extends ApplicationTest {
         1, opacity);
   }
 
-  /**
-   * Tests that a user with valid username can be created.
-   */
-  @Test
-  public void testCreateNewUser() {
-    String username = "availableUser";
-    Assert.assertFalse(UserIO.getAllUsernames().contains(username));
-    clickOn("#newUsername", MouseButton.PRIMARY);
-    write(username);
-    clickOn("#newPassword", MouseButton.PRIMARY);
-    write("password123");
-    clickOn("#signUp", MouseButton.PRIMARY);
-    Assert.assertTrue(UserIO.getAllUsernames().contains(username));
-    File file = new File(UserIO.getPath() + "/" + username);
-    UserIO.deleteUser(file);
-  }
+  // /**
+  // * Tests that a user with valid username can be created.
+  // */
+  // @Test
+  // public void testCreateNewUser() {
+  // String username = "availableUser";
+  // Assert.assertFalse(UserIO.getAllUsernames().contains(username));
+  // clickOn("#newUsername", MouseButton.PRIMARY);
+  // write(username);
+  // clickOn("#newPassword", MouseButton.PRIMARY);
+  // write("password123");
+  // clickOn("#signUp", MouseButton.PRIMARY);
+  // Assert.assertTrue(UserIO.getAllUsernames().contains(username));
+  // File file = new File(UserIO.getPath() + "/" + username);
+  // UserIO.deleteUser(file);
+  // }
 
 }

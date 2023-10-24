@@ -1,6 +1,4 @@
-{
-    "category" : "programming languages",
-    "wordlist" : [
+[
         "A# .NET",
         "A# (AXIOM)",
         "A-0 SYSTEM",
@@ -263,5 +261,4 @@
         "HARTMANN PIPELINES",
         "HASKELL",
         "HAX"
-    ]
-}
+]

@@ -11,10 +11,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import persistence.UserIO;
+import persistence.JsonIO;
+import types.User;
 
 public class LoginController {
-
     /**
      * Label for marking of incorrect password.
      */
@@ -46,16 +46,20 @@ public class LoginController {
     private static final int DISPLAY_ERROR_DURATION_MS = 3000;
 
     /**
+     * Database.
+     */
+    private JsonIO database = new JsonIO();
+
+    /**
      * Method fired when pressing the "login" button. Loads the category window.
      */
     @FXML
     public void performLogin() {
-        String providedUsername = username.getText();
-        String providedPassword = password.getText();
-        if (UserIO.correctUsernameAndPassword(providedUsername, providedPassword)) {
+        User newUser = database.getUser(username.getText());
+        if (newUser.getPassword().equals(password.getText())) {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
-                fxmlLoader.setControllerFactory(new CategoryFactory(providedUsername));
+                fxmlLoader.setControllerFactory(new CategoryFactory(newUser));
                 Parent parent = fxmlLoader.load();
                 Stage stage = (Stage) login.getScene().getWindow();
                 stage.setScene(new Scene(parent));

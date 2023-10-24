@@ -1,6 +1,4 @@
-{
-    "category": "countries",
-    "wordlist": [
+[
         "AFGHANISTAN",
         "ALBANIA",
         "ALGERIA",
@@ -196,5 +194,4 @@
         "YEMEN",
         "ZAMBIA",
         "ZIMBABWE"
-    ]
-}
+]

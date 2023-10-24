@@ -1,22 +1,22 @@
 package ui;
 
 import javafx.util.Callback;
+import types.User;
 
 public final class CategoryFactory implements Callback<Class<?>, Object> {
 
     /**
-     * Variable for holding the username used to create the category controller
-     * object.
+     * The user to store.
      */
-    private final String username;
+    private final User user;
 
     /**
      * Constructor constructing the factory object.
      *
-     * @param usernameParameter
+     * @param newUser - the user to store for the game
      */
-    public CategoryFactory(final String usernameParameter) {
-        this.username = usernameParameter;
+    public CategoryFactory(final User newUser) {
+        this.user = newUser;
     }
 
     /**
@@ -26,7 +26,7 @@ public final class CategoryFactory implements Callback<Class<?>, Object> {
     @Override
     public Object call(final Class<?> type) {
         if (type == CategoryController.class) {
-            return new CategoryController(username);
+            return new CategoryController(user);
         }
         return null;
     }

@@ -3,11 +3,9 @@ package ui;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
-import core.GameLogic;
+import core.Game;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -25,7 +23,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
-import persistence.FileIO;
+import types.User;
 
 public final class GamePageController implements Initializable {
 
@@ -80,17 +78,17 @@ public final class GamePageController implements Initializable {
     private Button closeHTPBtn, openHTPBtn;
 
     /**
-     * a GameLogic object used to controll the game.
+     * a Game object used to controll the game.
      */
-    private GameLogic game;
+    private Game game;
     /**
      * The substring is the letters that the player has to use.
      */
     private String substring;
     /**
-     * The players is the list of players.
+     * The current user.
      */
-    private List<Circle> players = new ArrayList<>();
+    private User user;
     /**
      * The layoutX is the X position of the game.
      */
@@ -140,41 +138,27 @@ public final class GamePageController implements Initializable {
     private boolean showHowToPlay = true;
 
     /**
-     * Variable holding the username of the current player.
-     */
-    private String username;
-
-    /**
      * Variable holding the category of the given game.
      */
-    private String category;
+    private String currentCategory;
 
     /**
      * Constructor initializing the object.
      *
-     * @param usernameParameter provided username.
-     * @param categoryParameter category of the given game.
+     * @param newUser  username.
+     * @param category category of the given game.
      */
-    public GamePageController(final String usernameParameter, final String categoryParameter) {
-        this.username = usernameParameter;
-        this.category = categoryParameter;
+    public GamePageController(final User newUser, final String category) {
+        this.user = newUser;
+        this.currentCategory = category;
     }
 
     /**
      * Empty Constuctor for initialising controller.
      */
     public GamePageController() {
-        this.username = "guest";
-        this.category = "us states";
-    }
-
-    /**
-     * Pick a random player from players list.
-     *
-     * @return the chosen player
-     */
-    public String pickPlayer() {
-        return game.pickRndPlayer();
+        this.user = new User();
+        this.currentCategory = "us states";
     }
 
     /**
@@ -203,40 +187,6 @@ public final class GamePageController implements Initializable {
 
     }
 
-    // Might be inplemented later.
-    /**
-     * Create players and draw them on the fxml.
-     *
-     * @param haveBots - If true add 1-4 bots
-     * @throws FileNotFoundException If player pictures is not found
-     */
-    public void createPlayers(final boolean haveBots) throws FileNotFoundException {
-        // // TODO read from active player JSON
-        // double playerCenterX = pageCenter;
-
-        // if (haveBots) {
-        // double numOfBots = Math.floor(Math.random() * botsMultiplier) + 2; // minimum
-        // of 1 bot
-        // double centerX = window.getPrefWidth() / (numOfBots + 1);
-        // for (int j = 1; j < (numOfBots + 1); j++) {
-        // if (j != (int) Math.ceil(numOfBots / 2)) {
-        // players.add(new Circle(centerX * j, centerY, radius,
-        // new ImagePattern(new Image(new
-        // FileInputStream("./assets/images/Abdulbari.png")))));
-        // } else {
-        // playerCenterX = centerX * j;
-        // }
-        // }
-        // }
-        // Circle activePlayer = new Circle(playerCenterX, centerY, radius,
-        // new ImagePattern(new Image(new
-        // FileInputStream("./assets/images/Brage.png"))));
-
-        // // players.add(((int) Math.floor(players.size() / 2)), activePlayer);
-        // players.add((int) (players.size() / 2), activePlayer);
-        // window.getChildren().addAll(players);
-    }
-
     /**
      * game checks if player written word is correct. If right add 1 point
      * else shake game.
@@ -248,9 +198,9 @@ public final class GamePageController implements Initializable {
         if (ke.getCode().equals(KeyCode.ENTER)) { // If pressed Enter, then check word
             String playerGuess = playerInputField.getText();
             if (game.checkValidWord(substring, playerGuess)) {
-                FileIO.incrementHighScore(username);
-                int pointsHS = FileIO.getHighScore(username);
-                points.setText(String.valueOf(pointsHS));
+                int newPoints = Integer.valueOf(points.getText()) + 1;
+                user.setHighscore(newPoints);
+                points.setText(String.valueOf(newPoints));
                 playerInputField.setText("");
                 rndwordMasterLetters();
             } else {
@@ -313,7 +263,7 @@ public final class GamePageController implements Initializable {
     public void rndwordMasterLetters() {
         String string = game.getRandomWord();
         System.out.println(string);
-        substring = GameLogic.getRandomSubstring(string);
+        substring = game.getRandomSubstring(string);
         letters.setText(substring.toUpperCase());
     }
 
@@ -334,8 +284,8 @@ public final class GamePageController implements Initializable {
     @Override // Runs on start of the application
     public void initialize(final URL location, final ResourceBundle resources) {
         try {
-            game = new GameLogic(username);
-            game.setCategory(category);
+            game = new Game(user);
+            game.setCategory(currentCategory);
             rndwordMasterLetters();
             Circle activePlayer = new Circle(centerX, centerY, radius,
                     new ImagePattern(new Image(new FileInputStream("./assets/images/Brage.png"))));
@@ -351,6 +301,14 @@ public final class GamePageController implements Initializable {
             }));
             playerInputField.requestFocus();
             categoryDisplay.setText("Category: " + game.getChosenCategory().toUpperCase());
+            // Add shutdownhook that updates user highscore when closing application
+            Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+                public void run() {
+                    if (!user.getUsername().equals("guest")) {
+                        game.savePlayerHighscore(Integer.valueOf(points.getText()));
+                    }
+                }
+            }, "Shutdown-thread"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
