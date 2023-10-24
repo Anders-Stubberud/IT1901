@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
+import types.User;
 
 public class CategoryControllerTest extends ApplicationTest {
 
@@ -42,7 +43,7 @@ public class CategoryControllerTest extends ApplicationTest {
     @Override
     public void start(final Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
-        fxmlLoader.setControllerFactory(new CategoryFactory("guest"));
+        fxmlLoader.setControllerFactory(new CategoryFactory(new User()));
         root = fxmlLoader.load();
         stage.setScene(new Scene(root));
         stage.show();

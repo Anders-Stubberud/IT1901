@@ -18,7 +18,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.control.LabeledMatchers;
 
-import core.GameLogic;
+import core.Game;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -60,7 +60,7 @@ public class GamePageControllerTest extends ApplicationTest {
    * Gamelogic object.
    *
    */
-  private GameLogic gameMock;
+  private Game gameMock;
 
   /**
    * List for testing.
@@ -81,7 +81,7 @@ public class GamePageControllerTest extends ApplicationTest {
    */
   @BeforeEach
   public void setUp() {
-    gameMock = new GameLogic("guest");
+    // gameMock = new Game("guest");
     gameMock.setCategory("us states");
     gameMock.setWordList(testList);
     closeHowToPlay();
