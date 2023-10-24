@@ -1,134 +1,97 @@
 package core;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
+import persistence.JsonIO;
+import types.User;
 
 /**
  * The GameLogic class is responsible for the logic of the game.
  * It will delegate certain tasks to other objects,
  * who have more suitable functionality.
  */
-public class Game {
+public final class Game implements AbstractGame {
 
-    /**
-     * The wordlistForSearch is implemented as a hashset,
-     * which allows for search in average O(1).
-     */
-    private Set<String> wordlistForSearch;
-    /**
-     * The wordlistForSelection is implemented as an arraylist,
-     * which allows for accessing in O(1).
-     */
-    private List<String> wordlistForSelection;
-    /**
-     * The categoryLogic object is responsible for the logic of the categories.
-     */
-    private CategoryLogic categoryLogic;
     /**
      * The category chosen by the user.
      */
     private String chosenCategory;
-
     /**
-     * List containing players in the game.
+     * List of answers for the chosen category.
      */
-    private List<String> players = new ArrayList<String>();
-
+    private List<String> wordlist;
+    /**
+     * The active user playing this game.
+     */
+    private final User player;
     /**
      * Random object used to provide random numbers.
      */
     private static Random random = new Random();
+    /**
+     * A {@link JsonIO} object simulating our database.
+     */
+    private final JsonIO database;
 
     /**
-     * Initializes the GameLogic object, which will control the logic.
+     * Initializes the Game object, which will control the logic of the game.
      * Certain tasks will be delegated to objects with better functionality.
      *
-     * @param username The username of the user,
-     *                 used to set up individualized games for different users.
+     * @param user The the user, used to set up individualized games for different
+     *             users.
      */
-    public Game(final String username) {
-        players.add(username);
+    public Game(final User user) {
+        this.player = user;
+        this.database = new JsonIO();
+        this.wordlist = new ArrayList<>();
     }
 
-
     /**
-     * Sets up up the chosen category.
-     * Delegates the task of acquiring the correct
-     * words to the CategoryLogic.
-     * Will throw IllegalArgumentException if the
-     * chosen category is not among the
-     * available categories.
-     *
-     * @param category The category chosen by the user.
+     * Empty constructor if playing game with guest.
      */
+    public Game() {
+        this.player = new User();
+        this.database = new JsonIO();
+        this.wordlist = new ArrayList<>();
+    }
+
+    @Override
     public void setCategory(final String category) {
-        if (!getCategoryLogic().getAllAvailableCategories().contains(category)) {
+        this.wordlist = database.getDefaultCategory(category);
+        if (wordlist.equals(null) && (!player.getCustomCategories().containsKey(category))) {
             throw new IllegalArgumentException(category + " is not a part of the available categories.");
+        } else if (database.getDefaultCategory(category) != null) {
+            this.wordlist = database.getDefaultCategory(category);
+        } else {
+            this.wordlist = player.getCustomCategories().get(category);
         }
         this.chosenCategory = category;
     }
 
-    /**
-     * @return players chosen category
-     *
-     */
+    @Override
     public String getChosenCategory() {
         return chosenCategory;
     }
 
-    /**
-     * @return a set of strings containing all words from chosen category
-     */
-    public Set<String> getWordListForSearch() {
-        return new HashSet<>(wordlistForSearch);
+    @Override
+    public List<String> getWordList() {
+        return this.wordlist;
     }
 
-    /**
-     * @return a list of strings containing all words from the chosen category
-     */
-    public List<String> getWordlistForSelection() {
-        return new ArrayList<>(wordlistForSelection);
-    }
-
-    /**
-     * Set new wordlist.
-     *
-     * @param newWordList
-     */
+    @Override
     public void setWordList(final List<String> newWordList) {
-        this.wordlistForSelection = new ArrayList<>(newWordList);
-        this.wordlistForSearch = Set.copyOf(newWordList);
+        this.wordlist = newWordList;
     }
 
-    /**
-     * Return players in this game.
-     *
-     * @return List of users
-     */
-    public List<String> getPlayers() { // TODO change to user or bot
-        return new ArrayList<>(players);
-    }
-
-    /**
-     * Chooses a word randomly from the selected category.
-     *
-     * @return A randomly generated substring from the parameter.
-     */
+    @Override
     public String getRandomWord() {
-        String word = wordlistForSelection.get(random.nextInt(wordlistForSelection.size()));
+        String word = wordlist.get(random.nextInt(wordlist.size()));
         return word;
     }
 
-    /**
-     * Randomly generates a substring from the randomly chosen word.
-     *
-     * @param word - A word to make the substring from
-     * @return A randomly generated substring from the randomly chosen word.
-     */
-    public static String getRandomSubstring(final String word) {
+    @Override
+    public String getRandomSubstring(final String word) {
         int wordLength = word.length();
         int startIndexSubstring = Math.max(random.nextInt(wordLength) - 2, 0);
         int endIndexSubstring = startIndexSubstring + 2 + random.nextInt(2);
@@ -136,28 +99,17 @@ public class Game {
         return substring;
     }
 
-    /**
-     * Checks if the guess is present in wordlist and wether the substring is
-     * present.
-     *
-     * @param substring The substring used to make a guess.
-     * @param guess     The guess provided by the user. Should contain substring,
-     *                  and be part of the wordlist.
-     * @return True if the guess is valid, else false.
-     */
+    @Override
     public boolean checkValidWord(final String substring, final String guess) {
-        return guess.matches(".*" + substring + ".*") && wordlistForSearch.contains(guess);
+        return guess.matches(".*" + substring + ".*") && wordlist.contains(guess);
     }
 
-    /**
-     * Picks random player from players list.
-     *
-     * @return - a random player'
-     *
-     */
-    public String pickRndPlayer() {
-        return players.get(random.nextInt(players.size()));
+    @Override
+    public void savePlayerHighscore(final int highscore) {
+        if (player.getUsername() != "guest") {
+            player.setHighscore(highscore);
+            database.updateUser(player);
+        }
     }
-
 
 }
