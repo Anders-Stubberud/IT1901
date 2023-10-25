@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import core.Game;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -268,7 +267,7 @@ public final class GamePageController implements Initializable {
     public void rndwordMasterLetters() {
         try {
             String string = ApiConfig.gamePageControllerGetRandomWord();
-            String substring = ApiConfig.gamePageControllerGetSubstring(string);
+            substring = ApiConfig.gamePageControllerGetSubstring(string);
             letters.setText(substring.toUpperCase());
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
@@ -317,9 +316,9 @@ public final class GamePageController implements Initializable {
             // Add shutdownhook that updates user highscore when closing application
             Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
                 public void run() {
-                    // if (!user.getUsername().equals("guest")) {
-                    //     game.savePlayerHighscore(Integer.valueOf(points.getText()));
-                    // }
+                    if (!user.getUsername().equals("guest")) {
+                        // game.savePlayerHighscore(Integer.valueOf(points.getText()));
+                    }
                 }
             }, "Shutdown-thread"));
         } catch (FileNotFoundException e) {
