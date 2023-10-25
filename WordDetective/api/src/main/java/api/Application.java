@@ -33,7 +33,6 @@ public class Application {
 
     @Primary
     @Bean
-    @Scope("session")
     public JsonIO jsonIO() {
         return new JsonIO();
     }
