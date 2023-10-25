@@ -11,7 +11,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import persistence.JsonIO;
 import types.User;
 
 public class LoginController {
@@ -66,7 +65,8 @@ public class LoginController {
             e.printStackTrace();
         }
 
-        // Gir NullPointerException og utfører ikke else-blokken dersom du ikke tar høyde for at ikke-eksisterende brukernavn kan skrives inn.
+        // Gir NullPointerException og utfører ikke else-blokken,
+        //dersom du ikke tar høyde for at ikke-eksisterende brukernavn kan skrives inn.
         // if (newUser.getPassword().equals(password.getText()))
 
         if (newUser != null && newUser.getPassword().equals(password.getText())) {

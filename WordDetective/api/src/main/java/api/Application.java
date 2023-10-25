@@ -24,6 +24,10 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
+    /**
+     * Session scoped bean used as reference to the instance of game object used in the gamepage controller.
+     * @return Bean for injection.
+     */
     @Primary
     @Bean
     @Scope("session")
@@ -31,6 +35,10 @@ public class Application {
         return new Game();
     }
 
+    /**
+     * Singleton scoped bean used to handle files.
+     * @return Bean for injection.
+     */
     @Primary
     @Bean
     public JsonIO jsonIO() {
