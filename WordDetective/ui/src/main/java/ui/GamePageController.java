@@ -312,12 +312,18 @@ public final class GamePageController implements Initializable {
                 return change;
             }));
             playerInputField.requestFocus();
-            // categoryDisplay.setText("Category: " + game.getChosenCategory().toUpperCase());
+            categoryDisplay.setText("Category: " + currentCategory.toUpperCase());
             // Add shutdownhook that updates user highscore when closing application
             Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
                 public void run() {
                     if (!user.getUsername().equals("guest")) {
                         // game.savePlayerHighscore(Integer.valueOf(points.getText()));
+                        try {
+                            ApiConfig.gamePageControllerSavePlayerHighscore(Integer.valueOf(points.getText()));
+                        } catch (NumberFormatException | IOException | InterruptedException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
                     }
                 }
             }, "Shutdown-thread"));

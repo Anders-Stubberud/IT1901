@@ -2,5 +2,11 @@
   "username": "username",
   "password": "password",
   "highscore": 0,
-  "customCategories": {}
+  "customCategories": {
+    "test" : [
+      "TESTE TESTE",
+      "TESTE TESTE", 
+      "TESTE TESTE"
+    ]
+  }
 }

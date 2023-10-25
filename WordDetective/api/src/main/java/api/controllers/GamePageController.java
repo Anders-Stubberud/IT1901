@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.Collection;
@@ -46,16 +47,24 @@ public class GamePageController {
     return game.getRandomWord();
   }
 
-  @RequestMapping(value = "GamePageController/getSubstring/{string}", method = RequestMethod.GET)
+  @RequestMapping(value = "GamePageController/getSubstring", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
-  public String getSubstring(@PathVariable String string) {
+  public String getSubstring(@RequestParam("string") String string) {
     return game.getRandomSubstring(string);
   }
 
-  @RequestMapping(value = "GamePageController/checkValidWord/{substring}/{guess}", method = RequestMethod.GET)
+  @RequestMapping(value = "GamePageController/checkValidWord", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
-  public boolean checkValidWord(@PathVariable String substring, @PathVariable String guess) {
+  public boolean checkValidWord(@RequestParam("substring") String substring, @RequestParam("guess") String guess) {
     return game.checkValidWord(substring, guess);
   }
+
+  @RequestMapping(value = "GamePageController/savePlayerHighscore", method = RequestMethod.POST)
+  @ResponseStatus(HttpStatus.OK)
+  public void savePlayerHighscore(@RequestBody final int highscore) {
+    game.savePlayerHighscore(highscore);
+  }
+
+  
 
 }
