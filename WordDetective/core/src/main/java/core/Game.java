@@ -101,15 +101,20 @@ public final class Game implements AbstractGame {
 
     @Override
     public boolean checkValidWord(final String substring, final String guess) {
+        System.out.println("\n\ncheck valid\n\n");
         return guess.matches(".*" + substring + ".*") && wordlist.contains(guess);
     }
 
     @Override
-    public void savePlayerHighscore(final int highscore) {
+    public String savePlayerHighscore(final int highscore) {
         if (player.getUsername() != "guest") {
             player.setHighscore(highscore);
             database.updateUser(player);
         }
+        else {
+            System.out.println(player.getUsername());
+        }
+        return "\n\ninne i game, highscore:; " + highscore + "\n\n";
     }
 
 }

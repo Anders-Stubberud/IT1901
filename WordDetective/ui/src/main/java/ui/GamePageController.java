@@ -317,9 +317,9 @@ public final class GamePageController implements Initializable {
             Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
                 public void run() {
                     if (!user.getUsername().equals("guest")) {
-                        // game.savePlayerHighscore(Integer.valueOf(points.getText()));
                         try {
-                            ApiConfig.gamePageControllerSavePlayerHighscore(Integer.valueOf(points.getText()));
+                            // game.savePlayerHighscore(Integer.valueOf(points.getText()));
+                            ApiConfig.gamePageControllerSavePlayerHighscore(points.getText());
                         } catch (NumberFormatException | IOException | InterruptedException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();

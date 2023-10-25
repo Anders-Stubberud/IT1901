@@ -119,10 +119,10 @@ public final class ApiConfig {
     return Boolean.parseBoolean(response.body());
   }
 
-  protected static void gamePageControllerSavePlayerHighscore(int highscore) throws IOException, InterruptedException {
+  protected static void gamePageControllerSavePlayerHighscore(String highscore) throws IOException, InterruptedException {
     String url = BASEURL + "GamePageController/savePlayerHighscore";
     String type = "text/plain";
-    BodyPublisher body = BodyPublishers.ofString(String.valueOf(highscore));
+    BodyPublisher body = BodyPublishers.ofString(highscore);
     performPostRequest(url, type, body);
   }
 

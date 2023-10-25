@@ -15,7 +15,6 @@ import types.User;
 import core.Game;
 
 @RestController
-// @Scope("session")
 public class GamePageController {
 
   private Game game;
@@ -48,22 +47,23 @@ public class GamePageController {
     return game.getRandomWord();
   }
 
-  @RequestMapping(value = "GamePageController/getSubstring", method = RequestMethod.GET)
+  @RequestMapping(value = "/GamePageController/getSubstring", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public String getSubstring(@RequestParam("string") String string) {
     return game.getRandomSubstring(string);
   }
 
-  @RequestMapping(value = "GamePageController/checkValidWord", method = RequestMethod.GET)
+  @RequestMapping(value = "/GamePageController/checkValidWord", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public boolean checkValidWord(@RequestParam("substring") String substring, @RequestParam("guess") String guess) {
     return game.checkValidWord(substring, guess);
   }
 
-  @RequestMapping(value = "GamePageController/savePlayerHighscore", method = RequestMethod.POST)
+  @RequestMapping(value = "/GamePageController/savePlayerHighscore", method = RequestMethod.POST)
   @ResponseStatus(HttpStatus.OK)
-  public void savePlayerHighscore(@RequestBody final int highscore) {
-    game.savePlayerHighscore(highscore);
+  public void savePlayerHighscore(@RequestBody final String highscore) {
+    System.out.println("\n\n\ncontroller\n" + highscore + "\n\n\n");
+    System.out.println(game.savePlayerHighscore(Integer.valueOf(highscore)));
   }
 
   
