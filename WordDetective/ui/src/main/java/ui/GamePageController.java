@@ -78,10 +78,10 @@ public final class GamePageController implements Initializable {
     @FXML
     private Button closeHTPBtn, openHTPBtn;
 
-    /**
-     * a Game object used to controll the game.
-     */
-    private Game game;
+    // /**
+    //  * a Game object used to controll the game.
+    //  */
+    // private Game game;
     /**
      * The substring is the letters that the player has to use.
      */
@@ -268,7 +268,7 @@ public final class GamePageController implements Initializable {
     public void rndwordMasterLetters() {
         try {
             String string = ApiConfig.gamePageControllerGetRandomWord();
-            substring = game.getRandomSubstring(string);
+            String substring = ApiConfig.gamePageControllerGetSubstring(string);
             letters.setText(substring.toUpperCase());
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
@@ -313,13 +313,13 @@ public final class GamePageController implements Initializable {
                 return change;
             }));
             playerInputField.requestFocus();
-            categoryDisplay.setText("Category: " + game.getChosenCategory().toUpperCase());
+            // categoryDisplay.setText("Category: " + game.getChosenCategory().toUpperCase());
             // Add shutdownhook that updates user highscore when closing application
             Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
                 public void run() {
-                    if (!user.getUsername().equals("guest")) {
-                        game.savePlayerHighscore(Integer.valueOf(points.getText()));
-                    }
+                    // if (!user.getUsername().equals("guest")) {
+                    //     game.savePlayerHighscore(Integer.valueOf(points.getText()));
+                    // }
                 }
             }, "Shutdown-thread"));
         } catch (FileNotFoundException e) {
