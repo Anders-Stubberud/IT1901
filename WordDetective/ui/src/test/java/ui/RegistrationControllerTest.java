@@ -2,16 +2,15 @@ package ui;
 
 import java.io.IOException;
 
-import org.junit.Assert;
+// import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
-
-import javafx.scene.control.Label;
+// import javafx.scene.control.Label;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseButton;
+// import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 
 public class RegistrationControllerTest extends ApplicationTest {
