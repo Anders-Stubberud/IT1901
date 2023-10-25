@@ -106,7 +106,7 @@ public final class Game implements AbstractGame {
     }
 
     @Override
-    public String savePlayerHighscore(final int highscore) {
+    public void savePlayerHighscore(final int highscore) {
         if (player.getUsername() != "guest") {
             player.setHighscore(highscore);
             database.updateUser(player);
@@ -114,7 +114,6 @@ public final class Game implements AbstractGame {
         else {
             System.out.println(player.getUsername());
         }
-        return "\n\ninne i game, highscore:; " + highscore + "\n\n";
     }
 
 }

@@ -64,6 +64,6 @@ public interface AbstractGame {
    *
    * @param highscore - The highscore to save
    */
-  String savePlayerHighscore(int highscore);
+  void savePlayerHighscore(int highscore);
 
 }

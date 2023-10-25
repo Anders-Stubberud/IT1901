@@ -86,6 +86,7 @@ public final class ApiConfig {
       //Sender all brukerinfo (inkludert uberørte custom lists) tilbake gjennom API'et. Kunne ha instansiert det på serversiden uten å sende det til client først. 
       String url = BASEURL + "GamePageController/newGame";
       String type = "application/json";
+      System.out.println("apiCONFIG USERNAME: " + user.getUsername());
       BodyPublisher body = HttpRequest.BodyPublishers.ofString(gson.toJson(user));
       performPostRequest(url, type, body);
   }

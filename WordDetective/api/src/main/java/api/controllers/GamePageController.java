@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.Collection;
+import persistence.JsonIO;
 import types.User;
 import core.Game;
 
@@ -26,8 +27,9 @@ public class GamePageController {
    */
   @RequestMapping(value = "/GamePageController/newGame", method = RequestMethod.POST)
   @ResponseStatus(HttpStatus.OK)
-  public void newGameLogic(@RequestBody final User user) {
-    game = new Game(user);
+  public void newGameLogic(@RequestBody final String user) {
+    // System.out.println("gamelogic newgamve username: " + user.getUsername());
+    game = new Game((User) JsonIO.convertToJavaObject(user));
   }
 
   /**
@@ -63,7 +65,7 @@ public class GamePageController {
   @ResponseStatus(HttpStatus.OK)
   public void savePlayerHighscore(@RequestBody final String highscore) {
     System.out.println("\n\n\ncontroller\n" + highscore + "\n\n\n");
-    System.out.println(game.savePlayerHighscore(Integer.valueOf(highscore)));
+    game.savePlayerHighscore(Integer.valueOf(highscore));
   }
 
   

@@ -30,7 +30,7 @@ public final class JsonIO implements AbstractJsonIO {
     /**
      * Gson instance for serialization/deserialization.
      */
-    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     /**
      * Type of a {@link List} of strings used for deserialitzing in gson.
@@ -129,6 +129,10 @@ public final class JsonIO implements AbstractJsonIO {
             System.out.println("Couldn't get all default categories because: " + e.getMessage());
             return null;
         }
+    }
+
+    public static Object convertToJavaObject(String json) {
+        return gson.fromJson(json, User.class);
     }
 
     /**
