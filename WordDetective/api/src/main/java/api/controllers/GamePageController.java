@@ -28,7 +28,6 @@ public class GamePageController {
   @RequestMapping(value = "/GamePageController/newGame", method = RequestMethod.POST)
   @ResponseStatus(HttpStatus.OK)
   public void newGameLogic(@RequestBody final String user) {
-    // System.out.println("gamelogic newgamve username: " + user.getUsername());
     game = new Game(JsonIO.convertToJavaObject(user));
   }
 
@@ -64,7 +63,6 @@ public class GamePageController {
   @RequestMapping(value = "/GamePageController/savePlayerHighscore", method = RequestMethod.POST)
   @ResponseStatus(HttpStatus.OK)
   public void savePlayerHighscore(@RequestBody final String highscore) {
-    System.out.println("\n\n\ncontroller\n" + highscore + "\n\n\n");
     game.savePlayerHighscore(Integer.valueOf(highscore));
   }
 

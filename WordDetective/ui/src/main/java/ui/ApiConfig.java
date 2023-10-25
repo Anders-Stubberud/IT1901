@@ -134,18 +134,4 @@ public final class ApiConfig {
     performPostRequest(url, type, body);
   }
 
-  public static void main(String[] args) {
-    // User guest = new User();
-    // User username = new User("username", "password");
-    // try {
-    //   gamePageControllerNewGame(username);
-    //   game
-    //   gamePageControllerSetCategory("countries");
-    //   System.out.println(gamePageControllerGetRandomWord());
-    // } catch (IOException | InterruptedException e) {
-    //   // TODO Auto-generated catch block
-    //   e.printStackTrace();
-    // }
-  }
-
 }
