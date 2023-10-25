@@ -79,7 +79,7 @@ public class GamePageController {
   @RequestMapping(value = "/GamePageController/savePlayerHighscore", method = RequestMethod.POST)
   @ResponseStatus(HttpStatus.OK)
   public void savePlayerHighscore(@RequestBody final String highscore) {
-    game.savePlayerHighscore(Integer.valueOf(highscore));
+    game.savePlayerHighscore(Integer.parseInt(highscore));
   }
 
 

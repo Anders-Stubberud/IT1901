@@ -199,7 +199,7 @@ public final class GamePageController implements Initializable {
             String playerGuess = playerInputField.getText();
             try {
                 if (ApiConfig.gamePageControllerCheckValidWord(playerGuess, playerGuess)) {
-                    int newPoints = Integer.valueOf(points.getText()) + 1;
+                    int newPoints = Integer.parseInt(points.getText()) + 1;
                     user.setHighscore(newPoints);
                     points.setText(String.valueOf(newPoints));
                     playerInputField.setText("");

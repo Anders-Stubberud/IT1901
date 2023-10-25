@@ -97,8 +97,12 @@ public final class JsonIO implements AbstractJsonIO {
     public List<String> getAllUsernames() {
         List<String> result = new ArrayList<>();
         File[] nameFiles = new File(path + "/users").listFiles();
-        for (File file : nameFiles) {
-            result.add(file.getName().replace(".json", ""));
+        if (nameFiles != null) {
+            for (File file : nameFiles) {
+                result.add(file.getName().replace(".json", ""));
+            }
+        } else {
+            throw new RuntimeException("User directory not present in" + path);
         }
         return result;
     }
@@ -119,12 +123,16 @@ public final class JsonIO implements AbstractJsonIO {
         try {
             HashMap<String, List<String>> result = new HashMap<>();
             File[] categories = new File(path + "/default_categories").listFiles();
-            for (File category : categories) {
-                result.put(category.getName().replace(".json", ""),
-                        GSON.fromJson(Files.readString(Paths.get(category.toString())),
-                                listOfStringsType));
+            if (categories != null) {
+                for (File category : categories) {
+                    result.put(category.getName().replace(".json", ""),
+                            GSON.fromJson(Files.readString(Paths.get(category.toString())),
+                                    listOfStringsType));
+                }
+                return result;
+            } else {
+                throw new RuntimeException("Could not find categories in " + path + "/default_categories");
             }
-            return result;
         } catch (Exception e) {
             System.out.println("Couldn't get all default categories because: " + e.getMessage());
             return null;

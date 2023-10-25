@@ -11,7 +11,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import persistence.JsonIO;
 import types.User;
 
 public class RegistrationController {
@@ -21,10 +20,10 @@ public class RegistrationController {
      */
     private static final int DISPLAY_ERROR_DURATION_MS = 3000;
 
-    /**
-     * Database to read and write to.
-     */
-    private JsonIO database = new JsonIO();
+    // /**
+    //  * Database to read and write to.
+    //  */
+    // private JsonIO database = new JsonIO();
 
     /**
      * FXML component used to display error if provided username is taken.

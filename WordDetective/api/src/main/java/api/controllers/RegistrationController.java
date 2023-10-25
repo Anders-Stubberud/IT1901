@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import persistence.JsonIO;
-import types.User;
 
 @RestController
 public class RegistrationController {
@@ -49,9 +48,7 @@ public class RegistrationController {
   @RequestMapping(value = "/registrationController/addUser", method = RequestMethod.POST)
   @ResponseStatus(HttpStatus.OK)
   public void addUser(final @RequestBody String user) {
-    User cur = JsonIO.convertToJavaObject(user);
-    System.out.println(cur.getUsername());
-    jsonIO.addUser(cur);
+    jsonIO.addUser(JsonIO.convertToJavaObject(user));
   }
 
 }

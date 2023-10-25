@@ -91,14 +91,13 @@ public final class ApiConfig {
     BodyPublisher body = HttpRequest.BodyPublishers.ofString(GSON.toJson(user));
     performPostRequest(url, type, body);
   }
-  
+
   protected static void gamePageControllerNewGame(final User user)
       throws IOException, InterruptedException {
       //Sender all brukerinfo (inkludert uberørte custom lists) tilbake gjennom API'et.
       //Kunne ha instansiert det på serversiden uten å sende det til client først.
       String url = BASEURL + "GamePageController/newGame";
       String type = "application/json";
-      System.out.println("apiCONFIG USERNAME: " + user.getUsername());
       BodyPublisher body = HttpRequest.BodyPublishers.ofString(GSON.toJson(user));
       performPostRequest(url, type, body);
   }
