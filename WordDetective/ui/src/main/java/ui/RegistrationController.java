@@ -58,21 +58,21 @@ public class RegistrationController {
     public void fireSignUp() {
         //Registrere ny bruker før det sjekkes om en identisk eksisterer?
         User newUser = new User(newUsername.getText(), newPassword.getText());
-        if (database.getAllUsernames().contains(newUser.getUsername())
-                || !(newUser.isCorrectPassword())) {
+        try {
+            if (ApiConfig.registrationControllerFireSignUp(newUser.getUsername())
+                    || !(newUser.isCorrectPassword())) {
 
-            usernameTaken.setOpacity(1);
-            new java.util.Timer().schedule(
-                    new java.util.TimerTask() {
-                        @Override
-                        public void run() {
-                            usernameTaken.setOpacity(0);
-                        }
-                    },
-                    DISPLAY_ERROR_DURATION_MS);
+                usernameTaken.setOpacity(1);
+                new java.util.Timer().schedule(
+                        new java.util.TimerTask() {
+                            @Override
+                            public void run() {
+                                usernameTaken.setOpacity(0);
+                            }
+                        },
+                        DISPLAY_ERROR_DURATION_MS);
 
-        } else {
-            try {
+            } else {
                 ApiConfig.registrationControllerAddUser(newUser);
                 FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
                 fxmlLoader.setControllerFactory(new CategoryFactory(newUser));
@@ -80,9 +80,9 @@ public class RegistrationController {
                 Stage stage = (Stage) signUp.getScene().getWindow();
                 stage.setScene(new Scene(parent));
                 stage.show();
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
             }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

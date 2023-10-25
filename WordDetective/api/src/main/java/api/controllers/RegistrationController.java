@@ -3,12 +3,14 @@ package api.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import persistence.JsonIO;
+import types.User;
 
 @RestController
 public class RegistrationController {
@@ -38,6 +40,18 @@ public class RegistrationController {
   public boolean fireSignUp(final @RequestParam("username") String username,
       final @PathVariable String password) {
     return jsonIO.getAllUsernames().contains(username);
+  }
+
+  /**
+   * API endpoint for registering new user.
+   * @param user String representation of Json file representing the given user.
+   */
+  @RequestMapping(value = "/registrationController/addUser", method = RequestMethod.POST)
+  @ResponseStatus(HttpStatus.OK)
+  public void addUser(final @RequestBody String user) {
+    User cur = JsonIO.convertToJavaObject(user);
+    System.out.println(cur.getUsername());
+    jsonIO.addUser(cur);
   }
 
 }

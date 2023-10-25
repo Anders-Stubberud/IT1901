@@ -85,6 +85,13 @@ public final class ApiConfig {
     return Boolean.parseBoolean(response.body());
   }
 
+  protected static void registrationControllerAddUser(final User user) throws IOException, InterruptedException {
+    String url = BASEURL + "registrationController/addUser";
+    String type = "application/json";
+    BodyPublisher body = HttpRequest.BodyPublishers.ofString(GSON.toJson(user));
+    performPostRequest(url, type, body);
+  }
+  
   protected static void gamePageControllerNewGame(final User user)
       throws IOException, InterruptedException {
       //Sender all brukerinfo (inkludert uberørte custom lists) tilbake gjennom API'et.
@@ -130,13 +137,6 @@ public final class ApiConfig {
     String url = BASEURL + "GamePageController/savePlayerHighscore";
     String type = "text/plain";
     BodyPublisher body = BodyPublishers.ofString(highscore);
-    performPostRequest(url, type, body);
-  }
-
-  protected static void registrationControllerAddUser(final User user) throws IOException, InterruptedException {
-    String url = BASEURL + "registrationController/addUser";
-    String type = "application/json";
-    BodyPublisher body = HttpRequest.BodyPublishers.ofString(GSON.toJson(user));
     performPostRequest(url, type, body);
   }
 
