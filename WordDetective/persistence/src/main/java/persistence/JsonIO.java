@@ -131,7 +131,7 @@ public final class JsonIO implements AbstractJsonIO {
         }
     }
 
-    public static Object convertToJavaObject(String json) {
+    public static User convertToJavaObject(String json) {
         return gson.fromJson(json, User.class);
     }
 

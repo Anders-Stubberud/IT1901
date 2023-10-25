@@ -29,7 +29,7 @@ public class GamePageController {
   @ResponseStatus(HttpStatus.OK)
   public void newGameLogic(@RequestBody final String user) {
     // System.out.println("gamelogic newgamve username: " + user.getUsername());
-    game = new Game((User) JsonIO.convertToJavaObject(user));
+    game = new Game(JsonIO.convertToJavaObject(user));
   }
 
   /**

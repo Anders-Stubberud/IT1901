@@ -1,11 +1,11 @@
 {
   "username": "username",
   "password": "password",
-  "highscore": 0,
+  "highscore": 1,
   "customCategories": {
-    "test" : [
+    "test": [
       "TESTE TESTE",
-      "TESTE TESTE", 
+      "TESTE TESTE",
       "TESTE TESTE"
     ]
   }
