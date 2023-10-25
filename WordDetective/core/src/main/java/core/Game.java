@@ -111,9 +111,6 @@ public final class Game implements AbstractGame {
             player.setHighscore(highscore);
             database.updateUser(player);
         }
-        else {
-            System.out.println(player.getUsername());
-        }
     }
 
 }

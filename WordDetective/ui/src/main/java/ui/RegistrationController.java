@@ -56,7 +56,8 @@ public class RegistrationController {
      */
     @FXML
     public void fireSignUp() {
-        User newUser = new User(newUsername.getText(), newPassword.getText()); //Registrere ny bruker før det sjekkes om en identisk eksisterer?
+        //Registrere ny bruker før det sjekkes om en identisk eksisterer?
+        User newUser = new User(newUsername.getText(), newPassword.getText());
         if (database.getAllUsernames().contains(newUser.getUsername())
                 || !(newUser.isCorrectPassword())) {
 
