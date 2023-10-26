@@ -30,7 +30,7 @@ public final class JsonIO implements AbstractJsonIO {
     /**
      * Gson instance for serialization/deserialization.
      */
-    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     /**
      * Type of a {@link List} of strings used for deserialitzing in gson.
@@ -49,7 +49,7 @@ public final class JsonIO implements AbstractJsonIO {
     @Override
     public void addUser(final User user) {
         try (FileWriter fw = new FileWriter(path + "/users/" + user.getUsername() + ".json", StandardCharsets.UTF_8)) {
-            gson.toJson(user, fw);
+            GSON.toJson(user, fw);
             System.out.println("User " + user.getUsername() + " successfully created.");
         } catch (IOException e) {
             System.out.println("Couldn't add user " + user.getUsername() + " because: " + e.getMessage());
@@ -70,7 +70,7 @@ public final class JsonIO implements AbstractJsonIO {
     public User getUser(final String username) {
         try {
             String jsonString = Files.readString(Paths.get(path + "/users/" + username + ".json"));
-            return gson.fromJson(jsonString, User.class);
+            return GSON.fromJson(jsonString, User.class);
         } catch (IOException e) {
             System.out.println("Couldn't get user " + username + "because: " + e.getMessage());
             return null;
@@ -82,7 +82,7 @@ public final class JsonIO implements AbstractJsonIO {
         if (new File(path + "/users/" + user.getUsername() + ".json").exists()) {
             try (FileWriter fw = new FileWriter(path + "/users/" + user.getUsername() + ".json",
                     StandardCharsets.UTF_8)) {
-                gson.toJson(user, fw);
+                        GSON.toJson(user, fw);
                 System.out.println("User " + user.getUsername() + " successfully updated.");
             } catch (IOException e) {
                 System.out
@@ -97,8 +97,12 @@ public final class JsonIO implements AbstractJsonIO {
     public List<String> getAllUsernames() {
         List<String> result = new ArrayList<>();
         File[] nameFiles = new File(path + "/users").listFiles();
-        for (File file : nameFiles) {
-            result.add(file.getName().replace(".json", ""));
+        if (nameFiles != null) {
+            for (File file : nameFiles) {
+                result.add(file.getName().replace(".json", ""));
+            }
+        } else {
+            throw new RuntimeException("User directory not present in" + path);
         }
         return result;
     }
@@ -107,7 +111,7 @@ public final class JsonIO implements AbstractJsonIO {
     public List<String> getDefaultCategory(final String category) {
         try {
             String answers = Files.readString(Paths.get(path + "/default_categories/" + category + ".json"));
-            return gson.fromJson(answers, listOfStringsType);
+            return GSON.fromJson(answers, listOfStringsType);
         } catch (IOException e) {
             System.out.println("Couldn't find default category: " + category + " because " + e.getMessage());
             return null;
@@ -119,16 +123,29 @@ public final class JsonIO implements AbstractJsonIO {
         try {
             HashMap<String, List<String>> result = new HashMap<>();
             File[] categories = new File(path + "/default_categories").listFiles();
-            for (File category : categories) {
-                result.put(category.getName().replace(".json", ""),
-                        gson.fromJson(Files.readString(Paths.get(category.toString())),
-                                listOfStringsType));
+            if (categories != null) {
+                for (File category : categories) {
+                    result.put(category.getName().replace(".json", ""),
+                            GSON.fromJson(Files.readString(Paths.get(category.toString())),
+                                    listOfStringsType));
+                }
+                return result;
+            } else {
+                throw new RuntimeException("Could not find categories in " + path + "/default_categories");
             }
-            return result;
         } catch (Exception e) {
             System.out.println("Couldn't get all default categories because: " + e.getMessage());
             return null;
         }
+    }
+
+    /**
+     * Used in API call to convert string representation of json into java object.
+     * @param json String representation of a json file.
+     * @return User java object equivalent of the json string representation.
+     */
+    public static User convertToJavaObject(final String json) {
+        return GSON.fromJson(json, User.class);
     }
 
     /**

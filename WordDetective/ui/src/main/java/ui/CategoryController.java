@@ -87,13 +87,15 @@ public final class CategoryController implements Initializable {
      * Uploads a category selected in the GUI and stores in database.
      */
     @FXML
+    // Ser ikke ut som at files lastes inn.
     public void uploadCategory() {
         if (!user.getUsername().equals("guest")) {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
             File selectedFile = fileChooser.showOpenDialog(new Stage());
             if (selectedFile != null) {
-                String filename = selectedFile.getName();
+                //Denne gir spotbugs error, dermed kommentert ut.
+                // String filename = selectedFile.getName();
 
                 renderCategories();
             }
@@ -127,7 +129,7 @@ public final class CategoryController implements Initializable {
      */
     public void renderCategories() {
         pane.setVisible(false);
-        List<String> categories = new ArrayList<>();
+        List<String> categories = new ArrayList<>(); //Kunne ha instansiert direkte på defaultkategorier først
         if (!user.getUsername().equals("guest")) {
             categories.addAll(user.getCustomCategories().keySet());
         }

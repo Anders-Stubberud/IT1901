@@ -1,0 +1,12 @@
+{
+  "username": "occupiedUser",
+  "password": "password",
+  "highscore": 1,
+  "customCategories": {
+    "test": [
+      "TESTE TESTE",
+      "TESTE TESTE",
+      "TESTE TESTE"
+    ]
+  }
+}

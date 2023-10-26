@@ -11,9 +11,7 @@ import java.util.stream.Stream;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.control.LabeledMatchers;
 
@@ -168,19 +166,19 @@ public class GamePageControllerTest extends ApplicationTest {
 
   }
 
-  /**
-   * Test writing a word input.
-   *
-   * @param word      - The word to write
-   * @param isCorrect - Is word correct
-   */
-  @ParameterizedTest
-  @MethodSource
-  public void testWriteWords(final String word, final boolean isCorrect) {
+  // /**
+  //  * Test writing a word input.
+  //  *
+  //  * @param word      - The word to write
+  //  * @param isCorrect - Is word correct
+  //  */
+  // @ParameterizedTest
+  // @MethodSource
+  // public void testWriteWords(final String word, final boolean isCorrect) {
     // write(word);
     // isCorrect(getInput(), isCorrect);
     // cleanInput();
-  }
+  // }
 
   /**
    * Stram of arguments for writing words.

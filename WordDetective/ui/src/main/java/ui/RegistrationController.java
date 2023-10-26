@@ -11,7 +11,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import persistence.JsonIO;
 import types.User;
 
 public class RegistrationController {
@@ -21,10 +20,10 @@ public class RegistrationController {
      */
     private static final int DISPLAY_ERROR_DURATION_MS = 3000;
 
-    /**
-     * Database to read and write to.
-     */
-    private JsonIO database = new JsonIO();
+    // /**
+    //  * Database to read and write to.
+    //  */
+    // private JsonIO database = new JsonIO();
 
     /**
      * FXML component used to display error if provided username is taken.
@@ -56,32 +55,33 @@ public class RegistrationController {
      */
     @FXML
     public void fireSignUp() {
+        //Registrere ny bruker før det sjekkes om en identisk eksisterer?
         User newUser = new User(newUsername.getText(), newPassword.getText());
-        if (database.getAllUsernames().contains(newUser.getUsername())
-                || !(newUser.isCorrectPassword())) {
+        try {
+            if (ApiConfig.registrationControllerFireSignUp(newUser.getUsername())
+                    || !(newUser.isCorrectPassword())) {
 
-            usernameTaken.setOpacity(1);
-            new java.util.Timer().schedule(
-                    new java.util.TimerTask() {
-                        @Override
-                        public void run() {
-                            usernameTaken.setOpacity(0);
-                        }
-                    },
-                    DISPLAY_ERROR_DURATION_MS);
+                usernameTaken.setOpacity(1);
+                new java.util.Timer().schedule(
+                        new java.util.TimerTask() {
+                            @Override
+                            public void run() {
+                                usernameTaken.setOpacity(0);
+                            }
+                        },
+                        DISPLAY_ERROR_DURATION_MS);
 
-        } else {
-            database.addUser(newUser);
-            try {
+            } else {
+                ApiConfig.registrationControllerAddUser(newUser);
                 FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
                 fxmlLoader.setControllerFactory(new CategoryFactory(newUser));
                 Parent parent = fxmlLoader.load();
                 Stage stage = (Stage) signUp.getScene().getWindow();
                 stage.setScene(new Scene(parent));
                 stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

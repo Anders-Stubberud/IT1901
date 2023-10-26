@@ -11,7 +11,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import persistence.JsonIO;
 import types.User;
 
 public class LoginController {
@@ -45,21 +44,36 @@ public class LoginController {
      */
     private static final int DISPLAY_ERROR_DURATION_MS = 3000;
 
-    /**
-     * Database.
-     */
-    private JsonIO database = new JsonIO();
+    // /**
+    //  * Database.
+    //  */
+    // private JsonIO database = new JsonIO();
 
     /**
      * Method fired when pressing the "login" button. Loads the category window.
      */
     @FXML
     public void performLogin() {
-        User newUser = database.getUser(username.getText());
-        if (newUser.getPassword().equals(password.getText())) {
+
+        //Undøvendig å hente all brukerinfo (inkludert custom lists) når kun passord er nødvendig, men implementasjonen din står.
+        // User newUser = database.getUser(username.getText());
+
+        User newUser = null;
+        try {
+            newUser = ApiConfig.loginControllerPerformLogin(username.getText());
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Gir NullPointerException og utfører ikke else-blokken,
+        //dersom du ikke tar høyde for at ikke-eksisterende brukernavn kan skrives inn.
+        // if (newUser.getPassword().equals(password.getText()))
+
+        if (newUser != null && newUser.getPassword().equals(password.getText())) {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
                 fxmlLoader.setControllerFactory(new CategoryFactory(newUser));
+                System.out.println("login user username" + newUser.getUsername());
                 Parent parent = fxmlLoader.load();
                 Stage stage = (Stage) login.getScene().getWindow();
                 stage.setScene(new Scene(parent));

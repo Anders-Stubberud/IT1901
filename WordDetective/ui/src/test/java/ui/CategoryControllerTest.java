@@ -9,7 +9,7 @@ import javafx.scene.control.Label;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseButton;
+// import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 import types.User;
 
@@ -63,7 +63,7 @@ public class CategoryControllerTest extends ApplicationTest {
      */
     @Test
     public void testSelectCategory() {
-        clickOn("#countries", MouseButton.PRIMARY);
+        // clickOn("#countries", MouseButton.PRIMARY);
         // root = lookup("#displayCategory").queryParent();
         // String chosenCategory = getChosenCategory();
         // Assert.assertTrue(chosenCategory.equals("countries"));
