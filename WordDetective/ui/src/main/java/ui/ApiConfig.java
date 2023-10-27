@@ -77,10 +77,17 @@ public final class ApiConfig {
     return GSON.fromJson(response.body(), User.class);
   }
 
-  protected static boolean registrationControllerFireSignUp(final String username)
-      throws IOException, InterruptedException {
+  // protected static boolean registrationControllerFireSignUp(final String username)
+  //     throws IOException, InterruptedException {
+  //   String param1 = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
+  //   String url = BASEURL + "RegistrationController/fireSignUp" + "?username=" + param1;
+  //   HttpResponse<String> response = performGetRequest(url);
+  //   return Boolean.parseBoolean(response.body());
+  // }
+
+  protected static boolean usernameAvailable(final String username) throws IOException, InterruptedException {
     String param1 = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
-    String url = BASEURL + "RegistrationController/fireSignUp" + "?username=" + param1;
+    String url = BASEURL + "RegistrationController/usernameAvailableAndUserCreatedSuccessfully" + "?username=" + param1;
     HttpResponse<String> response = performGetRequest(url);
     return Boolean.parseBoolean(response.body());
   }

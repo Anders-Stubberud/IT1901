@@ -38,7 +38,7 @@ public final class User {
      * @param password The password of the new user.
      */
     public User(final String username, final String password) {
-        this.customCategories = new HashMap<>();
+        // this.customCategories = new HashMap<>();
         this.highscore = 0;
         this.name = username;
         this.pwd = password;
@@ -140,7 +140,6 @@ public final class User {
      * @return {@link Boolean}
      */
     public boolean isCorrectPassword() {
-        System.out.println("Kom hit");
         return getPassword().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{4,}$");
     }
 

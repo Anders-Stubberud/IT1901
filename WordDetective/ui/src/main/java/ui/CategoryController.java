@@ -29,12 +29,13 @@ public final class CategoryController implements Initializable {
     /**
      * The current user.
      */
-    private User user;
+    private String username;
 
-    /**
-     * Database to get all default categories.
-     */
-    private JsonIO database = new JsonIO();
+    // /**
+    //  * Database to get all default categories.
+    //  */
+    // private JsonIO database = new JsonIO();
+
     /**
      * Reference to the FXML box containing available categories.
      */
@@ -66,8 +67,8 @@ public final class CategoryController implements Initializable {
      *
      * @param newUser - A user
      */
-    public CategoryController(final User newUser) {
-        this.user = newUser;
+    public CategoryController(final String username) {
+        this.username = username;
     }
 
     /**
@@ -89,7 +90,7 @@ public final class CategoryController implements Initializable {
     @FXML
     // Ser ikke ut som at files lastes inn.
     public void uploadCategory() {
-        if (!user.getUsername().equals("guest")) {
+        if (!username.equals("guest")) {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
             File selectedFile = fileChooser.showOpenDialog(new Stage());
@@ -119,7 +120,7 @@ public final class CategoryController implements Initializable {
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         renderCategories();
-        if (user.getUsername().equals("guest")) {
+        if (username.equals("guest")) {
             upload.setOpacity(0);
         }
     }
@@ -130,7 +131,7 @@ public final class CategoryController implements Initializable {
     public void renderCategories() {
         pane.setVisible(false);
         List<String> categories = new ArrayList<>(); //Kunne ha instansiert direkte på defaultkategorier først
-        if (!user.getUsername().equals("guest")) {
+        if (!username.equals("guest")) {
             categories.addAll(user.getCustomCategories().keySet());
         }
         categories.addAll(database.getAllDefaultCategories().keySet());

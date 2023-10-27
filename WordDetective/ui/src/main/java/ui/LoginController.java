@@ -73,7 +73,6 @@ public class LoginController {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
                 fxmlLoader.setControllerFactory(new CategoryFactory(newUser));
-                System.out.println("login user username" + newUser.getUsername());
                 Parent parent = fxmlLoader.load();
                 Stage stage = (Stage) login.getScene().getWindow();
                 stage.setScene(new Scene(parent));

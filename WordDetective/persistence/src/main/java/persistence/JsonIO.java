@@ -11,6 +11,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Function;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -37,6 +42,23 @@ public final class JsonIO implements AbstractJsonIO {
      */
     private Type listOfStringsType = new TypeToken<List<String>>() {
     }.getType();
+
+    /**
+     * Provides absolute path to current working directory.
+     *
+     * @param directory - The directory to find the path to.
+     * @return absolute path to current working directory as {@link String}.
+     */
+    private String getAbsolutePath(final String directory) {
+        Path absolutePath = Paths.get("").toAbsolutePath();
+        while (!absolutePath.endsWith(directory)) {
+            absolutePath = absolutePath.getParent();
+            if (absolutePath == null) {
+                throw new IllegalStateException("Working directory not found.");
+            }
+        }
+        return absolutePath.toString();
+    }
 
     /**
      * Constructor used for writing/reading to and from json file.
@@ -146,23 +168,6 @@ public final class JsonIO implements AbstractJsonIO {
      */
     public static User convertToJavaObject(final String json) {
         return GSON.fromJson(json, User.class);
-    }
-
-    /**
-     * Provides absolute path to current working directory.
-     *
-     * @param directory - The directory to find the path to.
-     * @return absolute path to current working directory as {@link String}.
-     */
-    private String getAbsolutePath(final String directory) {
-        Path absolutePath = Paths.get("").toAbsolutePath();
-        while (!absolutePath.endsWith(directory)) {
-            absolutePath = absolutePath.getParent();
-            if (absolutePath == null) {
-                throw new IllegalStateException("Working directory not found.");
-            }
-        }
-        return absolutePath.toString();
     }
 
 }

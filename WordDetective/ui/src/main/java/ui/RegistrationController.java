@@ -56,11 +56,17 @@ public class RegistrationController {
     @FXML
     public void fireSignUp() {
         //Registrere ny bruker før det sjekkes om en identisk eksisterer?
-        User newUser = new User(newUsername.getText(), newPassword.getText());
+        // User newUser = new User(newUsername.getText(), newPassword.getText());
         try {
-            if (ApiConfig.registrationControllerFireSignUp(newUser.getUsername())
-                    || !(newUser.isCorrectPassword())) {
-
+            //ApiConfig.registrationControllerFireSignUp(newUser.getUsername()) || !(newUser.isCorrectPassword())
+            if (ApiConfig.usernameAvailable(newUsername.getText())) {
+                FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
+                fxmlLoader.setControllerFactory(new CategoryFactory(newUsername.getText()));
+                Parent parent = fxmlLoader.load();
+                Stage stage = (Stage) signUp.getScene().getWindow();
+                stage.setScene(new Scene(parent));
+                stage.show();
+            } else {
                 usernameTaken.setOpacity(1);
                 new java.util.Timer().schedule(
                         new java.util.TimerTask() {
@@ -70,15 +76,6 @@ public class RegistrationController {
                             }
                         },
                         DISPLAY_ERROR_DURATION_MS);
-
-            } else {
-                ApiConfig.registrationControllerAddUser(newUser);
-                FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
-                fxmlLoader.setControllerFactory(new CategoryFactory(newUser));
-                Parent parent = fxmlLoader.load();
-                Stage stage = (Stage) signUp.getScene().getWindow();
-                stage.setScene(new Scene(parent));
-                stage.show();
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

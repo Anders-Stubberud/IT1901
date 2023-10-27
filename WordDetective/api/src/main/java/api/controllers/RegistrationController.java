@@ -34,11 +34,11 @@ public class RegistrationController {
    * @param password The provided password of the new user.
    * @return True if username is taken, else false.
    */
-  @RequestMapping(value = "/RegistrationController/fireSignUp", method = RequestMethod.GET)
+  @RequestMapping(value = "/RegistrationController/usernameAvailable", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
-  public boolean fireSignUp(final @RequestParam("username") String username,
+  public boolean usernameAvailable(final @RequestParam("username") String username,
       final @PathVariable String password) {
-    return jsonIO.getAllUsernames().contains(username);
+    return (! jsonIO.getAllUsernames().contains(username));
   }
 
   /**
@@ -51,4 +51,8 @@ public class RegistrationController {
     jsonIO.addUser(JsonIO.convertToJavaObject(user));
   }
 
+  public static void main(String[] args) {
+    System.out.println(System.getProperty("user.home"));
+  }
+ 
 }
