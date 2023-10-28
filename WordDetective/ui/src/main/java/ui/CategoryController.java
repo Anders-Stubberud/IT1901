@@ -32,8 +32,8 @@ public final class CategoryController implements Initializable {
     private String username;
 
     // /**
-    //  * Database to get all default categories.
-    //  */
+    // * Database to get all default categories.
+    // */
     // private JsonIO database = new JsonIO();
 
     /**
@@ -95,7 +95,7 @@ public final class CategoryController implements Initializable {
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
             File selectedFile = fileChooser.showOpenDialog(new Stage());
             if (selectedFile != null) {
-                //Denne gir spotbugs error, dermed kommentert ut.
+                // Denne gir spotbugs error, dermed kommentert ut.
                 // String filename = selectedFile.getName();
 
                 renderCategories();
@@ -130,12 +130,11 @@ public final class CategoryController implements Initializable {
      */
     public void renderCategories() {
         pane.setVisible(false);
-        List<String> categories = new ArrayList<>(); //Kunne ha instansiert direkte på defaultkategorier først
-        if (!username.equals("guest")) {
-            categories.addAll(user.getCustomCategories().keySet());
-        }
-        categories.addAll(database.getAllDefaultCategories().keySet());
-        for (String category : categories) {
+        // List<String> categories = new ArrayList<>();
+        // if (!username.equals("guest")) {
+        // categories.addAll(user.getCustomCategories().keySet());
+        // }
+        for (String category : ApiConfig.getCategories(username)) {
             Button button = new Button(category);
             button.setId(category);
             button.setUserData(category);

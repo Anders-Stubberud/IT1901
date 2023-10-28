@@ -18,19 +18,19 @@ public class LoginController {
      * Label for marking of incorrect password.
      */
     @FXML
-    private Label incorrect;
+    private Label errorDisplay;
 
     /**
      * FXML component for enabling user to provide username.
      */
     @FXML
-    private TextField username;
+    private TextField usernameField;
 
     /**
      * FXML component for enabling user to provide password.
      */
     @FXML
-    private PasswordField password;
+    private PasswordField passwordField;
 
     /**
      * FXML buttons providing access to respectively "performLogin" and
@@ -45,58 +45,50 @@ public class LoginController {
     private static final int DISPLAY_ERROR_DURATION_MS = 3000;
 
     // /**
-    //  * Database.
-    //  */
+    // * Database.
+    // */
     // private JsonIO database = new JsonIO();
+
+    private void displayError(String error) {
+        errorDisplay.setText(error);
+        errorDisplay.setOpacity(1);
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        errorDisplay.setOpacity(0);
+                    }
+                },
+                DISPLAY_ERROR_DURATION_MS);
+    }
 
     /**
      * Method fired when pressing the "login" button. Loads the category window.
      */
     @FXML
     public void performLogin() {
-
-        //Undøvendig å hente all brukerinfo (inkludert custom lists) når kun passord er nødvendig, men implementasjonen din står.
-        // User newUser = database.getUser(username.getText());
-
-        // User newUser = null;
-        // try {
-        //     newUser = ApiConfig.loginControllerPerformLogin(username.getText());
-        // } catch (IOException | InterruptedException e) {
-        //     e.printStackTrace();
-        // }
-
         try {
-            switch (ApiConfig.loginControllerPerformLogin(username.getText(), password.getText())) {
+            String username = usernameField.getText();
+            String password = passwordField.getText();
+            switch (ApiConfig.loginControllerPerformLogin(username, password)) {
                 case SUCCESS:
                     FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
-                    fxmlLoader.setControllerFactory(new CategoryFactory(username.getText()));
+                    fxmlLoader.setControllerFactory(new CategoryFactory(username));
                     Parent parent = fxmlLoader.load();
                     Stage stage = (Stage) login.getScene().getWindow();
                     stage.setScene(new Scene(parent));
                     stage.show();
                     break;
                 case INCORRECT_PASSWORD:
-                    incorrect.setOpacity(1);
-
-                    new java.util.Timer().schedule(
-                            new java.util.TimerTask() {
-                                @Override
-                                public void run() {
-                                    incorrect.setOpacity(0);
-                                }
-                            },
-                            DISPLAY_ERROR_DURATION_MS);
+                    displayError("Incorrect password.");
                     break;
                 case READ_ERROR:
+                    displayError("Error during extraction of password.");
                     break;
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
-
-        // Gir NullPointerException og utfører ikke else-blokken,
-        //dersom du ikke tar høyde for at ikke-eksisterende brukernavn kan skrives inn.
-        // if (newUser.getPassword().equals(password.getText()))
     }
 
     /**

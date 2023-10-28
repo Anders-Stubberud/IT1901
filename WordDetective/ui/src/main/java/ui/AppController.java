@@ -31,10 +31,10 @@ public final class AppController {
     @FXML
     private FXMLLoader fxmlLoader;
 
-    /**
-     * Guest user if player is guest.
-     */
-    private User user = new User();
+    // /**
+    // * Guest user if player is guest.
+    // */
+    // private User user = new User();
 
     /**
      * Goes back to Frontpage.
@@ -68,7 +68,7 @@ public final class AppController {
     void launchGame() {
         try {
             fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
-            fxmlLoader.setControllerFactory(new CategoryFactory(user));
+            fxmlLoader.setControllerFactory(new CategoryFactory("guest"));
             Parent parent = fxmlLoader.load();
             Stage stage = (Stage) appGuestBtn.getScene().getWindow();
             stage.setScene(new Scene(parent));
