@@ -12,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 
 import com.google.gson.Gson;
 
+import types.LoginResult;
 import types.RegistrationResult;
 import types.User;
 
@@ -68,14 +69,14 @@ public final class ApiConfig {
    * @throws InterruptedException
    * @throws IOException
    */
-  protected static User loginControllerPerformLogin(final String username)
-      throws IOException, InterruptedException {
+  protected static LoginResult loginControllerPerformLogin(final String username, final String password) throws IOException, InterruptedException {
     String param1 = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
-    String url = BASEURL + "LoginController/performLogin" + "?username=" + param1;
+    String param2 = URLEncoder.encode(password, StandardCharsets.UTF_8.toString());
+    String url = BASEURL + "LoginController/performLogin" + "?username=" + param1 + "&password=" + param2;
     HttpResponse<String> response = performGetRequest(url);
     //Må her sende all brukerinfo (inkludert custom wordlists) gjennom API'et, samtidig som alt sendes tilbake
     //(uten at wordlists er berørt) i instansieringen av nytt Game-objekt.
-    return GSON.fromJson(response.body(), User.class);
+    return GSON.fromJson(response.body(), LoginResult.class);
   }
 
   // protected static boolean registrationControllerFireSignUp(final String username)

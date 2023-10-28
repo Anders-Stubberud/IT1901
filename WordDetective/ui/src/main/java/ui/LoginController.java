@@ -58,9 +58,38 @@ public class LoginController {
         //Undøvendig å hente all brukerinfo (inkludert custom lists) når kun passord er nødvendig, men implementasjonen din står.
         // User newUser = database.getUser(username.getText());
 
-        User newUser = null;
+        // User newUser = null;
+        // try {
+        //     newUser = ApiConfig.loginControllerPerformLogin(username.getText());
+        // } catch (IOException | InterruptedException e) {
+        //     e.printStackTrace();
+        // }
+
         try {
-            newUser = ApiConfig.loginControllerPerformLogin(username.getText());
+            switch (ApiConfig.loginControllerPerformLogin(username.getText(), password.getText())) {
+                case SUCCESS:
+                    FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
+                    fxmlLoader.setControllerFactory(new CategoryFactory(username.getText()));
+                    Parent parent = fxmlLoader.load();
+                    Stage stage = (Stage) login.getScene().getWindow();
+                    stage.setScene(new Scene(parent));
+                    stage.show();
+                    break;
+                case INCORRECT_PASSWORD:
+                    incorrect.setOpacity(1);
+
+                    new java.util.Timer().schedule(
+                            new java.util.TimerTask() {
+                                @Override
+                                public void run() {
+                                    incorrect.setOpacity(0);
+                                }
+                            },
+                            DISPLAY_ERROR_DURATION_MS);
+                    break;
+                case READ_ERROR:
+                    break;
+            }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -68,31 +97,6 @@ public class LoginController {
         // Gir NullPointerException og utfører ikke else-blokken,
         //dersom du ikke tar høyde for at ikke-eksisterende brukernavn kan skrives inn.
         // if (newUser.getPassword().equals(password.getText()))
-
-        if (newUser != null && newUser.getPassword().equals(password.getText())) {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
-                fxmlLoader.setControllerFactory(new CategoryFactory(newUser));
-                Parent parent = fxmlLoader.load();
-                Stage stage = (Stage) login.getScene().getWindow();
-                stage.setScene(new Scene(parent));
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-
-            incorrect.setOpacity(1);
-
-            new java.util.Timer().schedule(
-                    new java.util.TimerTask() {
-                        @Override
-                        public void run() {
-                            incorrect.setOpacity(0);
-                        }
-                    },
-                    DISPLAY_ERROR_DURATION_MS);
-        }
     }
 
     /**
