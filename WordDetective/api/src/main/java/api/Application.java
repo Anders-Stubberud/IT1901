@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 import persistence.JsonIO;
 import core.Game;
+import core.RegistrationAuthentication;
 
 /**
  *
@@ -41,8 +42,8 @@ public class Application {
      */
     @Primary
     @Bean
-    public JsonIO jsonIO() {
-        return new JsonIO();
+    public RegistrationAuthentication registrationAuthentication(JsonIO jsonIO) {
+        return new RegistrationAuthentication(jsonIO);
     }
 
 }

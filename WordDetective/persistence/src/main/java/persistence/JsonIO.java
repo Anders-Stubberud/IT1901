@@ -69,12 +69,14 @@ public final class JsonIO implements AbstractJsonIO {
     }
 
     @Override
-    public void addUser(final User user) {
+    public boolean addedUserSuccessfully(final User user) {
         try (FileWriter fw = new FileWriter(path + "/users/" + user.getUsername() + ".json", StandardCharsets.UTF_8)) {
             GSON.toJson(user, fw);
             System.out.println("User " + user.getUsername() + " successfully created.");
+            return true;
         } catch (IOException e) {
             System.out.println("Couldn't add user " + user.getUsername() + " because: " + e.getMessage());
+            return false;
         }
     }
 

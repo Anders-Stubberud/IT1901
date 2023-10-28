@@ -11,7 +11,7 @@ public interface AbstractJsonIO {
    *
    * @param user - The user to add
    */
-  void addUser(User user);
+  boolean addedUserSuccessfully(User user);
 
   /**
    * Delete user from database.

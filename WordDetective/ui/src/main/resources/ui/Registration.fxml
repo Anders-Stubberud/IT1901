@@ -17,7 +17,7 @@
             <Font size="34.0" />
          </font>
       </Label>
-      <Label fx:id="usernameTaken" layoutX="462.0" layoutY="157.0" opacity="0.0" text="username is taken" textFill="WHITE">
+      <Label fx:id="errorDisplay" layoutX="462.0" layoutY="157.0" opacity="0.0" text="" textFill="WHITE">
          <font>
             <Font size="20.0" />
          </font>

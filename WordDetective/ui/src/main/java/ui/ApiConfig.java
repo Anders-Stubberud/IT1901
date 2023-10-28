@@ -12,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 
 import com.google.gson.Gson;
 
+import types.RegistrationResult;
 import types.User;
 
 public final class ApiConfig {
@@ -85,19 +86,20 @@ public final class ApiConfig {
   //   return Boolean.parseBoolean(response.body());
   // }
 
-  protected static boolean usernameAvailable(final String username) throws IOException, InterruptedException {
+  protected static RegistrationResult registrationResult(final String username, final String password) throws IOException, InterruptedException {
     String param1 = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
-    String url = BASEURL + "RegistrationController/usernameAvailableAndUserCreatedSuccessfully" + "?username=" + param1;
+    String param2 = URLEncoder.encode(password, StandardCharsets.UTF_8.toString());
+    String url = BASEURL + "RegistrationController/registrationResult" + "?username=" + param1 + "&password=" + param2;
     HttpResponse<String> response = performGetRequest(url);
-    return Boolean.parseBoolean(response.body());
+    return GSON.fromJson(response.body(), RegistrationResult.class);
   }
 
-  protected static void registrationControllerAddUser(final User user) throws IOException, InterruptedException {
-    String url = BASEURL + "registrationController/addUser";
-    String type = "application/json";
-    BodyPublisher body = HttpRequest.BodyPublishers.ofString(GSON.toJson(user));
-    performPostRequest(url, type, body);
-  }
+  // protected static void registrationControllerAddUser(final User user) throws IOException, InterruptedException {
+  //   String url = BASEURL + "RegistrationController/addUser";
+  //   String type = "application/json";
+  //   BodyPublisher body = HttpRequest.BodyPublishers.ofString(GSON.toJson(user));
+  //   performPostRequest(url, type, body);
+  // }
 
   protected static void gamePageControllerNewGame(final User user)
       throws IOException, InterruptedException {
