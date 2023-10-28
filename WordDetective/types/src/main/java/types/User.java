@@ -6,6 +6,7 @@ import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
 public final class User {
+    
     /**
      * The username of the given player.
      */

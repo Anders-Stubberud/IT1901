@@ -36,7 +36,7 @@ public class CategoryController {
   @RequestMapping(value = "/CategoryController/getCategories", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public Set<String> getCategories(final @RequestParam("string") String username) {
-    return AbstractJsonIO.JsonUtilities.getAllCategories(username);
+    return AbstractJsonIO.JsonUtilities.getCategories(username);
   }
 
 }

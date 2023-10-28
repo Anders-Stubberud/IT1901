@@ -1,6 +1,7 @@
 package core;
 
 import persistence.JsonIO;
+import persistence.JsonUtilities;
 
 public abstract class AbstractAuthentication extends AbstractPersistenceAccess {
 
@@ -8,8 +9,8 @@ public abstract class AbstractAuthentication extends AbstractPersistenceAccess {
     super(jsonIO);
   }
 
-  public boolean usernameExists(String username) {
-    return jsonIO.getAllUsernames().contains(username);
+  protected boolean usernameExists(String username) {
+    return JsonUtilities.getAllUsernames().contains(username);
   }
 
   protected abstract boolean validPassword(String password);

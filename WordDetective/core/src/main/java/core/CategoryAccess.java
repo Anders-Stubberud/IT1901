@@ -10,8 +10,8 @@ public class CategoryAccess extends AbstractPersistenceAccess {
     super(jsonIO);
   }
 
-  public Set<String> getAllCategories(String username) {
-    return jsonIO.getAllCategories();
+  public Set<String> getCategories(String username) {
+    return jsonIO.getCategories();
   }
 
 }
