@@ -7,7 +7,7 @@ import persistence.JsonIO;
 public class Config {
   
   @Bean 
-  public JsonIO initializeJsonIO() {
+  public JsonIO jsonIO() {
     return new JsonIO();
   }
 

@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import core.LoginAuthentication;
 import persistence.JsonIO;
+import types.LoginResult;
 import types.User;
 
 @RestController
@@ -18,15 +21,15 @@ public class LoginController {
   /**
    * JsonIO bean to handle files.
    */
-  private JsonIO jsonIO;
+  private LoginAuthentication authentication;
 
   /**
    * Autowired constructor injecting the JsonIO bean into the object.
    * @param jsonIOParameter The bean to be injected.
    */
   @Autowired
-  public LoginController(final JsonIO jsonIOParameter) {
-    this.jsonIO = jsonIOParameter;
+  public LoginController(final LoginAuthentication authentication) {
+    this.authentication = authentication;
   }
 
   /**
@@ -36,8 +39,11 @@ public class LoginController {
    */
   @RequestMapping(value = "/LoginController/performLogin", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
-  public User performLogin(final @RequestParam("username") String username) {
-    return jsonIO.getUser(username);
+  public LoginResult performLogin(final @RequestParam("username") String username, final @RequestParam("password") String password) {
+    if (authentication.getUsername() == null) {
+      authentication.setUsername(username);
+    }
+    return authentication.authenticate(password);
   }
 
 }

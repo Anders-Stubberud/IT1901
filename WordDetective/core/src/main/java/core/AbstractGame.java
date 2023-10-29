@@ -1,5 +1,6 @@
 package core;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface AbstractGame {
@@ -64,6 +65,6 @@ public interface AbstractGame {
    *
    * @param highscore - The highscore to save
    */
-  void savePlayerHighscore(int highscore);
+  void savePlayerHighscore(int highscore) throws IOException;
 
 }

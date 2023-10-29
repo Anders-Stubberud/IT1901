@@ -1,8 +1,11 @@
 package core;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Consumer;
+
 import persistence.JsonIO;
 import types.User;
 
@@ -13,6 +16,8 @@ import types.User;
  */
 public final class Game implements AbstractGame {
 
+    private String username;
+
     /**
      * The category chosen by the user.
      */
@@ -21,10 +26,10 @@ public final class Game implements AbstractGame {
      * List of answers for the chosen category.
      */
     private List<String> wordlist;
-    /**
-     * The active user playing this game.
-     */
-    private final User player;
+    // /**
+    //  * The active user playing this game.
+    //  */
+    // private final User user;
     /**
      * Random object used to provide random numbers.
      */
@@ -32,7 +37,7 @@ public final class Game implements AbstractGame {
     /**
      * A {@link JsonIO} object simulating our database.
      */
-    private final JsonIO database;
+    private final JsonIO jsonIO;
 
     /**
      * Initializes the Game object, which will control the logic of the game.
@@ -41,32 +46,39 @@ public final class Game implements AbstractGame {
      * @param user The the user, used to set up individualized games for different
      *             users.
      */
-    public Game(final User user) {
-        this.player = user;
-        this.database = new JsonIO();
-        this.wordlist = new ArrayList<>();
+    public Game(final String username) {
+        this.username = username;
+        this.jsonIO = new JsonIO(username);
+        // this.user = jsonIO.getCurrentUser();
+        // this.wordlist = new ArrayList<>();
     }
 
-    /**
-     * Empty constructor if playing game with guest.
-     */
-    public Game() {
-        this.player = new User();
-        this.database = new JsonIO();
-        this.wordlist = new ArrayList<>();
-    }
+    // /**
+    //  * Empty constructor if playing game with guest.
+    //  */
+    // public Game() {
+    //     this.player = new User();
+    //     this.database = new JsonIO();
+    //     this.wordlist = new ArrayList<>();
+    // }
 
     @Override
     public void setCategory(final String category) {
-        this.wordlist = database.getDefaultCategory(category);
-        if (wordlist == null && (!player.getCustomCategories().containsKey(category))) {
-            throw new IllegalArgumentException(category + " is not a part of the available categories.");
-        } else if (database.getDefaultCategory(category) != null) {
-            this.wordlist = database.getDefaultCategory(category);
-        } else {
-            this.wordlist = player.getCustomCategories().get(category);
+        try {
+            this.wordlist = jsonIO.getCategoryWordlist(category);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-        this.chosenCategory = category;
+        // this.wordlist = jsonIO.getDefaultCategory(category);
+        // if (wordlist == null && (!user.getCustomCategories().containsKey(category))) {
+        //     throw new IllegalArgumentException(category + " is not a part of the available categories.");
+        // } else if (jsonIO.getDefaultCategory(category) != null) {
+        //     this.wordlist = jsonIO.getDefaultCategory(category);
+        // } else {
+        //     this.wordlist = user.getCustomCategories().get(category);
+        // }
+        // this.chosenCategory = category;
     }
 
     @Override
@@ -105,10 +117,17 @@ public final class Game implements AbstractGame {
     }
 
     @Override
-    public void savePlayerHighscore(final int highscore) {
-        if (player.getUsername() != "guest") {
-            player.setHighscore(highscore);
-            database.updateUser(player);
+    public void savePlayerHighscore(final int highscore) throws IOException {
+        if (username != "guest") {
+            jsonIO.updateCurrentUser(
+                (user) -> {
+                    if (user.getHighScore() < highscore) {
+                        user.setHighscore(highscore);
+                        return true;
+                    }
+                    return false;
+                }
+            );
         }
     }
 

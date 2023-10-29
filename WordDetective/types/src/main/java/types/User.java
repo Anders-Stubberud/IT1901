@@ -126,22 +126,22 @@ public final class User {
         this.customCategories.remove(category);
     }
 
-    /**
-     * check if username is correct according to set regex.
-     *
-     * @return {@link Boolean}
-     */
-    public boolean isCorrectUsername() {
-        return getUsername().matches("^(?!guest)[a-zA-Z0-9_ ]{2,}$");
-    }
+    // /**
+    //  * check if username is correct according to set regex.
+    //  *
+    //  * @return {@link Boolean}
+    //  */
+    // public boolean isCorrectUsername() {
+    //     return getUsername().matches("^(?!guest)[a-zA-Z0-9_ ]{2,}$");
+    // }
 
-    /**
-     * check if password is correct according to set regex.
-     *
-     * @return {@link Boolean}
-     */
-    public boolean isCorrectPassword() {
-        return getPassword().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{4,}$");
-    }
+    // /**
+    //  * check if password is correct according to set regex.
+    //  *
+    //  * @return {@link Boolean}
+    //  */
+    // public boolean isCorrectPassword() {
+    //     return getPassword().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{4,}$");
+    // }
 
 }
