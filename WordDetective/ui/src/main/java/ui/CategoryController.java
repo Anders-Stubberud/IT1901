@@ -134,29 +134,34 @@ public final class CategoryController implements Initializable {
         // if (!username.equals("guest")) {
         // categories.addAll(user.getCustomCategories().keySet());
         // }
-        for (String category : ApiConfig.getCategories(username)) {
-            Button button = new Button(category);
-            button.setId(category);
-            button.setUserData(category);
-            button.setPadding(new Insets(VERTICAL_PADDING, HORIZONTAL_PADDING, VERTICAL_PADDING, HORIZONTAL_PADDING));
-            button.setFont(new Font(VERTICAL_PADDING));
-            vbox.getChildren().add(button);
-            Label ekstraPlass = new Label("");
-            ekstraPlass.setPadding(new Insets(VERTICAL_PADDING, 0, 0, 0));
-            vbox.getChildren().add(ekstraPlass);
+        try {
+            for (String category : ApiConfig.categoryControllerGetCategories(username)) {
+                Button button = new Button(category);
+                button.setId(category);
+                button.setUserData(category);
+                button.setPadding(new Insets(VERTICAL_PADDING, HORIZONTAL_PADDING, VERTICAL_PADDING, HORIZONTAL_PADDING));
+                button.setFont(new Font(VERTICAL_PADDING));
+                vbox.getChildren().add(button);
+                Label ekstraPlass = new Label("");
+                ekstraPlass.setPadding(new Insets(VERTICAL_PADDING, 0, 0, 0));
+                vbox.getChildren().add(ekstraPlass);
 
-            button.setOnAction(event -> {
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("GamePage.fxml"));
-                    fxmlLoader.setControllerFactory(new GamePageFactory(user, category));
-                    Parent parent = fxmlLoader.load();
-                    Stage stage = (Stage) button.getScene().getWindow();
-                    stage.setScene(new Scene(parent));
-                    stage.show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
+                button.setOnAction(event -> {
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("GamePage.fxml"));
+                        fxmlLoader.setControllerFactory(new GamePageFactory(username, category));
+                        Parent parent = fxmlLoader.load();
+                        Stage stage = (Stage) button.getScene().getWindow();
+                        stage.setScene(new Scene(parent));
+                        stage.show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+        } catch (IOException | InterruptedException e) {
+            // TODO informere bruker om at kategorier ikke ble lastet inn rett
+            e.printStackTrace();
         }
     }
 

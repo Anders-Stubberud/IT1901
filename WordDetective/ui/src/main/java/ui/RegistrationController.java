@@ -72,7 +72,7 @@ public class RegistrationController {
         try {
             String username = newUsername.getText();
             String password = newPassword.getText();
-            switch (ApiConfig.registrationResult(username, password)) {
+            switch (ApiConfig.registrationControllerRegistrationResult(username, password)) {
                 case SUCCESS:
                     FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
                     fxmlLoader.setControllerFactory(new CategoryFactory(username));

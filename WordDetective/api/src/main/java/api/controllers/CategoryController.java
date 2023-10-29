@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import persistence.AbstractJsonIO;
 import persistence.JsonIO;
-import core.CategoryAccess;
 import core.Game;
+import core.UserAccess;
 
 @RestController
 public class CategoryController {
+
+  private UserAccess userAccess;
 
   // private CategoryAccess categoryAccess;
 
@@ -36,7 +38,8 @@ public class CategoryController {
   @RequestMapping(value = "/CategoryController/getCategories", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public Set<String> getCategories(final @RequestParam("string") String username) {
-    return AbstractJsonIO.JsonUtilities.getCategories(username);
+    this.userAccess = new UserAccess(username);
+    return userAccess.getAllCategories();
   }
 
 }

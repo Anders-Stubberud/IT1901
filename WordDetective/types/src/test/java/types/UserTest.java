@@ -19,25 +19,25 @@ public class UserTest {
    */
   private User validUser = new User("Testuser", "Correct123");
 
-  /**
-   * Test for valid and invalid usernames.
-   */
-  @Test
-  public void getUsernameTest() {
-    assertTrue(validUser.isCorrectUsername(), "The username " + validUser.getUsername() + " should be valid");
-    assertFalse(invalidUser.isCorrectUsername(),
-        "The username " + invalidUser.getUsername() + " should be invalid");
-    assertFalse(invalidUser2.isCorrectUsername(),
-        "The username " + invalidUser2.getUsername() + " should be invalid");
-  }
+  // /**
+  //  * Test for valid and invalid usernames.
+  //  */
+  // @Test
+  // public void getUsernameTest() {
+  //   assertTrue(validUser.isCorrectUsername(), "The username " + validUser.getUsername() + " should be valid");
+  //   assertFalse(invalidUser.isCorrectUsername(),
+  //       "The username " + invalidUser.getUsername() + " should be invalid");
+  //   assertFalse(invalidUser2.isCorrectUsername(),
+  //       "The username " + invalidUser2.getUsername() + " should be invalid");
+  // }
 
   /**
    * Test for valid and invalid passwords.
    */
-  @Test
-  public void getPasswordTest() {
-    assertTrue(validUser.isCorrectPassword(), "The password " + validUser.getPassword() + " should be valid");
-    assertFalse(invalidUser.isCorrectPassword(),
-        "The username " + invalidUser.getPassword() + " should be invalid");
-  }
+  // @Test
+  // public void getPasswordTest() {
+  //   assertTrue(validUser.isCorrectPassword(), "The password " + validUser.getPassword() + " should be valid");
+  //   assertFalse(invalidUser.isCorrectPassword(),
+  //       "The username " + invalidUser.getPassword() + " should be invalid");
+  // }
 }

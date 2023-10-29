@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import persistence.JsonIO;
 import core.Game;
 
 @RestController
@@ -24,8 +23,8 @@ public class GamePageController {
    */
   @RequestMapping(value = "/GamePageController/newGame", method = RequestMethod.POST)
   @ResponseStatus(HttpStatus.OK)
-  public void newGameLogic(@RequestBody final String user) {
-    game = new Game(JsonIO.convertToJavaObject(user));
+  public void newGameLogic(@RequestBody final String username) {
+    game = new Game(username);
   }
 
   /**

@@ -14,9 +14,9 @@ import types.User;
  * It will delegate certain tasks to other objects,
  * who have more suitable functionality.
  */
-public final class Game implements AbstractGame {
+public final class Game extends UserAccess implements AbstractGame {
 
-    private String username;
+    private boolean isGuestUser;
 
     /**
      * The category chosen by the user.
@@ -34,10 +34,11 @@ public final class Game implements AbstractGame {
      * Random object used to provide random numbers.
      */
     private static Random random = new Random();
-    /**
-     * A {@link JsonIO} object simulating our database.
-     */
-    private final JsonIO jsonIO;
+
+    // /**
+    //  * A {@link JsonIO} object simulating our database.
+    //  */
+    // private final JsonIO jsonIO;
 
     /**
      * Initializes the Game object, which will control the logic of the game.
@@ -47,8 +48,8 @@ public final class Game implements AbstractGame {
      *             users.
      */
     public Game(final String username) {
-        this.username = username;
-        this.jsonIO = new JsonIO(username);
+        super(username);
+        this.isGuestUser = username.equals("guest");
         // this.user = jsonIO.getCurrentUser();
         // this.wordlist = new ArrayList<>();
     }
@@ -67,7 +68,7 @@ public final class Game implements AbstractGame {
         try {
             this.wordlist = jsonIO.getCategoryWordlist(category);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+            // TODO passende exception
             e.printStackTrace();
         }
         // this.wordlist = jsonIO.getDefaultCategory(category);
@@ -117,17 +118,22 @@ public final class Game implements AbstractGame {
     }
 
     @Override
-    public void savePlayerHighscore(final int highscore) throws IOException {
-        if (username != "guest") {
-            jsonIO.updateCurrentUser(
-                (user) -> {
-                    if (user.getHighScore() < highscore) {
-                        user.setHighscore(highscore);
-                        return true;
+    public void savePlayerHighscore(final int highscore) {
+        if (isGuestUser) {
+            try {
+                jsonIO.updateCurrentUser(
+                    (user) -> {
+                        if (user.getHighScore() < highscore) {
+                            user.setHighscore(highscore);
+                            return true;
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            );
+                );
+            } catch (IOException e) {
+                //evt håndtere den
+                e.printStackTrace();
+            }
         }
     }
 

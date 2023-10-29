@@ -1,6 +1,7 @@
 package ui;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -9,8 +10,11 @@ import java.net.http.HttpRequest.BodyPublisher;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Set;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import types.LoginResult;
 import types.RegistrationResult;
@@ -38,6 +42,8 @@ public final class ApiConfig {
    * Instance of Gson used to handle Json files.
    */
   private static final Gson GSON = new Gson();
+
+  private static Type listOfStringsType = new TypeToken<Set<String>>() {}.getType();
 
   /**
    * No instantiation of utility class.
@@ -87,7 +93,7 @@ public final class ApiConfig {
   //   return Boolean.parseBoolean(response.body());
   // }
 
-  protected static RegistrationResult registrationResult(final String username, final String password) throws IOException, InterruptedException {
+  protected static RegistrationResult registrationControllerRegistrationResult(final String username, final String password) throws IOException, InterruptedException {
     String param1 = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
     String param2 = URLEncoder.encode(password, StandardCharsets.UTF_8.toString());
     String url = BASEURL + "RegistrationController/registrationResult" + "?username=" + param1 + "&password=" + param2;
@@ -102,13 +108,20 @@ public final class ApiConfig {
   //   performPostRequest(url, type, body);
   // }
 
-  protected static void gamePageControllerNewGame(final User user)
+  protected static Set<String> categoryControllerGetCategories(final String username) throws IOException, InterruptedException {
+    String param1 = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
+    String url = BASEURL + "RegistrationController/registrationResult" + "?username=" + param1;
+    HttpResponse<String> response = performGetRequest(url);
+    return GSON.fromJson(response.body(), listOfStringsType);
+  }
+
+  protected static void gamePageControllerNewGame(final String username)
       throws IOException, InterruptedException {
       //Sender all brukerinfo (inkludert uberørte custom lists) tilbake gjennom API'et.
       //Kunne ha instansiert det på serversiden uten å sende det til client først.
       String url = BASEURL + "GamePageController/newGame";
-      String type = "application/json";
-      BodyPublisher body = HttpRequest.BodyPublishers.ofString(GSON.toJson(user));
+      String type = "text/plain";;
+      BodyPublisher body = HttpRequest.BodyPublishers.ofString(username);
       performPostRequest(url, type, body);
   }
 

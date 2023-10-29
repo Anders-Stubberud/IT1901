@@ -7,10 +7,13 @@ import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -27,13 +30,15 @@ public final class JsonIO implements AbstractJsonIO {
     //  */
     // private final String path;
 
-    private final User user;
+    private User user;
     private final String pathToPersistenceUser;
     private static final Set<String> defaultCategoryNames = JsonUtilities.getPersistentFilenames("/default_categories");
+    private Set<String> customCategoryNames;
 
     public JsonIO(String username) {
         this.pathToPersistenceUser = JsonUtilities.pathToResources + "/users/" + username + ".json";
         this.user = loadCurrentUser();
+        this.customCategoryNames = user.getCustomCategories().keySet();
     }
 
     // /**
@@ -59,11 +64,15 @@ public final class JsonIO implements AbstractJsonIO {
     //     }
     // }
 
+    public Set<String> getAllCategories() {
+        return Stream.concat(defaultCategoryNames.stream(), customCategoryNames.stream()).collect(Collectors.toSet());
+    }
+
     public List<String> getCategoryWordlist(String category) throws IOException, RuntimeException {
         if (defaultCategoryNames.contains(category)) {
             return getDefaultCategory(category);
         }
-        if (user.getCustomCategories().keySet().contains(category)) {
+        if (customCategoryNames.contains(category)) {
             return user.getCustomCategories().get(category);
         }
         throw new RuntimeException("Error fetching categories");
@@ -103,6 +112,7 @@ public final class JsonIO implements AbstractJsonIO {
             if (new File(pathToPersistenceUser).exists()) {
                 FileWriter fw = new FileWriter(pathToPersistenceUser, StandardCharsets.UTF_8);
                 JsonUtilities.GSON.toJson(user, fw);
+                this.user = loadCurrentUser();
             } else {
                 throw new IOException("User not found in " + pathToPersistenceUser);
             }

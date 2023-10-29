@@ -88,7 +88,7 @@ public final class GamePageController implements Initializable {
     /**
      * The current user.
      */
-    private User user;
+    private String username;
     /**
      * The layoutX is the X position of the game.
      */
@@ -148,17 +148,16 @@ public final class GamePageController implements Initializable {
      * @param newUser  username.
      * @param category category of the given game.
      */
-    public GamePageController(final User newUser, final String category) {
-        this.user = newUser;
+    public GamePageController(final String username, final String category) {
+        this.username = username;
         this.currentCategory = category;
     }
 
     /**
      * Empty Constuctor for initialising controller.
      */
-    public GamePageController() {
-        this.user = new User();
-        this.currentCategory = "us states";
+    public GamePageController(String category) {
+        this("guest", category);
     }
 
     /**
@@ -200,7 +199,6 @@ public final class GamePageController implements Initializable {
             try {
                 if (ApiConfig.gamePageControllerCheckValidWord(playerGuess, playerGuess)) {
                     int newPoints = Integer.parseInt(points.getText()) + 1;
-                    user.setHighscore(newPoints);
                     points.setText(String.valueOf(newPoints));
                     playerInputField.setText("");
                     rndwordMasterLetters();
@@ -293,7 +291,7 @@ public final class GamePageController implements Initializable {
         try {
             // game = new Game(user);
             try {
-                ApiConfig.gamePageControllerNewGame(user);
+                ApiConfig.gamePageControllerNewGame(username);
                 ApiConfig.gamePageControllerSetCategory(currentCategory);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
@@ -316,7 +314,7 @@ public final class GamePageController implements Initializable {
             // Add shutdownhook that updates user highscore when closing application
             Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
                 public void run() {
-                    if (!user.getUsername().equals("guest")) {
+                    if (!username.equals("guest")) {
                         try {
                             // game.savePlayerHighscore(Integer.valueOf(points.getText()));
                             ApiConfig.gamePageControllerSavePlayerHighscore(points.getText());

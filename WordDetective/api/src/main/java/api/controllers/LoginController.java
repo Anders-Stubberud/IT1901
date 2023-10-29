@@ -10,17 +10,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import core.LoginAuthentication;
-import persistence.JsonIO;
 import types.LoginResult;
-import types.User;
 
 @RestController
-@Scope("session")
+// @Scope("session")
 public class LoginController {
 
-  /**
-   * JsonIO bean to handle files.
-   */
   private LoginAuthentication authentication;
 
   /**
