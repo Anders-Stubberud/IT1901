@@ -85,6 +85,17 @@ public final class ApiConfig {
     return res;
   }
 
+  public static void main(String[] args) {
+    LoginResult res;
+    try {
+      res = loginControllerPerformLogin("occupiedUser", "password");
+      System.out.println(res);
+    } catch (IOException | InterruptedException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
   // protected static boolean registrationControllerFireSignUp(final String username)
   //     throws IOException, InterruptedException {
   //   String param1 = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());

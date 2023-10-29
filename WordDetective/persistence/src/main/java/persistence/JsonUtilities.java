@@ -93,12 +93,22 @@ public final class JsonUtilities {
   public static Set<String> getPersistentFilenames(String endpoint) throws RuntimeException {
     File[] nameFiles = new File(pathToResources + endpoint).listFiles();
     if (nameFiles != null) {
-        Set<String> res = Arrays.stream(nameFiles).map(File::getName).collect(Collectors.toSet());
+        Set<String> res = Arrays.stream(nameFiles).map(file -> {
+          String name = file.getName();
+          String stripJson = name.replace(".json", "");
+          String formatSpace = stripJson.replace("_", " ");
+          return formatSpace;
+        }).collect(Collectors.toSet());
         System.out.println(res);
         return res;
     } else {
       throw new RuntimeException("Directory not present in " + pathToResources);
     }
+  }
+
+  public static void main(String[] args) {
+    Set<String> res = getPersistentFilenames("/users");
+    System.out.println(res);
   }
 
 }
