@@ -9,8 +9,8 @@
 
 <AnchorPane id="loginPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: darkslategrey;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.LoginController">
    <children>
-      <PasswordField fx:id="password" layoutX="426.0" layoutY="235.0" promptText="password" />
-      <TextField fx:id="username" layoutX="426.0" layoutY="185.0" promptText="username" />
+      <PasswordField fx:id="passwordField" layoutX="426.0" layoutY="235.0" promptText="password" />
+      <TextField fx:id="usernameField" layoutX="426.0" layoutY="185.0" promptText="username" />
       <Label layoutX="448.0" layoutY="109.0" prefHeight="47.0" prefWidth="104.0" text="LOG IN" textFill="WHITE">
          <font>
             <Font size="32.0" />

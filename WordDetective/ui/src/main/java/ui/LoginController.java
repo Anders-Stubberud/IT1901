@@ -11,7 +11,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import types.User;
 
 public class LoginController {
     /**
@@ -78,6 +77,9 @@ public class LoginController {
                     Stage stage = (Stage) login.getScene().getWindow();
                     stage.setScene(new Scene(parent));
                     stage.show();
+                    break;
+                case USERNAME_DOES_NOT_EXIST:
+                    displayError("Username does not exist.");
                     break;
                 case INCORRECT_PASSWORD:
                     displayError("Incorrect password.");

@@ -17,14 +17,14 @@ public class RegistrationController {
    */
   private RegistrationAuthentication authentication;
 
-  /**
-   * Autowired constructor injecting the JsonIO bean into the object.
-   * @param jsonIOParameter
-   */
-  @Autowired
-  public RegistrationController(final RegistrationAuthentication authentication) {
-    this.authentication = authentication;
-  }
+  // /**
+  //  * Autowired constructor injecting the JsonIO bean into the object.
+  //  * @param jsonIOParameter
+  //  */
+  // @Autowired
+  // public RegistrationController(final RegistrationAuthentication authentication) {
+  //   this.authentication = authentication;
+  // }
 
   /**
    * API endpoint for registration of User. Returns value indicating result of registration.
@@ -35,6 +35,9 @@ public class RegistrationController {
   @RequestMapping(value = "/RegistrationController/registrationResult", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public String registrationResult(final @RequestParam("username") String username, final @RequestParam("password") String password) {
+    if (authentication == null) {
+      authentication = new RegistrationAuthentication();
+    }
     return "{ \"registrationResult\": \"" + authentication.registrationResult(username, password).toString() + "\" }";
   }
 

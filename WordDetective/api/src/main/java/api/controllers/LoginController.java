@@ -18,14 +18,14 @@ public class LoginController {
 
   private LoginAuthentication authentication;
 
-  /**
-   * Autowired constructor injecting the JsonIO bean into the object.
-   * @param jsonIOParameter The bean to be injected.
-   */
-  @Autowired
-  public LoginController(final LoginAuthentication authentication) {
-    this.authentication = authentication;
-  }
+  // /**
+  //  * Autowired constructor injecting the JsonIO bean into the object.
+  //  * @param jsonIOParameter The bean to be injected.
+  //  */
+  // @Autowired
+  // public LoginController(final LoginAuthentication authentication) {
+  //   this.authentication = authentication;
+  // }
 
   /**
    * Fetches user in order to gain access to login details.
@@ -35,7 +35,8 @@ public class LoginController {
   @RequestMapping(value = "/LoginController/performLogin", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public LoginResult performLogin(final @RequestParam("username") String username, final @RequestParam("password") String password) {
-    if (authentication.getUsername() == null) {
+    if (authentication == null) {
+      authentication = new LoginAuthentication();
       authentication.setUsername(username);
     }
     return authentication.authenticate(password);
