@@ -80,8 +80,6 @@ public final class ApiConfig {
     String param2 = URLEncoder.encode(password, StandardCharsets.UTF_8.toString());
     String url = BASEURL + "LoginController/performLogin" + "?username=" + param1 + "&password=" + param2;
     HttpResponse<String> response = performGetRequest(url);
-    //Må her sende all brukerinfo (inkludert custom wordlists) gjennom API'et, samtidig som alt sendes tilbake
-    //(uten at wordlists er berørt) i instansieringen av nytt Game-objekt.
     LoginResult res = GSON.fromJson(response.body(), LoginResult.class);
     System.out.println("\n\n\n" + res + "\n\n\n");
     return res;

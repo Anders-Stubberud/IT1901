@@ -45,7 +45,7 @@ public final class JsonUtilities {
         throw new IllegalStateException("Working directory not found.");
       }
     }
-    return absolutePath.resolve("/WordDetective/persistence/src/main/resources").toString();
+    return absolutePath + "/WordDetective/persistence/src/main/resources";
   }
 
   public static boolean SuccessfullyAddedUserPersistently(final User user) {
@@ -93,9 +93,11 @@ public final class JsonUtilities {
   public static Set<String> getPersistentFilenames(String endpoint) throws RuntimeException {
     File[] nameFiles = new File(pathToResources + endpoint).listFiles();
     if (nameFiles != null) {
-      return Arrays.stream(nameFiles).map(File::getName).collect(Collectors.toSet());
+        Set<String> res = Arrays.stream(nameFiles).map(File::getName).collect(Collectors.toSet());
+        System.out.println(res);
+        return res;
     } else {
-      throw new RuntimeException("Directory not present in" + pathToResources);
+      throw new RuntimeException("Directory not present in " + pathToResources);
     }
   }
 
