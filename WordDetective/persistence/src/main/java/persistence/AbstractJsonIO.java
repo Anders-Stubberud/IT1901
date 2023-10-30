@@ -1,18 +1,8 @@
 package persistence;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import types.User;
 
@@ -51,7 +41,7 @@ public interface AbstractJsonIO {
    *
    * @param user - The new user object to override the old
    */
-  abstract void updateCurrentUser(Predicate<User> consumer) throws IOException;
+  abstract void updateCurrentUser(final Predicate<User> consumer) throws IOException;
 
   /**
    * Get a defaultCategory as a {@link List}.
@@ -59,7 +49,7 @@ public interface AbstractJsonIO {
    * @param category - The category to get
    * @return - A {@link List} of answers from that category
    */
-  abstract List<String> getDefaultCategory(String category) throws IOException;
+  abstract List<String> getDefaultCategory(final String category) throws IOException;
 
   // /**
   //  * Get all the current default categories.

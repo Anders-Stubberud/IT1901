@@ -6,9 +6,26 @@ import types.LoginResult;
 
 public class LoginAuthentication extends AbstractAuthentication {
 
+  /**
+   * Username of the current user.
+   * Used for methods dependent of the users persistently stored information.
+   */
   private String username;
 
-  public LoginResult authenticate(String password) {
+  /**
+   * Instantiates a new instance of LoginAuthentication.
+   * @param username The username of the user to authenticate the login of.
+   */
+  public LoginAuthentication(final String username) {
+    this.username = username;
+  }
+
+  /**
+   * Checks if the password provided by the user matches the password stored for the given username.
+   * @param password The password provided by the user.
+   * @return SUCCESS, USERNAME_DOES_NOT_EXIST, INCORRECT_PASSWORD, or READ_ERROR, respectively.
+   */
+  public LoginResult authenticate(final String password) {
     if (! usernameExists(username)) {
       return LoginResult.USERNAME_DOES_NOT_EXIST;
     }
@@ -23,7 +40,7 @@ public class LoginAuthentication extends AbstractAuthentication {
   }
 
   @Override
-  public boolean validPassword(String password) throws NullPointerException {
+  public boolean validPassword(final String password) throws NullPointerException {
     try {
       if (JsonUtilities.usernameAndPasswordMatch(username, password)) {
         return true;
@@ -33,14 +50,6 @@ public class LoginAuthentication extends AbstractAuthentication {
     catch (IOException e) {
       throw new NullPointerException("User \"" + username + "\" not found in " + JsonUtilities.pathToResources + "/users");
     }
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  public String getUsername() {
-    return this.username;
   }
   
 }

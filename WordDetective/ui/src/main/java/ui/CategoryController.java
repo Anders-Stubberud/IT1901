@@ -21,8 +21,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import persistence.JsonIO;
-import types.User;
 
 public final class CategoryController implements Initializable {
 
@@ -130,10 +128,6 @@ public final class CategoryController implements Initializable {
      */
     public void renderCategories() {
         pane.setVisible(false);
-        // List<String> categories = new ArrayList<>();
-        // if (!username.equals("guest")) {
-        // categories.addAll(user.getCustomCategories().keySet());
-        // }
         try {
             for (String category : ApiConfig.categoryControllerGetCategories(username)) {
                 Button button = new Button(category);

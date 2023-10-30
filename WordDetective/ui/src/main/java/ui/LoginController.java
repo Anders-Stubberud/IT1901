@@ -43,11 +43,6 @@ public class LoginController {
      */
     private static final int DISPLAY_ERROR_DURATION_MS = 3000;
 
-    // /**
-    // * Database.
-    // */
-    // private JsonIO database = new JsonIO();
-
     private void displayError(String error) {
         errorDisplay.setText(error);
         errorDisplay.setOpacity(1);

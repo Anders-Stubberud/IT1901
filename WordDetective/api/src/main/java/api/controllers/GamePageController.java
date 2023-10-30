@@ -18,8 +18,8 @@ public class GamePageController {
   private Game game;
 
   /**
-   * Sets ut the gameinstance to use in the game.
-   * @param user The current user.
+   * API endpoint for setup of the user's game instance.
+   * @param username The username of the user to set up the game for.
    */
   @RequestMapping(value = "/GamePageController/newGame", method = RequestMethod.POST)
   @ResponseStatus(HttpStatus.OK)
@@ -28,9 +28,9 @@ public class GamePageController {
   }
 
   /**
-   * The selected category.
+   * API endpoint for choice of category.
    *
-   * @param category The username.
+   * @param category The category selected by the user.
    */
   @RequestMapping(value = "/GamePageController/setCategory", method = RequestMethod.POST)
   @ResponseStatus(HttpStatus.OK)
@@ -40,7 +40,7 @@ public class GamePageController {
 
   /**
    * API endpoint for fetching a random word.
-   * @return  A random word pulled from the current wordlist.
+   * @return  A word pulled randomly from the current wordlist.
    */
   @RequestMapping(value = "/GamePageController/getRandomWord", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
@@ -51,7 +51,7 @@ public class GamePageController {
   /**
    * API endpoint for fetching substring.
    * @param string The string to create a substring from.
-   * @return Substring og the provided string.
+   * @return Substring of the provided string.
    */
   @RequestMapping(value = "/GamePageController/getSubstring", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
@@ -60,7 +60,7 @@ public class GamePageController {
   }
 
   /**
-   * API endpoint for check of valid word.
+   * API endpoint to check if the guessed word contains the substring and is present in the wordlist.
    * @param substring The substring provided to the user.
    * @param guess The guess provided by the user.
    * @return Boolean indicating if guess was correct.
@@ -72,8 +72,8 @@ public class GamePageController {
   }
 
   /**
-   * API endpoint for saving the player's highscore to file.
-   * @param highscore The score to save to file.
+   * API endpoint for saving the player's highscore to file, if it's a new highscore.
+   * @param highscore The score to potentially save to file.
    */
   @RequestMapping(value = "/GamePageController/savePlayerHighscore", method = RequestMethod.POST)
   @ResponseStatus(HttpStatus.OK)

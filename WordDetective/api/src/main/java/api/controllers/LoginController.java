@@ -1,7 +1,5 @@
 package api.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,28 +14,22 @@ import types.LoginResult;
 // @Scope("session")
 public class LoginController {
 
+  /**
+   * LoginAuthentication instance to provide access to required persistently stored user information.
+   */
   private LoginAuthentication authentication;
 
-  // /**
-  //  * Autowired constructor injecting the JsonIO bean into the object.
-  //  * @param jsonIOParameter The bean to be injected.
-  //  */
-  // @Autowired
-  // public LoginController(final LoginAuthentication authentication) {
-  //   this.authentication = authentication;
-  // }
-
   /**
-   * Fetches user in order to gain access to login details.
-   * @param username The username of the provided user.
-   * @return User object with access to the users login details.
+   * API endpoint for check of valid login information.
+   * @param username The username provided by the user.
+   * @param password The password provided by the user.
+   * @return SUCCESS, USERNAME_DOES_NOT_EXIST, INCORRECT_PASSWORD, or READ_ERROR, respectively.
    */
   @RequestMapping(value = "/LoginController/performLogin", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public LoginResult performLogin(final @RequestParam("username") String username, final @RequestParam("password") String password) {
     if (authentication == null) {
-      authentication = new LoginAuthentication();
-      authentication.setUsername(username);
+      authentication = new LoginAuthentication(username);
     }
     return authentication.authenticate(password);
   }

@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,7 +22,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
-import types.User;
 
 public final class GamePageController implements Initializable {
 
@@ -289,7 +287,6 @@ public final class GamePageController implements Initializable {
     @Override // Runs on start of the application
     public void initialize(final URL location, final ResourceBundle resources) {
         try {
-            // game = new Game(user);
             try {
                 ApiConfig.gamePageControllerNewGame(username);
                 ApiConfig.gamePageControllerSetCategory(currentCategory);

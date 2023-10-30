@@ -1,17 +1,11 @@
 package api;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
-
-import persistence.JsonIO;
 import core.Game;
-import core.LoginAuthentication;
-import core.RegistrationAuthentication;
 
 /**
  *
@@ -39,26 +33,5 @@ public class Application {
     public Game game() {
         return null;
     }
-
-    // /**
-    //  * Singleton scoped bean used to handle files.
-    //  * @return Bean for injection.
-    //  */
-    // @Primary
-    // @Bean
-    // public RegistrationAuthentication registrationAuthentication(JsonIO jsonIO) {
-    //     return new RegistrationAuthentication();
-    // }
-
-    // /**
-    //  * Singleton scoped bean used to handle files.
-    //  * @return Bean for injection.
-    //  */
-    // @Primary
-    // @Bean
-    // @Scope("session")
-    // public LoginAuthentication loginAuthentication(JsonIO jsonIO) {
-    //     return new LoginAuthentication();
-    // }
 
 }

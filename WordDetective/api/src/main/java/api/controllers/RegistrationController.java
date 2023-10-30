@@ -1,6 +1,5 @@
 package api.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,24 +12,15 @@ import core.RegistrationAuthentication;
 public class RegistrationController {
 
   /**
-   * JsonIO bean to handle files.
+   * RegistrationAuthentication instance to provide access to required persistently information.
    */
   private RegistrationAuthentication authentication;
 
-  // /**
-  //  * Autowired constructor injecting the JsonIO bean into the object.
-  //  * @param jsonIOParameter
-  //  */
-  // @Autowired
-  // public RegistrationController(final RegistrationAuthentication authentication) {
-  //   this.authentication = authentication;
-  // }
-
   /**
-   * API endpoint for registration of User. Returns value indicating result of registration.
+   * API endpoint for registration of User. Returns constant indicating result of registration.
    * @param username The provided username of the new user.
    * @param password The provided password of the new user.
-   * @return SUCCESS if user created, else USERNAME_TAKEN, USERNAME_NOT_MATCH_REGEX, PASSWORD_NOT_MATCH_REGEX, or UPLOAD_ERROR.
+   * @return SUCCESS, USERNAME_TAKEN, USERNAME_NOT_MATCH_REGEX, PASSWORD_NOT_MATCH_REGEX, or UPLOAD_ERROR, respectively.
    */
   @RequestMapping(value = "/RegistrationController/registrationResult", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
@@ -38,17 +28,7 @@ public class RegistrationController {
     if (authentication == null) {
       authentication = new RegistrationAuthentication();
     }
-    return "{ \"registrationResult\": \"" + authentication.registrationResult(username, password).toString() + "\" }";
+    return authentication.registrationResult(username, password).toString();
   }
-
-  // /**
-  //  * API endpoint for registering new user.
-  //  * @param user String representation of Json file representing the given user.
-  //  */
-  // @RequestMapping(value = "/registrationController/addUser", method = RequestMethod.POST)
-  // @ResponseStatus(HttpStatus.OK)
-  // public void addUser(final @RequestBody String user) {
-  //   jsonIO.addUser(JsonIO.convertToJavaObject(user));
-  // }
  
 }

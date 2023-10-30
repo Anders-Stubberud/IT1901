@@ -59,7 +59,7 @@ public final class JsonUtilities {
     }
   }
 
-  public static boolean usernameAndPasswordMatch(String username, String password) throws IOException {
+  public static boolean usernameAndPasswordMatch(final String username, final String password) throws IOException {
     String storedPassword;
     try {
       storedPassword = getPersistentProperty("password", pathToResources + "/users/" + username + ".json");
@@ -72,7 +72,11 @@ public final class JsonUtilities {
     }
   }
 
-  public static String getPersistentProperty(String propertyName, String location) throws IOException {
+  public static String getCategoryFilename(final String category) {
+    return "/" + category.replace(" ", "_") + ".json";
+  }
+
+  public static String getPersistentProperty(final String propertyName, final String location) throws IOException {
     try (JsonReader reader = new JsonReader(new FileReader(location))) {
         reader.beginObject();
         while (reader.hasNext()) {
@@ -90,7 +94,7 @@ public final class JsonUtilities {
     throw new IOException("Property not found");
   }
 
-  public static Set<String> getPersistentFilenames(String endpoint) throws RuntimeException {
+  public static Set<String> getPersistentFilenames(final String endpoint) throws RuntimeException {
     File[] nameFiles = new File(pathToResources + endpoint).listFiles();
     if (nameFiles != null) {
         Set<String> res = Arrays.stream(nameFiles).map(file -> {
@@ -99,16 +103,10 @@ public final class JsonUtilities {
           String formatSpace = stripJson.replace("_", " ");
           return formatSpace;
         }).collect(Collectors.toSet());
-        System.out.println(res);
         return res;
     } else {
       throw new RuntimeException("Directory not present in " + pathToResources);
     }
-  }
-
-  public static void main(String[] args) {
-    Set<String> res = getPersistentFilenames("/users");
-    System.out.println(res);
   }
 
 }

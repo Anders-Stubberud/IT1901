@@ -1,13 +1,8 @@
 package core;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Consumer;
-
-import persistence.JsonIO;
-import types.User;
 
 /**
  * The GameLogic class is responsible for the logic of the game.
@@ -16,29 +11,26 @@ import types.User;
  */
 public final class Game extends UserAccess implements AbstractGame {
 
+    /**
+     * Boolean indicating if the user is a guest user.
+     * Used to avoid certain user-only methods.
+     */
     private boolean isGuestUser;
 
     /**
      * The category chosen by the user.
      */
     private String chosenCategory;
+
     /**
      * List of answers for the chosen category.
      */
     private List<String> wordlist;
-    // /**
-    //  * The active user playing this game.
-    //  */
-    // private final User user;
+
     /**
      * Random object used to provide random numbers.
      */
     private static Random random = new Random();
-
-    // /**
-    //  * A {@link JsonIO} object simulating our database.
-    //  */
-    // private final JsonIO jsonIO;
 
     /**
      * Initializes the Game object, which will control the logic of the game.
@@ -54,15 +46,9 @@ public final class Game extends UserAccess implements AbstractGame {
         // this.wordlist = new ArrayList<>();
     }
 
-    // /**
-    //  * Empty constructor if playing game with guest.
-    //  */
-    // public Game() {
-    //     this.player = new User();
-    //     this.database = new JsonIO();
-    //     this.wordlist = new ArrayList<>();
-    // }
-
+    /**
+     * Delegates the task of fetching the wordlist of the requested category.
+     */
     @Override
     public void setCategory(final String category) {
         try {
@@ -71,15 +57,6 @@ public final class Game extends UserAccess implements AbstractGame {
             // TODO passende exception
             e.printStackTrace();
         }
-        // this.wordlist = jsonIO.getDefaultCategory(category);
-        // if (wordlist == null && (!user.getCustomCategories().containsKey(category))) {
-        //     throw new IllegalArgumentException(category + " is not a part of the available categories.");
-        // } else if (jsonIO.getDefaultCategory(category) != null) {
-        //     this.wordlist = jsonIO.getDefaultCategory(category);
-        // } else {
-        //     this.wordlist = user.getCustomCategories().get(category);
-        // }
-        // this.chosenCategory = category;
     }
 
     @Override
@@ -119,7 +96,7 @@ public final class Game extends UserAccess implements AbstractGame {
 
     @Override
     public void savePlayerHighscore(final int highscore) {
-        if (isGuestUser) {
+        if (! isGuestUser) {
             try {
                 jsonIO.updateCurrentUser(
                     (user) -> {

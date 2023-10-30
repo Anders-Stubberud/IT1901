@@ -11,7 +11,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import types.User;
 
 public class RegistrationController {
 
@@ -99,26 +98,5 @@ public class RegistrationController {
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
-        // try {
-        //         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
-        //         fxmlLoader.setControllerFactory(new CategoryFactory(newUsername.getText()));
-        //         Parent parent = fxmlLoader.load();
-        //         Stage stage = (Stage) signUp.getScene().getWindow();
-        //         stage.setScene(new Scene(parent));
-        //         stage.show();
-        //     } else {
-        //         usernameTaken.setOpacity(1);
-        //         new java.util.Timer().schedule(
-        //                 new java.util.TimerTask() {
-        //                     @Override
-        //                     public void run() {
-        //                         usernameTaken.setOpacity(0);
-        //                     }
-        //                 },
-        //                 DISPLAY_ERROR_DURATION_MS);
-        //     }
-        // } catch (IOException | InterruptedException e) {
-        //     e.printStackTrace();
-        // }
     }
 }

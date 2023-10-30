@@ -1,7 +1,6 @@
 package ui;
 
 import javafx.util.Callback;
-import types.User;
 
 public final class GamePageFactory implements Callback<Class<?>, Object> {
 
