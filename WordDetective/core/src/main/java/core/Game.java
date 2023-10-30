@@ -62,9 +62,9 @@ public final class Game implements AbstractGame {
         if (wordlist == null && (!player.getCustomCategories().containsKey(category))) {
             throw new IllegalArgumentException(category + " is not a part of the available categories.");
         } else if (database.getDefaultCategory(category) != null) {
-            this.wordlist = database.getDefaultCategory(category);
+            setWordList(database.getDefaultCategory(category));
         } else {
-            this.wordlist = player.getCustomCategories().get(category);
+            setWordList(player.getCustomCategories().get(category));
         }
         this.chosenCategory = category;
     }
