@@ -43,7 +43,7 @@ public class LoginController {
      */
     private static final int DISPLAY_ERROR_DURATION_MS = 3000;
 
-    private void displayError(String error) {
+    private void displayError(final String error) {
         errorDisplay.setText(error);
         errorDisplay.setOpacity(1);
         new java.util.Timer().schedule(
@@ -82,6 +82,8 @@ public class LoginController {
                 case READ_ERROR:
                     displayError("Error during extraction of password.");
                     break;
+                default:
+                    displayError("Unknown error occured.");
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

@@ -12,10 +12,10 @@ public final class CategoryFactory implements Callback<Class<?>, Object> {
     /**
      * Constructor constructing the factory object.
      *
-     * @param newUser - the user to store for the game
+     * @param usernameParameter - the user to store for the game
      */
-    public CategoryFactory(final String username) {
-        this.username = username;
+    public CategoryFactory(final String usernameParameter) {
+        this.username = usernameParameter;
     }
 
     /**

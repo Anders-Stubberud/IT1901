@@ -14,7 +14,7 @@ import core.UserAccess;
 public class CategoryController {
 
   /**
-   * UserAccess instance to provide access to persistently stored user information. 
+   * UserAccess instance to provide access to persistently stored user information.
    */
   private UserAccess userAccess;
 

@@ -14,10 +14,10 @@ public class LoginAuthentication extends AbstractAuthentication {
 
   /**
    * Instantiates a new instance of LoginAuthentication.
-   * @param username The username of the user to authenticate the login of.
+   * @param providedUsername The provided username of the user to authenticate the login of.
    */
-  public LoginAuthentication(final String username) {
-    this.username = username;
+  public LoginAuthentication(final String providedUsername) {
+    this.username = providedUsername;
   }
 
   /**
@@ -26,7 +26,7 @@ public class LoginAuthentication extends AbstractAuthentication {
    * @return SUCCESS, USERNAME_DOES_NOT_EXIST, INCORRECT_PASSWORD, or READ_ERROR, respectively.
    */
   public LoginResult authenticate(final String password) {
-    if (! usernameExists(username)) {
+    if (!usernameExists(username)) {
       return LoginResult.USERNAME_DOES_NOT_EXIST;
     }
     try {
@@ -34,22 +34,21 @@ public class LoginAuthentication extends AbstractAuthentication {
         return LoginResult.SUCCESS;
       }
       return LoginResult.INCORRECT_PASSWORD;
-    } catch (NullPointerException e) {
+    } catch (RuntimeException e) {
       return LoginResult.READ_ERROR;
     }
   }
 
   @Override
-  public boolean validPassword(final String password) throws NullPointerException {
+  public final boolean validPassword(final String password) throws RuntimeException {
     try {
       if (JsonUtilities.usernameAndPasswordMatch(username, password)) {
         return true;
       }
       return false;
-    }
-    catch (IOException e) {
-      throw new NullPointerException("User \"" + username + "\" not found in " + JsonUtilities.pathToResources + "/users");
+    } catch (IOException e) {
+      throw new RuntimeException("User \"" + username + "\" not found in " + JsonUtilities.PATH_TO_RESOURCES + "/users");
     }
   }
-  
+
 }

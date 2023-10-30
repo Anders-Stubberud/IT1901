@@ -39,7 +39,10 @@ public final class ApiConfig {
    */
   private static final Gson GSON = new Gson();
 
-  private static Type listOfStringsType = new TypeToken<Set<String>>() {}.getType();
+  /**
+   * Type of json parsing result.
+   */
+  private static Type listOfStringsType = new TypeToken<Set<String>>() { }.getType();
 
   /**
    * No instantiation of utility class.
@@ -49,7 +52,7 @@ public final class ApiConfig {
   }
 
   /**
-   * Boilerplate method for sending GET requests
+   * Boilerplate method for sending GET requests.
    * @param url The URL to send the request to.
    * @return HttpResponse<String> containing the result.
    * @throws IOException If any issues are encountered during interaction with the files.
@@ -83,11 +86,13 @@ public final class ApiConfig {
    * Checks if username and password is a match.
    *
    * @param username The provided username.
+   * @param password The provided password.
    * @return Boolean indicating if username and password is a match
    * @throws InterruptedException
    * @throws IOException
    */
-  protected static LoginResult loginControllerPerformLogin(final String username, final String password) throws IOException, InterruptedException {
+  protected static LoginResult loginControllerPerformLogin(
+    final String username, final String password) throws IOException, InterruptedException {
     String param1 = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
     String param2 = URLEncoder.encode(password, StandardCharsets.UTF_8.toString());
     String url = BASEURL + "LoginController/performLogin" + "?username=" + param1 + "&password=" + param2;
@@ -103,7 +108,8 @@ public final class ApiConfig {
    * @throws IOException If any issues are encountered during interaction with the files.
    * @throws InterruptedException If thread is interrupted.
    */
-  protected static RegistrationResult registrationControllerRegistrationResult(final String username, final String password) throws IOException, InterruptedException {
+  protected static RegistrationResult registrationControllerRegistrationResult(
+    final String username, final String password) throws IOException, InterruptedException {
     String param1 = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
     String param2 = URLEncoder.encode(password, StandardCharsets.UTF_8.toString());
     String url = BASEURL + "RegistrationController/registrationResult" + "?username=" + param1 + "&password=" + param2;
@@ -134,7 +140,7 @@ public final class ApiConfig {
   protected static void gamePageControllerNewGame(final String username)
       throws IOException, InterruptedException {
       String url = BASEURL + "GamePageController/newGame";
-      String type = "text/plain";;
+      String type = "text/plain";
       BodyPublisher body = HttpRequest.BodyPublishers.ofString(username);
       performPostRequest(url, type, body);
   }

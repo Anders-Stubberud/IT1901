@@ -17,10 +17,10 @@ public final class Game extends UserAccess implements AbstractGame {
      */
     private boolean isGuestUser;
 
-    /**
-     * The category chosen by the user.
-     */
-    private String chosenCategory;
+    // /**
+    //  * The category chosen by the user.
+    //  */
+    // private String chosenCategory;
 
     /**
      * List of answers for the chosen category.
@@ -36,8 +36,7 @@ public final class Game extends UserAccess implements AbstractGame {
      * Initializes the Game object, which will control the logic of the game.
      * Certain tasks will be delegated to objects with better functionality.
      *
-     * @param user The the user, used to set up individualized games for different
-     *             users.
+     * @param username The user's username, used to set up individualized games for different users.
      */
     public Game(final String username) {
         super(username);
@@ -52,17 +51,17 @@ public final class Game extends UserAccess implements AbstractGame {
     @Override
     public void setCategory(final String category) {
         try {
-            this.wordlist = jsonIO.getCategoryWordlist(category);
+            this.wordlist = getJsonIO().getCategoryWordlist(category);
         } catch (IOException e) {
             // TODO passende exception
             e.printStackTrace();
         }
     }
 
-    @Override
-    public String getChosenCategory() {
-        return chosenCategory;
-    }
+    // @Override
+    // public String getChosenCategory() {
+    //     return chosenCategory;
+    // }
 
     @Override
     public List<String> getWordList() {
@@ -96,9 +95,9 @@ public final class Game extends UserAccess implements AbstractGame {
 
     @Override
     public void savePlayerHighscore(final int highscore) {
-        if (! isGuestUser) {
+        if (!isGuestUser) {
             try {
-                jsonIO.updateCurrentUser(
+                getJsonIO().updateCurrentUser(
                     (user) -> {
                         if (user.getHighScore() < highscore) {
                             user.setHighscore(highscore);

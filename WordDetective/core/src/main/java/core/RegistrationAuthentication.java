@@ -16,13 +16,13 @@ public final class RegistrationAuthentication extends AbstractAuthentication {
     if (usernameExists(newUsername)) {
       return RegistrationResult.USERNAME_TAKEN;
     }
-    if (! newUsernameMatchesRegex(newUsername)) {
+    if (!newUsernameMatchesRegex(newUsername)) {
       return RegistrationResult.USERNAME_NOT_MATCH_REGEX;
     }
-    if (! validPassword(newPassword)) {
+    if (!validPassword(newPassword)) {
       return RegistrationResult.PASSWORD_NOT_MATCH_REGEX;
     }
-    if (JsonUtilities.SuccessfullyAddedUserPersistently(new User(newUsername, newPassword))) {
+    if (JsonUtilities.successfullyAddedUserPersistently(new User(newUsername, newPassword))) {
       return RegistrationResult.SUCCESS;
      }
     return RegistrationResult.UPLOAD_ERROR;
@@ -31,7 +31,7 @@ public final class RegistrationAuthentication extends AbstractAuthentication {
   /**
    * check if password is correct according to set regex.
    *
-   * @return {@link Boolean}
+   * @return {@link Boolean} Indicating if the password matches the set regular expression.
    */
   @Override
   protected boolean validPassword(final String password) {
@@ -40,11 +40,11 @@ public final class RegistrationAuthentication extends AbstractAuthentication {
 
     /**
      * check if username is correct according to set regex.
-     *
-     * @return {@link Boolean}
+     * @param newUsername The new username provided by the user
+     * @return {@link Boolean} Indicating if the username matches the set regular expression.
      */
   public boolean newUsernameMatchesRegex(final String newUsername) {
       return newUsername.matches("^(?!guest)[a-zA-Z0-9_ ]{2,}$");
   }
-  
+
 }

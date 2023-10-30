@@ -143,18 +143,19 @@ public final class GamePageController implements Initializable {
     /**
      * Constructor initializing the object.
      *
-     * @param newUser  username.
-     * @param category category of the given game.
+     * @param usernameParameter  username.
+     * @param categoryParameter category of the given game.
      */
-    public GamePageController(final String username, final String category) {
-        this.username = username;
-        this.currentCategory = category;
+    public GamePageController(final String usernameParameter, final String categoryParameter) {
+        this.username = usernameParameter;
+        this.currentCategory = categoryParameter;
     }
 
     /**
      * Empty Constuctor for initialising controller.
+     * @param category The category chosen by the user.
      */
-    public GamePageController(String category) {
+    public GamePageController(final String category) {
         this("guest", category);
     }
 

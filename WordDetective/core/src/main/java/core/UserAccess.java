@@ -4,11 +4,27 @@ import java.util.Set;
 import persistence.JsonIO;
 
 public class UserAccess {
-  
+
   /**
    * Instance of JsonIO used to gain access to persistently stored information of a ceratin user.
    */
-  protected JsonIO jsonIO;
+  private JsonIO jsonIO;
+
+  // /**
+  //  * Sets new instance of JsonIO.
+  //  * @param newJsonIO The new JsonIO to use.
+  //  */
+  // protected void setJsonIO(JsonIO newJsonIO) {
+  //   this.jsonIO = newJsonIO;
+  // }
+
+  /**
+   * Provides access to the JsonIO.
+   * @return The instances JsonIO.
+   */
+  protected JsonIO getJsonIO() {
+    return jsonIO;
+  }
 
   /**
    * Instantiates a new instance of UserAccess, enabling access to persistently stored information about a certain user.

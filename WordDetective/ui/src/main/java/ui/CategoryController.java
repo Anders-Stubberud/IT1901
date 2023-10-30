@@ -3,8 +3,6 @@ package ui;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -63,10 +61,10 @@ public final class CategoryController implements Initializable {
      * Constructor used for controlling whether or not to retrieve custom
      * categories.
      *
-     * @param newUser - A user
+     * @param usernameParameter - A user
      */
-    public CategoryController(final String username) {
-        this.username = username;
+    public CategoryController(final String usernameParameter) {
+        this.username = usernameParameter;
     }
 
     /**

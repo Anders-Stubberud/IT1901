@@ -23,9 +23,9 @@ public final class GamePageFactory implements Callback<Class<?>, Object> {
      * @param newCategory -used to load the wordlist correlating to the
      *                    category.
      */
-    public GamePageFactory(final String username, final String category) {
-        this.username = username;
-        this.category = category;
+    public GamePageFactory(final String newUser, final String newCategory) {
+        this.username = newUser;
+        this.category = newCategory;
     }
 
     /**

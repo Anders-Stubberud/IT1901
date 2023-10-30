@@ -24,13 +24,32 @@ import types.User;
  */
 public final class JsonIO implements AbstractJsonIO {
 
+    /**
+     * The game's user instance, which is an object with identical state to the persistent json file of the current user.
+     */
     private User user;
+
+    /**
+     * Absolute path for reading from and writing to the persistent json file of the current user.
+     */
     private final String pathToPersistenceUser;
-    private static final Set<String> defaultCategoryNames = JsonUtilities.getPersistentFilenames("/default_categories");
+
+    /**
+     * Set containing the default categories, which are shared amongst all users.
+     */
+    private static final Set<String> DEFAULT_CATEGORY_NAMES = JsonUtilities.getPersistentFilenames("/default_categories");
+
+    /**
+     * Set containing teh custom categories, which are unique to each user.
+     */
     private Set<String> customCategoryNames;
 
+    /**
+     * Constructor for instantiating the JsonIO class, which handles file related tasks for an individual user.
+     * @param username
+     */
     public JsonIO(final String username) {
-        this.pathToPersistenceUser = JsonUtilities.pathToResources + "/users/" + username + ".json";
+        this.pathToPersistenceUser = JsonUtilities.PATH_TO_RESOURCES + "/users/" + username + ".json";
         this.user = username.equals("guest") ? null : loadCurrentUser();
         this.customCategoryNames = user != null ? user.getCustomCategories().keySet() : new HashSet<>();
     }
@@ -41,12 +60,23 @@ public final class JsonIO implements AbstractJsonIO {
     private Type listOfStringsType = new TypeToken<List<String>>() {
     }.getType();
 
+    /**
+     * Fetches the names of all the categories available to the current user.
+     * @return Set<String> containing all the categories available to the current user.
+     */
     public Set<String> getAllCategories() {
-        return Stream.concat(defaultCategoryNames.stream(), customCategoryNames.stream()).collect(Collectors.toSet());
+        return Stream.concat(DEFAULT_CATEGORY_NAMES.stream(), customCategoryNames.stream()).collect(Collectors.toSet());
     }
 
-    public List<String> getCategoryWordlist(String category) throws IOException, RuntimeException {
-        if (defaultCategoryNames.contains(category)) {
+    /**
+     * Fetches the words contained in the wordlist of the given category.
+     * @param category The category to fetch the wordlist of.
+     * @return List<String> containing all the words in the categories wordlist.
+     * @throws IOException If any issues are encountered during interaction with the files.
+     * @throws RuntimeException If the given category is present neither among the default nor the custom categories.
+     */
+    public List<String> getCategoryWordlist(final String category) throws IOException, RuntimeException {
+        if (DEFAULT_CATEGORY_NAMES.contains(category)) {
             return getDefaultCategory(category);
         }
         if (user != null && customCategoryNames.contains(category)) {
@@ -58,7 +88,9 @@ public final class JsonIO implements AbstractJsonIO {
     @Override
     public List<String> getDefaultCategory(final String category) throws IOException {
         try {
-            String answers = Files.readString(Paths.get(JsonUtilities.pathToResources + "/default_categories" + JsonUtilities.getCategoryFilename(category)));
+            String answers = Files.readString(
+                Paths.get(JsonUtilities.PATH_TO_RESOURCES + "/default_categories" + JsonUtilities.getCategoryFilename(category))
+            );
             return JsonUtilities.GSON.fromJson(answers, listOfStringsType);
         } catch (IOException e) {
             throw e;
@@ -68,10 +100,10 @@ public final class JsonIO implements AbstractJsonIO {
     @Override
     //implementere en mekanisme som hindrer forsøk i å slette "guest" user
     public void deleteCurrentUser() throws RuntimeException {
-        File user = new File(pathToPersistenceUser);
-        if (!user.delete()) {
+        File userFile = new File(pathToPersistenceUser);
+        if (!userFile.delete()) {
             throw new RuntimeException("Error deleting user");
-        } 
+        }
     }
 
     @Override

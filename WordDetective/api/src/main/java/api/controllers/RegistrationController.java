@@ -30,5 +30,5 @@ public class RegistrationController {
     }
     return authentication.registrationResult(username, password).toString();
   }
- 
+
 }

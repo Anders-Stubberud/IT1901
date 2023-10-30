@@ -6,7 +6,7 @@ public abstract class AbstractAuthentication {
 
   /**
    * Implemented method for checking if provided username already exists.
-   * @param username The username to for existence. 
+   * @param username The username to for existence.
    * @return Boolean indicating if a user with the given username already exists.
    */
   protected boolean usernameExists(final String username) {
@@ -14,10 +14,10 @@ public abstract class AbstractAuthentication {
   }
 
   /**
-   * Abstract method implemented by subclasses to check if the provided password matches their requirements. 
-   * @param password The password provided by the user. 
-   * @return A boolean indicating if the subclass accepts the password. 
+   * Abstract method implemented by subclasses to check if the provided password matches their requirements.
+   * @param password The password provided by the user.
+   * @return A boolean indicating if the subclass accepts the password.
    */
-  protected abstract boolean validPassword(final String password);
+  protected abstract boolean validPassword(String password);
 
 }

@@ -19,15 +19,14 @@ public interface AbstractJsonIO {
    * Delete user from database.
    *
    */
-  abstract void deleteCurrentUser();
+  void deleteCurrentUser();
 
   /**
    * Get user as a {@link User} from database.
    *
-   * @param username - The user to get
    * @return - A {@link User} object
    */
-  abstract User loadCurrentUser();
+  User loadCurrentUser();
 
   // /**
   //  * get all the user's usernames in the database.
@@ -39,9 +38,10 @@ public interface AbstractJsonIO {
   /**
    * Update user and store new data in database.
    *
-   * @param user - The new user object to override the old
+   * @param predicate A predicate which potentially changes the instance of the user.
+   *  The predicate returns a boolean indicating if changes were made, which is used to persistenty store the potential changes.
    */
-  abstract void updateCurrentUser(final Predicate<User> consumer) throws IOException;
+  void updateCurrentUser(Predicate<User> predicate) throws IOException;
 
   /**
    * Get a defaultCategory as a {@link List}.
@@ -49,7 +49,7 @@ public interface AbstractJsonIO {
    * @param category - The category to get
    * @return - A {@link List} of answers from that category
    */
-  abstract List<String> getDefaultCategory(final String category) throws IOException;
+  List<String> getDefaultCategory(String category) throws IOException;
 
   // /**
   //  * Get all the current default categories.

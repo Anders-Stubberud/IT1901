@@ -48,7 +48,7 @@ public class RegistrationController {
     @FXML
     private Button signUp;
 
-    private void displayError(String error) {
+    private void displayError(final String error) {
         errorDisplay.setText(error);
         errorDisplay.setOpacity(1);
         new java.util.Timer().schedule(
@@ -85,15 +85,19 @@ public class RegistrationController {
                     break;
                 case USERNAME_NOT_MATCH_REGEX:
                     //TODO mer brukervennlig forklaring
-                    displayError("The username \"" + username + "\" does not match the regular expression \"^(?!guest)[a-zA-Z0-9_ ]{2,}$\"");
+                    displayError("The username \"" + username
+                    + "\" does not match the regular expression \"^(?!guest)[a-zA-Z0-9_ ]{2,}$\"");
                     break;
                 case PASSWORD_NOT_MATCH_REGEX:
                     //TODO mer brukervennlig forklaring
-                    displayError("The password \"" + password + "\" does not match the regular expression \"^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\\\S+$).{4,}$\"");
+                    displayError("The password \"" + password
+                    + "\" does not match the regular expression \"^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\\\S+$).{4,}$\"");
                     break;
                 case UPLOAD_ERROR:
                     displayError("Error during instantiation of new user.");
                     break;
+                default:
+                    displayError("Unknown error occured.");
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

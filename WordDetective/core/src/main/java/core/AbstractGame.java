@@ -4,28 +4,28 @@ import java.io.IOException;
 import java.util.List;
 
 public interface AbstractGame {
-  
+
   /**
    * Set the chosen category.
    *
    * @param category The category chosen by the user.
    * @throws IllegalArgumentException - If category does not exist
    */
-  void setCategory(final String category) throws IllegalArgumentException;
+  void setCategory(String category) throws IllegalArgumentException;
 
-  /**
-   * Get the chosen category chosen by the player.
-   *
-   * @return players chosen category as {@link String}
-   */
-  String getChosenCategory();
+  // /**
+  //  * Get the chosen category chosen by the player.
+  //  *
+  //  * @return players chosen category as {@link String}
+  //  */
+  // String getChosenCategory();
 
   /**
    * Set new wordlist.
    *
    * @param newWordList - a {@link List} containing answers
    */
-  void setWordList(final List<String> newWordList);
+  void setWordList(List<String> newWordList);
 
   /**
    * Get the wordlist containing answers.
@@ -47,7 +47,7 @@ public interface AbstractGame {
    * @param word - A word to make the substring from
    * @return A randomly generated substring from the randomly chosen word.
    */
-  String getRandomSubstring(final String word);
+  String getRandomSubstring(String word);
 
   /**
    * Checks if the guess is present in wordlist and wether the substring is
@@ -58,7 +58,7 @@ public interface AbstractGame {
    *                  and be part of the wordlist.
    * @return True if the guess is valid, else false.
    */
-  boolean checkValidWord(final String substring, String guess);
+  boolean checkValidWord(String substring, String guess);
 
   /**
    * Save the current players highscore to database.
@@ -66,6 +66,6 @@ public interface AbstractGame {
    *
    * @param highscore - The highscore to save
    */
-  void savePlayerHighscore(final int highscore) throws IOException;
+  void savePlayerHighscore(int highscore) throws IOException;
 
 }
