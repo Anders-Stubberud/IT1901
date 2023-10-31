@@ -2,6 +2,7 @@ package core;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import persistence.JsonIO;
 import types.User;
@@ -105,9 +106,14 @@ public final class Game implements AbstractGame {
     }
 
     @Override
-    public void savePlayerHighscore(final int highscore) {
-        if (player.getUsername() != "guest") {
-            player.setHighscore(highscore);
+    public User getPlayer() {
+        return this.player;
+    }
+
+    @Override
+    public void savePlayerHighscore(final int highscore, final boolean saveToDatabase) {
+        player.setHighscore(highscore);
+        if (player.getUsername() != "guest" && saveToDatabase) {
             database.updateUser(player);
         }
     }
