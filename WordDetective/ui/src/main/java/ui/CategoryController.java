@@ -162,12 +162,11 @@ public final class CategoryController implements Initializable {
     }
 
     /**
-     * Formats the buttons correct
-     * 
+     * Formats the buttons correct.
      * @param input - Category before formatting
      * @return - Category name after formatting
      */
-    public String formatString(String input) {
+    public String formatString(final String input) {
         String[] words = input.split("_");
         StringBuilder formattedString = new StringBuilder();
 
