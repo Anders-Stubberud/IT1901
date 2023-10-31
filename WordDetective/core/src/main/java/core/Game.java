@@ -98,7 +98,7 @@ public final class Game implements AbstractGame {
             int startIndexSubstring = Math.max(random.nextInt(wordLength) - 2, 0);
             int endIndexSubstring = startIndexSubstring + 2 + random.nextInt(2);
             substring = word.substring(startIndexSubstring, endIndexSubstring);
-            System.out.println(substring);
+            System.out.println(word);
         } while (substring.contains(" "));
 
         return substring;
