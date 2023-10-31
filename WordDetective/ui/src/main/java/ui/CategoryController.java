@@ -136,12 +136,9 @@ public final class CategoryController implements Initializable {
         categories.addAll(database.getAllDefaultCategories().keySet());
         for (String category : categories) {
             String formattedCategory = formatString(category); // Legger til formatting på kategorien
-
             Button button = new Button(formattedCategory);
-            // String word = category.replace("_", " "); // La til en split
-            // Button button = new Button(category);
             button.setId(category);
-            button.setUserData(category); // Prøver denne
+            button.setUserData(category);
             button.setPadding(new Insets(VERTICAL_PADDING, HORIZONTAL_PADDING, VERTICAL_PADDING, HORIZONTAL_PADDING));
             button.setFont(new Font(VERTICAL_PADDING));
             vbox.getChildren().add(button);
@@ -164,6 +161,12 @@ public final class CategoryController implements Initializable {
         }
     }
 
+    /**
+     * Formats the buttons correct
+     * 
+     * @param input - Category before formatting
+     * @return - Category name after formatting
+     */
     public String formatString(String input) {
         String[] words = input.split("_");
         StringBuilder formattedString = new StringBuilder();
@@ -181,10 +184,5 @@ public final class CategoryController implements Initializable {
 
         return formattedString.toString().trim();
     }
-
-    // public static void main(String[] args) {
-    // CategoryController test = new CategoryController(null);
-    // test.renderCategories();
-    // }
 
 }
