@@ -20,6 +20,7 @@ public class GamePageController {
 
   /**
    * Sets ut the gameinstance to use in the game.
+   * 
    * @param user The current user.
    */
   @RequestMapping(value = "/GamePageController/newGame", method = RequestMethod.POST)
@@ -41,7 +42,8 @@ public class GamePageController {
 
   /**
    * API endpoint for fetching a random word.
-   * @return  A random word pulled from the current wordlist.
+   * 
+   * @return A random word pulled from the current wordlist.
    */
   @RequestMapping(value = "/GamePageController/getRandomWord", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
@@ -51,6 +53,7 @@ public class GamePageController {
 
   /**
    * API endpoint for fetching substring.
+   * 
    * @param string The string to create a substring from.
    * @return Substring og the provided string.
    */
@@ -62,26 +65,27 @@ public class GamePageController {
 
   /**
    * API endpoint for check of valid word.
+   * 
    * @param substring The substring provided to the user.
-   * @param guess The guess provided by the user.
+   * @param guess     The guess provided by the user.
    * @return Boolean indicating if guess was correct.
    */
   @RequestMapping(value = "/GamePageController/checkValidWord", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
-  public boolean checkValidWord(final @RequestParam("substring") String substring, final @RequestParam("guess") String guess) {
+  public boolean checkValidWord(final @RequestParam("substring") String substring,
+      final @RequestParam("guess") String guess) {
     return game.checkValidWord(substring, guess);
   }
 
   /**
    * API endpoint for saving the player's highscore to file.
+   * 
    * @param highscore The score to save to file.
    */
   @RequestMapping(value = "/GamePageController/savePlayerHighscore", method = RequestMethod.POST)
   @ResponseStatus(HttpStatus.OK)
-  public void savePlayerHighscore(@RequestBody final String highscore) {
-    game.savePlayerHighscore(Integer.parseInt(highscore));
+  public void savePlayerHighscore(@RequestBody final String highscore, boolean saveToDatabase) {
+    game.savePlayerHighscore(Integer.parseInt(highscore), saveToDatabase);
   }
-
-
 
 }
