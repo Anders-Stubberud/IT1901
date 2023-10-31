@@ -312,7 +312,7 @@ public final class GamePageController implements Initializable {
                 return change;
             }));
             playerInputField.requestFocus();
-            categoryDisplay.setText("Category: " + currentCategory.toUpperCase());
+            categoryDisplay.setText("Category: " + currentCategory.toUpperCase().replace("_", " "));
             // Add shutdownhook that updates user highscore when closing application
             Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
                 public void run() {

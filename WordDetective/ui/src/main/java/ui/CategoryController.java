@@ -128,17 +128,18 @@ public final class CategoryController implements Initializable {
      * Renders the available categories in the GUI.
      */
     public void renderCategories() {
-        //pane.setVisible(false);
+        pane.setVisible(false);
         List<String> categories = new ArrayList<>(); //Kunne ha instansiert direkte på defaultkategorier først
-        // if (!user.getUsername().equals("guest")) {
-        //     categories.addAll(user.getCustomCategories().keySet());
-        // }
+        if (!user.getUsername().equals("guest")) {
+            categories.addAll(user.getCustomCategories().keySet());
+        }
         categories.addAll(database.getAllDefaultCategories().keySet());
         System.out.println(categories);
         for (String category : categories) {
+            String word = category.replace("_", " "); // La til en split
             Button button = new Button(category);
             button.setId(category);
-            button.setUserData(category);
+            button.setUserData(category); // Prøver denne
             button.setPadding(new Insets(VERTICAL_PADDING, HORIZONTAL_PADDING, VERTICAL_PADDING, HORIZONTAL_PADDING));
             button.setFont(new Font(VERTICAL_PADDING));
             vbox.getChildren().add(button);
@@ -161,10 +162,10 @@ public final class CategoryController implements Initializable {
         }
     }
     
-    public static void main(String[] args) {
-        CategoryController test = new CategoryController(null);
-        test.renderCategories();
-    }
+    // public static void main(String[] args) {
+    //     CategoryController test = new CategoryController(null);
+    //     test.renderCategories();
+    // }
     
 
 }
