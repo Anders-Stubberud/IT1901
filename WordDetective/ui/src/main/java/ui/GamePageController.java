@@ -57,7 +57,7 @@ public final class GamePageController implements Initializable {
      */
 
     @FXML
-    private Label letters, points, categoryDisplay;
+    private Label letters, points, categoryDisplay, highScore;
 
     /**
      * Outputfield of what the player writes.
