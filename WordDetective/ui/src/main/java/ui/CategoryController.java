@@ -68,7 +68,7 @@ public final class CategoryController implements Initializable {
      */
     public CategoryController(final User newUser) {
         if (!isGuest) {
-            this.user = newUser();
+            this.user = newUser;
         }
     }
 
