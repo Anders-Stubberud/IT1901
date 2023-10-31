@@ -128,12 +128,13 @@ public final class CategoryController implements Initializable {
      * Renders the available categories in the GUI.
      */
     public void renderCategories() {
-        pane.setVisible(false);
+        //pane.setVisible(false);
         List<String> categories = new ArrayList<>(); //Kunne ha instansiert direkte på defaultkategorier først
-        if (!user.getUsername().equals("guest")) {
-            categories.addAll(user.getCustomCategories().keySet());
-        }
+        // if (!user.getUsername().equals("guest")) {
+        //     categories.addAll(user.getCustomCategories().keySet());
+        // }
         categories.addAll(database.getAllDefaultCategories().keySet());
+        System.out.println(categories);
         for (String category : categories) {
             Button button = new Button(category);
             button.setId(category);
@@ -159,5 +160,11 @@ public final class CategoryController implements Initializable {
             });
         }
     }
+    
+    public static void main(String[] args) {
+        CategoryController test = new CategoryController(null);
+        test.renderCategories();
+    }
+    
 
 }
