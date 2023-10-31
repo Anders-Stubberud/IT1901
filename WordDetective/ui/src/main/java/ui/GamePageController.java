@@ -78,8 +78,8 @@ public final class GamePageController implements Initializable {
     private Button closeHTPBtn, openHTPBtn;
 
     // /**
-    //  * a Game object used to controll the game.
-    //  */
+    // * a Game object used to controll the game.
+    // */
     // private Game game;
     /**
      * The substring is the letters that the player has to use.
@@ -292,6 +292,8 @@ public final class GamePageController implements Initializable {
     public void initialize(final URL location, final ResourceBundle resources) {
         try {
             // game = new Game(user);
+            substring = "";
+            rndwordMasterLetters();
             try {
                 ApiConfig.gamePageControllerNewGame(user);
                 ApiConfig.gamePageControllerSetCategory(currentCategory);
