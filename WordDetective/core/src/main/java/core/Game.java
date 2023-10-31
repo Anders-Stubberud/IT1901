@@ -58,7 +58,6 @@ public final class Game implements AbstractGame {
 
     @Override
     public void setCategory(final String category) {
-        this.wordlist = database.getDefaultCategory(category);
         if (database.getDefaultCategory(category) != null) {
             this.wordlist = database.getDefaultCategory(category);
         } else if (player.getCustomCategories().containsKey(category)) {
