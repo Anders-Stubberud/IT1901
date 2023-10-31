@@ -67,7 +67,9 @@ public final class CategoryController implements Initializable {
      * @param newUser - A user
      */
     public CategoryController(final User newUser) {
-        this.user = newUser;
+        if (!isGuest) {
+            this.user = newUser();
+        }
     }
 
     /**
