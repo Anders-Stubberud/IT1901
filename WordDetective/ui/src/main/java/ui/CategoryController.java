@@ -96,6 +96,8 @@ public final class CategoryController implements Initializable {
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
             File selectedFile = fileChooser.showOpenDialog(new Stage());
             if (selectedFile != null) {
+                JsonIO jsonIO = new JsonIO();
+                jsonIO.readAndProcessJSON
                 // Denne gir spotbugs error, dermed kommentert ut.
                 // String filename = selectedFile.getName();
 
