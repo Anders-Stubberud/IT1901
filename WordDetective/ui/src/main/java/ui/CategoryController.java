@@ -97,7 +97,8 @@ public final class CategoryController implements Initializable {
             File selectedFile = fileChooser.showOpenDialog(new Stage());
             if (selectedFile != null) {
                 JsonIO jsonIO = new JsonIO();
-                jsonIO.readAndProcessJSON
+                jsonIO.readAndProcessJsonFile(selectedFile);
+                user.addCustom
                 // Denne gir spotbugs error, dermed kommentert ut.
                 // String filename = selectedFile.getName();
 
