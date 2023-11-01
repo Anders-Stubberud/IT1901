@@ -103,7 +103,7 @@ public final class CategoryController implements Initializable {
             if (selectedFile != null) {
                 JsonIO jsonIO = new JsonIO();
                 jsonIO.readAndProcessJsonFile(selectedFile);
-                user.addCustom
+                user.addCustomCategory("NewCategoryName", "NewCategoryDescription");
                 // Denne gir spotbugs error, dermed kommentert ut.
                 // String filename = selectedFile.getName();
 
