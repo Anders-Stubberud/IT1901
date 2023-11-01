@@ -116,4 +116,6 @@ public final class Game implements AbstractGame {
         }
     }
 
+    // Lage en getHighscore
+
 }

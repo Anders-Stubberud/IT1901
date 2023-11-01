@@ -139,4 +139,5 @@ public final class ApiConfig {
     performPostRequest(url, type, body);
   }
 
+  // Lage en funskjon som caller på endpointet laget i api
 }

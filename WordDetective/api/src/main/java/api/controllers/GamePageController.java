@@ -82,6 +82,7 @@ public class GamePageController {
     game.savePlayerHighscore(Integer.parseInt(highscore));
   }
 
+  // Lage en funksjon(endpoint) for getHigscore
 
 
 }

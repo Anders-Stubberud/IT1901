@@ -297,6 +297,7 @@ public final class GamePageController implements Initializable {
             try {
                 ApiConfig.gamePageControllerNewGame(user);
                 ApiConfig.gamePageControllerSetCategory(currentCategory);
+                // apiconfig shit highscore
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
@@ -315,6 +316,10 @@ public final class GamePageController implements Initializable {
             }));
             playerInputField.requestFocus();
             categoryDisplay.setText("Category: " + currentCategory.toUpperCase().replace("_", " "));
+
+            if (!user.getUsername().equals("guest")) {
+                highScore.setText(Integer.toString(user.getHighScore()));
+            }
             // Add shutdownhook that updates user highscore when closing application
             Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
                 public void run() {
