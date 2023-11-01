@@ -38,6 +38,10 @@ public final class CategoryController implements Initializable {
     /**
      * Reference to the FXML box containing available categories.
      */
+    private boolean isGuest;
+    /**
+     * Boolean to indicate if the user is a guest or not
+     */
     @FXML
     private VBox vbox;
 
@@ -67,6 +71,7 @@ public final class CategoryController implements Initializable {
      * @param newUser - A user
      */
     public CategoryController(final User newUser) {
+        isGuest = newUser.getUsername().equals("guest");
         if (!isGuest) {
             this.user = newUser;
         }
