@@ -96,7 +96,7 @@ public final class CategoryController implements Initializable {
     @FXML
     // Ser ikke ut som at files lastes inn.
     public void uploadCategory() {
-        if (!user.getUsername().equals("guest")) {
+        if (!isGuest) {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
             File selectedFile = fileChooser.showOpenDialog(new Stage());
