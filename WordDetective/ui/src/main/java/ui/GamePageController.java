@@ -268,6 +268,7 @@ public final class GamePageController implements Initializable {
             String string = ApiConfig.gamePageControllerGetRandomWord();
             substring = ApiConfig.gamePageControllerGetSubstring(string);
             letters.setText(substring.toUpperCase());
+            System.out.println(string);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
