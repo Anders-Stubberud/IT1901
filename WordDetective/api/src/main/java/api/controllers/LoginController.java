@@ -40,7 +40,8 @@ public class LoginController {
   @RequestMapping(value = "/LoginController/performLogin", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public String performLogin(final @RequestParam("username") String username) {
-    return jsonIO.getUserAsJson(username);
+    Gson gson = new Gson();
+    return gson.toJson(jsonIO.getUser(username));
   }
 
 }
