@@ -117,11 +117,5 @@ public final class Game implements AbstractGame {
     }
     
     
-        // Lage en getHighscore
-    @Override
-    public int getPlayerHighscore() {
-        return player.getHighScore();
-    }
-    
 
 }
