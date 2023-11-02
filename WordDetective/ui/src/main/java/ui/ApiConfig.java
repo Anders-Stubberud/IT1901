@@ -142,7 +142,7 @@ public final class ApiConfig {
   }
 
   // Lage en funskjon som caller på endpointet laget i api
-  protected static int gamePageControllerGetHighScore() throws IOException, InterruptedException{
+  protected static int gamePageControllerGetHighScore() throws IOException, InterruptedException {
     String url = BASEURL + "GamePageController/getPlayerHighscore";
     HttpResponse<String> response = performGetRequest(url);
     return Integer.parseInt(response.body());
