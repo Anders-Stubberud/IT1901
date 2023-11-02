@@ -6,21 +6,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doCallRealMethod;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-
 import types.User;
 
 // import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -41,16 +32,15 @@ public class GameTest {
     private Game game;
 
     /**
-     * Mock of the user in game.
+     * User in game.
      */
-    @Mock
     private User testUser;
     /**
      * Digit for number of tests.
      */
     private static final int NUMBER_OF_TESTS = 10;
     /**
-     * Wordlist used for testing
+     * Wordlist used for testing.
      */
     private List<String> testWordList = Arrays.asList("Test", "Test2", "Test3");
 
@@ -59,11 +49,14 @@ public class GameTest {
      */
     @BeforeEach
     public void setUp() {
-        testUser = mock(User.class);
+        testUser = new User();
         testUser.addCustomCategories("Custom", Arrays.asList("1", "3", "4"));
         game = new Game(testUser);
     }
 
+    /**
+     * Test constructors.
+     */
     @Test
     @DisplayName("Test constructor")
     public void constructorTest() {
@@ -121,7 +114,7 @@ public class GameTest {
     }
 
     /**
-     * Checks that a randomly generated substring from a randomly
+     * Checks that a randomly generated substring from a randomly.
      * pulled word is indeed recognized as a valid substring.
      */
     @Test
@@ -133,14 +126,30 @@ public class GameTest {
     }
 
     /**
+     * Test checking valid words.
+     */
+    @Test
+    @DisplayName("Check that guesses are valid")
+    public void testCheckValidWord() {
+        game.setWordList(testWordList);
+        assertTrue(game.checkValidWord("s", "Test"));
+        assertTrue(game.checkValidWord("es", "Test"));
+        assertTrue(game.checkValidWord("st2", "Test2"));
+        assertFalse(game.checkValidWord("Tes", "Test4"));
+        assertFalse(game.checkValidWord("2", "Test"));
+        assertFalse(game.checkValidWord("es", "Test4"));
+    }
+
+    /**
      * Check that highscore of user is set correctly.
      */
     @Test
     @DisplayName("Check setting of highscore")
     public void testHighscore() {
-        assertEquals(0, game.getPlayer().getHighScore());
-        game.savePlayerHighscore(NUMBER_OF_TESTS, false);
-        assertEquals(NUMBER_OF_TESTS, game.getPlayer().getHighScore());
+        assertEquals(0, game.getPlayer().getHighScore(), "Highscore should be 0 on start");
+        game.savePlayerHighscore(100, false);
+        assertEquals(100, game.getPlayer().getHighScore(),
+                "Highscore should be 100, but was " + game.getPlayer().getHighScore());
     }
 
 }
