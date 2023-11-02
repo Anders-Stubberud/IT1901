@@ -1,8 +1,6 @@
 package core;
 
 import java.util.List;
-import java.util.Optional;
-
 import types.User;
 
 public interface AbstractGame {
@@ -72,7 +70,8 @@ public interface AbstractGame {
    * Save the current players highscore to database.
    * Will not save if player is guest.
    *
-   * @param highscore - The highscore to save
+   * @param highscore      - The highscore to save
+   * @param saveToDatabase - whether to save the new highscore to database
    */
   void savePlayerHighscore(int highscore, boolean saveToDatabase);
 
