@@ -78,7 +78,7 @@ public final class JsonIO implements AbstractJsonIO {
     }
 
     @Override
-    public String getUserAsJson(String username) {
+    public String getUserAsJson(final String username) {
         try {
             return GSON.toJson(Files.readString(Paths.get(path + "/users/" + username + ".json")));
         } catch (IOException e) {
