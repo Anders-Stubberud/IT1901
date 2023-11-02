@@ -26,6 +26,9 @@ public class UserTest {
    */
   private User validUser;
 
+  /**
+   * Initialize before each test.
+   */
   @BeforeEach
   public void init() {
     invalidUser = new User("guest", "wrong");
@@ -33,6 +36,9 @@ public class UserTest {
     validUser = new User("Testuser", "Correct123");
   }
 
+  /**
+   * Test constructor.
+   */
   @Test
   public void constructorTest() {
     User guest = new User();
@@ -70,6 +76,9 @@ public class UserTest {
         "The username " + invalidUser.getPassword() + " should be invalid");
   }
 
+  /**
+   * Test highscore setting/getting.
+   */
   @Test
   public void highscoreTest() {
     assertEquals(validUser.getHighScore(), 0, "Highscore should be 0, not:" + validUser.getHighScore());
@@ -79,6 +88,9 @@ public class UserTest {
     assertEquals(validUser.getHighScore(), 50, "Highscore should be 20, not:" + validUser.getHighScore());
   }
 
+  /**
+   * Test set/get custom categories.
+   */
   @Test
   public void customCategoriesTest() {
     HashMap<String, List<String>> hashmap = new HashMap<>();
