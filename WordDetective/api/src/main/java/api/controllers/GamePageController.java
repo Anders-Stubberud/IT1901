@@ -82,22 +82,6 @@ public class GamePageController {
     game.savePlayerHighscore(Integer.parseInt(highscore));
   }
 
-  // Lage en funksjon(endpoint) for getHigscore
-  /**
-   * API endpoint for getting highscore
-   */
-  @RequestMapping(value = "/GamePageController/getPlayerHighscore", method = RequestMethod.GET)
-  @ResponseStatus(HttpStatus.OK)
-  public int getPlayerHighscore() {
-    return game.getPlayerHighscore();
-  }
-
-
-  public static void main(String[] args) {
-    GamePageController gamePageController = new GamePageController();
-    int highScore = gamePageController.getPlayerHighscore();
-    System.out.println("Player High Score: " + highScore);
-  }
 
 
 }
