@@ -115,7 +115,13 @@ public final class Game implements AbstractGame {
             database.updateUser(player);
         }
     }
-
-    // Lage en getHighscore
+    
+    
+        // Lage en getHighscore
+    @Override
+    public int getPlayerHighscore() {
+        return player.getHighScore();
+    }
+    
 
 }
