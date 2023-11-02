@@ -75,7 +75,6 @@ public final class ApiConfig {
     //Må her sende all brukerinfo (inkludert custom wordlists) gjennom API'et, samtidig som alt sendes tilbake
     //(uten at wordlists er berørt) i instansieringen av nytt Game-objekt.
     User user = GSON.fromJson(response.body(), User.class);
-    System.out.println("Highscore " + user.getHighScore());
     return user;
   }
 

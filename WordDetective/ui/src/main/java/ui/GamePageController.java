@@ -323,10 +323,8 @@ public final class GamePageController implements Initializable {
             Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
                 public void run() {
                     if ((!user.getUsername().equals("guest")) && (user.getHighScore() < Integer.parseInt(points.getText()))) {
-                        System.out.println("bruh");
                         try {
                             // game.savePlayerHighscore(Integer.valueOf(points.getText()));
-                            System.out.println("Previous highscore: " + user.getHighScore() + " Current score: " + points.getText());
                             ApiConfig.gamePageControllerSavePlayerHighscore(points.getText());
                         } catch (NumberFormatException | IOException | InterruptedException e) {
                             // TODO Auto-generated catch block
