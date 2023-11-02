@@ -200,7 +200,6 @@ public final class GamePageController implements Initializable {
             try {
                 if (ApiConfig.gamePageControllerCheckValidWord(playerGuess, playerGuess)) {
                     int newPoints = Integer.parseInt(points.getText()) + 1;
-                    user.setHighscore(newPoints);
                     points.setText(String.valueOf(newPoints));
                     playerInputField.setText("");
                     rndwordMasterLetters();
@@ -323,9 +322,11 @@ public final class GamePageController implements Initializable {
             // Add shutdownhook that updates user highscore when closing application
             Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
                 public void run() {
-                    if (!user.getUsername().equals("guest")) {
+                    if ((!user.getUsername().equals("guest")) && (user.getHighScore() < Integer.parseInt(points.getText()))) {
+                        System.out.println("bruh");
                         try {
                             // game.savePlayerHighscore(Integer.valueOf(points.getText()));
+                            System.out.println("Previous highscore: " + user.getHighScore() + " Current score: " + points.getText());
                             ApiConfig.gamePageControllerSavePlayerHighscore(points.getText());
                         } catch (NumberFormatException | IOException | InterruptedException e) {
                             // TODO Auto-generated catch block
