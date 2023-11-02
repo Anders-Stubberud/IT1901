@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.google.gson.Gson;
+
 import persistence.JsonIO;
 import types.User;
 
@@ -36,8 +39,8 @@ public class LoginController {
    */
   @RequestMapping(value = "/LoginController/performLogin", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
-  public User performLogin(final @RequestParam("username") String username) {
-    return jsonIO.getUser(username);
+  public String performLogin(final @RequestParam("username") String username) {
+    return jsonIO.getUserAsJson(username);
   }
 
 }
