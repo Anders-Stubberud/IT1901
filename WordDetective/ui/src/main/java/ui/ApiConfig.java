@@ -74,7 +74,8 @@ public final class ApiConfig {
     HttpResponse<String> response = performGetRequest(url);
     //Må her sende all brukerinfo (inkludert custom wordlists) gjennom API'et, samtidig som alt sendes tilbake
     //(uten at wordlists er berørt) i instansieringen av nytt Game-objekt.
-    return GSON.fromJson(response.body(), User.class);
+    User user = GSON.fromJson(response.body(), User.class);
+    return user;
   }
 
   protected static boolean registrationControllerFireSignUp(final String username)
@@ -139,4 +140,11 @@ public final class ApiConfig {
     performPostRequest(url, type, body);
   }
 
+  // Lage en funskjon som caller på endpointet laget i api
+  protected static int gamePageControllerGetHighScore() throws IOException, InterruptedException {
+    String url = BASEURL + "GamePageController/getPlayerHighscore";
+    HttpResponse<String> response = performGetRequest(url);
+    return Integer.parseInt(response.body());
+
+  }
 }

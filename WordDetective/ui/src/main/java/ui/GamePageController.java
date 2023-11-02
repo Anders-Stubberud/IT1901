@@ -57,7 +57,7 @@ public final class GamePageController implements Initializable {
      */
 
     @FXML
-    private Label letters, points, categoryDisplay;
+    private Label letters, points, categoryDisplay, highScore;
 
     /**
      * Outputfield of what the player writes.
@@ -200,7 +200,6 @@ public final class GamePageController implements Initializable {
             try {
                 if (ApiConfig.gamePageControllerCheckValidWord(playerGuess, playerGuess)) {
                     int newPoints = Integer.parseInt(points.getText()) + 1;
-                    user.setHighscore(newPoints);
                     points.setText(String.valueOf(newPoints));
                     playerInputField.setText("");
                     rndwordMasterLetters();
@@ -269,6 +268,7 @@ public final class GamePageController implements Initializable {
             String string = ApiConfig.gamePageControllerGetRandomWord();
             substring = ApiConfig.gamePageControllerGetSubstring(string);
             letters.setText(substring.toUpperCase());
+            System.out.println(string);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -297,6 +297,7 @@ public final class GamePageController implements Initializable {
             try {
                 ApiConfig.gamePageControllerNewGame(user);
                 ApiConfig.gamePageControllerSetCategory(currentCategory);
+                // apiconfig shit highscore
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
@@ -315,10 +316,14 @@ public final class GamePageController implements Initializable {
             }));
             playerInputField.requestFocus();
             categoryDisplay.setText("Category: " + currentCategory.toUpperCase().replace("_", " "));
+
+            if (!user.getUsername().equals("guest")) {
+                highScore.setText(Integer.toString(user.getHighScore()));
+            }
             // Add shutdownhook that updates user highscore when closing application
             Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
                 public void run() {
-                    if (!user.getUsername().equals("guest")) {
+                    if ((!user.getUsername().equals("guest")) && (user.getHighScore() < Integer.parseInt(points.getText()))) {
                         try {
                             // game.savePlayerHighscore(Integer.valueOf(points.getText()));
                             ApiConfig.gamePageControllerSavePlayerHighscore(points.getText());

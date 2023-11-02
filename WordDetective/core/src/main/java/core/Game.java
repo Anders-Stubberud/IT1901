@@ -115,5 +115,4 @@ public final class Game implements AbstractGame {
             database.updateUser(player);
         }
     }
-
 }
