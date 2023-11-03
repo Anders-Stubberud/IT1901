@@ -1,6 +1,5 @@
 package ui;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ public final class CategoryController implements Initializable {
      */
     private boolean isGuest;
     /**
-     * Boolean to indicate if the user is a guest or not
+     * Boolean to indicate if the user is a guest or not.
      */
     @FXML
     private VBox vbox;
@@ -61,7 +60,7 @@ public final class CategoryController implements Initializable {
     private ScrollPane scrollpane;
 
     /**
-     * FXML textarea where user writes their categories
+     * FXML textarea where user writes their categories.
      */
     @FXML
     private TextArea categoryName, categoryWords;
@@ -124,7 +123,6 @@ public final class CategoryController implements Initializable {
             }
         }
     }
-    
 
     /**
      * constant used for vertical padding of category choices.
