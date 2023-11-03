@@ -2,22 +2,22 @@ package core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TimerTest {
 
   /**
-   * The count
+   * The count.
    */
   private int testCount;
 
+  /**
+   * Test the running of timer.
+   */
   @Test
   public void testTimerRun() {
     testCount = 2;
-    /**
-     * Timer object.
-     */
+
     Timer timer = new Timer();
 
     timer.setTimer(testCount);

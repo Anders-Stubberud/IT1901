@@ -6,13 +6,13 @@ package core;
 public class Timer implements Runnable {
 
     /**
-     * The current count
+     * The current count.
      */
-    private int count = 30;
+    private int currentCount = 30;
     /**
      * The amount of seconds the timer will count down from.
      */
-    private static int COUNT_FROM = 30;
+    private int count = 30;
     /**
      * The amount of milliseconds the timer will count down from.
      */
@@ -24,8 +24,8 @@ public class Timer implements Runnable {
      * @param countFrom - The {@link Integer} to count from
      */
     public void setTimer(final int countFrom) {
-        COUNT_FROM = countFrom;
         count = countFrom;
+        currentCount = countFrom;
     }
 
     /**
@@ -34,7 +34,7 @@ public class Timer implements Runnable {
      * @return - The count as an {@link Integer}
      */
     public int getCount() {
-        return count;
+        return currentCount;
     }
 
     /**
@@ -43,10 +43,10 @@ public class Timer implements Runnable {
      * to set where the timer should count from
      */
     public void run() {
-        for (int i = COUNT_FROM; i > 0; i--) {
+        for (int i = count; i > 0; i--) {
             System.out.println(i);
             try {
-                count--;
+                currentCount--;
                 Thread.sleep(MILLISECONDS_IN_SECOND);
                 // countdown by 1000 ms every second
             } catch (Exception e) {
