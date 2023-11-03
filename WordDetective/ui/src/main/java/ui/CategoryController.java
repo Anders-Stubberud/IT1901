@@ -143,7 +143,7 @@ public final class CategoryController implements Initializable {
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         renderCategories();
-        if (user.getUsername().equals("guest")) {
+        if (user != null && user.getUsername().equals("guest")) {
             upload.setOpacity(0);
         }
     }
