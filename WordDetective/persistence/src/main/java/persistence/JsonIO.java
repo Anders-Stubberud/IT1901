@@ -46,8 +46,20 @@ public final class JsonIO implements AbstractJsonIO {
         this.path = getAbsolutePath("gr2325") + "/WordDetective/persistence/src/main/resources";
     }
 
+    /**
+     * Write/Read from jsonfile.
+     *
+     * @param newPath - The path to read/write files to
+     */
+    public JsonIO(final String newPath) {
+        path = newPath;
+    }
+
     @Override
     public void addUser(final User user) {
+        if (new File(path + "/users/" + user.getUsername() + ".json").exists()) {
+            throw new IllegalArgumentException("User " + user.getUsername() + " already exists.");
+        }
         try (FileWriter fw = new FileWriter(path + "/users/" + user.getUsername() + ".json", StandardCharsets.UTF_8)) {
             GSON.toJson(user, fw);
             System.out.println("User " + user.getUsername() + " successfully created.");
@@ -62,7 +74,8 @@ public final class JsonIO implements AbstractJsonIO {
         if (user.delete()) {
             System.out.println(username + " deleted successfully");
         } else {
-            System.out.println("Error when deleting this file");
+            throw new IllegalArgumentException(
+                    "Couldn't delete user because user does not exits or user has security measures that prevent deletion");
         }
     }
 
@@ -72,8 +85,7 @@ public final class JsonIO implements AbstractJsonIO {
             String jsonString = Files.readString(Paths.get(path + "/users/" + username + ".json"));
             return GSON.fromJson(jsonString, User.class);
         } catch (IOException e) {
-            System.out.println("Couldn't get user " + username + "because: " + e.getMessage());
-            return null;
+            throw new IllegalArgumentException("Couldn't get user " + username + "because: " + e.getMessage());
         }
     }
 
@@ -82,14 +94,14 @@ public final class JsonIO implements AbstractJsonIO {
         if (new File(path + "/users/" + user.getUsername() + ".json").exists()) {
             try (FileWriter fw = new FileWriter(path + "/users/" + user.getUsername() + ".json",
                     StandardCharsets.UTF_8)) {
-                        GSON.toJson(user, fw);
+                GSON.toJson(user, fw);
                 System.out.println("User " + user.getUsername() + " successfully updated.");
             } catch (IOException e) {
                 System.out
                         .println("Couldn't update user " + user.getUsername() + " because: " + e.getMessage());
             }
         } else {
-            System.out.println("User: " + user.getUsername() + " not found");
+            throw new IllegalArgumentException("User: " + user.getUsername() + " not found");
         }
     }
 
@@ -113,8 +125,8 @@ public final class JsonIO implements AbstractJsonIO {
             String answers = Files.readString(Paths.get(path + "/default_categories/" + category + ".json"));
             return GSON.fromJson(answers, listOfStringsType);
         } catch (IOException e) {
-            System.out.println("Couldn't find default category: " + category + " because " + e.getMessage());
-            return null;
+            throw new IllegalArgumentException(
+                    "Couldn't find default category: " + category + " because " + e.getMessage());
         }
     }
 
@@ -141,6 +153,7 @@ public final class JsonIO implements AbstractJsonIO {
 
     /**
      * Used in API call to convert string representation of json into java object.
+     *
      * @param json String representation of a json file.
      * @return User java object equivalent of the json string representation.
      */
@@ -154,7 +167,7 @@ public final class JsonIO implements AbstractJsonIO {
      * @param directory - The directory to find the path to.
      * @return absolute path to current working directory as {@link String}.
      */
-    private String getAbsolutePath(final String directory) {
+    public static String getAbsolutePath(final String directory) {
         Path absolutePath = Paths.get("").toAbsolutePath();
         while (!absolutePath.endsWith(directory)) {
             absolutePath = absolutePath.getParent();
