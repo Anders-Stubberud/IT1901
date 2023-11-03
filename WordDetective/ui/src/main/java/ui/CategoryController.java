@@ -96,6 +96,7 @@ public final class CategoryController implements Initializable {
     @FXML
     public void uploadCategory() {
         if (!isGuest) {
+            String categoryText = categoryInformation.getText();
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
             File selectedFile = fileChooser.showOpenDialog(new Stage());
@@ -105,12 +106,13 @@ public final class CategoryController implements Initializable {
                 List<String> wordList = readWordListFromFile(selectedFile);// Read word list from the JSON file
 
                 if (wordList != null) {
+                    JsonIO jsonIO = new JsonIO();
                     // Store the new category in the user's data
-                    currentUser.addCustomCategories(categoryName, wordList);
+                    jsonIO.getUser().addCustomCategories(categoryName, wordList);
 
                     // Save changes in the JSON file using JsonIO class
-                    JsonIO jsonIO = new JsonIO();
-                    jsonIO.updateUser(currentUser); // Update the user's data in the JSON file
+
+                    jsonIO.updateUser(getUser()); // Update the user's data in the JSON file
 
                     renderCategories(); // Update the UI to display the new categories
                 }
