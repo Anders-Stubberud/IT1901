@@ -94,20 +94,26 @@ public final class CategoryController implements Initializable {
      * Uploads a category selected in the GUI and stores in database.
      */
     @FXML
-    // Ser ikke ut som at files lastes inn.
     public void uploadCategory() {
         if (!isGuest) {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
             File selectedFile = fileChooser.showOpenDialog(new Stage());
             if (selectedFile != null) {
-                //JsonIO jsonIO = new JsonIO();
-                //jsonIO.readAndProcessJsonFile(selectedFile);
-                //user.addCustomCategory("NewCategoryName", "NewCategoryDescription");
-                // Denne gir spotbugs error, dermed kommentert ut.
-                // String filename = selectedFile.getName();
+                String categoryName = "Name of Category"; // Replace with actual category name
+                // Read and process the file content, assuming it contains a valid JSON structure
+                List<String> wordList = // Read word list from the JSON file
 
-                renderCategories();
+                if (wordList != null) {
+                    // Store the new category in the user's data
+                    currentUser.addCustomCategories(categoryName, wordList);
+
+                    // Save changes in the JSON file using JsonIO class
+                    JsonIO jsonIO = new JsonIO();
+                    jsonIO.updateUser(currentUser); // Update the user's data in the JSON file
+
+                    renderCategories(); // Update the UI to display the new categories
+                }
             }
         }
     }
