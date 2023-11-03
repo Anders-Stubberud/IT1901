@@ -19,6 +19,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import persistence.JsonIO;
@@ -59,6 +60,12 @@ public final class CategoryController implements Initializable {
     private ScrollPane scrollpane;
 
     /**
+     * FXML textarea where user writes their categories
+     */
+    @FXML
+    private TextArea categoryName, categoryWords;
+
+    /**
      * FXML component containing the file-uploading information.
      */
     @FXML
@@ -96,19 +103,19 @@ public final class CategoryController implements Initializable {
     @FXML
     public void uploadCategory() {
         if (!isGuest) {
-            String categoryText = categoryInformation.getText();
+            String categoryName = categoryName.getText();
+            String categoryWords = categoryWords.getText();
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
             File selectedFile = fileChooser.showOpenDialog(new Stage());
             if (selectedFile != null) {
-                String categoryName = "Name of Category"; // Replace with actual category name
                 // Read and process the file content, assuming it contains a valid JSON structure
                 List<String> wordList = readWordListFromFile(selectedFile);// Read word list from the JSON file
 
                 if (wordList != null) {
                     JsonIO jsonIO = new JsonIO();
                     // Store the new category in the user's data
-                    jsonIO.getUser().addCustomCategories(categoryName, wordList);
+                    jsonIO.getUser().addCustomCategories(categoryName, categoryWords);
 
                     // Save changes in the JSON file using JsonIO class
 
