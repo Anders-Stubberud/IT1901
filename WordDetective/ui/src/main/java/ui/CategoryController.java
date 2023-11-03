@@ -139,13 +139,13 @@ public final class CategoryController implements Initializable {
      */
     public void renderCategories() {
         pane.setVisible(false);
-        List<String> categories = new ArrayList<>(database.getAllDefaultCategories().keySet()); // Kunne ha instansiert direkte på defaultkategorier først
+        List<String> categories = new ArrayList<>(database.getAllDefaultCategories().keySet());
         if (!user.getUsername().equals("guest")) {
             categories.addAll(user.getCustomCategories().keySet());
         }
         categories.addAll(database.getAllDefaultCategories().keySet());
         for (String category : categories) {
-            String formattedCategory = formatString(category); // Legger til formatting på kategorien
+            String formattedCategory = formatString(category); // Add formatting on the category.
             Button button = new Button(formattedCategory);
             button.setId(category);
             button.setUserData(category);
