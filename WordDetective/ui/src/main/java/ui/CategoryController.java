@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -107,28 +108,23 @@ public final class CategoryController implements Initializable {
             String categoryInfo = categoryWords.getText();
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
-            File selectedFile = fileChooser.showOpenDialog(new Stage());
-            if (selectedFile != null) {
-                // Read and process the file content, assuming it contains a valid JSON structure
-                List<String> wordList = readWordListFromFile(selectedFile);// Read word list from the JSON file
+            if (categoryInfo != null) {
+                String[] wordsArray = categoryInfo.split(",");
+                List<String> wordsList = Arrays.asList(wordsArray);
+                User jsonIOUser = new User();
 
-                if (wordList != null) {
-                    String[] wordsArray = categoryInfo.split(",");
-                    List<String> wordsList = Arrays.asList(wordsArray);
-                    User jsonIO = new User();
+                jsonIOUser.addCustomCategories(categoryTitle, wordsList);
+                // Store the new category in the user's data
+                JsonIO jsonIO = new JsonIO();
+                // Save changes in the JSON file using JsonIO class
 
-                    jsonIO.addCustomCategories(categoryTitle, wordsList);
-                    // Store the new category in the user's data
-                    JsonIO jsonIO = new JsonIO();
-                    // Save changes in the JSON file using JsonIO class
+                jsonIO.updateUser(user); // Update the user's data in the JSON file
 
-                    jsonIO.updateUser(getUser()); // Update the user's data in the JSON file
-
-                    renderCategories(); // Update the UI to display the new categories
-                }
+                renderCategories(); // Update the UI to display the new categories
             }
         }
     }
+    
 
     /**
      * constant used for vertical padding of category choices.
