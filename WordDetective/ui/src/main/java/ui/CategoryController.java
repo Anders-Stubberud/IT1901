@@ -102,7 +102,7 @@ public final class CategoryController implements Initializable {
             if (selectedFile != null) {
                 String categoryName = "Name of Category"; // Replace with actual category name
                 // Read and process the file content, assuming it contains a valid JSON structure
-                List<String> wordList = // Read word list from the JSON file
+                List<String> wordList = readWordListFromFile(selectedFile);// Read word list from the JSON file
 
                 if (wordList != null) {
                     // Store the new category in the user's data
