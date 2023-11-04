@@ -67,7 +67,7 @@ public final class ApiConfig {
    * @throws InterruptedException
    * @throws IOException
    */
-  protected static User loginControllerPerformLogin(final String username)
+  protected static User performLogin(final String username)
       throws IOException, InterruptedException {
     String param1 = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
     String url = BASEURL + "LoginController/performLogin" + "?username=" + param1;
@@ -77,7 +77,7 @@ public final class ApiConfig {
     return GSON.fromJson(response.body(), User.class);
   }
 
-  protected static boolean registrationControllerFireSignUp(final String username)
+  protected static boolean fireSignUp(final String username)
       throws IOException, InterruptedException {
     String param1 = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
     String url = BASEURL + "RegistrationController/fireSignUp" + "?username=" + param1;
@@ -85,14 +85,14 @@ public final class ApiConfig {
     return Boolean.parseBoolean(response.body());
   }
 
-  protected static void registrationControllerAddUser(final User user) throws IOException, InterruptedException {
+  protected static void addUser(final User user) throws IOException, InterruptedException {
     String url = BASEURL + "registrationController/addUser";
     String type = "application/json";
     BodyPublisher body = HttpRequest.BodyPublishers.ofString(GSON.toJson(user));
     performPostRequest(url, type, body);
   }
 
-  protected static void gamePageControllerNewGame(final User user)
+  protected static void newGame(final User user)
       throws IOException, InterruptedException {
       //Sender all brukerinfo (inkludert uberørte custom lists) tilbake gjennom API'et.
       //Kunne ha instansiert det på serversiden uten å sende det til client først.
@@ -102,7 +102,7 @@ public final class ApiConfig {
       performPostRequest(url, type, body);
   }
 
-  protected static void gamePageControllerSetCategory(final String category)
+  protected static void setCategory(final String category)
       throws IOException, InterruptedException {
       String url = BASEURL + "GamePageController/setCategory";
       String type = "text/plain";
@@ -110,20 +110,20 @@ public final class ApiConfig {
       performPostRequest(url, type, body).body();
   }
 
-  protected static String gamePageControllerGetRandomWord()
+  protected static String getRandomWord()
       throws IOException, InterruptedException {
     String url = BASEURL + "GamePageController/getRandomWord";
     HttpResponse<String> response = performGetRequest(url);
     return response.body();
   }
 
-  protected static String gamePageControllerGetSubstring(final String string) throws IOException, InterruptedException {
+  protected static String getSubstring(final String string) throws IOException, InterruptedException {
     String param1 = URLEncoder.encode(string, StandardCharsets.UTF_8.toString());
     String url = BASEURL + "GamePageController/getSubstring" + "?string=" + param1;
     return performGetRequest(url).body();
   }
 
-  protected static boolean gamePageControllerCheckValidWord(final String substring, final  String guess)
+  protected static boolean checkValidWord(final String substring, final  String guess)
       throws IOException, InterruptedException {
     String param1 = URLEncoder.encode(substring, StandardCharsets.UTF_8.toString());
     String param2 = URLEncoder.encode(guess, StandardCharsets.UTF_8.toString());
@@ -132,7 +132,7 @@ public final class ApiConfig {
     return Boolean.parseBoolean(response.body());
   }
 
-  protected static void gamePageControllerSavePlayerHighscore(final String highscore) throws IOException, InterruptedException {
+  protected static void savePlayerHighscore(final String highscore) throws IOException, InterruptedException {
     String url = BASEURL + "GamePageController/savePlayerHighscore";
     String type = "text/plain";
     BodyPublisher body = BodyPublishers.ofString(highscore);
