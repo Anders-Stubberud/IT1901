@@ -114,7 +114,7 @@ public final class CategoryController implements Initializable {
 
                 jsonIOUser.addCustomCategories(categoryTitle, wordsList);
                 // Store the new category in the user's data
-                ApiConfig.updateUser(jsonIOUser)
+                ApiConfig.updateUser(jsonIOUser);
                 // Save changes in the JSON file using JsonIO class
 
                 renderCategories(); // Update the UI to display the new categories
