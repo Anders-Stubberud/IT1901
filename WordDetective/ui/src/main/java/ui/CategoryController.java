@@ -63,7 +63,7 @@ public final class CategoryController implements Initializable {
      * FXML textarea where user writes their categories.
      */
     @FXML
-    private TextArea categoryName, categoryWords;
+    private TextArea customCategoryName, customCategoryWords;
 
     /**
      * FXML component containing the file-uploading information.
@@ -103,8 +103,8 @@ public final class CategoryController implements Initializable {
     @FXML
     public void uploadCategory() {
         if (!isGuest) {
-            String categoryTitle = categoryName.getText();
-            String categoryInfo = categoryWords.getText();
+            String categoryTitle = customCategoryName.getText();
+            String categoryInfo = customCategoryWords.getText();
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
             if (categoryInfo != null) {
