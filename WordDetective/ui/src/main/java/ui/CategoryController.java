@@ -114,10 +114,8 @@ public final class CategoryController implements Initializable {
 
                 jsonIOUser.addCustomCategories(categoryTitle, wordsList);
                 // Store the new category in the user's data
-                JsonIO jsonIO = new JsonIO();
+                ApiConfig.updateUser(jsonIOUser)
                 // Save changes in the JSON file using JsonIO class
-
-                jsonIO.updateUser(user); // Update the user's data in the JSON file
 
                 renderCategories(); // Update the UI to display the new categories
             }
@@ -151,11 +149,11 @@ public final class CategoryController implements Initializable {
      */
     public void renderCategories() {
         pane.setVisible(false);
-        List<String> categories = new ArrayList<>(database.getAllDefaultCategories().keySet());
+        List<String> categories = new ArrayList<>(ApiConfig.getAllDefaultCategories().keySet());
         if (user != null && !user.getUsername().equals("guest")) {
             categories.addAll(user.getCustomCategories().keySet());
         }
-        categories.addAll(database.getAllDefaultCategories().keySet());
+        categories.addAll(ApiConfig.getAllDefaultCategories().keySet());
         for (String category : categories) {
             String formattedCategory = formatString(category); // Add formatting on the category.
             Button button = new Button(formattedCategory);
