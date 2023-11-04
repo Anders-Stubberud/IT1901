@@ -162,9 +162,9 @@ public final class CategoryController implements Initializable {
             button.setPadding(new Insets(VERTICAL_PADDING, HORIZONTAL_PADDING, VERTICAL_PADDING, HORIZONTAL_PADDING));
             button.setFont(new Font(VERTICAL_PADDING));
             vbox.getChildren().add(button);
-            Label ekstraPlass = new Label("");
-            ekstraPlass.setPadding(new Insets(VERTICAL_PADDING, 0, 0, 0));
-            vbox.getChildren().add(ekstraPlass);
+            Label padding = new Label("");
+            padding.setPadding(new Insets(VERTICAL_PADDING, 0, 0, 0));
+            vbox.getChildren().add(padding);
 
             button.setOnAction(event -> {
                 try {
