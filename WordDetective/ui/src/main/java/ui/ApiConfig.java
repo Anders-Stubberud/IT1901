@@ -142,6 +142,11 @@ public final class ApiConfig {
   protected static void updateUser(User user) throws IOException, InterruptedException {
     JsonIO jsonIO = new JsonIO(); //contact persistence
     jsonIO.updateUser(user); //run method in JsonIO
+  }
+
+  protected static HashMap<String, List<String>> getAllDefaultCategories() {
+    JsonIO jsonIO = new JsonIO();
+    return jsonIO.getAllDefaultCategories();
 }
 
 }
