@@ -139,4 +139,9 @@ public final class ApiConfig {
     performPostRequest(url, type, body);
   }
 
+  protected static void updateUser(User user) throws IOException, InterruptedException {
+    JsonIO jsonIO = new JsonIO(); //contact persistence
+    jsonIO.updateUser(user); //run method in JsonIO
+}
+
 }
