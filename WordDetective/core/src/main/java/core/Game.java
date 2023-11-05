@@ -58,13 +58,12 @@ public final class Game implements AbstractGame {
 
     @Override
     public void setCategory(final String category) {
-        this.wordlist = database.getDefaultCategory(category);
-        if (wordlist == null && (!player.getCustomCategories().containsKey(category))) {
-            throw new IllegalArgumentException(category + " is not a part of the available categories.");
-        } else if (database.getDefaultCategory(category) != null) {
-            setWordList(database.getDefaultCategory(category));
+        if (database.getDefaultCategory(category) != null) {
+            this.wordlist = database.getDefaultCategory(category);
+        } else if (player.getCustomCategories().containsKey(category)) {
+            this.wordlist = player.getCustomCategories().get(category);
         } else {
-            setWordList(player.getCustomCategories().get(category));
+            throw new IllegalArgumentException(category + " is not a part of the available categories.");
         }
         this.chosenCategory = category;
     }
@@ -92,10 +91,15 @@ public final class Game implements AbstractGame {
 
     @Override
     public String getRandomSubstring(final String word) {
-        int wordLength = word.length();
-        int startIndexSubstring = Math.max(random.nextInt(wordLength) - 2, 0);
-        int endIndexSubstring = startIndexSubstring + 2 + random.nextInt(2);
-        String substring = word.substring(startIndexSubstring, endIndexSubstring);
+        String substring;
+        do {
+            int wordLength = word.length();
+            int startIndexSubstring = Math.max(random.nextInt(wordLength) - 2, 0);
+            int endIndexSubstring = startIndexSubstring + 2 + random.nextInt(2);
+            substring = word.substring(startIndexSubstring, endIndexSubstring);
+            System.out.println(word);
+        } while (substring.contains(" "));
+
         return substring;
     }
 
@@ -116,5 +120,4 @@ public final class Game implements AbstractGame {
             database.updateUser(player);
         }
     }
-
 }

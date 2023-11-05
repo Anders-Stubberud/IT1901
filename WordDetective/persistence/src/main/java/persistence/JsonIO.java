@@ -90,6 +90,16 @@ public final class JsonIO implements AbstractJsonIO {
     }
 
     @Override
+    public String getUserAsJson(final String username) {
+        try {
+            return GSON.toJson(Files.readString(Paths.get(path + "/users/" + username + ".json")));
+        } catch (IOException e) {
+            System.out.println("Couldn't get user " + username + "because: " + e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
     public void updateUser(final User user) {
         if (new File(path + "/users/" + user.getUsername() + ".json").exists()) {
             try (FileWriter fw = new FileWriter(path + "/users/" + user.getUsername() + ".json",

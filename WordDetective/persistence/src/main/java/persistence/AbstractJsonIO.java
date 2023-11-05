@@ -29,6 +29,13 @@ public interface AbstractJsonIO {
   User getUser(String username);
 
   /**
+   * Get user as a Json String.
+   * @param username - The user to get
+   * @return - The user as a String
+   */
+  String getUserAsJson(String username);
+
+  /**
    * get all the user's usernames in the database.
    *
    * @return - a {@link List} of strings containing all usernames

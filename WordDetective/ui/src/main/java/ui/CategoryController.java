@@ -94,7 +94,7 @@ public final class CategoryController implements Initializable {
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
             File selectedFile = fileChooser.showOpenDialog(new Stage());
             if (selectedFile != null) {
-                //Denne gir spotbugs error, dermed kommentert ut.
+                // Denne gir spotbugs error, dermed kommentert ut.
                 // String filename = selectedFile.getName();
 
                 renderCategories();
@@ -129,13 +129,14 @@ public final class CategoryController implements Initializable {
      */
     public void renderCategories() {
         pane.setVisible(false);
-        List<String> categories = new ArrayList<>(); //Kunne ha instansiert direkte på defaultkategorier først
+        List<String> categories = new ArrayList<>(); // Kunne ha instansiert direkte på defaultkategorier først
         if (!user.getUsername().equals("guest")) {
             categories.addAll(user.getCustomCategories().keySet());
         }
         categories.addAll(database.getAllDefaultCategories().keySet());
         for (String category : categories) {
-            Button button = new Button(category);
+            String formattedCategory = formatString(category); // Legger til formatting på kategorien
+            Button button = new Button(formattedCategory);
             button.setId(category);
             button.setUserData(category);
             button.setPadding(new Insets(VERTICAL_PADDING, HORIZONTAL_PADDING, VERTICAL_PADDING, HORIZONTAL_PADDING));
@@ -158,6 +159,29 @@ public final class CategoryController implements Initializable {
                 }
             });
         }
+    }
+
+    /**
+     * Formats the buttons correct.
+     * @param input - Category before formatting
+     * @return - Category name after formatting
+     */
+    public String formatString(final String input) {
+        String[] words = input.split("_");
+        StringBuilder formattedString = new StringBuilder();
+
+        for (String word : words) {
+            if (word.length() > 1) {
+                formattedString.append(Character.toUpperCase(word.charAt(0)))
+                        .append(word.substring(1).toLowerCase());
+            } else {
+                formattedString.append(word.toUpperCase());
+            }
+
+            formattedString.append(" ");
+        }
+
+        return formattedString.toString().trim();
     }
 
 }
