@@ -147,6 +147,6 @@ public final class ApiConfig {
   protected static HashMap<String, List<String>> getAllDefaultCategories() {
     JsonIO jsonIO = new JsonIO();
     return jsonIO.getAllDefaultCategories();
-}
+  }
 
 }
