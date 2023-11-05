@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import com.google.gson.Gson;
 
 import types.User;
+import persistence.JsonIO;
 
 public final class ApiConfig {
 
