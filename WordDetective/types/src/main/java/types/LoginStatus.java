@@ -1,6 +1,6 @@
 package types;
 
-public enum LoginResult {
+public enum LoginStatus {
 
   /**
    * Returned if the login is successful.
@@ -13,12 +13,14 @@ public enum LoginResult {
   USERNAME_DOES_NOT_EXIST,
 
   /**
-   * Returned if the provided password for the login does not match the stored password for the provided user.
+   * Returned if the provided password for the login does not match the stored
+   * password for the provided user.
    */
   INCORRECT_PASSWORD,
 
   /**
-   * Retured if there occurs an error while attempting to read information from the user's file.
+   * Retured if there occurs an error while attempting to read information from
+   * the user's file.
    */
   READ_ERROR
 

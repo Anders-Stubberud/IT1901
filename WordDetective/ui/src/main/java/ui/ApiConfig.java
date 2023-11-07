@@ -13,8 +13,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Set;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import types.LoginResult;
-import types.RegistrationResult;
+import types.LoginStatus;
+import types.RegistrationStatus;
 
 public final class ApiConfig {
 
@@ -42,7 +42,8 @@ public final class ApiConfig {
   /**
    * Type of json parsing result.
    */
-  private static Type listOfStringsType = new TypeToken<Set<String>>() { }.getType();
+  private static Type listOfStringsType = new TypeToken<Set<String>>() {
+  }.getType();
 
   /**
    * No instantiation of utility class.
@@ -53,9 +54,11 @@ public final class ApiConfig {
 
   /**
    * Boilerplate method for sending GET requests.
+   *
    * @param url The URL to send the request to.
    * @return HttpResponse<String> containing the result.
-   * @throws IOException If any issues are encountered during interaction with the files.
+   * @throws IOException          If any issues are encountered during interaction
+   *                              with the files.
    * @throws InterruptedException If thread is interrupted.
    */
   private static HttpResponse<String> performGetRequest(final String url) throws IOException, InterruptedException {
@@ -65,20 +68,22 @@ public final class ApiConfig {
 
   /**
    * Boilerplate method for sending POST requests.
-   * @param url The URL to send the request to.
+   *
+   * @param url  The URL to send the request to.
    * @param type Indicating the content of the request.
    * @param body Parameters supplied to the request.
    * @return HttpResponse<String> containing the result.
-   * @throws IOException If any issues are encountered during interaction with the files.
+   * @throws IOException          If any issues are encountered during interaction
+   *                              with the files.
    * @throws InterruptedException If thread is interrupted.
    */
   private static HttpResponse<String> performPostRequest(final String url, final String type, final BodyPublisher body)
       throws IOException, InterruptedException {
     HttpRequest request = HttpRequest.newBuilder()
-    .uri(URI.create(url))
-    .header("Content-Type", type)
-    .POST(body)
-    .build();
+        .uri(URI.create(url))
+        .header("Content-Type", type)
+        .POST(body)
+        .build();
     return CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
   }
 
@@ -91,40 +96,46 @@ public final class ApiConfig {
    * @throws InterruptedException
    * @throws IOException
    */
-  protected static LoginResult loginControllerPerformLogin(
-    final String username, final String password) throws IOException, InterruptedException {
+  protected static LoginStatus loginControllerPerformLogin(
+      final String username, final String password) throws IOException, InterruptedException {
     String param1 = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
     String param2 = URLEncoder.encode(password, StandardCharsets.UTF_8.toString());
     String url = BASEURL + "LoginController/performLogin" + "?username=" + param1 + "&password=" + param2;
     HttpResponse<String> response = performGetRequest(url);
-    return GSON.fromJson(response.body(), LoginResult.class);
+    return GSON.fromJson(response.body(), LoginStatus.class);
   }
 
   /**
    * Attempts to registrate a new user.
+   *
    * @param username The new username supplied by the user.
    * @param password The new password supplied by the user.
-   * @return SUCCESS, USERNAME_TAKEN, USERNAME_NOT_MATCH_REGEX, PASSWORD_NOT_MATCH_REGEX, or UPLOAD_ERROR, respectively.
-   * @throws IOException If any issues are encountered during interaction with the files.
+   * @return SUCCESS, USERNAME_TAKEN, USERNAME_NOT_MATCH_REGEX,
+   *         PASSWORD_NOT_MATCH_REGEX, or UPLOAD_ERROR, respectively.
+   * @throws IOException          If any issues are encountered during interaction
+   *                              with the files.
    * @throws InterruptedException If thread is interrupted.
    */
-  protected static RegistrationResult registrationControllerRegistrationResult(
-    final String username, final String password) throws IOException, InterruptedException {
+  protected static RegistrationStatus registrationControllerRegistrationResult(
+      final String username, final String password) throws IOException, InterruptedException {
     String param1 = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
     String param2 = URLEncoder.encode(password, StandardCharsets.UTF_8.toString());
     String url = BASEURL + "RegistrationController/registrationResult" + "?username=" + param1 + "&password=" + param2;
     HttpResponse<String> response = performGetRequest(url);
-    return GSON.fromJson(response.body(), RegistrationResult.class);
+    return GSON.fromJson(response.body(), RegistrationStatus.class);
   }
 
   /**
    * Fetches the categories available to the given user.
+   *
    * @param username The username of the user to fetch the categories of.
    * @return Set<String> containing all categories available to the given user.
-   * @throws IOException If any issues are encountered during interaction with the files.
+   * @throws IOException          If any issues are encountered during interaction
+   *                              with the files.
    * @throws InterruptedException If thread is interrupted.
    */
-  protected static Set<String> categoryControllerGetCategories(final String username) throws IOException, InterruptedException {
+  protected static Set<String> categoryControllerGetCategories(final String username)
+      throws IOException, InterruptedException {
     String param1 = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
     String url = BASEURL + "CategoryController/getCategories" + "?username=" + param1;
     HttpResponse<String> response = performGetRequest(url);
@@ -133,36 +144,43 @@ public final class ApiConfig {
 
   /**
    * Instantiates the game for the given user.
+   *
    * @param username The username of the user to instantiate the game for.
-   * @throws IOException If any issues are encountered during interaction with the files.
+   * @param category The categoy chosen by the user.
+   * @throws IOException          If any issues are encountered during interaction
+   *                              with the files.
    * @throws InterruptedException If thread is interrupted.
    */
-  protected static void gamePageControllerNewGame(final String username)
+  protected static void newGame(final String username, final String category)
       throws IOException, InterruptedException {
-      String url = BASEURL + "GamePageController/newGame";
-      String type = "text/plain";
-      BodyPublisher body = HttpRequest.BodyPublishers.ofString(username);
-      performPostRequest(url, type, body);
+    String url = BASEURL + "GamePageController/newGame";
+    String type = "text/plain";
+    BodyPublisher body = HttpRequest.BodyPublishers.ofString("username=" + username + "&category=" + category);
+    performPostRequest(url, type, body);
   }
 
-  /**
-   * Sets the category for the current game.
-   * @param category The category selected by the user.
-   * @throws IOException If any issues are encountered during interaction with the files.
-   * @throws InterruptedException If thread is interrupted.
-   */
-  protected static void gamePageControllerSetCategory(final String category)
-      throws IOException, InterruptedException {
-      String url = BASEURL + "GamePageController/setCategory";
-      String type = "text/plain";
-      BodyPublisher body = BodyPublishers.ofString(category);
-      performPostRequest(url, type, body).body();
-  }
+  // /**
+  // * Sets the category for the current game.
+  // *
+  // * @param category The category selected by the user.
+  // * @throws IOException If any issues are encountered during interaction
+  // * with the files.
+  // * @throws InterruptedException If thread is interrupted.
+  // */
+  // protected static void gamePageControllerSetCategory(final String category)
+  // throws IOException, InterruptedException {
+  // String url = BASEURL + "GamePageController/setCategory";
+  // String type = "text/plain";
+  // BodyPublisher body = BodyPublishers.ofString(category);
+  // performPostRequest(url, type, body).body();
+  // }
 
   /**
    * Fetches a word pulled randomly from the current game's wordlist.
+   *
    * @return A random word from the game's wordlist.
-   * @throws IOException If any issues are encountered during interaction with the files.
+   * @throws IOException          If any issues are encountered during interaction
+   *                              with the files.
    * @throws InterruptedException If thread is interrupted.
    */
   protected static String gamePageControllerGetRandomWord()
@@ -174,9 +192,11 @@ public final class ApiConfig {
 
   /**
    * Retrieves a substring randomly generated from the supplied word.
+   *
    * @param string The string to retrieve a subtring of.
    * @return A substring from the provided string.
-   * @throws IOException If any issues are encountered during interaction with the files.
+   * @throws IOException          If any issues are encountered during interaction
+   *                              with the files.
    * @throws InterruptedException If thread is interrupted.
    */
   protected static String gamePageControllerGetSubstring(final String string) throws IOException, InterruptedException {
@@ -186,14 +206,18 @@ public final class ApiConfig {
   }
 
   /**
-   * Checks if the guessed word contains the substring and is present in the wordlist.
+   * Checks if the guessed word contains the substring and is present in the
+   * wordlist.
+   *
    * @param substring The substring supplied to the user.
-   * @param guess The guess provided by the user based on the supplied substring.
+   * @param guess     The guess provided by the user based on the supplied
+   *                  substring.
    * @return Boolean indicating of the guess is valid.
-   * @throws IOException If any issues are encountered during interaction with the files.
+   * @throws IOException          If any issues are encountered during interaction
+   *                              with the files.
    * @throws InterruptedException If thread is interrupted.
    */
-  protected static boolean gamePageControllerCheckValidWord(final String substring, final  String guess)
+  protected static boolean gamePageControllerCheckValidWord(final String substring, final String guess)
       throws IOException, InterruptedException {
     String param1 = URLEncoder.encode(substring, StandardCharsets.UTF_8.toString());
     String param2 = URLEncoder.encode(guess, StandardCharsets.UTF_8.toString());
@@ -204,11 +228,13 @@ public final class ApiConfig {
 
   /**
    * Saves the game's score as the highscore of the user if applicable.
+   *
    * @param highscore
    * @throws IOException
    * @throws InterruptedException
    */
-  protected static void gamePageControllerSavePlayerHighscore(final String highscore) throws IOException, InterruptedException {
+  protected static void gamePageControllerSavePlayerHighscore(final String highscore)
+      throws IOException, InterruptedException {
     String url = BASEURL + "GamePageController/savePlayerHighscore";
     String type = "text/plain";
     BodyPublisher body = BodyPublishers.ofString(highscore);

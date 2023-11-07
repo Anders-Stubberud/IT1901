@@ -19,28 +19,36 @@ public class GamePageController {
 
   /**
    * API endpoint for setup of the user's game instance.
-   * @param username The username of the user to set up the game for.
+   *
+   * @param requestBody The requestbody cotaining the username and category chosen
+   *                    by the user.
    */
   @RequestMapping(value = "/GamePageController/newGame", method = RequestMethod.POST)
   @ResponseStatus(HttpStatus.OK)
-  public void newGameLogic(@RequestBody final String username) {
+  public void newGame(@RequestBody final String requestBody) {
+    String[] components = requestBody.split("&|");
+    String username = components[0].split("=")[1];
+    String category = components[1].split("=")[1];
     game = new Game(username);
-  }
-
-  /**
-   * API endpoint for choice of category.
-   *
-   * @param category The category selected by the user.
-   */
-  @RequestMapping(value = "/GamePageController/setCategory", method = RequestMethod.POST)
-  @ResponseStatus(HttpStatus.OK)
-  public void setCategory(final @RequestBody String category) {
     game.setCategory(category);
   }
 
+  // /**
+  // * API endpoint for choice of category.
+  // *
+  // * @param category The category selected by the user.
+  // */
+  // @RequestMapping(value = "/GamePageController/setCategory", method =
+  // RequestMethod.POST)
+  // @ResponseStatus(HttpStatus.OK)
+  // public void setCategory(final @RequestBody String category) {
+  // game.setCategory(category);
+  // }
+
   /**
    * API endpoint for fetching a random word.
-   * @return  A word pulled randomly from the current wordlist.
+   *
+   * @return A word pulled randomly from the current wordlist.
    */
   @RequestMapping(value = "/GamePageController/getRandomWord", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
@@ -50,6 +58,7 @@ public class GamePageController {
 
   /**
    * API endpoint for fetching substring.
+   *
    * @param string The string to create a substring from.
    * @return Substring of the provided string.
    */
@@ -60,19 +69,24 @@ public class GamePageController {
   }
 
   /**
-   * API endpoint to check if the guessed word contains the substring and is present in the wordlist.
+   * API endpoint to check if the guessed word contains the substring and is
+   * present in the wordlist.
+   *
    * @param substring The substring provided to the user.
-   * @param guess The guess provided by the user.
+   * @param guess     The guess provided by the user.
    * @return Boolean indicating if guess was correct.
    */
   @RequestMapping(value = "/GamePageController/checkValidWord", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
-  public boolean checkValidWord(final @RequestParam("substring") String substring, final @RequestParam("guess") String guess) {
+  public boolean checkValidWord(final @RequestParam("substring") String substring,
+      final @RequestParam("guess") String guess) {
     return game.checkValidWord(substring, guess);
   }
 
   /**
-   * API endpoint for saving the player's highscore to file, if it's a new highscore.
+   * API endpoint for saving the player's highscore to file, if it's a new
+   * highscore.
+   *
    * @param highscore The score to potentially save to file.
    */
   @RequestMapping(value = "/GamePageController/savePlayerHighscore", method = RequestMethod.POST)
@@ -80,7 +94,5 @@ public class GamePageController {
   public void savePlayerHighscore(@RequestBody final String highscore) {
     game.savePlayerHighscore(Integer.parseInt(highscore));
   }
-
-
 
 }

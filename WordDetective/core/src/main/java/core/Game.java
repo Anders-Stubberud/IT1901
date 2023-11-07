@@ -18,8 +18,8 @@ public final class Game extends UserAccess implements AbstractGame {
     private boolean isGuestUser;
 
     // /**
-    //  * The category chosen by the user.
-    //  */
+    // * The category chosen by the user.
+    // */
     // private String chosenCategory;
 
     /**
@@ -36,7 +36,8 @@ public final class Game extends UserAccess implements AbstractGame {
      * Initializes the Game object, which will control the logic of the game.
      * Certain tasks will be delegated to objects with better functionality.
      *
-     * @param username The user's username, used to set up individualized games for different users.
+     * @param username The user's username, used to set up individualized games for
+     *                 different users.
      */
     public Game(final String username) {
         super(username);
@@ -60,7 +61,7 @@ public final class Game extends UserAccess implements AbstractGame {
 
     // @Override
     // public String getChosenCategory() {
-    //     return chosenCategory;
+    // return chosenCategory;
     // }
 
     @Override
@@ -94,20 +95,19 @@ public final class Game extends UserAccess implements AbstractGame {
     }
 
     @Override
-    public void savePlayerHighscore(final int highscore) {
+    public void savePlayerHighscore(final int score) {
         if (!isGuestUser) {
             try {
                 getJsonIO().updateCurrentUser(
-                    (user) -> {
-                        if (user.getHighScore() < highscore) {
-                            user.setHighscore(highscore);
-                            return true;
-                        }
-                        return false;
-                    }
-                );
+                        (user) -> {
+                            if (user.getHighScore() < score) {
+                                user.setHighscore(score);
+                                return true;
+                            }
+                            return false;
+                        });
             } catch (IOException e) {
-                //evt håndtere den
+                // evt håndtere den
                 e.printStackTrace();
             }
         }

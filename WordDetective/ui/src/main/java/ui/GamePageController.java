@@ -76,8 +76,8 @@ public final class GamePageController implements Initializable {
     private Button closeHTPBtn, openHTPBtn;
 
     // /**
-    //  * a Game object used to controll the game.
-    //  */
+    // * a Game object used to controll the game.
+    // */
     // private Game game;
     /**
      * The substring is the letters that the player has to use.
@@ -143,7 +143,7 @@ public final class GamePageController implements Initializable {
     /**
      * Constructor initializing the object.
      *
-     * @param usernameParameter  username.
+     * @param usernameParameter username.
      * @param categoryParameter category of the given game.
      */
     public GamePageController(final String usernameParameter, final String categoryParameter) {
@@ -153,6 +153,7 @@ public final class GamePageController implements Initializable {
 
     /**
      * Empty Constuctor for initialising controller.
+     *
      * @param category The category chosen by the user.
      */
     public GamePageController(final String category) {
@@ -289,8 +290,7 @@ public final class GamePageController implements Initializable {
     public void initialize(final URL location, final ResourceBundle resources) {
         try {
             try {
-                ApiConfig.gamePageControllerNewGame(username);
-                ApiConfig.gamePageControllerSetCategory(currentCategory);
+                ApiConfig.newGame(username, currentCategory);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
