@@ -1,8 +1,10 @@
 package ui;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -17,6 +19,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -35,6 +38,10 @@ public final class CategoryController implements Initializable {
     /**
      * Reference to the FXML box containing available categories.
      */
+    private boolean isGuest;
+    /**
+     * Boolean to indicate if the user is a guest or not.
+     */
     @FXML
     private VBox vbox;
 
@@ -52,6 +59,12 @@ public final class CategoryController implements Initializable {
     private ScrollPane scrollpane;
 
     /**
+     * FXML textarea where user writes their categories.
+     */
+    @FXML
+    private TextArea customCategoryName, customCategoryWords;
+
+    /**
      * FXML component containing the file-uploading information.
      */
     @FXML
@@ -63,8 +76,11 @@ public final class CategoryController implements Initializable {
      *
      * @param usernameParameter - A user
      */
-    public CategoryController(final String usernameParameter) {
-        this.username = usernameParameter;
+    public CategoryController(final User newUser) {
+        isGuest = newUser.getUsername().equals("guest");
+        if (!isGuest) {
+            this.user = newUser;
+        }
     }
 
     /**
@@ -82,6 +98,9 @@ public final class CategoryController implements Initializable {
 
     /**
      * Uploads a category selected in the GUI and stores in database.
+     *
+     * @throws InterruptedException
+     * @throws IOException
      */
     @FXML
     // Ser ikke ut som at files lastes inn.
@@ -94,7 +113,12 @@ public final class CategoryController implements Initializable {
                 // Denne gir spotbugs error, dermed kommentert ut.
                 // String filename = selectedFile.getName();
 
-                renderCategories();
+                jsonIOUser.addCustomCategories(categoryTitle, wordsList);
+                // Store the new category in the user's data
+                ApiConfig.updateUser(jsonIOUser);
+                // Save changes in the JSON file using JsonIO class
+
+                renderCategories(); // Update the UI to display the new categories
             }
         }
     }
@@ -155,6 +179,30 @@ public final class CategoryController implements Initializable {
             // TODO informere bruker om at kategorier ikke ble lastet inn rett
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Formats the buttons correct.
+     *
+     * @param input - Category before formatting
+     * @return - Category name after formatting
+     */
+    public String formatString(final String input) {
+        String[] words = input.split("_");
+        StringBuilder formattedString = new StringBuilder();
+
+        for (String word : words) {
+            if (word.length() > 1) {
+                formattedString.append(Character.toUpperCase(word.charAt(0)))
+                        .append(word.substring(1).toLowerCase());
+            } else {
+                formattedString.append(word.toUpperCase());
+            }
+
+            formattedString.append(" ");
+        }
+
+        return formattedString.toString().trim();
     }
 
 }

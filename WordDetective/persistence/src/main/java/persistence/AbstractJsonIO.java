@@ -28,12 +28,19 @@ public interface AbstractJsonIO {
    */
   User loadCurrentUser();
 
-  // /**
-  //  * get all the user's usernames in the database.
-  //  *
-  //  * @return - a {@link List} of strings containing all usernames
-  //  */
-  // abstract List<String> getAllUsernames();
+  /**
+   * Get user as a Json String.
+   * @param username - The user to get
+   * @return - The user as a String
+   */
+  String getUserAsJson(String username);
+
+  /**
+   * get all the user's usernames in the database.
+   *
+   * @return - a {@link List} of strings containing all usernames
+   */
+  List<String> getAllUsernames();
 
   /**
    * Update user and store new data in database.

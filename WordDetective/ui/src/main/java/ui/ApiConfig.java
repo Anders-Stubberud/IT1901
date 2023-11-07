@@ -205,19 +205,7 @@ public final class ApiConfig {
     return performGetRequest(url).body();
   }
 
-  /**
-   * Checks if the guessed word contains the substring and is present in the
-   * wordlist.
-   *
-   * @param substring The substring supplied to the user.
-   * @param guess     The guess provided by the user based on the supplied
-   *                  substring.
-   * @return Boolean indicating of the guess is valid.
-   * @throws IOException          If any issues are encountered during interaction
-   *                              with the files.
-   * @throws InterruptedException If thread is interrupted.
-   */
-  protected static boolean gamePageControllerCheckValidWord(final String substring, final String guess)
+  protected static boolean checkValidWord(final String substring, final String guess)
       throws IOException, InterruptedException {
     String param1 = URLEncoder.encode(substring, StandardCharsets.UTF_8.toString());
     String param2 = URLEncoder.encode(guess, StandardCharsets.UTF_8.toString());
@@ -226,19 +214,27 @@ public final class ApiConfig {
     return Boolean.parseBoolean(response.body());
   }
 
-  /**
-   * Saves the game's score as the highscore of the user if applicable.
-   *
-   * @param highscore
-   * @throws IOException
-   * @throws InterruptedException
-   */
-  protected static void gamePageControllerSavePlayerHighscore(final String highscore)
-      throws IOException, InterruptedException {
+  protected static void savePlayerHighscore(final String highscore) throws IOException, InterruptedException {
     String url = BASEURL + "GamePageController/savePlayerHighscore";
     String type = "text/plain";
     BodyPublisher body = BodyPublishers.ofString(highscore);
     performPostRequest(url, type, body);
   }
 
+  // Lage en funskjon som caller på endpointet laget i api
+  protected static int getHighScore() throws IOException, InterruptedException {
+    String url = BASEURL + "GamePageController/getPlayerHighscore";
+    HttpResponse<String> response = performGetRequest(url);
+    return Integer.parseInt(response.body());
+  }
+
+  protected static void updateUser(final User user) throws IOException, InterruptedException {
+    JsonIO jsonIO = new JsonIO(); // contact persistence
+    jsonIO.updateUser(user); // run method in JsonIO
+  }
+
+  protected static HashMap<String, List<String>> getAllDefaultCategories() {
+    JsonIO jsonIO = new JsonIO();
+    return jsonIO.getAllDefaultCategories();
+  }
 }

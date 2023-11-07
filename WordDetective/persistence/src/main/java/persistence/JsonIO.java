@@ -98,11 +98,28 @@ public final class JsonIO implements AbstractJsonIO {
     }
 
     @Override
-    //implementere en mekanisme som hindrer forsøk i å slette "guest" user
-    public void deleteCurrentUser() throws RuntimeException {
-        File userFile = new File(pathToPersistenceUser);
-        if (!userFile.delete()) {
-            throw new RuntimeException("Error deleting user");
+    public String getUserAsJson(final String username) {
+        try {
+            return GSON.toJson(Files.readString(Paths.get(path + "/users/" + username + ".json")));
+        } catch (IOException e) {
+            System.out.println("Couldn't get user " + username + "because: " + e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public void updateUser(final User user) {
+        if (new File(path + "/users/" + user.getUsername() + ".json").exists()) {
+            try (FileWriter fw = new FileWriter(path + "/users/" + user.getUsername() + ".json",
+                    StandardCharsets.UTF_8)) {
+                        GSON.toJson(user, fw);
+                System.out.println("User " + user.getUsername() + " successfully updated.");
+            } catch (IOException e) {
+                System.out
+                        .println("Couldn't update user " + user.getUsername() + " because: " + e.getMessage());
+            }
+        } else {
+            System.out.println("User: " + user.getUsername() + " not found");
         }
     }
 
