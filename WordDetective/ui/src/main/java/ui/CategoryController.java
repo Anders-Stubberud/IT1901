@@ -74,7 +74,7 @@ public final class CategoryController implements Initializable {
     /**
      * Constructor used for controlling whether or not to retrieve custom
      * categories.
-     * 
+     *
      * @param newUser - A user
      */
     public CategoryController(final User newUser) {
@@ -186,7 +186,7 @@ public final class CategoryController implements Initializable {
 
     /**
      * Formats the buttons correct.
-     * 
+     *
      * @param input - Category before formatting
      * @return - Category name after formatting
      */
