@@ -13,8 +13,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Set;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import persistence.JsonIO;
 import types.LoginStatus;
 import types.RegistrationStatus;
 

@@ -18,6 +18,8 @@ public interface AbstractJsonIO {
   /**
    * Delete user from database.
    *
+   * @param username The username of the user to delete.
+   *
    */
   void deleteUser(String username);
 
@@ -30,7 +32,7 @@ public interface AbstractJsonIO {
 
   /**
    * Get user as a Json String.
-   * 
+   *
    * @param username - The user to get
    * @return - The user as a String
    */

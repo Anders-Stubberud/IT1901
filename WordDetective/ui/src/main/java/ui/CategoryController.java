@@ -1,11 +1,7 @@
 package ui;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -21,7 +17,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.control.TextArea;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public final class CategoryController implements Initializable {
@@ -36,10 +31,11 @@ public final class CategoryController implements Initializable {
     // */
     // private JsonIO database = new JsonIO();
 
-    /**
-     * Reference to the FXML box containing available categories.
-     */
-    private boolean isGuest;
+    // /**
+    // * Reference to the FXML box containing available categories.
+    // */
+    // private boolean isGuest;
+
     /**
      * Boolean to indicate if the user is a guest or not.
      */

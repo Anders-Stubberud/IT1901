@@ -47,12 +47,15 @@ public final class JsonIO implements AbstractJsonIO {
      */
     private Set<String> customCategoryNames;
 
+    /**
+     * Absolutepath to the resources directory.
+     */
     private String path = JsonUtilities.getAbsolutePathAsString();
 
     /**
      * Constructor for instantiating the JsonIO class, which handles file related
      * tasks for an individual user.
-     * 
+     *
      * @param username
      */
     public JsonIO(final String username) {
@@ -69,7 +72,7 @@ public final class JsonIO implements AbstractJsonIO {
 
     /**
      * Fetches the names of all the categories available to the current user.
-     * 
+     *
      * @return Set<String> containing all the categories available to the current
      *         user.
      */
@@ -79,7 +82,7 @@ public final class JsonIO implements AbstractJsonIO {
 
     /**
      * Fetches the words contained in the wordlist of the given category.
-     * 
+     *
      * @param category The category to fetch the wordlist of.
      * @return List<String> containing all the words in the categories wordlist.
      * @throws IOException      If any issues are encountered during interaction
@@ -119,12 +122,17 @@ public final class JsonIO implements AbstractJsonIO {
         }
     }
 
-    public void updateUser(final User user) {
-        if (new File(path + "/users/" + user.getUsername() + ".json").exists()) {
-            try (FileWriter fw = new FileWriter(path + "/users/" + user.getUsername() + ".json",
+    /**
+     * Updates the provided user.
+     *
+     * @param userParameter The user to update.
+     */
+    public void updateUser(final User userParameter) {
+        if (new File(path + "/users/" + userParameter.getUsername() + ".json").exists()) {
+            try (FileWriter fw = new FileWriter(path + "/users/" + userParameter.getUsername() + ".json",
                     StandardCharsets.UTF_8)) {
-                JsonUtilities.GSON.toJson(user, fw);
-                System.out.println("User " + user.getUsername() + " successfully updated.");
+                JsonUtilities.GSON.toJson(userParameter, fw);
+                System.out.println("User " + userParameter.getUsername() + " successfully updated.");
             } catch (IOException e) {
                 System.out
                         .println("Couldn't update user " + user.getUsername() + " because: " + e.getMessage());
@@ -159,7 +167,7 @@ public final class JsonIO implements AbstractJsonIO {
     }
 
     @Override
-    public void deleteUser(String username) {
+    public void deleteUser(final String username) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteCurrentUser'");
     }
