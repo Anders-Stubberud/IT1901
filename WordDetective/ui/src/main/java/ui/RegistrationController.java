@@ -58,7 +58,7 @@ public class RegistrationController {
         //Registrere ny bruker før det sjekkes om en identisk eksisterer?
         User newUser = new User(newUsername.getText(), newPassword.getText());
         try {
-            if (ApiConfig.registrationControllerFireSignUp(newUser.getUsername())
+            if (ApiConfig.fireSignUp(newUser.getUsername())
                     || !(newUser.isCorrectPassword())) {
 
                 usernameTaken.setOpacity(1);
@@ -72,7 +72,7 @@ public class RegistrationController {
                         DISPLAY_ERROR_DURATION_MS);
 
             } else {
-                ApiConfig.registrationControllerAddUser(newUser);
+                ApiConfig.addUser(newUser);
                 FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
                 fxmlLoader.setControllerFactory(new CategoryFactory(newUser));
                 Parent parent = fxmlLoader.load();

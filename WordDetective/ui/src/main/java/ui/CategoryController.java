@@ -1,10 +1,10 @@
 package ui;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -19,6 +19,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import persistence.JsonIO;
@@ -38,6 +39,10 @@ public final class CategoryController implements Initializable {
     /**
      * Reference to the FXML box containing available categories.
      */
+    private boolean isGuest;
+    /**
+     * Boolean to indicate if the user is a guest or not.
+     */
     @FXML
     private VBox vbox;
 
@@ -55,6 +60,12 @@ public final class CategoryController implements Initializable {
     private ScrollPane scrollpane;
 
     /**
+     * FXML textarea where user writes their categories.
+     */
+    @FXML
+    private TextArea customCategoryName, customCategoryWords;
+
+    /**
      * FXML component containing the file-uploading information.
      */
     @FXML
@@ -67,7 +78,10 @@ public final class CategoryController implements Initializable {
      * @param newUser - A user
      */
     public CategoryController(final User newUser) {
-        this.user = newUser;
+        isGuest = newUser.getUsername().equals("guest");
+        if (!isGuest) {
+            this.user = newUser;
+        }
     }
 
     /**
@@ -85,19 +99,28 @@ public final class CategoryController implements Initializable {
 
     /**
      * Uploads a category selected in the GUI and stores in database.
+     *
+     * @throws InterruptedException
+     * @throws IOException
      */
     @FXML
-    // Ser ikke ut som at files lastes inn.
-    public void uploadCategory() {
-        if (!user.getUsername().equals("guest")) {
+    public void uploadCategory() throws IOException, InterruptedException {
+        if (!isGuest) {
+            String categoryTitle = customCategoryName.getText();
+            String categoryInfo = customCategoryWords.getText();
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
-            File selectedFile = fileChooser.showOpenDialog(new Stage());
-            if (selectedFile != null) {
-                // Denne gir spotbugs error, dermed kommentert ut.
-                // String filename = selectedFile.getName();
+            if (categoryInfo != null) {
+                String[] wordsArray = categoryInfo.split(",");
+                List<String> wordsList = Arrays.asList(wordsArray);
+                User jsonIOUser = new User();
 
-                renderCategories();
+                jsonIOUser.addCustomCategories(categoryTitle, wordsList);
+                // Store the new category in the user's data
+                ApiConfig.updateUser(jsonIOUser);
+                // Save changes in the JSON file using JsonIO class
+
+                renderCategories(); // Update the UI to display the new categories
             }
         }
     }
@@ -119,7 +142,7 @@ public final class CategoryController implements Initializable {
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         renderCategories();
-        if (user.getUsername().equals("guest")) {
+        if (user != null && user.getUsername().equals("guest")) {
             upload.setOpacity(0);
         }
     }
@@ -129,22 +152,22 @@ public final class CategoryController implements Initializable {
      */
     public void renderCategories() {
         pane.setVisible(false);
-        List<String> categories = new ArrayList<>(); // Kunne ha instansiert direkte på defaultkategorier først
-        if (!user.getUsername().equals("guest")) {
+        List<String> categories = new ArrayList<>(ApiConfig.getAllDefaultCategories().keySet());
+        if (user != null && !user.getUsername().equals("guest")) {
             categories.addAll(user.getCustomCategories().keySet());
         }
-        categories.addAll(database.getAllDefaultCategories().keySet());
+        categories.addAll(ApiConfig.getAllDefaultCategories().keySet());
         for (String category : categories) {
-            String formattedCategory = formatString(category); // Legger til formatting på kategorien
+            String formattedCategory = formatString(category); // Add formatting on the category.
             Button button = new Button(formattedCategory);
             button.setId(category);
             button.setUserData(category);
             button.setPadding(new Insets(VERTICAL_PADDING, HORIZONTAL_PADDING, VERTICAL_PADDING, HORIZONTAL_PADDING));
             button.setFont(new Font(VERTICAL_PADDING));
             vbox.getChildren().add(button);
-            Label ekstraPlass = new Label("");
-            ekstraPlass.setPadding(new Insets(VERTICAL_PADDING, 0, 0, 0));
-            vbox.getChildren().add(ekstraPlass);
+            Label padding = new Label("");
+            padding.setPadding(new Insets(VERTICAL_PADDING, 0, 0, 0));
+            vbox.getChildren().add(padding);
 
             button.setOnAction(event -> {
                 try {
@@ -163,6 +186,7 @@ public final class CategoryController implements Initializable {
 
     /**
      * Formats the buttons correct.
+     *
      * @param input - Category before formatting
      * @return - Category name after formatting
      */

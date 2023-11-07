@@ -198,7 +198,7 @@ public final class GamePageController implements Initializable {
         if (ke.getCode().equals(KeyCode.ENTER)) { // If pressed Enter, then check word
             String playerGuess = playerInputField.getText();
             try {
-                if (ApiConfig.gamePageControllerCheckValidWord(playerGuess, playerGuess)) {
+                if (ApiConfig.checkValidWord(playerGuess, playerGuess)) {
                     int newPoints = Integer.parseInt(points.getText()) + 1;
                     points.setText(String.valueOf(newPoints));
                     playerInputField.setText("");
@@ -265,8 +265,8 @@ public final class GamePageController implements Initializable {
      */
     public void rndwordMasterLetters() {
         try {
-            String string = ApiConfig.gamePageControllerGetRandomWord();
-            substring = ApiConfig.gamePageControllerGetSubstring(string);
+            String string = ApiConfig.getRandomWord();
+            substring = ApiConfig.getSubstring(string);
             letters.setText(substring.toUpperCase());
             System.out.println(string);
         } catch (IOException | InterruptedException e) {
@@ -295,9 +295,8 @@ public final class GamePageController implements Initializable {
             substring = "";
             rndwordMasterLetters();
             try {
-                ApiConfig.gamePageControllerNewGame(user);
-                ApiConfig.gamePageControllerSetCategory(currentCategory);
-                // apiconfig shit highscore
+                ApiConfig.newGame(user);
+                ApiConfig.setCategory(currentCategory);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
@@ -326,7 +325,7 @@ public final class GamePageController implements Initializable {
                     if ((!user.getUsername().equals("guest")) && (user.getHighScore() < Integer.parseInt(points.getText()))) {
                         try {
                             // game.savePlayerHighscore(Integer.valueOf(points.getText()));
-                            ApiConfig.gamePageControllerSavePlayerHighscore(points.getText());
+                            ApiConfig.savePlayerHighscore(points.getText());
                         } catch (NumberFormatException | IOException | InterruptedException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="vBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: darkslategrey;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.CategoryController">
+<AnchorPane id="vBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: darkslategrey;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.CategoryController">
    <children>
       <ScrollPane fx:id="scrollpane" layoutX="329.0" layoutY="95.0" prefHeight="491.0" prefWidth="342.0" style="-fx-background-color: white;">
          <padding>
@@ -26,9 +26,10 @@
       <Button fx:id="customCategory" layoutX="435.0" layoutY="40.0" mnemonicParsing="false" onAction="#loadCustomCategory" text="Add custom category" />
       <Pane fx:id="pane" layoutX="671.0" layoutY="95.0" prefHeight="493.0" prefWidth="280.0">
          <children>
-            <TextArea layoutX="40.0" layoutY="39.0" prefHeight="95.0" prefWidth="231.0" text="You can upload you own custom category.To do this, you need to provide a JSON file on the format (all words in the wordlist must be capitalized):" wrapText="true" />
-            <Label layoutX="31.0" layoutY="137.0" text="{&#10;&#9;&quot;category&quot; : &quot;NAME OF YOUR CATEGORY&quot;&#10;&#9;&quot;wordlist&quot; : [&#10;&#9;&#9;&quot;WORD1&quot;,&#10;&#9;&#9;&quot;WORD2&quot;,&#10;&#9;&#9;etc...&#10;&#9;]&#10;}" textFill="WHITE" />
-            <Button fx:id="upload" layoutX="128.0" layoutY="8.0" mnemonicParsing="false" onAction="#uploadCategory" text="Upload" />
+            <TextArea fx:id="categoryName" layoutX="40.0" layoutY="63.0" prefHeight="25.0" prefWidth="231.0" text="Add category name:" wrapText="true" />
+            <Label layoutX="40.0" layoutY="237.0" prefHeight="67.0" prefWidth="130.0" text="&quot;WORD1&quot;,&#10;&quot;WORD2&quot;,&#10;etc...&#10;" textFill="WHITE" />
+            <Button fx:id="upload" layoutX="101.0" layoutY="374.0" mnemonicParsing="false" onAction="#uploadCategory" text="Upload" />
+            <TextArea fx:id="categoryWords" layoutX="40.0" layoutY="122.0" prefHeight="95.0" prefWidth="231.0" text="Add category words:&#10;&#10;Use the template below:" wrapText="true" />
          </children>
       </Pane>
    </children>

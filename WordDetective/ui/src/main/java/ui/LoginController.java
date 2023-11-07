@@ -60,7 +60,7 @@ public class LoginController {
 
         User newUser = null;
         try {
-            newUser = ApiConfig.loginControllerPerformLogin(username.getText());
+            newUser = ApiConfig.performLogin(username.getText());
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
