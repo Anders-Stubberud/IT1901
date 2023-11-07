@@ -10,11 +10,12 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#checkWrittenWord" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: darkslategrey;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.GamePageController">
+<AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#checkWrittenWord" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: darkslategrey;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.GamePageController">
    <children>
-      <Pane fx:id="innerWindow" layoutX="1.0" prefHeight="600.0" prefWidth="1000.0">
+      <Pane fx:id="innerWindow" prefHeight="600.0" prefWidth="1000.0">
          <children>
             <Pane fx:id="lettersCircle" layoutX="470.0" layoutY="71.0" prefHeight="60.0" prefWidth="60.0">
                <children>
@@ -42,7 +43,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </TextField>
-            <Label fx:id="points" layoutX="942.0" layoutY="31.0" text="0" textFill="WHITE">
+            <Label fx:id="points" layoutX="942.0" layoutY="89.0" text="0" textFill="WHITE">
                <font>
                   <Font size="23.0" />
                </font>
@@ -66,6 +67,21 @@
                   <Font size="30.0" />
                </font>
             </Label>
+            <Label fx:id="highScore" layoutX="942.0" layoutY="52.0" text="0" textFill="WHITE">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+            <Text fill="WHITE" layoutX="823.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Highscore:">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="796.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current score:">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Text>
          </children>
       </Pane>
       <Pane fx:id="howToPlay" layoutX="250.0" layoutY="50.0" prefHeight="458.0" prefWidth="500.0" style="-fx-background-color: darkslategray; -fx-background-radius: 20px;">
