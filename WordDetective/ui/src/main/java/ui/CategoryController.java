@@ -74,7 +74,7 @@ public final class CategoryController implements Initializable {
     /**
      * Constructor used for controlling whether or not to retrieve custom
      * categories.
-     *
+     * 
      * @param newUser - A user
      */
     public CategoryController(final User newUser) {
@@ -99,7 +99,7 @@ public final class CategoryController implements Initializable {
 
     /**
      * Uploads a category selected in the GUI and stores in database.
-     * 
+     *
      * @throws InterruptedException
      * @throws IOException
      */
