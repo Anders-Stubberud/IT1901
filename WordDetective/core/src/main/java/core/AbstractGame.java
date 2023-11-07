@@ -1,8 +1,10 @@
 package core;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface AbstractGame {
+
   /**
    * Set the chosen category.
    *
@@ -11,12 +13,12 @@ public interface AbstractGame {
    */
   void setCategory(String category) throws IllegalArgumentException;
 
-  /**
-   * Get the chosen category chosen by the player.
-   *
-   * @return players chosen category as {@link String}
-   */
-  String getChosenCategory();
+  // /**
+  //  * Get the chosen category chosen by the player.
+  //  *
+  //  * @return players chosen category as {@link String}
+  //  */
+  // String getChosenCategory();
 
   /**
    * Set new wordlist.
@@ -64,6 +66,6 @@ public interface AbstractGame {
    *
    * @param highscore - The highscore to save
    */
-  void savePlayerHighscore(int highscore);
+  void savePlayerHighscore(int highscore) throws IOException;
 
 }

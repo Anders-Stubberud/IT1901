@@ -1,7 +1,6 @@
 package ui;
 
 import javafx.util.Callback;
-import types.User;
 
 public final class GamePageFactory implements Callback<Class<?>, Object> {
 
@@ -9,7 +8,7 @@ public final class GamePageFactory implements Callback<Class<?>, Object> {
      * Variable for holding the username used to create the gamepage's controller.
      * object.
      */
-    private final User user;
+    private final String username;
 
     /**
      * Variable for holding the category used to create the gamepage's controller.
@@ -24,8 +23,8 @@ public final class GamePageFactory implements Callback<Class<?>, Object> {
      * @param newCategory -used to load the wordlist correlating to the
      *                    category.
      */
-    public GamePageFactory(final User newUser, final String newCategory) {
-        this.user = newUser;
+    public GamePageFactory(final String newUser, final String newCategory) {
+        this.username = newUser;
         this.category = newCategory;
     }
 
@@ -37,7 +36,7 @@ public final class GamePageFactory implements Callback<Class<?>, Object> {
     @Override
     public Object call(final Class<?> type) {
         if (type == GamePageController.class) {
-            return new GamePageController(user, category);
+            return new GamePageController(username, category);
         }
         return null;
     }

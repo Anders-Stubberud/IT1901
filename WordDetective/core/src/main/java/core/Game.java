@@ -1,77 +1,68 @@
 package core;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
-import persistence.JsonIO;
-import types.User;
 
 /**
  * The GameLogic class is responsible for the logic of the game.
  * It will delegate certain tasks to other objects,
  * who have more suitable functionality.
  */
-public final class Game implements AbstractGame {
+public final class Game extends UserAccess implements AbstractGame {
 
     /**
-     * The category chosen by the user.
+     * Boolean indicating if the user is a guest user.
+     * Used to avoid certain user-only methods.
      */
-    private String chosenCategory;
+    private boolean isGuestUser;
+
+    // /**
+    // * The category chosen by the user.
+    // */
+    // private String chosenCategory;
+
     /**
      * List of answers for the chosen category.
      */
     private List<String> wordlist;
-    /**
-     * The active user playing this game.
-     */
-    private final User player;
+
     /**
      * Random object used to provide random numbers.
      */
     private static Random random = new Random();
-    /**
-     * A {@link JsonIO} object simulating our database.
-     */
-    private final JsonIO database;
 
     /**
      * Initializes the Game object, which will control the logic of the game.
      * Certain tasks will be delegated to objects with better functionality.
      *
-     * @param user The the user, used to set up individualized games for different
-     *             users.
+     * @param username The user's username, used to set up individualized games for
+     *                 different users.
      */
-    public Game(final User user) {
-        this.player = user;
-        this.database = new JsonIO();
-        this.wordlist = new ArrayList<>();
+    public Game(final String username) {
+        super(username);
+        this.isGuestUser = username.equals("guest");
+        // this.user = jsonIO.getCurrentUser();
+        // this.wordlist = new ArrayList<>();
     }
 
     /**
-     * Empty constructor if playing game with guest.
+     * Delegates the task of fetching the wordlist of the requested category.
      */
-    public Game() {
-        this.player = new User();
-        this.database = new JsonIO();
-        this.wordlist = new ArrayList<>();
-    }
-
     @Override
     public void setCategory(final String category) {
-        if (database.getDefaultCategory(category) != null) {
-            this.wordlist = database.getDefaultCategory(category);
-        } else if (player.getCustomCategories().containsKey(category)) {
-            this.wordlist = player.getCustomCategories().get(category);
-        } else {
-            throw new IllegalArgumentException(category + " is not a part of the available categories.");
+        try {
+            this.wordlist = getJsonIO().getCategoryWordlist(category);
+        } catch (IOException e) {
+            // TODO passende exception
+            e.printStackTrace();
         }
-        this.chosenCategory = category;
     }
 
-    @Override
-    public String getChosenCategory() {
-        return chosenCategory;
-    }
+    // @Override
+    // public String getChosenCategory() {
+    // return chosenCategory;
+    // }
 
     @Override
     public List<String> getWordList() {
@@ -109,10 +100,21 @@ public final class Game implements AbstractGame {
     }
 
     @Override
-    public void savePlayerHighscore(final int highscore) {
-        if (player.getUsername() != "guest") {
-            player.setHighscore(highscore);
-            database.updateUser(player);
+    public void savePlayerHighscore(final int score) {
+        if (!isGuestUser) {
+            try {
+                getJsonIO().updateCurrentUser(
+                        (user) -> {
+                            if (user.getHighScore() < score) {
+                                user.setHighscore(score);
+                                return true;
+                            }
+                            return false;
+                        });
+            } catch (IOException e) {
+                // evt håndtere den
+                e.printStackTrace();
+            }
         }
     }
 }

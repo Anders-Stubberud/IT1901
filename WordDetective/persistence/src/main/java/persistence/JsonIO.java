@@ -6,13 +6,14 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import com.google.gson.reflect.TypeToken;
 
 import types.User;
@@ -22,15 +23,46 @@ import types.User;
  * It also provides methods for querying the available categories.
  */
 public final class JsonIO implements AbstractJsonIO {
-    /**
-     * The path where the files will be read/written.
-     */
-    private final String path;
 
     /**
-     * Gson instance for serialization/deserialization.
+     * The game's user instance, which is an object with identical state to the
+     * persistent json file of the current user.
      */
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private User user;
+
+    /**
+     * Absolute path for reading from and writing to the persistent json file of the
+     * current user.
+     */
+    private final String pathToPersistenceUser;
+
+    /**
+     * Set containing the default categories, which are shared amongst all users.
+     */
+    private static final Set<String> DEFAULT_CATEGORY_NAMES = JsonUtilities
+            .getPersistentFilenames("/default_categories");
+
+    /**
+     * Set containing teh custom categories, which are unique to each user.
+     */
+    private Set<String> customCategoryNames;
+
+    /**
+     * Absolutepath to the resources directory.
+     */
+    private String path = JsonUtilities.getAbsolutePathAsString();
+
+    /**
+     * Constructor for instantiating the JsonIO class, which handles file related
+     * tasks for an individual user.
+     *
+     * @param username
+     */
+    public JsonIO(final String username) {
+        this.pathToPersistenceUser = JsonUtilities.PATH_TO_RESOURCES + "/users/" + username + ".json";
+        this.user = username.equals("guest") ? null : loadCurrentUser();
+        this.customCategoryNames = user != null ? user.getCustomCategories().keySet() : new HashSet<>();
+    }
 
     /**
      * Type of a {@link List} of strings used for deserialitzing in gson.
@@ -39,61 +71,68 @@ public final class JsonIO implements AbstractJsonIO {
     }.getType();
 
     /**
-     * Constructor used for writing/reading to and from json file.
-     * Initializes with default path for storage
+     * Fetches the names of all the categories available to the current user.
+     *
+     * @return Set<String> containing all the categories available to the current
+     *         user.
      */
-    public JsonIO() {
-        this.path = getAbsolutePath("gr2325") + "/WordDetective/persistence/src/main/resources";
+    public Set<String> getAllCategories() {
+        return Stream.concat(DEFAULT_CATEGORY_NAMES.stream(), customCategoryNames.stream()).collect(Collectors.toSet());
     }
 
-    @Override
-    public void addUser(final User user) {
-        try (FileWriter fw = new FileWriter(path + "/users/" + user.getUsername() + ".json", StandardCharsets.UTF_8)) {
-            GSON.toJson(user, fw);
-            System.out.println("User " + user.getUsername() + " successfully created.");
-        } catch (IOException e) {
-            System.out.println("Couldn't add user " + user.getUsername() + " because: " + e.getMessage());
+    /**
+     * Fetches the words contained in the wordlist of the given category.
+     *
+     * @param category The category to fetch the wordlist of.
+     * @return List<String> containing all the words in the categories wordlist.
+     * @throws IOException      If any issues are encountered during interaction
+     *                          with the files.
+     * @throws RuntimeException If the given category is present neither among the
+     *                          default nor the custom categories.
+     */
+    public List<String> getCategoryWordlist(final String category) throws IOException, RuntimeException {
+        if (DEFAULT_CATEGORY_NAMES.contains(category)) {
+            return getDefaultCategory(category);
         }
-    }
-
-    @Override
-    public void deleteUser(final String username) {
-        File user = new File(path + "/users/" + username + ".json");
-        if (user.delete()) {
-            System.out.println(username + " deleted successfully");
-        } else {
-            System.out.println("Error when deleting this file");
+        if (user != null && customCategoryNames.contains(category)) {
+            return user.getCustomCategories().get(category);
         }
+        throw new RuntimeException("Error fetching categories");
     }
 
     @Override
-    public User getUser(final String username) {
+    public List<String> getDefaultCategory(final String category) throws IOException {
         try {
-            String jsonString = Files.readString(Paths.get(path + "/users/" + username + ".json"));
-            return GSON.fromJson(jsonString, User.class);
+            String answers = Files.readString(
+                    Paths.get(JsonUtilities.PATH_TO_RESOURCES + "/default_categories"
+                            + JsonUtilities.getCategoryFilename(category)));
+            return JsonUtilities.GSON.fromJson(answers, listOfStringsType);
         } catch (IOException e) {
-            System.out.println("Couldn't get user " + username + "because: " + e.getMessage());
-            return null;
+            throw e;
         }
     }
 
     @Override
     public String getUserAsJson(final String username) {
         try {
-            return GSON.toJson(Files.readString(Paths.get(path + "/users/" + username + ".json")));
+            return JsonUtilities.GSON.toJson(Files.readString(Paths.get(path + "/users/" + username + ".json")));
         } catch (IOException e) {
             System.out.println("Couldn't get user " + username + "because: " + e.getMessage());
             return null;
         }
     }
 
-    @Override
-    public void updateUser(final User user) {
-        if (new File(path + "/users/" + user.getUsername() + ".json").exists()) {
-            try (FileWriter fw = new FileWriter(path + "/users/" + user.getUsername() + ".json",
+    /**
+     * Updates the provided user.
+     *
+     * @param userParameter The user to update.
+     */
+    public void updateUser(final User userParameter) {
+        if (new File(path + "/users/" + userParameter.getUsername() + ".json").exists()) {
+            try (FileWriter fw = new FileWriter(path + "/users/" + userParameter.getUsername() + ".json",
                     StandardCharsets.UTF_8)) {
-                        GSON.toJson(user, fw);
-                System.out.println("User " + user.getUsername() + " successfully updated.");
+                JsonUtilities.GSON.toJson(userParameter, fw);
+                System.out.println("User " + userParameter.getUsername() + " successfully updated.");
             } catch (IOException e) {
                 System.out
                         .println("Couldn't update user " + user.getUsername() + " because: " + e.getMessage());
@@ -104,75 +143,39 @@ public final class JsonIO implements AbstractJsonIO {
     }
 
     @Override
-    public List<String> getAllUsernames() {
-        List<String> result = new ArrayList<>();
-        File[] nameFiles = new File(path + "/users").listFiles();
-        if (nameFiles != null) {
-            for (File file : nameFiles) {
-                result.add(file.getName().replace(".json", ""));
-            }
-        } else {
-            throw new RuntimeException("User directory not present in" + path);
-        }
-        return result;
-    }
-
-    @Override
-    public List<String> getDefaultCategory(final String category) {
+    public User loadCurrentUser() throws RuntimeException {
         try {
-            String answers = Files.readString(Paths.get(path + "/default_categories/" + category + ".json"));
-            return GSON.fromJson(answers, listOfStringsType);
+            String jsonString = Files.readString(Paths.get(pathToPersistenceUser));
+            return JsonUtilities.GSON.fromJson(jsonString, User.class);
         } catch (IOException e) {
-            System.out.println("Couldn't find default category: " + category + " because " + e.getMessage());
-            return null;
+            throw new RuntimeException("Error " + e.getMessage());
         }
     }
 
     @Override
-    public HashMap<String, List<String>> getAllDefaultCategories() {
-        try {
-            HashMap<String, List<String>> result = new HashMap<>();
-            File[] categories = new File(path + "/default_categories").listFiles();
-            if (categories != null) {
-                for (File category : categories) {
-                    result.put(category.getName().replace(".json", ""),
-                            GSON.fromJson(Files.readString(Paths.get(category.toString())),
-                                    listOfStringsType));
-                }
-                return result;
+    public void updateCurrentUser(final Predicate<User> predicate) throws IOException {
+        if (predicate.test(user)) {
+            if (new File(pathToPersistenceUser).exists()) {
+                FileWriter fw = new FileWriter(pathToPersistenceUser, StandardCharsets.UTF_8);
+                JsonUtilities.GSON.toJson(user, fw);
+                fw.close();
+                this.user = loadCurrentUser();
             } else {
-                throw new RuntimeException("Could not find categories in " + path + "/default_categories");
+                throw new IOException("User not found in " + pathToPersistenceUser);
             }
-        } catch (Exception e) {
-            System.out.println("Couldn't get all default categories because: " + e.getMessage());
-            return null;
         }
     }
 
-    /**
-     * Used in API call to convert string representation of json into java object.
-     * @param json String representation of a json file.
-     * @return User java object equivalent of the json string representation.
-     */
-    public static User convertToJavaObject(final String json) {
-        return GSON.fromJson(json, User.class);
+    @Override
+    public void deleteUser(final String username) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteCurrentUser'");
     }
 
-    /**
-     * Provides absolute path to current working directory.
-     *
-     * @param directory - The directory to find the path to.
-     * @return absolute path to current working directory as {@link String}.
-     */
-    private String getAbsolutePath(final String directory) {
-        Path absolutePath = Paths.get("").toAbsolutePath();
-        while (!absolutePath.endsWith(directory)) {
-            absolutePath = absolutePath.getParent();
-            if (absolutePath == null) {
-                throw new IllegalStateException("Working directory not found.");
-            }
-        }
-        return absolutePath.toString();
+    @Override
+    public List<String> getAllUsernames() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllUsernames'");
     }
 
 }

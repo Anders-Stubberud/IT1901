@@ -2,9 +2,6 @@ package ui;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -20,26 +17,25 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.control.TextArea;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import persistence.JsonIO;
-import types.User;
 
 public final class CategoryController implements Initializable {
 
     /**
      * The current user.
      */
-    private User user;
+    private String username;
 
-    /**
-     * Database to get all default categories.
-     */
-    private JsonIO database = new JsonIO();
-    /**
-     * Reference to the FXML box containing available categories.
-     */
-    private boolean isGuest;
+    // /**
+    // * Database to get all default categories.
+    // */
+    // private JsonIO database = new JsonIO();
+
+    // /**
+    // * Reference to the FXML box containing available categories.
+    // */
+    // private boolean isGuest;
+
     /**
      * Boolean to indicate if the user is a guest or not.
      */
@@ -75,13 +71,10 @@ public final class CategoryController implements Initializable {
      * Constructor used for controlling whether or not to retrieve custom
      * categories.
      *
-     * @param newUser - A user
+     * @param usernameParameter - A user
      */
-    public CategoryController(final User newUser) {
-        isGuest = newUser.getUsername().equals("guest");
-        if (!isGuest) {
-            this.user = newUser;
-        }
+    public CategoryController(final String usernameParameter) {
+        this.username = usernameParameter;
     }
 
     /**
@@ -104,25 +97,25 @@ public final class CategoryController implements Initializable {
      * @throws IOException
      */
     @FXML
-    public void uploadCategory() throws IOException, InterruptedException {
-        if (!isGuest) {
-            String categoryTitle = customCategoryName.getText();
-            String categoryInfo = customCategoryWords.getText();
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
-            if (categoryInfo != null) {
-                String[] wordsArray = categoryInfo.split(",");
-                List<String> wordsList = Arrays.asList(wordsArray);
-                User jsonIOUser = new User();
+    // Ser ikke ut som at files lastes inn.
+    public void uploadCategory() {
+        // if (!username.equals("guest")) {
+        // FileChooser fileChooser = new FileChooser();
+        // fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON
+        // Files", "*.json"));
+        // File selectedFile = fileChooser.showOpenDialog(new Stage());
+        // if (selectedFile != null) {
+        // // Denne gir spotbugs error, dermed kommentert ut.
+        // // String filename = selectedFile.getName();
 
-                jsonIOUser.addCustomCategories(categoryTitle, wordsList);
-                // Store the new category in the user's data
-                ApiConfig.updateUser(jsonIOUser);
-                // Save changes in the JSON file using JsonIO class
+        // jsonIOUser.addCustomCategories(categoryTitle, wordsList);
+        // // Store the new category in the user's data
+        // ApiConfig.updateUser(jsonIOUser);
+        // // Save changes in the JSON file using JsonIO class
 
-                renderCategories(); // Update the UI to display the new categories
-            }
-        }
+        // renderCategories(); // Update the UI to display the new categories
+        // }
+        // }
     }
 
     /**
@@ -142,7 +135,7 @@ public final class CategoryController implements Initializable {
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         renderCategories();
-        if (user != null && user.getUsername().equals("guest")) {
+        if (username.equals("guest")) {
             upload.setOpacity(0);
         }
     }
@@ -152,35 +145,35 @@ public final class CategoryController implements Initializable {
      */
     public void renderCategories() {
         pane.setVisible(false);
-        List<String> categories = new ArrayList<>(ApiConfig.getAllDefaultCategories().keySet());
-        if (user != null && !user.getUsername().equals("guest")) {
-            categories.addAll(user.getCustomCategories().keySet());
-        }
-        categories.addAll(ApiConfig.getAllDefaultCategories().keySet());
-        for (String category : categories) {
-            String formattedCategory = formatString(category); // Add formatting on the category.
-            Button button = new Button(formattedCategory);
-            button.setId(category);
-            button.setUserData(category);
-            button.setPadding(new Insets(VERTICAL_PADDING, HORIZONTAL_PADDING, VERTICAL_PADDING, HORIZONTAL_PADDING));
-            button.setFont(new Font(VERTICAL_PADDING));
-            vbox.getChildren().add(button);
-            Label padding = new Label("");
-            padding.setPadding(new Insets(VERTICAL_PADDING, 0, 0, 0));
-            vbox.getChildren().add(padding);
+        try {
+            for (String category : ApiConfig.categoryControllerGetCategories(username)) {
+                Button button = new Button(category);
+                button.setId(category);
+                button.setUserData(category);
+                button.setPadding(
+                        new Insets(VERTICAL_PADDING, HORIZONTAL_PADDING, VERTICAL_PADDING, HORIZONTAL_PADDING));
+                button.setFont(new Font(VERTICAL_PADDING));
+                vbox.getChildren().add(button);
+                Label ekstraPlass = new Label("");
+                ekstraPlass.setPadding(new Insets(VERTICAL_PADDING, 0, 0, 0));
+                vbox.getChildren().add(ekstraPlass);
 
-            button.setOnAction(event -> {
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("GamePage.fxml"));
-                    fxmlLoader.setControllerFactory(new GamePageFactory(user, category));
-                    Parent parent = fxmlLoader.load();
-                    Stage stage = (Stage) button.getScene().getWindow();
-                    stage.setScene(new Scene(parent));
-                    stage.show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
+                button.setOnAction(event -> {
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("GamePage.fxml"));
+                        fxmlLoader.setControllerFactory(new GamePageFactory(username, category));
+                        Parent parent = fxmlLoader.load();
+                        Stage stage = (Stage) button.getScene().getWindow();
+                        stage.setScene(new Scene(parent));
+                        stage.show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+        } catch (IOException | InterruptedException e) {
+            // TODO informere bruker om at kategorier ikke ble lastet inn rett
+            e.printStackTrace();
         }
     }
 
