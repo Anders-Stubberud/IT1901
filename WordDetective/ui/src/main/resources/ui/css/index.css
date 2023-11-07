@@ -1,0 +1,35 @@
+
+
+.btn {
+    font-family: Arial, Helvetica, sans-serif ;
+    background-color: rgb(10, 73, 14);
+    color: white;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+
+    -fx-background-color:  #532618;
+    -fx-text-fill: white;
+    -fx-background-radius: 8px;
+    -fx-padding: 15px 60px;
+    -fx-cursor: hand;
+    -fx-font-family: Arial, Helvetica, sans-serif ;
+}
+
+.btn:hover {
+    background-color: #421e13;
+    -fx-background-color: #421e13;
+}
+
+.notepad{
+    background-color: #8f8769;
+    border-color: black;
+    border-radius: 20px;
+    border-width: 3px;
+
+    -fx-background-color: #928963;
+    -fx-background-radius: 20px;
+    -fx-border-color: black;
+    -fx-border-radius: 18px;
+    -fx-border-width: 3px;
+}
