@@ -99,9 +99,12 @@ public final class CategoryController implements Initializable {
 
     /**
      * Uploads a category selected in the GUI and stores in database.
+     * 
+     * @throws InterruptedException
+     * @throws IOException
      */
     @FXML
-    public void uploadCategory() {
+    public void uploadCategory() throws IOException, InterruptedException {
         if (!isGuest) {
             String categoryTitle = customCategoryName.getText();
             String categoryInfo = customCategoryWords.getText();
@@ -183,6 +186,7 @@ public final class CategoryController implements Initializable {
 
     /**
      * Formats the buttons correct.
+     * 
      * @param input - Category before formatting
      * @return - Category name after formatting
      */
