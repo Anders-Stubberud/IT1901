@@ -55,10 +55,10 @@ public final class ApiConfig {
   private static HttpResponse<String> performPostRequest(final String url, final String type, final BodyPublisher body)
       throws IOException, InterruptedException {
     HttpRequest request = HttpRequest.newBuilder()
-    .uri(URI.create(url))
-    .header("Content-Type", type)
-    .POST(body)
-    .build();
+        .uri(URI.create(url))
+        .header("Content-Type", type)
+        .POST(body)
+        .build();
     return CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
   }
 
@@ -75,8 +75,9 @@ public final class ApiConfig {
     String param1 = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
     String url = BASEURL + "LoginController/performLogin" + "?username=" + param1;
     HttpResponse<String> response = performGetRequest(url);
-    //Må her sende all brukerinfo (inkludert custom wordlists) gjennom API'et, samtidig som alt sendes tilbake
-    //(uten at wordlists er berørt) i instansieringen av nytt Game-objekt.
+    // Må her sende all brukerinfo (inkludert custom wordlists) gjennom API'et,
+    // samtidig som alt sendes tilbake
+    // (uten at wordlists er berørt) i instansieringen av nytt Game-objekt.
     return GSON.fromJson(response.body(), User.class);
   }
 
@@ -97,20 +98,21 @@ public final class ApiConfig {
 
   protected static void newGame(final User user)
       throws IOException, InterruptedException {
-      //Sender all brukerinfo (inkludert uberørte custom lists) tilbake gjennom API'et.
-      //Kunne ha instansiert det på serversiden uten å sende det til client først.
-      String url = BASEURL + "GamePageController/newGame";
-      String type = "application/json";
-      BodyPublisher body = HttpRequest.BodyPublishers.ofString(GSON.toJson(user));
-      performPostRequest(url, type, body);
+    // Sender all brukerinfo (inkludert uberørte custom lists) tilbake gjennom
+    // API'et.
+    // Kunne ha instansiert det på serversiden uten å sende det til client først.
+    String url = BASEURL + "GamePageController/newGame";
+    String type = "application/json";
+    BodyPublisher body = HttpRequest.BodyPublishers.ofString(GSON.toJson(user));
+    performPostRequest(url, type, body);
   }
 
   protected static void setCategory(final String category)
       throws IOException, InterruptedException {
-      String url = BASEURL + "GamePageController/setCategory";
-      String type = "text/plain";
-      BodyPublisher body = BodyPublishers.ofString(category);
-      performPostRequest(url, type, body).body();
+    String url = BASEURL + "GamePageController/setCategory";
+    String type = "text/plain";
+    BodyPublisher body = BodyPublishers.ofString(category);
+    performPostRequest(url, type, body).body();
   }
 
   protected static String getRandomWord()
@@ -126,7 +128,7 @@ public final class ApiConfig {
     return performGetRequest(url).body();
   }
 
-  protected static boolean checkValidWord(final String substring, final  String guess)
+  protected static boolean checkValidWord(final String substring, final String guess)
       throws IOException, InterruptedException {
     String param1 = URLEncoder.encode(substring, StandardCharsets.UTF_8.toString());
     String param2 = URLEncoder.encode(guess, StandardCharsets.UTF_8.toString());
@@ -142,9 +144,9 @@ public final class ApiConfig {
     performPostRequest(url, type, body);
   }
 
-  protected static void updateUser(User user) throws IOException, InterruptedException {
-    JsonIO jsonIO = new JsonIO(); //contact persistence
-    jsonIO.updateUser(user); //run method in JsonIO
+  protected static void updateUser(final User user) throws IOException, InterruptedException {
+    JsonIO jsonIO = new JsonIO(); // contact persistence
+    jsonIO.updateUser(user); // run method in JsonIO
   }
 
   protected static HashMap<String, List<String>> getAllDefaultCategories() {
