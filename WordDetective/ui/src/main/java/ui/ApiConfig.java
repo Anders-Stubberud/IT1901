@@ -13,6 +13,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Set;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import persistence.JsonIO;
 import types.LoginStatus;
 import types.RegistrationStatus;
 
@@ -228,13 +230,4 @@ public final class ApiConfig {
     return Integer.parseInt(response.body());
   }
 
-  protected static void updateUser(final User user) throws IOException, InterruptedException {
-    JsonIO jsonIO = new JsonIO(); // contact persistence
-    jsonIO.updateUser(user); // run method in JsonIO
-  }
-
-  protected static HashMap<String, List<String>> getAllDefaultCategories() {
-    JsonIO jsonIO = new JsonIO();
-    return jsonIO.getAllDefaultCategories();
-  }
 }

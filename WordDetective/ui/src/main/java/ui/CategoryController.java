@@ -1,5 +1,6 @@
 package ui;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -76,11 +77,8 @@ public final class CategoryController implements Initializable {
      *
      * @param usernameParameter - A user
      */
-    public CategoryController(final User newUser) {
-        isGuest = newUser.getUsername().equals("guest");
-        if (!isGuest) {
-            this.user = newUser;
-        }
+    public CategoryController(final String usernameParameter) {
+        this.username = usernameParameter;
     }
 
     /**
@@ -105,22 +103,23 @@ public final class CategoryController implements Initializable {
     @FXML
     // Ser ikke ut som at files lastes inn.
     public void uploadCategory() {
-        if (!username.equals("guest")) {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
-            File selectedFile = fileChooser.showOpenDialog(new Stage());
-            if (selectedFile != null) {
-                // Denne gir spotbugs error, dermed kommentert ut.
-                // String filename = selectedFile.getName();
+        // if (!username.equals("guest")) {
+        // FileChooser fileChooser = new FileChooser();
+        // fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON
+        // Files", "*.json"));
+        // File selectedFile = fileChooser.showOpenDialog(new Stage());
+        // if (selectedFile != null) {
+        // // Denne gir spotbugs error, dermed kommentert ut.
+        // // String filename = selectedFile.getName();
 
-                jsonIOUser.addCustomCategories(categoryTitle, wordsList);
-                // Store the new category in the user's data
-                ApiConfig.updateUser(jsonIOUser);
-                // Save changes in the JSON file using JsonIO class
+        // jsonIOUser.addCustomCategories(categoryTitle, wordsList);
+        // // Store the new category in the user's data
+        // ApiConfig.updateUser(jsonIOUser);
+        // // Save changes in the JSON file using JsonIO class
 
-                renderCategories(); // Update the UI to display the new categories
-            }
-        }
+        // renderCategories(); // Update the UI to display the new categories
+        // }
+        // }
     }
 
     /**
@@ -155,7 +154,8 @@ public final class CategoryController implements Initializable {
                 Button button = new Button(category);
                 button.setId(category);
                 button.setUserData(category);
-                button.setPadding(new Insets(VERTICAL_PADDING, HORIZONTAL_PADDING, VERTICAL_PADDING, HORIZONTAL_PADDING));
+                button.setPadding(
+                        new Insets(VERTICAL_PADDING, HORIZONTAL_PADDING, VERTICAL_PADDING, HORIZONTAL_PADDING));
                 button.setFont(new Font(VERTICAL_PADDING));
                 vbox.getChildren().add(button);
                 Label ekstraPlass = new Label("");

@@ -25,27 +25,34 @@ import types.User;
 public final class JsonIO implements AbstractJsonIO {
 
     /**
-     * The game's user instance, which is an object with identical state to the persistent json file of the current user.
+     * The game's user instance, which is an object with identical state to the
+     * persistent json file of the current user.
      */
     private User user;
 
     /**
-     * Absolute path for reading from and writing to the persistent json file of the current user.
+     * Absolute path for reading from and writing to the persistent json file of the
+     * current user.
      */
     private final String pathToPersistenceUser;
 
     /**
      * Set containing the default categories, which are shared amongst all users.
      */
-    private static final Set<String> DEFAULT_CATEGORY_NAMES = JsonUtilities.getPersistentFilenames("/default_categories");
+    private static final Set<String> DEFAULT_CATEGORY_NAMES = JsonUtilities
+            .getPersistentFilenames("/default_categories");
 
     /**
      * Set containing teh custom categories, which are unique to each user.
      */
     private Set<String> customCategoryNames;
 
+    private String path = JsonUtilities.getAbsolutePathAsString();
+
     /**
-     * Constructor for instantiating the JsonIO class, which handles file related tasks for an individual user.
+     * Constructor for instantiating the JsonIO class, which handles file related
+     * tasks for an individual user.
+     * 
      * @param username
      */
     public JsonIO(final String username) {
@@ -62,7 +69,9 @@ public final class JsonIO implements AbstractJsonIO {
 
     /**
      * Fetches the names of all the categories available to the current user.
-     * @return Set<String> containing all the categories available to the current user.
+     * 
+     * @return Set<String> containing all the categories available to the current
+     *         user.
      */
     public Set<String> getAllCategories() {
         return Stream.concat(DEFAULT_CATEGORY_NAMES.stream(), customCategoryNames.stream()).collect(Collectors.toSet());
@@ -70,10 +79,13 @@ public final class JsonIO implements AbstractJsonIO {
 
     /**
      * Fetches the words contained in the wordlist of the given category.
+     * 
      * @param category The category to fetch the wordlist of.
      * @return List<String> containing all the words in the categories wordlist.
-     * @throws IOException If any issues are encountered during interaction with the files.
-     * @throws RuntimeException If the given category is present neither among the default nor the custom categories.
+     * @throws IOException      If any issues are encountered during interaction
+     *                          with the files.
+     * @throws RuntimeException If the given category is present neither among the
+     *                          default nor the custom categories.
      */
     public List<String> getCategoryWordlist(final String category) throws IOException, RuntimeException {
         if (DEFAULT_CATEGORY_NAMES.contains(category)) {
@@ -89,8 +101,8 @@ public final class JsonIO implements AbstractJsonIO {
     public List<String> getDefaultCategory(final String category) throws IOException {
         try {
             String answers = Files.readString(
-                Paths.get(JsonUtilities.PATH_TO_RESOURCES + "/default_categories" + JsonUtilities.getCategoryFilename(category))
-            );
+                    Paths.get(JsonUtilities.PATH_TO_RESOURCES + "/default_categories"
+                            + JsonUtilities.getCategoryFilename(category)));
             return JsonUtilities.GSON.fromJson(answers, listOfStringsType);
         } catch (IOException e) {
             throw e;
@@ -100,19 +112,18 @@ public final class JsonIO implements AbstractJsonIO {
     @Override
     public String getUserAsJson(final String username) {
         try {
-            return GSON.toJson(Files.readString(Paths.get(path + "/users/" + username + ".json")));
+            return JsonUtilities.GSON.toJson(Files.readString(Paths.get(path + "/users/" + username + ".json")));
         } catch (IOException e) {
             System.out.println("Couldn't get user " + username + "because: " + e.getMessage());
             return null;
         }
     }
 
-    @Override
     public void updateUser(final User user) {
         if (new File(path + "/users/" + user.getUsername() + ".json").exists()) {
             try (FileWriter fw = new FileWriter(path + "/users/" + user.getUsername() + ".json",
                     StandardCharsets.UTF_8)) {
-                        GSON.toJson(user, fw);
+                JsonUtilities.GSON.toJson(user, fw);
                 System.out.println("User " + user.getUsername() + " successfully updated.");
             } catch (IOException e) {
                 System.out
@@ -145,6 +156,18 @@ public final class JsonIO implements AbstractJsonIO {
                 throw new IOException("User not found in " + pathToPersistenceUser);
             }
         }
+    }
+
+    @Override
+    public void deleteUser(String username) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteCurrentUser'");
+    }
+
+    @Override
+    public List<String> getAllUsernames() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllUsernames'");
     }
 
 }
