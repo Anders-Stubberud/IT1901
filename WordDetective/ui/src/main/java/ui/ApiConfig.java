@@ -146,13 +146,13 @@ public final class ApiConfig {
   }
 
   // Lage en funskjon som caller på endpointet laget i api
-  protected static int GetHighScore() throws IOException, InterruptedException {
+  protected static int getHighScore() throws IOException, InterruptedException {
     String url = BASEURL + "GamePageController/getPlayerHighscore";
     HttpResponse<String> response = performGetRequest(url);
     return Integer.parseInt(response.body());
   }
 
-  protected static void updateUser(User user) throws IOException, InterruptedException {
+  protected static void updateUser(final User user) throws IOException, InterruptedException {
     JsonIO jsonIO = new JsonIO(); // contact persistence
     jsonIO.updateUser(user); // run method in JsonIO
   }
