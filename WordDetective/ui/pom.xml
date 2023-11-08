@@ -136,9 +136,9 @@
                     <noHeaderFiles>true</noHeaderFiles>
                     <stripDebug>true</stripDebug>
                     <noManPages>true</noManPages>
-                    <launcher>worddetective</launcher>
-                    <jlinkImageName>worddetective</jlinkImageName>
-                    <jlinkZipName>worddetective</jlinkZipName>
+                    <launcher>worddetectivefx</launcher>
+                    <jlinkImageName>worddetectivefx</jlinkImageName>
+                    <jlinkZipName>worddetectivefx</jlinkZipName>
                 </configuration>
             </plugin>
 
