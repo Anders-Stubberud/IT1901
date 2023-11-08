@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
-import persistence.JsonUtilities;
-
 /**
  * The GameLogic class is responsible for the logic of the game.
  * It will delegate certain tasks to other objects,
@@ -97,6 +95,11 @@ public final class Game extends UserAccess implements AbstractGame {
         return guess.matches(".*" + substring + ".*") && wordlist.contains(guess);
     }
 
+    /**
+     * Delegates the task of retrieving the user's highscore.
+     *
+     * @return The user's highscore
+     */
     public int getPlayerHighscore() {
         return getJsonIO().getUserProperty(user -> user.getHighScore());
     }

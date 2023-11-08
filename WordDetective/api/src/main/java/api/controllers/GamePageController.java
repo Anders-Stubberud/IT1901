@@ -85,6 +85,11 @@ public class GamePageController {
     game.savePlayerHighscore(Integer.parseInt(highscore));
   }
 
+  /**
+   * API endpoint for retrieving the user's highscore.
+   *
+   * @return The user's highscore.
+   */
   @RequestMapping(value = "/GamePageController/getPlayerHighscore", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
   public int getPlayerHighscore() {

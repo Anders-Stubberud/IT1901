@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
-import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -169,7 +167,14 @@ public final class JsonIO implements AbstractJsonIO {
         }
     }
 
-    public <T> T getUserProperty(Function<User, T> function) {
+    /**
+     * Retrieves a certain property from the current user.
+     *
+     * @param <T>      Specification of return type.
+     * @param function Functional interface to access the desired property.
+     * @return The retrieved property.
+     */
+    public <T> T getUserProperty(final Function<User, T> function) {
         return function.apply(user);
     }
 

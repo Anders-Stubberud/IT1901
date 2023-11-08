@@ -37,7 +37,6 @@ public interface AbstractGame {
   /**
    * Randomly generates a substring from the randomly chosen word.
    *
-   * @param word - A word to make the substring from
    * @return A randomly generated substring from the randomly chosen word.
    */
   String getSubstring();
