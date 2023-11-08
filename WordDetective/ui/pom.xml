@@ -160,7 +160,7 @@
                     <appVersion>1.0.0</appVersion>
                     <vendor>it1901</vendor>
                     <destination>target/dist</destination>
-                    <module>worddetective.ui/worddetective.ui.App</module>
+                    <module>project.ui/project.ui.App</module>
                     <runtimeImage>target/worddetectivefx</runtimeImage>
                     <javaOptions>
                         <option>-Dfile.encoding=UTF-8</option>
