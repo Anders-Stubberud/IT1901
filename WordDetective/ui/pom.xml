@@ -132,6 +132,13 @@
                 <configuration>
                     <!-- syntax: module-name/full-app-class-name -->
                     <mainClass>project.ui/ui.App</mainClass>
+                    <compress>2</compress>
+                    <noHeaderFiles>true</noHeaderFiles>
+                    <stripDebug>true</stripDebug>
+                    <noManPages>true</noManPages>
+                    <launcher>worddetective</launcher>
+                    <jlinkImageName>worddetective</jlinkImageName>
+                    <jlinkZipName>worddetective</jlinkZipName>
                 </configuration>
             </plugin>
 
