@@ -156,9 +156,9 @@
                 <artifactId>jpackage-maven-plugin</artifactId>
                 <version>1.6.0</version>
                 <configuration>
-                    <name>WordDetectiveFX</name>
+                    <name>WordDetective</name>
                     <appVersion>1.0.0</appVersion>
-                    <vendor>it1901</vendor>
+                    <vendor>project</vendor>
                     <destination>target/dist</destination>
                     <module>project.ui/project.ui.App</module>
                     <runtimeImage>target/worddetectivefx</runtimeImage>
