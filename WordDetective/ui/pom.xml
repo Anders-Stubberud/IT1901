@@ -151,6 +151,31 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                <groupId>org.panteleyev</groupId>
+                <artifactId>jpackage-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <configuration>
+                    <name>WordDetectiveFX</name>
+                    <appVersion>1.0.0</appVersion>
+                    <vendor>it1901</vendor>
+                    <destination>target/dist</destination>
+                    <module>worddetective.ui/worddetective.ui.App</module>
+                    <runtimeImage>target/worddetectivefx</runtimeImage>
+                    <javaOptions>
+                        <option>-Dfile.encoding=UTF-8</option>
+                    </javaOptions>
+                    <!-- linux options-->
+                    <linuxShortcut>true</linuxShortcut>
+                    <linuxMenuGroup>WordDetectiveFX</linuxMenuGroup>
+                    <!-- windows options-->
+                    <winDirChooser>true</winDirChooser>
+                    <winShortcut>true</winShortcut>
+                    <winMenu>true</winMenu>
+                    <winMenuGroup>WordDetectiveFX</winMenuGroup>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 </project>
