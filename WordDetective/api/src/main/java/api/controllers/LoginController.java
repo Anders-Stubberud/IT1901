@@ -1,6 +1,7 @@
 package api.controllers;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,10 +29,12 @@ public class LoginController {
    * @return SUCCESS, USERNAME_DOES_NOT_EXIST, INCORRECT_PASSWORD, or READ_ERROR,
    *         respectively.
    */
-  @RequestMapping(value = "/LoginController/performLogin", method = RequestMethod.GET)
+  @RequestMapping(value = "/LoginController/performLogin", method = RequestMethod.POST)
   @ResponseStatus(HttpStatus.OK)
-  public LoginStatus performLogin(final @RequestParam("username") String username,
-      final @RequestParam("password") String password) {
+  public LoginStatus performLogin(@RequestBody final String requestBody) {
+    String[] components = requestBody.split("&");
+    String username = components[0].split("=")[1];
+    String password = components[1].split("=")[1];
     if (authentication == null) {
       authentication = new LoginAuthentication(username);
     }

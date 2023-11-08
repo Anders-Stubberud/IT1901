@@ -10,7 +10,10 @@ import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -164,6 +167,10 @@ public final class JsonIO implements AbstractJsonIO {
                 throw new IOException("User not found in " + pathToPersistenceUser);
             }
         }
+    }
+
+    public <T> T getUserProperty(Function<User, T> function) {
+        return function.apply(user);
     }
 
     @Override

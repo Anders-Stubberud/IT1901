@@ -146,7 +146,7 @@ public final class CategoryController implements Initializable {
     public void renderCategories() {
         pane.setVisible(false);
         try {
-            for (String category : ApiConfig.categoryControllerGetCategories(username)) {
+            for (String category : ApiConfig.getCategories(username)) {
                 Button button = new Button(category);
                 button.setId(category);
                 button.setUserData(category);

@@ -14,10 +14,10 @@ public interface AbstractGame {
   void setCategory(String category) throws IllegalArgumentException;
 
   // /**
-  //  * Get the chosen category chosen by the player.
-  //  *
-  //  * @return players chosen category as {@link String}
-  //  */
+  // * Get the chosen category chosen by the player.
+  // *
+  // * @return players chosen category as {@link String}
+  // */
   // String getChosenCategory();
 
   /**
@@ -35,19 +35,12 @@ public interface AbstractGame {
   List<String> getWordList();
 
   /**
-   * Chooses a word randomly from the selected category.
-   *
-   * @return A randomly generated substring from the parameter.
-   */
-  String getRandomWord();
-
-  /**
    * Randomly generates a substring from the randomly chosen word.
    *
    * @param word - A word to make the substring from
    * @return A randomly generated substring from the randomly chosen word.
    */
-  String getRandomSubstring(String word);
+  String getSubstring();
 
   /**
    * Checks if the guess is present in wordlist and wether the substring is

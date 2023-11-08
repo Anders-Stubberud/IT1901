@@ -264,10 +264,8 @@ public final class GamePageController implements Initializable {
      */
     public void rndwordMasterLetters() {
         try {
-            String string = ApiConfig.gamePageControllerGetRandomWord();
-            substring = ApiConfig.gamePageControllerGetSubstring(string);
+            substring = ApiConfig.getSubstring();
             letters.setText(substring.toUpperCase());
-            System.out.println(string);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -310,7 +308,11 @@ public final class GamePageController implements Initializable {
             }));
             playerInputField.requestFocus();
             categoryDisplay.setText("Category: " + currentCategory.toUpperCase().replace("_", " "));
-
+            try {
+                highScore.setText(String.valueOf(ApiConfig.getHighScore()));
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
             // Add shutdownhook that updates user highscore when closing application
             Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
                 public void run() {

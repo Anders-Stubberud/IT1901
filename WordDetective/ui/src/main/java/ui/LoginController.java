@@ -64,7 +64,7 @@ public class LoginController {
         try {
             String username = usernameField.getText();
             String password = passwordField.getText();
-            switch (ApiConfig.loginControllerPerformLogin(username, password)) {
+            switch (ApiConfig.performLogin(username, password)) {
                 case SUCCESS:
                     FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
                     fxmlLoader.setControllerFactory(new CategoryFactory(username));

@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
+import persistence.JsonUtilities;
+
 /**
  * The GameLogic class is responsible for the logic of the game.
  * It will delegate certain tasks to other objects,
@@ -75,13 +77,9 @@ public final class Game extends UserAccess implements AbstractGame {
     }
 
     @Override
-    public String getRandomWord() {
+    public String getSubstring() {
         String word = wordlist.get(random.nextInt(wordlist.size()));
-        return word;
-    }
 
-    @Override
-    public String getRandomSubstring(final String word) {
         String substring;
         do {
             int wordLength = word.length();
@@ -97,6 +95,10 @@ public final class Game extends UserAccess implements AbstractGame {
     @Override
     public boolean checkValidWord(final String substring, final String guess) {
         return guess.matches(".*" + substring + ".*") && wordlist.contains(guess);
+    }
+
+    public int getPlayerHighscore() {
+        return getJsonIO().getUserProperty(user -> user.getHighScore());
     }
 
     @Override
