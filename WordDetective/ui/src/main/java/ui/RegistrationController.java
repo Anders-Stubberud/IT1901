@@ -19,11 +19,6 @@ public class RegistrationController {
      */
     private static final int DISPLAY_ERROR_DURATION_MS = 3000;
 
-    // /**
-    // * Database to read and write to.
-    // */
-    // private JsonIO database = new JsonIO();
-
     /**
      * FXML component used to display error.
      */
@@ -85,13 +80,13 @@ public class RegistrationController {
                     break;
                 case USERNAME_NOT_MATCH_REGEX:
                     // TODO mer brukervennlig forklaring
-                    displayError("The username \"" + username
-                            + "\" does not match the regular expression \"^(?!guest)[a-zA-Z0-9_ ]{2,}$\"");
+                    displayError("The username \"" + username + "\" should be minimum 2 characters and not be 'guest'");
                     break;
                 case PASSWORD_NOT_MATCH_REGEX:
                     // TODO mer brukervennlig forklaring
                     displayError("The password \"" + password
-                            + "\" does not match the regular expression \"^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\\\S+$).{4,}$\"");
+                            + "\" needs to be more then 4 characters, contain at least 1 number, "
+                            + "1 lowercase letter, 1 uppercase letter and 1 special character '#$%&/?!+'");
                     break;
                 case UPLOAD_ERROR:
                     displayError("Error during instantiation of new user.");
@@ -103,4 +98,5 @@ public class RegistrationController {
             e.printStackTrace();
         }
     }
+
 }
