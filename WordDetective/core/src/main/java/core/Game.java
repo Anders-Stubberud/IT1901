@@ -101,7 +101,7 @@ public final class Game extends UserAccess implements AbstractGame {
      * @return The user's highscore
      */
     public int getPlayerHighscore() {
-        return getJsonIO().getUserProperty(user -> user.getHighScore());
+        return isGuestUser ? 0 : getJsonIO().getUserProperty(user -> user.getHighScore());
     }
 
     @Override
