@@ -32,7 +32,7 @@
             <Font name="Silom" size="48.0" />
          </font>
       </Text>
-      <Button fx:id="appLogInBtn" layoutX="424.0" layoutY="288.0" mnemonicParsing="false" onAction="#handleLogIn" style="-fx-font-size: 20px;" styleClass="btn" stylesheets="@css/index.css" text="Log In">
+      <Button fx:id="appLogInBtn" layoutX="424.0" layoutY="288.0" mnemonicParsing="false" onAction="#toLogIn" style="-fx-font-size: 20px;" styleClass="btn" stylesheets="@css/index.css" text="Log In">
          <font>
             <Font size="25.0" />
          </font>
@@ -44,7 +44,7 @@
             </DropShadow>
          </effect>
       </Button>
-      <Button fx:id="appGuestBtn" layoutX="390.0" layoutY="373.0" mnemonicParsing="false" onAction="#launchGame" style="-fx-font-size: 20px;" styleClass="btn" stylesheets="@css/index.css" text="Play as Guest">
+      <Button fx:id="appGuestBtn" layoutX="390.0" layoutY="373.0" mnemonicParsing="false" onAction="#toSelectCategory" style="-fx-font-size: 20px;" styleClass="btn" stylesheets="@css/index.css" text="Play as Guest">
          <font>
             <Font size="25.0" />
          </font>
