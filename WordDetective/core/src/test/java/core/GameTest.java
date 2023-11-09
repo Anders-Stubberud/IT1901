@@ -31,6 +31,9 @@ public class GameTest {
      * Wordlist used for testing.
      */
     private List<String> singleTestList = Arrays.asList("Test");
+    /**
+     * Wordlist used for testing with mulitple strings.
+     */
     private List<String> multipleTestList = Arrays.asList("Test1", "Test2", "Test3");
 
     /**

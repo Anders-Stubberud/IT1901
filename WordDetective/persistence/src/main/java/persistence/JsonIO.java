@@ -14,9 +14,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -35,7 +32,7 @@ public final class JsonIO implements AbstractJsonIO {
      */
     private User user;
 
-    /*
+    /**
      * Gson object user for seralizastion/deserialazation.
      */
     private Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -96,24 +93,25 @@ public final class JsonIO implements AbstractJsonIO {
     }
 
     @Override
-    public boolean addUser(final User user) {
-        if (new File(path + "/users/" + user.getUsername() + ".json").exists()) {
-            throw new IllegalArgumentException("User " + user.getUsername() + " already exists.");
+    public boolean addUser(final User newUser) {
+        if (new File(path + "/users/" + newUser.getUsername() + ".json").exists()) {
+            throw new IllegalArgumentException("User " + newUser.getUsername() + " already exists.");
         }
-        try (FileWriter fw = new FileWriter(path + "/users/" + user.getUsername() + ".json", StandardCharsets.UTF_8)) {
-            GSON.toJson(user, fw);
-            System.out.println("User " + user.getUsername() + " successfully created.");
+        try (FileWriter fw = new FileWriter(path + "/users/" + newUser.getUsername() + ".json",
+                StandardCharsets.UTF_8)) {
+            GSON.toJson(newUser, fw);
+            System.out.println("User " + newUser.getUsername() + " successfully created.");
             return true;
         } catch (IOException e) {
-            System.out.println("Couldn't add user " + user.getUsername() + " because: " + e.getMessage());
+            System.out.println("Couldn't add user " + newUser.getUsername() + " because: " + e.getMessage());
             return false;
         }
     }
 
     @Override
     public boolean deleteUser(final String username) {
-        File user = new File(path + "/users/" + username + ".json");
-        if (user.delete()) {
+        File userDel = new File(path + "/users/" + username + ".json");
+        if (userDel.delete()) {
             System.out.println(username + " deleted successfully");
             return true;
         } else {
@@ -187,7 +185,7 @@ public final class JsonIO implements AbstractJsonIO {
     }
 
     @Override
-    public User getUser(String username) throws RuntimeException {
+    public User getUser(final String username) throws RuntimeException {
         try {
             String jsonString = Files.readString(Paths.get(path + "/users/" + username + ".json"));
             return GSON.fromJson(jsonString, User.class);
@@ -212,10 +210,12 @@ public final class JsonIO implements AbstractJsonIO {
     }
 
     /**
-     * Used in API call to convert string representation of json into java object.
+     * Provides absolute path to current working directory.
+     * Retrieves a certain property from the current user.
      *
-     * @param json String representation of a json file.
-     * @return User java object equivalent of the json string representation.
+     * @param <T>      Specification of return type.
+     * @param function Functional interface to access the desired property.
+     * @return The retrieved property.
      */
     public <T> T getUserProperty(final Function<User, T> function) {
         return function.apply(user);
@@ -229,18 +229,21 @@ public final class JsonIO implements AbstractJsonIO {
                 .map((name) -> name.getName().replace(".json", "")).toList();
     }
 
+    /**
+     * API call to convert a {@link String} to {@link User} object.
+     *
+     * @param json - The json string
+     * @return a {@link User} object
+     */
     public User convertToJavaObject(final String json) {
         return GSON.fromJson(json, User.class);
     }
 
-    /**
-     * Provides absolute path to current working directory.
-     * Retrieves a certain property from the current user.
-     *
-     * @param <T>      Specification of return type.
-     * @param function Functional interface to access the desired property.
-     * @return The retrieved property.
-     */
+   /**
+    * Get the absolute path to the spesified directory.
+    * @param directory - The directory to find absolute path from
+    * @return - A string of the path
+    */
     public static String getAbsolutePath(final String directory) {
         Path absolutePath = Paths.get("").toAbsolutePath();
         while (!absolutePath.endsWith(directory)) {

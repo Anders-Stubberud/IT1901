@@ -2,7 +2,6 @@ package core;
 
 import java.io.IOException;
 import java.util.List;
-import types.User;
 
 public interface AbstractGame {
 
@@ -57,8 +56,8 @@ public interface AbstractGame {
    * Save the current players highscore to database.
    * Will not save if player is guest.
    *
-   * @param highscore      - The highscore to save
-   * @param saveToDatabase - whether to save the new highscore to database
+   * @param highscore - The highscore to save
+   *
    */
   void savePlayerHighscore(int highscore) throws IOException;
 
