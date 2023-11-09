@@ -14,12 +14,14 @@ import core.UserAccess;
 public class CategoryController {
 
   /**
-   * UserAccess instance to provide access to persistently stored user information.
+   * UserAccess instance to provide access to persistently stored user
+   * information.
    */
   private UserAccess userAccess;
 
   /**
    * API endpoint for fetching og categories related to certain user.
+   * 
    * @param username Username of the suer to fetch the categories of.
    * @return Set<String> with all category names.
    */
@@ -28,6 +30,11 @@ public class CategoryController {
   public Set<String> getCategories(final @RequestParam("username") String username) {
     this.userAccess = new UserAccess(username);
     return userAccess.getAllCategories();
+  }
+
+  public static void main(String[] args) {
+    UserAccess a = new UserAccess("guest");
+    System.out.println(a.getAllCategories());
   }
 
 }

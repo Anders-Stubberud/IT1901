@@ -364,6 +364,10 @@ public final class JsonIO implements AbstractJsonIO {
         throw new IOException("Property not found");
     }
 
+    public static void main(String[] args) {
+        System.out.println(getAbsolutePathAsString());
+    }
+
     /**
      * Provides the names of all files in a given directory.
      * 
