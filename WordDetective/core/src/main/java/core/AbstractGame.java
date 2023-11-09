@@ -54,13 +54,6 @@ public interface AbstractGame {
   boolean checkValidWord(String substring, String guess);
 
   /**
-   * Gets the current player of the game.
-   *
-   * @return - a {@link User} of the current player
-   */
-  User getPlayer();
-
-  /**
    * Save the current players highscore to database.
    * Will not save if player is guest.
    *
