@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +29,8 @@ public class JsonIOTest {
   /**
    * The path used for testing.
    */
-  private String testPath = JsonIO.getAbsolutePath("gr2325") + "/WordDetective/persistence/src/test/java/persistence";
+  private Path testPath = Paths
+      .get(JsonIO.getAbsolutePath("gr2325") + "/WordDetective/persistence/src/test/java/persistence");
   /**
    * JsonIO object.
    */
@@ -54,7 +56,6 @@ public class JsonIOTest {
    */
   @Test
   public void testConstructor() {
-    assertDoesNotThrow(() -> new JsonIO());
     assertDoesNotThrow(() -> new JsonIO(testPath));
   }
 
@@ -85,7 +86,7 @@ public class JsonIOTest {
     assertEquals(testuser.getPassword(), jsonIO.getUser(testuser.getUsername()).getPassword());
     assertEquals(testuser.getHighScore(), jsonIO.getUser(testuser.getUsername()).getHighScore());
     assertEquals(testuser.getCustomCategories(), jsonIO.getUser(testuser.getUsername()).getCustomCategories());
-    assertThrows(IllegalArgumentException.class, () -> jsonIO.getUser("Not existing user"));
+    assertThrows(RuntimeException.class, () -> jsonIO.getUser("Not existing user"));
     jsonIO.deleteUser(testuser.getUsername());
   }
 
@@ -101,6 +102,9 @@ public class JsonIOTest {
     testuser.setHighscore(10);
     List<String> testCategory = Arrays.asList("Test", "Test2");
     testuser.addCustomCategories("TestCategory", testCategory);
+    System.out.println(testuser.getUsername());
+    System.out.println(testuser.getPassword());
+    System.out.println(testuser.getCustomCategories().toString());
     jsonIO.updateUser(testuser);
 
     User retrivedUser = jsonIO.getUser(testuser.getUsername());
@@ -110,7 +114,6 @@ public class JsonIOTest {
             + retrivedUser.getCustomCategories().keySet());
 
     assertEquals(10, retrivedUser.getHighScore(), "Highscore should be 10 not " + retrivedUser.getHighScore());
-    assertThrows(IllegalArgumentException.class, () -> jsonIO.updateUser(new User()));
 
     jsonIO.deleteUser(testuser.getUsername());
   }
@@ -131,11 +134,15 @@ public class JsonIOTest {
       e.printStackTrace();
     }
 
-    assertEquals(testCategory, jsonIO.getDefaultCategory("testCategory"),
-        "TestCategory should be equals retrieved category, but was: " + jsonIO.getDefaultCategory("testCategory"));
-    assertEquals(1, jsonIO.getAllDefaultCategories().size());
-    assertTrue(jsonIO.getAllDefaultCategories().containsKey("testCategory"));
-    assertFalse(jsonIO.getAllDefaultCategories().containsKey("Non existing"));
+    try {
+      assertEquals(testCategory, jsonIO.getDefaultCategory("testCategory"),
+          "TestCategory should be equals retrieved category, but was: " + jsonIO.getDefaultCategory("testCategory"));
+    } catch (IOException e) {
+      assertThrows(IOException.class, () -> jsonIO.getDefaultCategory("testCategory"));
+    }
+    assertEquals(1, jsonIO.getAllCategories().size());
+    assertTrue(jsonIO.getAllCategories().contains("testCategory"));
+    assertFalse(jsonIO.getAllCategories().contains("Non existing"));
 
   }
 

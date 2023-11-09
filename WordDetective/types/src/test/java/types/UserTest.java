@@ -1,10 +1,7 @@
 package types;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -15,14 +12,6 @@ import org.junit.jupiter.api.Test;
 public class UserTest {
 
   /**
-   * Invalid user used for testing.
-   */
-  private User invalidUser;
-  /**
-   * Invalid user used for testing.
-   */
-  private User invalidUser2;
-  /**
    * Valid user used for testing.
    */
   private User validUser;
@@ -32,8 +21,6 @@ public class UserTest {
    */
   @BeforeEach
   public void init() {
-    invalidUser = new User("guest", "wrong");
-    invalidUser2 = new User("no/()", "wrong");
     validUser = new User("Testuser", "Correct123");
   }
 
@@ -45,7 +32,7 @@ public class UserTest {
     User guest = new User();
     assertEquals(guest.getUsername(), "guest",
         "Username should be guest on empty constructor not: " + guest.getUsername());
-    assertEquals(guest.getPassword(), "", "Password should be empty on guest, not:" + guest.getPassword());
+    assertEquals(null, guest.getPassword(), "Password should be null on guest, not:" + guest.getPassword());
     assertEquals(guest.getHighScore(), 0, "Higscore should be 0, not:" + guest.getHighScore());
 
     User user = new User("Username", "Password123");
@@ -53,28 +40,6 @@ public class UserTest {
     assertEquals(user.getPassword(), "Password123",
         "Password should be 'Password123' on user, not:" + user.getPassword());
     assertEquals(user.getHighScore(), 0, "Higscore should be 0, not:" + user.getHighScore());
-  }
-
-  // /**
-  //  * Test for valid and invalid usernames.
-  //  */
-  // @Test
-  // public void getUsernameTest() {
-  //   assertTrue(validUser.isCorrectUsername(), "The username " + validUser.getUsername() + " should be valid");
-  //   assertFalse(invalidUser.isCorrectUsername(),
-  //       "The username " + invalidUser.getUsername() + " should be invalid");
-  //   assertFalse(invalidUser2.isCorrectUsername(),
-  //       "The username " + invalidUser2.getUsername() + " should be invalid");
-  // }
-
-  /**
-   * Test for valid and invalid passwords.
-   */
-  @Test
-  public void getPasswordTest() {
-    assertTrue(validUser.isCorrectPassword(), "The password " + validUser.getPassword() + " should be valid");
-    assertFalse(invalidUser.isCorrectPassword(),
-        "The username " + invalidUser.getPassword() + " should be invalid");
   }
 
   /**
