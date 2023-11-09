@@ -5,6 +5,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
@@ -23,14 +25,23 @@
             </VBox>
          </content>
       </ScrollPane>
-      <Button fx:id="customCategory" layoutX="435.0" layoutY="40.0" mnemonicParsing="false" onAction="#loadCustomCategory" text="Add custom category" />
+      <Button fx:id="customCategory" layoutX="373.0" layoutY="33.0" mnemonicParsing="false" onAction="#loadCustomCategory" styleClass="btn" stylesheets="@css/index.css" text="Add custom category" />
       <Pane fx:id="pane" layoutX="671.0" layoutY="95.0" prefHeight="493.0" prefWidth="280.0">
          <children>
-            <TextArea fx:id="categoryName" layoutX="40.0" layoutY="63.0" prefHeight="25.0" prefWidth="231.0" text="Add category name:" wrapText="true" />
+            <TextArea fx:id="categoryName" layoutX="40.0" layoutY="63.0" prefHeight="25.0" prefWidth="231.0" wrapText="true" />
             <Label layoutX="40.0" layoutY="237.0" prefHeight="67.0" prefWidth="130.0" text="&quot;WORD1&quot;,&#10;&quot;WORD2&quot;,&#10;etc...&#10;" textFill="WHITE" />
             <Button fx:id="upload" layoutX="101.0" layoutY="374.0" mnemonicParsing="false" onAction="#uploadCategory" text="Upload" />
-            <TextArea fx:id="categoryWords" layoutX="40.0" layoutY="122.0" prefHeight="95.0" prefWidth="231.0" text="Add category words:&#10;&#10;Use the template below:" wrapText="true" />
+            <TextArea fx:id="categoryWords" layoutX="40.0" layoutY="122.0" prefHeight="95.0" prefWidth="231.0" wrapText="true" />
          </children>
       </Pane>
+      <Button fx:id="backArrowbtn" layoutX="37.0" layoutY="33.0" mnemonicParsing="false" onAction="#backToMainPage" style="-fx-background-color: transparent;" text="Back">
+         <graphic>
+            <ImageView fx:id="backArrowImg" fitHeight="23.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../assets/images/backArrow.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>

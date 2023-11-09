@@ -49,7 +49,7 @@ public final class AppController extends AbstractController implements Initializ
      */
     @FXML
     void toSelectCategory() {
-        changeSceneTo("Category.fxml", appGuestBtn);
+        changeSceneTo("Category.fxml", appGuestBtn, new CategoryFactory("guest"));
     }
 
     @Override

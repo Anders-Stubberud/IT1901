@@ -17,9 +17,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-public final class CategoryController implements Initializable {
+public final class CategoryController extends AbstractController implements Initializable {
 
     /**
      * The current user.
@@ -66,6 +67,17 @@ public final class CategoryController implements Initializable {
      */
     @FXML
     private Pane pane;
+
+    /**
+     * Button for going back to main page.
+     */
+    @FXML
+    private Button backArrowbtn;
+    /**
+     * Imageview of back arrow png.
+     */
+    @FXML
+    private ImageView backArrowImg;
 
     /**
      * Constructor used for controlling whether or not to retrieve custom
@@ -129,18 +141,6 @@ public final class CategoryController implements Initializable {
     private static final int HORIZONTAL_PADDING = 10;
 
     /**
-     * initialization of the Category controller triggers a query retrieving all
-     * available categories.
-     */
-    @Override
-    public void initialize(final URL location, final ResourceBundle resources) {
-        renderCategories();
-        if (username.equals("guest")) {
-            upload.setOpacity(0);
-        }
-    }
-
-    /**
      * Renders the available categories in the GUI.
      */
     public void renderCategories() {
@@ -159,16 +159,7 @@ public final class CategoryController implements Initializable {
                 vbox.getChildren().add(ekstraPlass);
 
                 button.setOnAction(event -> {
-                    try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("GamePage.fxml"));
-                        fxmlLoader.setControllerFactory(new GamePageFactory(username, category));
-                        Parent parent = fxmlLoader.load();
-                        Stage stage = (Stage) button.getScene().getWindow();
-                        stage.setScene(new Scene(parent));
-                        stage.show();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    changeSceneTo("GamePage.fxml", button, new GamePageFactory(username, category));
                 });
             }
         } catch (IOException | InterruptedException e) {
@@ -199,6 +190,23 @@ public final class CategoryController implements Initializable {
         }
 
         return formattedString.toString().trim();
+    }
+
+    public void backToMainPage() {
+        changeSceneTo("App.fxml", backArrowbtn);
+    }
+
+    /**
+     * initialization of the Category controller triggers a query retrieving all
+     * available categories.
+     */
+    @Override
+    public void initialize(final URL location, final ResourceBundle resources) {
+        setBackArrowImg(backArrowImg);
+        renderCategories();
+        if (username.equals("guest")) {
+            upload.setOpacity(0);
+        }
     }
 
 }

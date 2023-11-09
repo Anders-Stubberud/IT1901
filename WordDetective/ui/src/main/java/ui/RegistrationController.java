@@ -1,18 +1,18 @@
 package ui;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+import javafx.scene.image.ImageView;
 
-public class RegistrationController {
+public class RegistrationController extends AbstractController implements Initializable {
 
     /**
      * Duration of the error displayed useed if username is taken.
@@ -38,10 +38,17 @@ public class RegistrationController {
     private PasswordField newPassword;
 
     /**
-     * FXML component used for signing up.
+     * FXML button used for signing up.
+     * FXML button for backArrow
      */
     @FXML
-    private Button signUp;
+    private Button signUp, backArrowbtn;
+
+    /**
+     * ImageView of back arrow
+     */
+    @FXML
+    private ImageView backArrowImg;
 
     private void displayError(final String error) {
         errorDisplay.setText(error);
@@ -68,12 +75,7 @@ public class RegistrationController {
             String password = newPassword.getText();
             switch (ApiConfig.registrationResult(username, password)) {
                 case SUCCESS:
-                    FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
-                    fxmlLoader.setControllerFactory(new CategoryFactory(username));
-                    Parent parent = fxmlLoader.load();
-                    Stage stage = (Stage) signUp.getScene().getWindow();
-                    stage.setScene(new Scene(parent));
-                    stage.show();
+                    changeSceneTo("Category.fxml", signUp, new CategoryFactory(username));
                     break;
                 case USERNAME_TAKEN:
                     displayError("The username \"" + username + "\" is already taken.");
@@ -97,6 +99,18 @@ public class RegistrationController {
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Change scene back to login page.
+     */
+    public void toLoginPage() {
+        changeSceneTo("LoginPage.fxml", backArrowbtn);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        setBackArrowImg(backArrowImg);
     }
 
 }
