@@ -307,6 +307,13 @@ public final class JsonIO implements AbstractJsonIO {
         }
     }
 
+    /**
+     * Attempts to persistently add new user. Uses custom configured path to
+     * determine location.
+     *
+     * @param newUser New user to add persistently.
+     * @return Boolean indicationg if the user was added persistently.
+     */
     public boolean addUser(final User newUser) {
         if (new File(path + "/users/" + newUser.getUsername() + ".json").exists()) {
             throw new IllegalArgumentException("User " + newUser.getUsername() + " already exists.");
