@@ -155,8 +155,7 @@ public final class GamePageController implements Initializable {
     private String currentCategory;
 
     /**
-     * The player circle display on screen
-     * 
+     * The player circle display on screen.
      */
     private Circle playerCircle;
 
