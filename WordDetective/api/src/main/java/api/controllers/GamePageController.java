@@ -26,7 +26,7 @@ public class GamePageController {
   @RequestMapping(value = "/GamePageController/newGame", method = RequestMethod.POST)
   @ResponseStatus(HttpStatus.OK)
   public void newGame(@RequestBody final String requestBody) {
-    String[] components = requestBody.split("&|");
+    String[] components = requestBody.split("&");
     String username = components[0].split("=")[1];
     String category = components[1].split("=")[1];
     game = new Game(username);
@@ -46,26 +46,16 @@ public class GamePageController {
   // }
 
   /**
-   * API endpoint for fetching a random word.
+   * API endpoint for fetching a randomly generated substring from a randomly
+   * pulled word.
    *
-   * @return A word pulled randomly from the current wordlist.
-   */
-  @RequestMapping(value = "/GamePageController/getRandomWord", method = RequestMethod.GET)
-  @ResponseStatus(HttpStatus.OK)
-  public String getRandomWord() {
-    return game.getRandomWord();
-  }
-
-  /**
-   * API endpoint for fetching substring.
-   *
-   * @param string The string to create a substring from.
-   * @return Substring of the provided string.
+   * @return A substring generated from a word randomly pulled from the current
+   *         wordlist.
    */
   @RequestMapping(value = "/GamePageController/getSubstring", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
-  public String getSubstring(final @RequestParam("string") String string) {
-    return game.getRandomSubstring(string);
+  public String getSubstring() {
+    return game.getSubstring();
   }
 
   /**
@@ -93,6 +83,17 @@ public class GamePageController {
   @ResponseStatus(HttpStatus.OK)
   public void savePlayerHighscore(@RequestBody final String highscore) {
     game.savePlayerHighscore(Integer.parseInt(highscore));
+  }
+
+  /**
+   * API endpoint for retrieving the user's highscore.
+   *
+   * @return The user's highscore.
+   */
+  @RequestMapping(value = "/GamePageController/getPlayerHighscore", method = RequestMethod.GET)
+  @ResponseStatus(HttpStatus.OK)
+  public int getPlayerHighscore() {
+    return game.getPlayerHighscore();
   }
 
 }

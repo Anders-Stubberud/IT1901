@@ -75,13 +75,9 @@ public final class Game extends UserAccess implements AbstractGame {
     }
 
     @Override
-    public String getRandomWord() {
+    public String getSubstring() {
         String word = wordlist.get(random.nextInt(wordlist.size()));
-        return word;
-    }
 
-    @Override
-    public String getRandomSubstring(final String word) {
         String substring;
         do {
             int wordLength = word.length();
@@ -97,6 +93,15 @@ public final class Game extends UserAccess implements AbstractGame {
     @Override
     public boolean checkValidWord(final String substring, final String guess) {
         return guess.matches(".*" + substring + ".*") && wordlist.contains(guess);
+    }
+
+    /**
+     * Delegates the task of retrieving the user's highscore.
+     *
+     * @return The user's highscore
+     */
+    public int getPlayerHighscore() {
+        return isGuestUser ? 0 : getJsonIO().getUserProperty(user -> user.getHighScore());
     }
 
     @Override

@@ -96,12 +96,12 @@ public final class ApiConfig {
    * @throws InterruptedException
    * @throws IOException
    */
-  protected static LoginStatus loginControllerPerformLogin(
+  protected static LoginStatus performLogin(
       final String username, final String password) throws IOException, InterruptedException {
-    String param1 = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
-    String param2 = URLEncoder.encode(password, StandardCharsets.UTF_8.toString());
-    String url = BASEURL + "LoginController/performLogin" + "?username=" + param1 + "&password=" + param2;
-    HttpResponse<String> response = performGetRequest(url);
+    String url = BASEURL + "LoginController/performLogin";
+    String type = "text/plain";
+    BodyPublisher body = HttpRequest.BodyPublishers.ofString("username=" + username + "&password=" + password);
+    HttpResponse<String> response = performPostRequest(url, type, body);
     return GSON.fromJson(response.body(), LoginStatus.class);
   }
 
@@ -116,7 +116,7 @@ public final class ApiConfig {
    *                              with the files.
    * @throws InterruptedException If thread is interrupted.
    */
-  protected static RegistrationStatus registrationControllerRegistrationResult(
+  protected static RegistrationStatus registrationResult(
       final String username, final String password) throws IOException, InterruptedException {
     String param1 = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
     String param2 = URLEncoder.encode(password, StandardCharsets.UTF_8.toString());
@@ -134,7 +134,7 @@ public final class ApiConfig {
    *                              with the files.
    * @throws InterruptedException If thread is interrupted.
    */
-  protected static Set<String> categoryControllerGetCategories(final String username)
+  protected static Set<String> getCategories(final String username)
       throws IOException, InterruptedException {
     String param1 = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
     String url = BASEURL + "CategoryController/getCategories" + "?username=" + param1;
@@ -159,22 +159,6 @@ public final class ApiConfig {
     performPostRequest(url, type, body);
   }
 
-  // /**
-  // * Sets the category for the current game.
-  // *
-  // * @param category The category selected by the user.
-  // * @throws IOException If any issues are encountered during interaction
-  // * with the files.
-  // * @throws InterruptedException If thread is interrupted.
-  // */
-  // protected static void gamePageControllerSetCategory(final String category)
-  // throws IOException, InterruptedException {
-  // String url = BASEURL + "GamePageController/setCategory";
-  // String type = "text/plain";
-  // BodyPublisher body = BodyPublishers.ofString(category);
-  // performPostRequest(url, type, body).body();
-  // }
-
   /**
    * Fetches a word pulled randomly from the current game's wordlist.
    *
@@ -183,26 +167,11 @@ public final class ApiConfig {
    *                              with the files.
    * @throws InterruptedException If thread is interrupted.
    */
-  protected static String gamePageControllerGetRandomWord()
+  protected static String getSubstring()
       throws IOException, InterruptedException {
-    String url = BASEURL + "GamePageController/getRandomWord";
+    String url = BASEURL + "GamePageController/getSubstring";
     HttpResponse<String> response = performGetRequest(url);
     return response.body();
-  }
-
-  /**
-   * Retrieves a substring randomly generated from the supplied word.
-   *
-   * @param string The string to retrieve a subtring of.
-   * @return A substring from the provided string.
-   * @throws IOException          If any issues are encountered during interaction
-   *                              with the files.
-   * @throws InterruptedException If thread is interrupted.
-   */
-  protected static String gamePageControllerGetSubstring(final String string) throws IOException, InterruptedException {
-    String param1 = URLEncoder.encode(string, StandardCharsets.UTF_8.toString());
-    String url = BASEURL + "GamePageController/getSubstring" + "?string=" + param1;
-    return performGetRequest(url).body();
   }
 
   protected static boolean checkValidWord(final String substring, final String guess)
