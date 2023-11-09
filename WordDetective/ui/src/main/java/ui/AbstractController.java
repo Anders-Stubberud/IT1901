@@ -1,6 +1,8 @@
 package ui;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
 
@@ -11,11 +13,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 /**
  * An abstract parent class for controllers containing the common methods for
@@ -41,6 +46,33 @@ public abstract class AbstractController {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  /**
+   * Change the scene to a new fxml scene.
+   *
+   * @param scene         - The fxml scene to change to. For example
+   *                      {@code App.fxml}
+   * @param buttonPressed - The button that is clicked when you want to switch
+   *                      scene
+   * @param factory       - The factory to use if you need to pass parameters
+   *                      between scenes
+   */
+  public void changeSceneTo(
+      final String scene,
+      final Button buttonPressed,
+      final Callback<Class<?>, Object> factory) {
+    try {
+      FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource(scene));
+      fxmlLoader.setControllerFactory(factory);
+      Stage stage = (Stage) buttonPressed.getScene().getWindow();
+      Parent parent = fxmlLoader.load();
+      stage.setScene(new Scene(parent));
+      stage.show();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
   }
 
   /**
@@ -73,5 +105,22 @@ public abstract class AbstractController {
     soundMP.setCycleCount(Timeline.INDEFINITE);
     videoMP.play();
     soundMP.play();
+  }
+
+  /**
+   * Render in the image of the back arrow.
+   *
+   * @param imageview - The {@link ImageView} to place the back arrow image in
+   */
+  public void setBackArrowImg(ImageView imageview) {
+    Image backArrow;
+    try {
+      backArrow = new Image(
+          new FileInputStream(new File(Paths.get("assets").toAbsolutePath() + "/images/backArrow.png")));
+    } catch (Exception e) {
+      backArrow = null;
+      System.out.println("Couldn't find image because: " + e.getMessage());
+    }
+    imageview.setImage(backArrow);
   }
 }
