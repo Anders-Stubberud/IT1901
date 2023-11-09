@@ -10,14 +10,6 @@ import types.User;
 public interface AbstractJsonIO {
 
   /**
-   * Add a user to the database.
-   *
-   * @param user - The user to add
-   * @return - a {@link Boolean} if user was added or not
-   */
-  boolean addUser(User user);
-
-  /**
    * Delete user from database.
    *
    * @param username The username of the user to delete.

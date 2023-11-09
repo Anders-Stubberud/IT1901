@@ -118,22 +118,6 @@ public final class JsonIO implements AbstractJsonIO {
     }
 
     @Override
-    public boolean addUser(final User newUser) {
-        if (new File(path + "/users/" + newUser.getUsername() + ".json").exists()) {
-            throw new IllegalArgumentException("User " + newUser.getUsername() + " already exists.");
-        }
-        try (FileWriter fw = new FileWriter(path + "/users/" + newUser.getUsername() + ".json",
-                StandardCharsets.UTF_8)) {
-            gson.toJson(newUser, fw);
-            System.out.println("User " + newUser.getUsername() + " successfully created.");
-            return true;
-        } catch (IOException e) {
-            System.out.println("Couldn't add user " + newUser.getUsername() + " because: " + e.getMessage());
-            return false;
-        }
-    }
-
-    @Override
     public boolean deleteUser(final String username) {
         File userDel = new File(path + "/users/" + username + ".json");
         if (userDel.delete()) {
@@ -311,7 +295,7 @@ public final class JsonIO implements AbstractJsonIO {
      * @param user The user of which to persistently add.
      * @return Boolean indicating if the user was added successfully.
      */
-    public static boolean successfullyAddedUserPersistently(final User user) {
+    public static boolean addUser(final User user) {
         try (FileWriter fw = new FileWriter(pathToResources + "/users/" + user.getUsername() + ".json",
                 StandardCharsets.UTF_8)) {
             gson.toJson(user, fw);
