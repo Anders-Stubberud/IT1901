@@ -1,7 +1,7 @@
 package core;
 
 import java.io.IOException;
-import persistence.JsonUtilities;
+import persistence.JsonIO;
 import types.LoginStatus;
 
 public class LoginAuthentication extends AbstractAuthentication {
@@ -47,13 +47,13 @@ public class LoginAuthentication extends AbstractAuthentication {
   @Override
   public final boolean isValidPassword(final String password) throws RuntimeException {
     try {
-      if (JsonUtilities.usernameAndPasswordMatch(username, password)) {
+      if (JsonIO.usernameAndPasswordMatch(username, password)) {
         return true;
       }
       return false;
     } catch (IOException e) {
       throw new RuntimeException(
-          "User \"" + username + "\" not found in " + JsonUtilities.PATH_TO_RESOURCES + "/users");
+          "User \"" + username + "\" not found in " + JsonIO.PATH_TO_RESOURCES + "/users");
     }
   }
 
