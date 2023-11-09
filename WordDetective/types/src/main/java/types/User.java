@@ -6,6 +6,7 @@ import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
 public final class User {
+
     /**
      * The username of the given player.
      */
@@ -38,18 +39,11 @@ public final class User {
      * @param password The password of the new user.
      */
     public User(final String username, final String password) {
-        this.customCategories = new HashMap<>();
+        // this.customCategories = new HashMap<>();
         this.highscore = 0;
+        this.customCategories = new HashMap<String, List<String>>();
         this.name = username;
         this.pwd = password;
-    }
-
-    /**
-     * Empty constructor for guests users.
-     * Also used to initiate class for Json file reading
-     */
-    public User() {
-        this("guest", "");
     }
 
     /**
@@ -80,6 +74,15 @@ public final class User {
     }
 
     /**
+     * Set the user's custom categories.
+     *
+     * @param newCustomCategories - a HashMap with all the categories
+     */
+    public void setCustomCategories(final HashMap<String, List<String>> newCustomCategories) {
+        this.customCategories = newCustomCategories;
+    }
+
+    /**
      * Get user's custom categories.
      *
      * @return a HashMap containing the user's custom categories
@@ -95,15 +98,6 @@ public final class User {
      */
     public void setHighscore(final int score) {
         this.highscore = score;
-    }
-
-    /**
-     * Set the user's custom categories.
-     *
-     * @param newCustomCategories - a HashMap with all the categories
-     */
-    public void setCustomCategories(final HashMap<String, List<String>> newCustomCategories) {
-        this.customCategories = newCustomCategories;
     }
 
     /**
@@ -123,25 +117,6 @@ public final class User {
      */
     public void deleteCustomCategories(final String category) {
         this.customCategories.remove(category);
-    }
-
-    /**
-     * check if username is correct according to set regex.
-     *
-     * @return {@link Boolean}
-     */
-    public boolean isCorrectUsername() {
-        return getUsername().matches("^(?!guest)[a-zA-Z0-9_ ]{2,}$");
-    }
-
-    /**
-     * check if password is correct according to set regex.
-     *
-     * @return {@link Boolean}
-     */
-    public boolean isCorrectPassword() {
-        System.out.println("Kom hit");
-        return getPassword().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{4,}$");
     }
 
 }

@@ -1,6 +1,7 @@
 package ui;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -9,10 +10,11 @@ import java.net.http.HttpRequest.BodyPublisher;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-
+import java.util.Set;
 import com.google.gson.Gson;
-
-import types.User;
+import com.google.gson.reflect.TypeToken;
+import types.LoginStatus;
+import types.RegistrationStatus;
 
 public final class ApiConfig {
 
@@ -38,24 +40,50 @@ public final class ApiConfig {
   private static final Gson GSON = new Gson();
 
   /**
+   * Type of json parsing result.
+   */
+  private static Type listOfStringsType = new TypeToken<Set<String>>() {
+  }.getType();
+
+  /**
    * No instantiation of utility class.
    */
   private ApiConfig() {
     throw new AssertionError("Utility class - do not instantiate.");
   }
 
+  /**
+   * Boilerplate method for sending GET requests.
+   *
+   * @param url The URL to send the request to.
+   * @return HttpResponse<String> containing the result.
+   * @throws IOException          If any issues are encountered during interaction
+   *                              with the files.
+   * @throws InterruptedException If thread is interrupted.
+   */
   private static HttpResponse<String> performGetRequest(final String url) throws IOException, InterruptedException {
     HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).build();
     return CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
   }
 
+  /**
+   * Boilerplate method for sending POST requests.
+   *
+   * @param url  The URL to send the request to.
+   * @param type Indicating the content of the request.
+   * @param body Parameters supplied to the request.
+   * @return HttpResponse<String> containing the result.
+   * @throws IOException          If any issues are encountered during interaction
+   *                              with the files.
+   * @throws InterruptedException If thread is interrupted.
+   */
   private static HttpResponse<String> performPostRequest(final String url, final String type, final BodyPublisher body)
       throws IOException, InterruptedException {
     HttpRequest request = HttpRequest.newBuilder()
-    .uri(URI.create(url))
-    .header("Content-Type", type)
-    .POST(body)
-    .build();
+        .uri(URI.create(url))
+        .header("Content-Type", type)
+        .POST(body)
+        .build();
     return CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
   }
 
@@ -63,68 +91,90 @@ public final class ApiConfig {
    * Checks if username and password is a match.
    *
    * @param username The provided username.
+   * @param password The provided password.
    * @return Boolean indicating if username and password is a match
    * @throws InterruptedException
    * @throws IOException
    */
-  protected static User loginControllerPerformLogin(final String username)
-      throws IOException, InterruptedException {
-    String param1 = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
-    String url = BASEURL + "LoginController/performLogin" + "?username=" + param1;
-    HttpResponse<String> response = performGetRequest(url);
-    //Må her sende all brukerinfo (inkludert custom wordlists) gjennom API'et, samtidig som alt sendes tilbake
-    //(uten at wordlists er berørt) i instansieringen av nytt Game-objekt.
-    User user = GSON.fromJson(response.body(), User.class);
-    return user;
+  protected static LoginStatus performLogin(
+      final String username, final String password) throws IOException, InterruptedException {
+    String url = BASEURL + "LoginController/performLogin";
+    String type = "text/plain";
+    BodyPublisher body = HttpRequest.BodyPublishers.ofString("username=" + username + "&password=" + password);
+    HttpResponse<String> response = performPostRequest(url, type, body);
+    return GSON.fromJson(response.body(), LoginStatus.class);
   }
 
-  protected static boolean registrationControllerFireSignUp(final String username)
-      throws IOException, InterruptedException {
+  /**
+   * Attempts to registrate a new user.
+   *
+   * @param username The new username supplied by the user.
+   * @param password The new password supplied by the user.
+   * @return SUCCESS, USERNAME_TAKEN, USERNAME_NOT_MATCH_REGEX,
+   *         PASSWORD_NOT_MATCH_REGEX, or UPLOAD_ERROR, respectively.
+   * @throws IOException          If any issues are encountered during interaction
+   *                              with the files.
+   * @throws InterruptedException If thread is interrupted.
+   */
+  protected static RegistrationStatus registrationResult(
+      final String username, final String password) throws IOException, InterruptedException {
     String param1 = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
-    String url = BASEURL + "RegistrationController/fireSignUp" + "?username=" + param1;
+    String param2 = URLEncoder.encode(password, StandardCharsets.UTF_8.toString());
+    String url = BASEURL + "RegistrationController/registrationResult" + "?username=" + param1 + "&password=" + param2;
     HttpResponse<String> response = performGetRequest(url);
-    return Boolean.parseBoolean(response.body());
+    return GSON.fromJson(response.body(), RegistrationStatus.class);
   }
 
-  protected static void registrationControllerAddUser(final User user) throws IOException, InterruptedException {
-    String url = BASEURL + "registrationController/addUser";
-    String type = "application/json";
-    BodyPublisher body = HttpRequest.BodyPublishers.ofString(GSON.toJson(user));
+  /**
+   * Fetches the categories available to the given user.
+   *
+   * @param username The username of the user to fetch the categories of.
+   * @return Set<String> containing all categories available to the given user.
+   * @throws IOException          If any issues are encountered during interaction
+   *                              with the files.
+   * @throws InterruptedException If thread is interrupted.
+   */
+  protected static Set<String> getCategories(final String username)
+      throws IOException, InterruptedException {
+    String param1 = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
+    String url = BASEURL + "CategoryController/getCategories" + "?username=" + param1;
+    HttpResponse<String> response = performGetRequest(url);
+    return GSON.fromJson(response.body(), listOfStringsType);
+  }
+
+  /**
+   * Instantiates the game for the given user.
+   *
+   * @param username The username of the user to instantiate the game for.
+   * @param category The categoy chosen by the user.
+   * @throws IOException          If any issues are encountered during interaction
+   *                              with the files.
+   * @throws InterruptedException If thread is interrupted.
+   */
+  protected static void newGame(final String username, final String category)
+      throws IOException, InterruptedException {
+    String url = BASEURL + "GamePageController/newGame";
+    String type = "text/plain";
+    BodyPublisher body = HttpRequest.BodyPublishers.ofString("username=" + username + "&category=" + category);
     performPostRequest(url, type, body);
   }
 
-  protected static void gamePageControllerNewGame(final User user)
+  /**
+   * Fetches a word pulled randomly from the current game's wordlist.
+   *
+   * @return A random word from the game's wordlist.
+   * @throws IOException          If any issues are encountered during interaction
+   *                              with the files.
+   * @throws InterruptedException If thread is interrupted.
+   */
+  protected static String getSubstring()
       throws IOException, InterruptedException {
-      //Sender all brukerinfo (inkludert uberørte custom lists) tilbake gjennom API'et.
-      //Kunne ha instansiert det på serversiden uten å sende det til client først.
-      String url = BASEURL + "GamePageController/newGame";
-      String type = "application/json";
-      BodyPublisher body = HttpRequest.BodyPublishers.ofString(GSON.toJson(user));
-      performPostRequest(url, type, body);
-  }
-
-  protected static void gamePageControllerSetCategory(final String category)
-      throws IOException, InterruptedException {
-      String url = BASEURL + "GamePageController/setCategory";
-      String type = "text/plain";
-      BodyPublisher body = BodyPublishers.ofString(category);
-      performPostRequest(url, type, body).body();
-  }
-
-  protected static String gamePageControllerGetRandomWord()
-      throws IOException, InterruptedException {
-    String url = BASEURL + "GamePageController/getRandomWord";
+    String url = BASEURL + "GamePageController/getSubstring";
     HttpResponse<String> response = performGetRequest(url);
     return response.body();
   }
 
-  protected static String gamePageControllerGetSubstring(final String string) throws IOException, InterruptedException {
-    String param1 = URLEncoder.encode(string, StandardCharsets.UTF_8.toString());
-    String url = BASEURL + "GamePageController/getSubstring" + "?string=" + param1;
-    return performGetRequest(url).body();
-  }
-
-  protected static boolean gamePageControllerCheckValidWord(final String substring, final  String guess)
+  protected static boolean checkValidWord(final String substring, final String guess)
       throws IOException, InterruptedException {
     String param1 = URLEncoder.encode(substring, StandardCharsets.UTF_8.toString());
     String param2 = URLEncoder.encode(guess, StandardCharsets.UTF_8.toString());
@@ -133,7 +183,7 @@ public final class ApiConfig {
     return Boolean.parseBoolean(response.body());
   }
 
-  protected static void gamePageControllerSavePlayerHighscore(final String highscore) throws IOException, InterruptedException {
+  protected static void savePlayerHighscore(final String highscore) throws IOException, InterruptedException {
     String url = BASEURL + "GamePageController/savePlayerHighscore";
     String type = "text/plain";
     BodyPublisher body = BodyPublishers.ofString(highscore);
@@ -141,10 +191,10 @@ public final class ApiConfig {
   }
 
   // Lage en funskjon som caller på endpointet laget i api
-  protected static int gamePageControllerGetHighScore() throws IOException, InterruptedException {
+  protected static int getHighScore() throws IOException, InterruptedException {
     String url = BASEURL + "GamePageController/getPlayerHighscore";
     HttpResponse<String> response = performGetRequest(url);
     return Integer.parseInt(response.body());
-
   }
+
 }

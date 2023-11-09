@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
-import persistence.JsonIO;
 import core.Game;
 
 /**
@@ -32,17 +31,7 @@ public class Application {
     @Bean
     @Scope("session")
     public Game game() {
-        return new Game();
-    }
-
-    /**
-     * Singleton scoped bean used to handle files.
-     * @return Bean for injection.
-     */
-    @Primary
-    @Bean
-    public JsonIO jsonIO() {
-        return new JsonIO();
+        return null;
     }
 
 }

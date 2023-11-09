@@ -1,35 +1,38 @@
 package persistence;
 
-import java.util.HashMap;
+import java.io.IOException;
 import java.util.List;
+import java.util.function.Predicate;
 
 import types.User;
 
 public interface AbstractJsonIO {
-  /**
-   * Add a user to the database.
-   *
-   * @param user - The user to add
-   */
-  void addUser(User user);
+
+  // /**
+  // * Add a user to the database.
+  // *
+  // * @param user - The user to add
+  // */
+  // abstract boolean addedUserSuccessfully(User user);
 
   /**
    * Delete user from database.
    *
-   * @param username - The user to delete
+   * @param username The username of the user to delete.
+   *
    */
   void deleteUser(String username);
 
   /**
    * Get user as a {@link User} from database.
    *
-   * @param username - The user to get
    * @return - A {@link User} object
    */
-  User getUser(String username);
+  User loadCurrentUser();
 
   /**
    * Get user as a Json String.
+   *
    * @param username - The user to get
    * @return - The user as a String
    */
@@ -45,9 +48,13 @@ public interface AbstractJsonIO {
   /**
    * Update user and store new data in database.
    *
-   * @param user - The new user object to override the old
+   * @param predicate A predicate which potentially changes the instance of the
+   *                  user.
+   *                  The predicate returns a boolean indicating if changes were
+   *                  made, which is used to persistenty store the potential
+   *                  changes.
    */
-  void updateUser(User user);
+  void updateCurrentUser(Predicate<User> predicate) throws IOException;
 
   /**
    * Get a defaultCategory as a {@link List}.
@@ -55,12 +62,12 @@ public interface AbstractJsonIO {
    * @param category - The category to get
    * @return - A {@link List} of answers from that category
    */
-  List<String> getDefaultCategory(String category);
+  List<String> getDefaultCategory(String category) throws IOException;
 
-  /**
-   * Get all the current default categories.
-   *
-   * @return - A {@link HashMap} of category names and respective answers
-   */
-  HashMap<String, List<String>> getAllDefaultCategories();
+  // /**
+  // * Get all the current default categories.
+  // *
+  // * @return - A {@link HashMap} of category names and respective answers
+  // */
+  // abstract HashMap<String, List<String>> getAllDefaultCategories();
 }

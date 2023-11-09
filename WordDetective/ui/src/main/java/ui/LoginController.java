@@ -11,26 +11,25 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import types.User;
 
 public class LoginController {
     /**
      * Label for marking of incorrect password.
      */
     @FXML
-    private Label incorrect;
+    private Label errorDisplay;
 
     /**
      * FXML component for enabling user to provide username.
      */
     @FXML
-    private TextField username;
+    private TextField usernameField;
 
     /**
      * FXML component for enabling user to provide password.
      */
     @FXML
-    private PasswordField password;
+    private PasswordField passwordField;
 
     /**
      * FXML buttons providing access to respectively "performLogin" and
@@ -44,55 +43,50 @@ public class LoginController {
      */
     private static final int DISPLAY_ERROR_DURATION_MS = 3000;
 
-    // /**
-    //  * Database.
-    //  */
-    // private JsonIO database = new JsonIO();
+    private void displayError(final String error) {
+        errorDisplay.setText(error);
+        errorDisplay.setOpacity(1);
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        errorDisplay.setOpacity(0);
+                    }
+                },
+                DISPLAY_ERROR_DURATION_MS);
+    }
 
     /**
      * Method fired when pressing the "login" button. Loads the category window.
      */
     @FXML
     public void performLogin() {
-
-        //Undøvendig å hente all brukerinfo (inkludert custom lists) når kun passord er nødvendig, men implementasjonen din står.
-        // User newUser = database.getUser(username.getText());
-
-        User newUser = null;
         try {
-            newUser = ApiConfig.loginControllerPerformLogin(username.getText());
+            String username = usernameField.getText();
+            String password = passwordField.getText();
+            switch (ApiConfig.performLogin(username, password)) {
+                case SUCCESS:
+                    FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
+                    fxmlLoader.setControllerFactory(new CategoryFactory(username));
+                    Parent parent = fxmlLoader.load();
+                    Stage stage = (Stage) login.getScene().getWindow();
+                    stage.setScene(new Scene(parent));
+                    stage.show();
+                    break;
+                case USERNAME_DOES_NOT_EXIST:
+                    displayError("Username does not exist.");
+                    break;
+                case INCORRECT_PASSWORD:
+                    displayError("Incorrect password.");
+                    break;
+                case READ_ERROR:
+                    displayError("Error during extraction of password.");
+                    break;
+                default:
+                    displayError("Unknown error occured.");
+            }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
-        }
-
-        // Gir NullPointerException og utfører ikke else-blokken,
-        //dersom du ikke tar høyde for at ikke-eksisterende brukernavn kan skrives inn.
-        // if (newUser.getPassword().equals(password.getText()))
-
-        if (newUser != null && newUser.getPassword().equals(password.getText())) {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
-                fxmlLoader.setControllerFactory(new CategoryFactory(newUser));
-                System.out.println("login user username" + newUser.getUsername());
-                Parent parent = fxmlLoader.load();
-                Stage stage = (Stage) login.getScene().getWindow();
-                stage.setScene(new Scene(parent));
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-
-            incorrect.setOpacity(1);
-
-            new java.util.Timer().schedule(
-                    new java.util.TimerTask() {
-                        @Override
-                        public void run() {
-                            incorrect.setOpacity(0);
-                        }
-                    },
-                    DISPLAY_ERROR_DURATION_MS);
         }
     }
 

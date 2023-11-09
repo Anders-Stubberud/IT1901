@@ -1,54 +1,34 @@
 package api.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import persistence.JsonIO;
+import core.RegistrationAuthentication;
 
 @RestController
 public class RegistrationController {
 
   /**
-   * JsonIO bean to handle files.
+   * RegistrationAuthentication instance to provide access to required persistently information.
    */
-  private JsonIO jsonIO;
+  private RegistrationAuthentication authentication;
 
   /**
-   * Autowired constructor injecting the JsonIO bean into the object.
-   * @param jsonIOParameter
-   */
-  @Autowired
-  public RegistrationController(final JsonIO jsonIOParameter) {
-    this.jsonIO = jsonIOParameter;
-  }
-
-  /**
-   * API endpoint for checking if the provided username of a new user is already taken.
+   * API endpoint for registration of User. Returns constant indicating result of registration.
    * @param username The provided username of the new user.
    * @param password The provided password of the new user.
-   * @return True if username is taken, else false.
+   * @return SUCCESS, USERNAME_TAKEN, USERNAME_NOT_MATCH_REGEX, PASSWORD_NOT_MATCH_REGEX, or UPLOAD_ERROR, respectively.
    */
-  @RequestMapping(value = "/RegistrationController/fireSignUp", method = RequestMethod.GET)
+  @RequestMapping(value = "/RegistrationController/registrationResult", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
-  public boolean fireSignUp(final @RequestParam("username") String username,
-      final @PathVariable String password) {
-    return jsonIO.getAllUsernames().contains(username);
-  }
-
-  /**
-   * API endpoint for registering new user.
-   * @param user String representation of Json file representing the given user.
-   */
-  @RequestMapping(value = "/registrationController/addUser", method = RequestMethod.POST)
-  @ResponseStatus(HttpStatus.OK)
-  public void addUser(final @RequestBody String user) {
-    jsonIO.addUser(JsonIO.convertToJavaObject(user));
+  public String registrationResult(final @RequestParam("username") String username, final @RequestParam("password") String password) {
+    if (authentication == null) {
+      authentication = new RegistrationAuthentication();
+    }
+    return authentication.registrationResult(username, password).toString();
   }
 
 }

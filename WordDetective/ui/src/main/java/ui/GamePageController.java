@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,7 +22,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
-import types.User;
 
 public final class GamePageController implements Initializable {
 
@@ -88,7 +86,7 @@ public final class GamePageController implements Initializable {
     /**
      * The current user.
      */
-    private User user;
+    private String username;
     /**
      * The layoutX is the X position of the game.
      */
@@ -145,20 +143,21 @@ public final class GamePageController implements Initializable {
     /**
      * Constructor initializing the object.
      *
-     * @param newUser  username.
-     * @param category category of the given game.
+     * @param usernameParameter username.
+     * @param categoryParameter category of the given game.
      */
-    public GamePageController(final User newUser, final String category) {
-        this.user = newUser;
-        this.currentCategory = category;
+    public GamePageController(final String usernameParameter, final String categoryParameter) {
+        this.username = usernameParameter;
+        this.currentCategory = categoryParameter;
     }
 
     /**
      * Empty Constuctor for initialising controller.
+     *
+     * @param category The category chosen by the user.
      */
-    public GamePageController() {
-        this.user = new User();
-        this.currentCategory = "us states";
+    public GamePageController(final String category) {
+        this("guest", category);
     }
 
     /**
@@ -198,7 +197,7 @@ public final class GamePageController implements Initializable {
         if (ke.getCode().equals(KeyCode.ENTER)) { // If pressed Enter, then check word
             String playerGuess = playerInputField.getText();
             try {
-                if (ApiConfig.gamePageControllerCheckValidWord(playerGuess, playerGuess)) {
+                if (ApiConfig.checkValidWord(playerGuess, playerGuess)) {
                     int newPoints = Integer.parseInt(points.getText()) + 1;
                     points.setText(String.valueOf(newPoints));
                     playerInputField.setText("");
@@ -265,10 +264,8 @@ public final class GamePageController implements Initializable {
      */
     public void rndwordMasterLetters() {
         try {
-            String string = ApiConfig.gamePageControllerGetRandomWord();
-            substring = ApiConfig.gamePageControllerGetSubstring(string);
+            substring = ApiConfig.getSubstring();
             letters.setText(substring.toUpperCase());
-            System.out.println(string);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -291,13 +288,8 @@ public final class GamePageController implements Initializable {
     @Override // Runs on start of the application
     public void initialize(final URL location, final ResourceBundle resources) {
         try {
-            // game = new Game(user);
-            substring = "";
-            rndwordMasterLetters();
             try {
-                ApiConfig.gamePageControllerNewGame(user);
-                ApiConfig.gamePageControllerSetCategory(currentCategory);
-                // apiconfig shit highscore
+                ApiConfig.newGame(username, currentCategory);
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
@@ -316,17 +308,18 @@ public final class GamePageController implements Initializable {
             }));
             playerInputField.requestFocus();
             categoryDisplay.setText("Category: " + currentCategory.toUpperCase().replace("_", " "));
-
-            if (!user.getUsername().equals("guest")) {
-                highScore.setText(Integer.toString(user.getHighScore()));
+            try {
+                highScore.setText(String.valueOf(ApiConfig.getHighScore()));
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
             }
             // Add shutdownhook that updates user highscore when closing application
             Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
                 public void run() {
-                    if ((!user.getUsername().equals("guest")) && (user.getHighScore() < Integer.parseInt(points.getText()))) {
+                    if (!username.equals("guest")) {
                         try {
                             // game.savePlayerHighscore(Integer.valueOf(points.getText()));
-                            ApiConfig.gamePageControllerSavePlayerHighscore(points.getText());
+                            ApiConfig.savePlayerHighscore(points.getText());
                         } catch (NumberFormatException | IOException | InterruptedException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
