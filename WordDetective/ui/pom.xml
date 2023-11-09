@@ -136,9 +136,9 @@
                     <noHeaderFiles>true</noHeaderFiles>
                     <stripDebug>true</stripDebug>
                     <noManPages>true</noManPages>
-                    <launcher>worddetectivefx</launcher>
-                    <jlinkImageName>worddetectivefx</jlinkImageName>
-                    <jlinkZipName>worddetectivefx</jlinkZipName>
+                    <launcher>worddetective</launcher>
+                    <jlinkImageName>worddetective</jlinkImageName>
+                    <jlinkZipName>worddetective</jlinkZipName>
                 </configuration>
             </plugin>
 
@@ -161,18 +161,18 @@
                     <vendor>project</vendor>
                     <destination>target/dist</destination>
                     <module>project.ui/project.ui.App</module>
-                    <runtimeImage>target/worddetectivefx</runtimeImage>
+                    <runtimeImage>target/worddetective</runtimeImage>
                     <javaOptions>
                         <option>-Dfile.encoding=UTF-8</option>
                     </javaOptions>
                     <!-- linux options-->
                     <linuxShortcut>true</linuxShortcut>
-                    <linuxMenuGroup>WordDetectiveFX</linuxMenuGroup>
+                    <linuxMenuGroup>WordDetective</linuxMenuGroup>
                     <!-- windows options-->
                     <winDirChooser>true</winDirChooser>
                     <winShortcut>true</winShortcut>
                     <winMenu>true</winMenu>
-                    <winMenuGroup>WordDetectiveFX</winMenuGroup>
+                    <winMenuGroup>WordDetective</winMenuGroup>
                 </configuration>
             </plugin>
 
