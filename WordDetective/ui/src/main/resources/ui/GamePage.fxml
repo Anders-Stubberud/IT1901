@@ -120,5 +120,29 @@
             </Button>
          </children>
       </Pane>
+      <Pane id="gameOverPage" fx:id="gameOverPage" layoutX="200.0" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: darkslategrey; -fx-background-radius: 20px;" visible="false">
+         <children>
+            <Label layoutX="205.0" layoutY="147.0" text="Game Over" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Label>
+            <Button layoutX="117.0" layoutY="466.0" mnemonicParsing="false" text="Go Back">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button layoutX="396.0" layoutY="466.0" mnemonicParsing="false" text="Restart">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Label layoutX="212.0" layoutY="255.0" text="Previous Highscore" textFill="WHITE" />
+            <Label layoutX="249.0" layoutY="283.0" text="Score" textFill="WHITE" />
+         </children>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Pane>
    </children>
 </AnchorPane>
