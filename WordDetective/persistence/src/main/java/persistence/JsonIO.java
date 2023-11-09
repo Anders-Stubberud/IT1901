@@ -30,7 +30,7 @@ public final class JsonIO implements AbstractJsonIO {
      * The game's user instance, which is an object with identical state to the
      * persistent json file of the current user.
      */
-    private User user;
+    private String user;
 
     /**
      * Gson object user for seralizastion/deserialazation.
@@ -66,8 +66,8 @@ public final class JsonIO implements AbstractJsonIO {
      * @param username
      */
     public JsonIO(final String username) {
-        this.user = username.equals("guest") ? null : getUser(username);
-        this.customCategoryNames = user != null ? user.getCustomCategories().keySet() : new HashSet<>();
+        this.user = username.equals("guest") ? null : username;
+        this.customCategoryNames = user != null ? new HashSet<>() : null;
     }
 
     /**
@@ -136,7 +136,7 @@ public final class JsonIO implements AbstractJsonIO {
             return getDefaultCategory(category);
         }
         if (user != null && customCategoryNames.contains(category)) {
-            return user.getCustomCategories().get(category);
+            return getUser(user).getCustomCategories().get(category);
         }
         throw new RuntimeException("Error fetching categories");
     }
@@ -177,32 +177,31 @@ public final class JsonIO implements AbstractJsonIO {
                 System.out.println("User " + userParameter.getUsername() + " successfully updated.");
             } catch (IOException e) {
                 System.out
-                        .println("Couldn't update user " + user.getUsername() + " because: " + e.getMessage());
+                        .println("Couldn't update user " + userParameter.getUsername() + " because: " + e.getMessage());
             }
         } else {
-            throw new IllegalArgumentException("User: " + user.getUsername() + " not found");
+            throw new IllegalArgumentException("User: " + userParameter.getUsername() + " not found");
         }
     }
 
     @Override
-    public User getUser(final String username) throws RuntimeException {
+    public User getUser(final String username) {
         try {
             String jsonString = Files.readString(Paths.get(path + "/users/" + username + ".json"));
             return GSON.fromJson(jsonString, User.class);
-        } catch (Exception e) {
-            throw new RuntimeException("Error when retrieving " + username + ": " + e.getMessage());
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Error when retrieving " + username + ": " + e.getMessage());
         }
     }
 
     @Override
     public void updateCurrentUser(final Predicate<User> predicate) throws IOException {
-        String userPath = path + "users/" + user.getUsername() + ".json";
-        if (predicate.test(user)) {
+        String userPath = path + "users/" + user + ".json";
+        if (predicate.test(getUser(user))) {
             if (new File(userPath).exists()) {
                 FileWriter fw = new FileWriter(userPath, StandardCharsets.UTF_8);
                 JsonUtilities.GSON.toJson(user, fw);
                 fw.close();
-                this.user = getUser(user.getUsername());
             } else {
                 throw new IOException("User not found in " + path);
             }
@@ -218,7 +217,7 @@ public final class JsonIO implements AbstractJsonIO {
      * @return The retrieved property.
      */
     public <T> T getUserProperty(final Function<User, T> function) {
-        return function.apply(user);
+        return function.apply(getUser(user));
     }
 
     @Override
@@ -239,11 +238,12 @@ public final class JsonIO implements AbstractJsonIO {
         return GSON.fromJson(json, User.class);
     }
 
-   /**
-    * Get the absolute path to the spesified directory.
-    * @param directory - The directory to find absolute path from
-    * @return - A string of the path
-    */
+    /**
+     * Get the absolute path to the spesified directory.
+     *
+     * @param directory - The directory to find absolute path from
+     * @return - A string of the path
+     */
     public static String getAbsolutePath(final String directory) {
         Path absolutePath = Paths.get("").toAbsolutePath();
         while (!absolutePath.endsWith(directory)) {
