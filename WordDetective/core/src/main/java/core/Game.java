@@ -42,8 +42,6 @@ public final class Game extends UserAccess implements AbstractGame {
     public Game(final String username) {
         super(username);
         this.isGuestUser = username.equals("guest");
-        // this.user = jsonIO.getCurrentUser();
-        // this.wordlist = new ArrayList<>();
     }
 
     /**
@@ -54,7 +52,6 @@ public final class Game extends UserAccess implements AbstractGame {
         try {
             this.wordlist = getJsonIO().getCategoryWordlist(category);
         } catch (IOException e) {
-            // TODO passende exception
             e.printStackTrace();
         }
     }

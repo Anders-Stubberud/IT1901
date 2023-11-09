@@ -8,27 +8,29 @@ import types.User;
 
 public interface AbstractJsonIO {
 
-  // /**
-  // * Add a user to the database.
-  // *
-  // * @param user - The user to add
-  // */
-  // abstract boolean addedUserSuccessfully(User user);
+  /**
+   * Add a user to the database.
+   *
+   * @param user - The user to add
+   * @return - a {@link Boolean} if user was added or not
+   */
+  boolean addUser(User user);
 
   /**
    * Delete user from database.
    *
    * @param username The username of the user to delete.
-   *
+   * @return - a {@link Boolean} if user was deleted or not
    */
-  void deleteUser(String username);
+  boolean deleteUser(String username);
 
   /**
    * Get user as a {@link User} from database.
    *
+   * @param username - The user to get
    * @return - A {@link User} object
    */
-  User loadCurrentUser();
+  User getUser(String username);
 
   /**
    * Get user as a Json String.

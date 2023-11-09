@@ -6,15 +6,16 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import types.User;
@@ -29,13 +30,12 @@ public final class JsonIO implements AbstractJsonIO {
      * The game's user instance, which is an object with identical state to the
      * persistent json file of the current user.
      */
-    private User user;
+    private String user;
 
     /**
-     * Absolute path for reading from and writing to the persistent json file of the
-     * current user.
+     * Gson object user for seralizastion/deserialazation.
      */
-    private final String pathToPersistenceUser;
+    private Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     /**
      * Set containing the default categories, which are shared amongst all users.
@@ -49,6 +49,12 @@ public final class JsonIO implements AbstractJsonIO {
     private Set<String> customCategoryNames;
 
     /**
+     * Type of a {@link List} of strings used for deserialitzing in gson.
+     */
+    private Type listOfStringsType = new TypeToken<List<String>>() {
+    }.getType();
+
+    /**
      * Absolutepath to the resources directory.
      */
     private String path = JsonUtilities.getAbsolutePathAsString();
@@ -60,16 +66,18 @@ public final class JsonIO implements AbstractJsonIO {
      * @param username
      */
     public JsonIO(final String username) {
-        this.pathToPersistenceUser = JsonUtilities.PATH_TO_RESOURCES + "/users/" + username + ".json";
-        this.user = username.equals("guest") ? null : loadCurrentUser();
-        this.customCategoryNames = user != null ? user.getCustomCategories().keySet() : new HashSet<>();
+        this.user = username.equals("guest") ? null : username;
+        this.customCategoryNames = user != null ? new HashSet<>() : null;
     }
 
     /**
-     * Type of a {@link List} of strings used for deserialitzing in gson.
+     * Write/Read from jsonfile.
+     *
+     * @param newPath - The path to read/write files to
      */
-    private Type listOfStringsType = new TypeToken<List<String>>() {
-    }.getType();
+    public JsonIO(final Path newPath) {
+        path = newPath.toString();
+    }
 
     /**
      * Fetches the names of all the categories available to the current user.
@@ -78,7 +86,38 @@ public final class JsonIO implements AbstractJsonIO {
      *         user.
      */
     public Set<String> getAllCategories() {
-        return Stream.concat(DEFAULT_CATEGORY_NAMES.stream(), customCategoryNames.stream()).collect(Collectors.toSet());
+        return Set.copyOf(Arrays.asList(new File(path + "/default_categories").listFiles())
+                .stream()
+                .map((category) -> category.getName().replace(".json", ""))
+                .toList());
+    }
+
+    @Override
+    public boolean addUser(final User newUser) {
+        if (new File(path + "/users/" + newUser.getUsername() + ".json").exists()) {
+            throw new IllegalArgumentException("User " + newUser.getUsername() + " already exists.");
+        }
+        try (FileWriter fw = new FileWriter(path + "/users/" + newUser.getUsername() + ".json",
+                StandardCharsets.UTF_8)) {
+            GSON.toJson(newUser, fw);
+            System.out.println("User " + newUser.getUsername() + " successfully created.");
+            return true;
+        } catch (IOException e) {
+            System.out.println("Couldn't add user " + newUser.getUsername() + " because: " + e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteUser(final String username) {
+        File userDel = new File(path + "/users/" + username + ".json");
+        if (userDel.delete()) {
+            System.out.println(username + " deleted successfully");
+            return true;
+        } else {
+            throw new IllegalArgumentException(
+                    "Couldn't delete user because user does not exits or user has security measures that prevent deletion");
+        }
     }
 
     /**
@@ -91,12 +130,13 @@ public final class JsonIO implements AbstractJsonIO {
      * @throws RuntimeException If the given category is present neither among the
      *                          default nor the custom categories.
      */
+
     public List<String> getCategoryWordlist(final String category) throws IOException, RuntimeException {
         if (DEFAULT_CATEGORY_NAMES.contains(category)) {
             return getDefaultCategory(category);
         }
         if (user != null && customCategoryNames.contains(category)) {
-            return user.getCustomCategories().get(category);
+            return getUser(user).getCustomCategories().get(category);
         }
         throw new RuntimeException("Error fetching categories");
     }
@@ -105,11 +145,11 @@ public final class JsonIO implements AbstractJsonIO {
     public List<String> getDefaultCategory(final String category) throws IOException {
         try {
             String answers = Files.readString(
-                    Paths.get(JsonUtilities.PATH_TO_RESOURCES + "/default_categories"
-                            + JsonUtilities.getCategoryFilename(category)));
-            return JsonUtilities.GSON.fromJson(answers, listOfStringsType);
+                    Paths.get(path + "/default_categories/"
+                            + category + ".json"));
+            return GSON.fromJson(answers, listOfStringsType);
         } catch (IOException e) {
-            throw e;
+            throw new IllegalArgumentException("Couldn't get user " + category + "because: " + e.getMessage());
         }
     }
 
@@ -130,44 +170,46 @@ public final class JsonIO implements AbstractJsonIO {
      */
     public void updateUser(final User userParameter) {
         if (new File(path + "/users/" + userParameter.getUsername() + ".json").exists()) {
+            System.out.println("Eksisterer");
             try (FileWriter fw = new FileWriter(path + "/users/" + userParameter.getUsername() + ".json",
                     StandardCharsets.UTF_8)) {
-                JsonUtilities.GSON.toJson(userParameter, fw);
+                GSON.toJson(userParameter, fw);
                 System.out.println("User " + userParameter.getUsername() + " successfully updated.");
             } catch (IOException e) {
                 System.out
-                        .println("Couldn't update user " + user.getUsername() + " because: " + e.getMessage());
+                        .println("Couldn't update user " + userParameter.getUsername() + " because: " + e.getMessage());
             }
         } else {
-            System.out.println("User: " + user.getUsername() + " not found");
+            throw new IllegalArgumentException("User: " + userParameter.getUsername() + " not found");
         }
     }
 
     @Override
-    public User loadCurrentUser() throws RuntimeException {
+    public User getUser(final String username) {
         try {
-            String jsonString = Files.readString(Paths.get(pathToPersistenceUser));
-            return JsonUtilities.GSON.fromJson(jsonString, User.class);
+            String jsonString = Files.readString(Paths.get(path + "/users/" + username + ".json"));
+            return GSON.fromJson(jsonString, User.class);
         } catch (IOException e) {
-            throw new RuntimeException("Error " + e.getMessage());
+            throw new IllegalArgumentException("Error when retrieving " + username + ": " + e.getMessage());
         }
     }
 
     @Override
     public void updateCurrentUser(final Predicate<User> predicate) throws IOException {
-        if (predicate.test(user)) {
-            if (new File(pathToPersistenceUser).exists()) {
-                FileWriter fw = new FileWriter(pathToPersistenceUser, StandardCharsets.UTF_8);
+        String userPath = path + "users/" + user + ".json";
+        if (predicate.test(getUser(user))) {
+            if (new File(userPath).exists()) {
+                FileWriter fw = new FileWriter(userPath, StandardCharsets.UTF_8);
                 JsonUtilities.GSON.toJson(user, fw);
                 fw.close();
-                this.user = loadCurrentUser();
             } else {
-                throw new IOException("User not found in " + pathToPersistenceUser);
+                throw new IOException("User not found in " + path);
             }
         }
     }
 
     /**
+     * Provides absolute path to current working directory.
      * Retrieves a certain property from the current user.
      *
      * @param <T>      Specification of return type.
@@ -175,19 +217,42 @@ public final class JsonIO implements AbstractJsonIO {
      * @return The retrieved property.
      */
     public <T> T getUserProperty(final Function<User, T> function) {
-        return function.apply(user);
-    }
-
-    @Override
-    public void deleteUser(final String username) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteCurrentUser'");
+        return function.apply(getUser(user));
     }
 
     @Override
     public List<String> getAllUsernames() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllUsernames'");
+        return Arrays
+                .asList(new File(path + "/users").listFiles())
+                .stream()
+                .map((name) -> name.getName().replace(".json", "")).toList();
+    }
+
+    /**
+     * API call to convert a {@link String} to {@link User} object.
+     *
+     * @param json - The json string
+     * @return a {@link User} object
+     */
+    public User convertToJavaObject(final String json) {
+        return GSON.fromJson(json, User.class);
+    }
+
+    /**
+     * Get the absolute path to the spesified directory.
+     *
+     * @param directory - The directory to find absolute path from
+     * @return - A string of the path
+     */
+    public static String getAbsolutePath(final String directory) {
+        Path absolutePath = Paths.get("").toAbsolutePath();
+        while (!absolutePath.endsWith(directory)) {
+            absolutePath = absolutePath.getParent();
+            if (absolutePath == null) {
+                throw new IllegalStateException("Working directory not found.");
+            }
+        }
+        return absolutePath.toString();
     }
 
 }

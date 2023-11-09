@@ -57,6 +57,7 @@ public interface AbstractGame {
    * Will not save if player is guest.
    *
    * @param highscore - The highscore to save
+   *
    */
   void savePlayerHighscore(int highscore) throws IOException;
 

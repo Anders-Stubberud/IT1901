@@ -1,16 +1,11 @@
 package ui;
 
-import java.io.IOException;
 import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
 import javafx.scene.control.Label;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-// import javafx.scene.input.MouseButton;
-import javafx.stage.Stage;
 
 public class CategoryControllerTest extends ApplicationTest {
 
@@ -36,17 +31,18 @@ public class CategoryControllerTest extends ApplicationTest {
         System.setProperty("testfx.setup.timeout", "2500");
     }
 
-    /**
-     * Instantiates the stage.
-     */
-    @Override
-    public void start(final Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
-        fxmlLoader.setControllerFactory(new CategoryFactory("username"));
-        root = fxmlLoader.load();
-        stage.setScene(new Scene(root));
-        stage.show();
-    }
+    // /**
+    // * Instantiates the stage.
+    // */
+    // @Override
+    // public void start(final Stage stage) throws IOException {
+    // FXMLLoader fxmlLoader = new
+    // FXMLLoader(this.getClass().getResource("Category.fxml"));
+    // fxmlLoader.setControllerFactory(new CategoryFactory("username"));
+    // root = fxmlLoader.load();
+    // stage.setScene(new Scene(root));
+    // stage.show();
+    // }
 
     /**
      * Fetches the displayed selected category.
