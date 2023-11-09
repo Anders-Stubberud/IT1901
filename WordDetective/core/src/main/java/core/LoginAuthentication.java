@@ -53,7 +53,7 @@ public class LoginAuthentication extends AbstractAuthentication {
       return false;
     } catch (IOException e) {
       throw new RuntimeException(
-          "User \"" + username + "\" not found in " + JsonIO.PATH_TO_RESOURCES + "/users");
+          "Could not find given user.");
     }
   }
 

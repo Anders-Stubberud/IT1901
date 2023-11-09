@@ -2,7 +2,6 @@ package core;
 
 import java.util.Set;
 import persistence.JsonIO;
-import types.User;
 
 public class UserAccess {
 

@@ -42,6 +42,12 @@ public final class JsonIO implements AbstractJsonIO {
     private static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     /**
+     * Constant used to reference the absolute path of the persistence module's
+     * resource directory.
+     */
+    public static String path = getAbsolutePathAsString();
+
+    /**
      * Set containing the default categories, which are shared amongst all users.
      */
     private static final Set<String> DEFAULT_CATEGORY_NAMES = getPersistentFilenames("/default_categories");
@@ -56,11 +62,6 @@ public final class JsonIO implements AbstractJsonIO {
      */
     private Type listOfStringsType = new TypeToken<List<String>>() {
     }.getType();
-
-    /**
-     * Absolutepath to the resources directory.
-     */
-    private String path = getAbsolutePathAsString();
 
     /**
      * Constructor for instantiating the JsonIO class, which handles file related
@@ -261,12 +262,6 @@ public final class JsonIO implements AbstractJsonIO {
     // STATIC UTILITY METHODS
 
     /**
-     * Constant used to reference the absolute path of the persistence module's
-     * resource directory.
-     */
-    public static final String PATH_TO_RESOURCES = getAbsolutePathAsString();
-
-    /**
      * Provides absolute path to current working directory.
      * Implemented in this fashion due to path differences in working files and test
      * files.
@@ -291,7 +286,7 @@ public final class JsonIO implements AbstractJsonIO {
      * @return Boolean indicating if the user was added successfully.
      */
     public static boolean successfullyAddedUserPersistently(final User user) {
-        try (FileWriter fw = new FileWriter(PATH_TO_RESOURCES + "/users/" + user.getUsername() + ".json",
+        try (FileWriter fw = new FileWriter(path + "/users/" + user.getUsername() + ".json",
                 StandardCharsets.UTF_8)) {
             GSON.toJson(user, fw);
             System.out.println("User " + user.getUsername() + " successfully created.");
@@ -316,7 +311,7 @@ public final class JsonIO implements AbstractJsonIO {
     public static boolean usernameAndPasswordMatch(final String username, final String password) throws IOException {
         String storedPassword;
         try {
-            storedPassword = getPersistentProperty("password", PATH_TO_RESOURCES + "/users/" + username + ".json");
+            storedPassword = getPersistentProperty("password", path + "/users/" + username + ".json");
             if (storedPassword.equals(password)) {
                 return true;
             }
@@ -364,10 +359,6 @@ public final class JsonIO implements AbstractJsonIO {
         throw new IOException("Property not found");
     }
 
-    public static void main(String[] args) {
-        System.out.println(getAbsolutePathAsString());
-    }
-
     /**
      * Provides the names of all files in a given directory.
      * 
@@ -379,7 +370,7 @@ public final class JsonIO implements AbstractJsonIO {
      * @throws RuntimeException If the provided endpoint is not accessible.
      */
     public static Set<String> getPersistentFilenames(final String endpoint) throws RuntimeException {
-        File[] nameFiles = new File(PATH_TO_RESOURCES + endpoint).listFiles();
+        File[] nameFiles = new File(path + endpoint).listFiles();
         if (nameFiles != null) {
             Set<String> res = Arrays.stream(nameFiles).map(file -> {
                 String name = file.getName();
@@ -389,7 +380,7 @@ public final class JsonIO implements AbstractJsonIO {
             }).collect(Collectors.toSet());
             return res;
         } else {
-            throw new RuntimeException("Directory not present in " + PATH_TO_RESOURCES);
+            throw new RuntimeException("Directory not present in " + path);
         }
     }
 
