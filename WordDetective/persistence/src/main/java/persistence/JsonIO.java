@@ -1,6 +1,7 @@
 package persistence;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -9,14 +10,19 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 
 import types.User;
 
@@ -35,13 +41,23 @@ public final class JsonIO implements AbstractJsonIO {
     /**
      * Gson object user for seralizastion/deserialazation.
      */
-    private Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+    /**
+     * Constant used to reference the absolute path of the persistence module's
+     * resource directory.
+     */
+    private String path = getAbsolutePathAsString();
+
+    /**
+     * Static instance of path to resources to use with static methods.
+     */
+    private static String pathToResources = getAbsolutePathAsString();
 
     /**
      * Set containing the default categories, which are shared amongst all users.
      */
-    private static final Set<String> DEFAULT_CATEGORY_NAMES = JsonUtilities
-            .getPersistentFilenames("/default_categories");
+    private static final Set<String> DEFAULT_CATEGORY_NAMES = getPersistentFilenames("/default_categories");
 
     /**
      * Set containing teh custom categories, which are unique to each user.
@@ -53,11 +69,6 @@ public final class JsonIO implements AbstractJsonIO {
      */
     private Type listOfStringsType = new TypeToken<List<String>>() {
     }.getType();
-
-    /**
-     * Absolutepath to the resources directory.
-     */
-    private String path = JsonUtilities.getAbsolutePathAsString();
 
     /**
      * Constructor for instantiating the JsonIO class, which handles file related
@@ -86,26 +97,24 @@ public final class JsonIO implements AbstractJsonIO {
      *         user.
      */
     public Set<String> getAllCategories() {
-        return Set.copyOf(Arrays.asList(new File(path + "/default_categories").listFiles())
-                .stream()
-                .map((category) -> category.getName().replace(".json", ""))
-                .toList());
+        File[] categoryFiles = new File(path + "/default_categories").listFiles();
+
+        if (categoryFiles != null) {
+            return Set.copyOf(Arrays.stream(categoryFiles)
+                    .map((category) -> category.getName().replace(".json", ""))
+                    .toList());
+        } else {
+            return Collections.emptySet();
+        }
     }
 
-    @Override
-    public boolean addUser(final User newUser) {
-        if (new File(path + "/users/" + newUser.getUsername() + ".json").exists()) {
-            throw new IllegalArgumentException("User " + newUser.getUsername() + " already exists.");
-        }
-        try (FileWriter fw = new FileWriter(path + "/users/" + newUser.getUsername() + ".json",
-                StandardCharsets.UTF_8)) {
-            GSON.toJson(newUser, fw);
-            System.out.println("User " + newUser.getUsername() + " successfully created.");
-            return true;
-        } catch (IOException e) {
-            System.out.println("Couldn't add user " + newUser.getUsername() + " because: " + e.getMessage());
-            return false;
-        }
+    /**
+     * Accessor method for the string holding the path.
+     *
+     * @return The string hlding the path.
+     */
+    public String getPath() {
+        return path;
     }
 
     @Override
@@ -146,17 +155,17 @@ public final class JsonIO implements AbstractJsonIO {
         try {
             String answers = Files.readString(
                     Paths.get(path + "/default_categories/"
-                            + category + ".json"));
-            return GSON.fromJson(answers, listOfStringsType);
+                            + category.replace(" ", "_") + ".json"));
+            return gson.fromJson(answers, listOfStringsType);
         } catch (IOException e) {
-            throw new IllegalArgumentException("Couldn't get user " + category + "because: " + e.getMessage());
+            throw new IllegalArgumentException("Couldn't get category " + category + " because: " + e.getMessage());
         }
     }
 
     @Override
     public String getUserAsJson(final String username) {
         try {
-            return JsonUtilities.GSON.toJson(Files.readString(Paths.get(path + "/users/" + username + ".json")));
+            return gson.toJson(Files.readString(Paths.get(path + "/users/" + username + ".json")));
         } catch (IOException e) {
             System.out.println("Couldn't get user " + username + "because: " + e.getMessage());
             return null;
@@ -173,7 +182,7 @@ public final class JsonIO implements AbstractJsonIO {
             System.out.println("Eksisterer");
             try (FileWriter fw = new FileWriter(path + "/users/" + userParameter.getUsername() + ".json",
                     StandardCharsets.UTF_8)) {
-                GSON.toJson(userParameter, fw);
+                gson.toJson(userParameter, fw);
                 System.out.println("User " + userParameter.getUsername() + " successfully updated.");
             } catch (IOException e) {
                 System.out
@@ -188,7 +197,7 @@ public final class JsonIO implements AbstractJsonIO {
     public User getUser(final String username) {
         try {
             String jsonString = Files.readString(Paths.get(path + "/users/" + username + ".json"));
-            return GSON.fromJson(jsonString, User.class);
+            return gson.fromJson(jsonString, User.class);
         } catch (IOException e) {
             throw new IllegalArgumentException("Error when retrieving " + username + ": " + e.getMessage());
         }
@@ -200,7 +209,7 @@ public final class JsonIO implements AbstractJsonIO {
         if (predicate.test(getUser(user))) {
             if (new File(userPath).exists()) {
                 FileWriter fw = new FileWriter(userPath, StandardCharsets.UTF_8);
-                JsonUtilities.GSON.toJson(user, fw);
+                gson.toJson(user, fw);
                 fw.close();
             } else {
                 throw new IOException("User not found in " + path);
@@ -221,11 +230,16 @@ public final class JsonIO implements AbstractJsonIO {
     }
 
     @Override
-    public List<String> getAllUsernames() {
-        return Arrays
-                .asList(new File(path + "/users").listFiles())
-                .stream()
-                .map((name) -> name.getName().replace(".json", "")).toList();
+    public Collection<String> getAllUsernames() {
+        File[] userFiles = new File(path + "/users").listFiles();
+
+        if (userFiles != null) {
+            return Arrays.stream(userFiles)
+                    .map((name) -> name.getName().replace(".json", ""))
+                    .toList();
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     /**
@@ -235,7 +249,7 @@ public final class JsonIO implements AbstractJsonIO {
      * @return a {@link User} object
      */
     public User convertToJavaObject(final String json) {
-        return GSON.fromJson(json, User.class);
+        return gson.fromJson(json, User.class);
     }
 
     /**
@@ -253,6 +267,153 @@ public final class JsonIO implements AbstractJsonIO {
             }
         }
         return absolutePath.toString();
+    }
+
+    // STATIC UTILITY METHODS
+
+    /**
+     * Provides absolute path to current working directory.
+     * Implemented in this fashion due to path differences in working files and test
+     * files.
+     *
+     * @return absolute path to current working directory as {@link String}.
+     */
+    public static String getAbsolutePathAsString() {
+        Path absolutePath = Paths.get("").toAbsolutePath();
+        while (!absolutePath.endsWith("gr2325")) {
+            absolutePath = absolutePath.getParent();
+            if (absolutePath == null) {
+                throw new IllegalStateException("Working directory not found.");
+            }
+        }
+        return absolutePath + "/WordDetective/persistence/src/main/resources";
+    }
+
+    /**
+     * Attempts to persistently add a new user.
+     *
+     * @param user The user of which to persistently add.
+     * @return Boolean indicating if the user was added successfully.
+     */
+    public static boolean addUserStatic(final User user) {
+        try (FileWriter fw = new FileWriter(pathToResources + "/users/" + user.getUsername() + ".json",
+                StandardCharsets.UTF_8)) {
+            gson.toJson(user, fw);
+            System.out.println("User " + user.getUsername() + " successfully created.");
+            return true;
+        } catch (IOException e) {
+            System.out.println("Couldn't add user " + user.getUsername() + " because: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Attempts to persistently add new user. Uses custom configured path to
+     * determine location.
+     *
+     * @param newUser New user to add persistently.
+     * @return Boolean indicationg if the user was added persistently.
+     */
+    public boolean addUser(final User newUser) {
+        if (new File(path + "/users/" + newUser.getUsername() + ".json").exists()) {
+            throw new IllegalArgumentException("User " + newUser.getUsername() + " already exists.");
+        }
+        try (FileWriter fw = new FileWriter(path + "/users/" + newUser.getUsername() + ".json",
+                StandardCharsets.UTF_8)) {
+            gson.toJson(newUser, fw);
+            System.out.println("User " + newUser.getUsername() + " successfully created.");
+            return true;
+        } catch (IOException e) {
+            System.out.println("Couldn't add user " + newUser.getUsername() + " because: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Checks if the provided username is registered with the provided password.
+     *
+     * @param username The username of which to check the password of.
+     * @param password The password of which to check against the sotred password of
+     *                 the username.
+     * @return Boolean indicating if the username's stored password matches with the
+     *         provided password.
+     * @throws IOException If any issues are encountered during interaction with the
+     *                     files.
+     */
+    public static boolean usernameAndPasswordMatch(final String username, final String password) throws IOException {
+        String storedPassword;
+        try {
+            storedPassword = getPersistentProperty("password", pathToResources + "/users/" + username + ".json");
+            if (storedPassword.equals(password)) {
+                return true;
+            }
+            return false;
+        } catch (IOException e) {
+            throw new IOException("Error reading property", e);
+        }
+    }
+
+    /**
+     * Turns user-friendly category format into the format used for the files.
+     *
+     * @param category The category to access the file of.
+     * @return The textual representation of the file's name.
+     */
+    public static String getCategoryFilename(final String category) {
+        return "/" + category.replace(" ", "_") + ".json";
+    }
+
+    /**
+     * Fetches a specific property from an specified file without the need to load
+     * in all the file's content.
+     *
+     * @param propertyName The property to obtain the value of.
+     * @param location     The file's absolute path location.
+     * @return String representation of the requested value.
+     * @throws IOException If any issues are encountered during interaction with the
+     *                     files.
+     */
+    public static String getPersistentProperty(final String propertyName, final String location) throws IOException {
+        try (JsonReader reader = new JsonReader(new FileReader(location, StandardCharsets.UTF_8))) {
+            reader.beginObject();
+            while (reader.hasNext()) {
+                String name = reader.nextName();
+                if (name.equals(propertyName)) {
+                    return name;
+                } else {
+                    reader.skipValue();
+                }
+            }
+            reader.endObject();
+        } catch (IOException e) {
+            throw new IOException("Error reading property", e);
+        }
+        throw new IOException("Property not found");
+    }
+
+    /**
+     * Provides the names of all files in a given directory.
+     *
+     * @param endpoint The final filepath to the directory of which to find the
+     *                 filenames of.
+     * @return Set<String> with all filenames in the directory,
+     *         where the ".json" file extension removed, and all underscores
+     *         converted to spaces.
+     * @throws RuntimeException If the provided endpoint is not accessible.
+     */
+    public static Set<String> getPersistentFilenames(final String endpoint) throws RuntimeException {
+        File[] nameFiles = new File(pathToResources + endpoint).listFiles();
+        if (nameFiles != null) {
+            Set<String> res = Arrays.stream(nameFiles).map(file -> {
+                String name = file.getName();
+                String stripJson = name.replace(".json", "");
+                String formatSpace = stripJson.replace("_", " ");
+                return formatSpace;
+            }).collect(Collectors.toSet());
+            return res;
+        } else {
+            throw new RuntimeException("Directory not present in " + pathToResources);
+        }
     }
 
 }

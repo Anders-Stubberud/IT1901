@@ -1,20 +1,13 @@
 package persistence;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 
 import types.User;
 
 public interface AbstractJsonIO {
-
-  /**
-   * Add a user to the database.
-   *
-   * @param user - The user to add
-   * @return - a {@link Boolean} if user was added or not
-   */
-  boolean addUser(User user);
 
   /**
    * Delete user from database.
@@ -45,7 +38,7 @@ public interface AbstractJsonIO {
    *
    * @return - a {@link List} of strings containing all usernames
    */
-  List<String> getAllUsernames();
+  Collection<String> getAllUsernames();
 
   /**
    * Update user and store new data in database.

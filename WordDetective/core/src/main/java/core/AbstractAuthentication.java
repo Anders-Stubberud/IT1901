@@ -1,6 +1,6 @@
 package core;
 
-import persistence.JsonUtilities;
+import persistence.JsonIO;
 
 public abstract class AbstractAuthentication {
 
@@ -11,7 +11,7 @@ public abstract class AbstractAuthentication {
    * @return Boolean indicating if a user with the given username already exists.
    */
   protected boolean usernameExists(final String username) {
-    return JsonUtilities.getPersistentFilenames("/users").contains(username);
+    return JsonIO.getPersistentFilenames("/users").contains(username);
   }
 
   /**
