@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -39,13 +40,18 @@ public final class JsonIO implements AbstractJsonIO {
     /**
      * Gson object user for seralizastion/deserialazation.
      */
-    private static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     /**
      * Constant used to reference the absolute path of the persistence module's
      * resource directory.
      */
-    public static String path = getAbsolutePathAsString();
+    private String path = getAbsolutePathAsString();
+
+    /**
+     * Static instance of path to resources to use with static methods.
+     */
+    private static String pathToResources = getAbsolutePathAsString();
 
     /**
      * Set containing the default categories, which are shared amongst all users.
@@ -90,10 +96,16 @@ public final class JsonIO implements AbstractJsonIO {
      *         user.
      */
     public Set<String> getAllCategories() {
-        return Set.copyOf(Arrays.asList(new File(path + "/default_categories").listFiles())
-                .stream()
-                .map((category) -> category.getName().replace(".json", ""))
-                .toList());
+        return getPersistentFilenames("/default_categories");
+    }
+
+    /**
+     * Accessor method for the string holding the path.
+     *
+     * @return The string hlding the path.
+     */
+    public String getPath() {
+        return path;
     }
 
     @Override
@@ -103,7 +115,7 @@ public final class JsonIO implements AbstractJsonIO {
         }
         try (FileWriter fw = new FileWriter(path + "/users/" + newUser.getUsername() + ".json",
                 StandardCharsets.UTF_8)) {
-            GSON.toJson(newUser, fw);
+            gson.toJson(newUser, fw);
             System.out.println("User " + newUser.getUsername() + " successfully created.");
             return true;
         } catch (IOException e) {
@@ -150,17 +162,17 @@ public final class JsonIO implements AbstractJsonIO {
         try {
             String answers = Files.readString(
                     Paths.get(path + "/default_categories/"
-                            + category + ".json"));
-            return GSON.fromJson(answers, listOfStringsType);
+                            + category.replace(" ", "_") + ".json"));
+            return gson.fromJson(answers, listOfStringsType);
         } catch (IOException e) {
-            throw new IllegalArgumentException("Couldn't get user " + category + "because: " + e.getMessage());
+            throw new IllegalArgumentException("Couldn't get category " + category + " because: " + e.getMessage());
         }
     }
 
     @Override
     public String getUserAsJson(final String username) {
         try {
-            return GSON.toJson(Files.readString(Paths.get(path + "/users/" + username + ".json")));
+            return gson.toJson(Files.readString(Paths.get(path + "/users/" + username + ".json")));
         } catch (IOException e) {
             System.out.println("Couldn't get user " + username + "because: " + e.getMessage());
             return null;
@@ -177,7 +189,7 @@ public final class JsonIO implements AbstractJsonIO {
             System.out.println("Eksisterer");
             try (FileWriter fw = new FileWriter(path + "/users/" + userParameter.getUsername() + ".json",
                     StandardCharsets.UTF_8)) {
-                GSON.toJson(userParameter, fw);
+                gson.toJson(userParameter, fw);
                 System.out.println("User " + userParameter.getUsername() + " successfully updated.");
             } catch (IOException e) {
                 System.out
@@ -192,7 +204,7 @@ public final class JsonIO implements AbstractJsonIO {
     public User getUser(final String username) {
         try {
             String jsonString = Files.readString(Paths.get(path + "/users/" + username + ".json"));
-            return GSON.fromJson(jsonString, User.class);
+            return gson.fromJson(jsonString, User.class);
         } catch (IOException e) {
             throw new IllegalArgumentException("Error when retrieving " + username + ": " + e.getMessage());
         }
@@ -204,7 +216,7 @@ public final class JsonIO implements AbstractJsonIO {
         if (predicate.test(getUser(user))) {
             if (new File(userPath).exists()) {
                 FileWriter fw = new FileWriter(userPath, StandardCharsets.UTF_8);
-                GSON.toJson(user, fw);
+                gson.toJson(user, fw);
                 fw.close();
             } else {
                 throw new IOException("User not found in " + path);
@@ -225,11 +237,8 @@ public final class JsonIO implements AbstractJsonIO {
     }
 
     @Override
-    public List<String> getAllUsernames() {
-        return Arrays
-                .asList(new File(path + "/users").listFiles())
-                .stream()
-                .map((name) -> name.getName().replace(".json", "")).toList();
+    public Collection<String> getAllUsernames() {
+        return getPersistentFilenames("/users");
     }
 
     /**
@@ -239,7 +248,7 @@ public final class JsonIO implements AbstractJsonIO {
      * @return a {@link User} object
      */
     public User convertToJavaObject(final String json) {
-        return GSON.fromJson(json, User.class);
+        return gson.fromJson(json, User.class);
     }
 
     /**
@@ -281,14 +290,14 @@ public final class JsonIO implements AbstractJsonIO {
 
     /**
      * Attempts to persistently add a new user.
-     * 
+     *
      * @param user The user of which to persistently add.
      * @return Boolean indicating if the user was added successfully.
      */
     public static boolean successfullyAddedUserPersistently(final User user) {
-        try (FileWriter fw = new FileWriter(path + "/users/" + user.getUsername() + ".json",
+        try (FileWriter fw = new FileWriter(pathToResources + "/users/" + user.getUsername() + ".json",
                 StandardCharsets.UTF_8)) {
-            GSON.toJson(user, fw);
+            gson.toJson(user, fw);
             System.out.println("User " + user.getUsername() + " successfully created.");
             return true;
         } catch (IOException e) {
@@ -299,7 +308,7 @@ public final class JsonIO implements AbstractJsonIO {
 
     /**
      * Checks if the provided username is registered with the provided password.
-     * 
+     *
      * @param username The username of which to check the password of.
      * @param password The password of which to check against the sotred password of
      *                 the username.
@@ -311,7 +320,7 @@ public final class JsonIO implements AbstractJsonIO {
     public static boolean usernameAndPasswordMatch(final String username, final String password) throws IOException {
         String storedPassword;
         try {
-            storedPassword = getPersistentProperty("password", path + "/users/" + username + ".json");
+            storedPassword = getPersistentProperty("password", pathToResources + "/users/" + username + ".json");
             if (storedPassword.equals(password)) {
                 return true;
             }
@@ -323,7 +332,7 @@ public final class JsonIO implements AbstractJsonIO {
 
     /**
      * Turns user-friendly category format into the format used for the files.
-     * 
+     *
      * @param category The category to access the file of.
      * @return The textual representation of the file's name.
      */
@@ -334,7 +343,7 @@ public final class JsonIO implements AbstractJsonIO {
     /**
      * Fetches a specific property from an specified file without the need to load
      * in all the file's content.
-     * 
+     *
      * @param propertyName The property to obtain the value of.
      * @param location     The file's absolute path location.
      * @return String representation of the requested value.
@@ -361,7 +370,7 @@ public final class JsonIO implements AbstractJsonIO {
 
     /**
      * Provides the names of all files in a given directory.
-     * 
+     *
      * @param endpoint The final filepath to the directory of which to find the
      *                 filenames of.
      * @return Set<String> with all filenames in the directory,
@@ -370,7 +379,7 @@ public final class JsonIO implements AbstractJsonIO {
      * @throws RuntimeException If the provided endpoint is not accessible.
      */
     public static Set<String> getPersistentFilenames(final String endpoint) throws RuntimeException {
-        File[] nameFiles = new File(path + endpoint).listFiles();
+        File[] nameFiles = new File(pathToResources + endpoint).listFiles();
         if (nameFiles != null) {
             Set<String> res = Arrays.stream(nameFiles).map(file -> {
                 String name = file.getName();
@@ -380,7 +389,7 @@ public final class JsonIO implements AbstractJsonIO {
             }).collect(Collectors.toSet());
             return res;
         } else {
-            throw new RuntimeException("Directory not present in " + path);
+            throw new RuntimeException("Directory not present in " + pathToResources);
         }
     }
 

@@ -30,8 +30,8 @@ public class JsonIOTest {
    * The path used for testing.
    */
   private Path testPath = Paths
-      .get(JsonIO.getAbsolutePath("gr2325") +
-          "/WordDetective/persistence/src/test/java/persistence");
+      .get(JsonIO.getAbsolutePath("gr2325")
+          + "/WordDetective/persistence/src/test/java/persistence");
   /**
    * JsonIO object.
    */
@@ -119,8 +119,8 @@ public class JsonIOTest {
         "User should now have only TestCategory as a custom category, but has: "
             + retrivedUser.getCustomCategories().keySet());
 
-    assertEquals(10, retrivedUser.getHighScore(), "Highscore should be 10 not " +
-        retrivedUser.getHighScore());
+    assertEquals(10, retrivedUser.getHighScore(), "Highscore should be 10 not "
+        + retrivedUser.getHighScore());
 
     jsonIO.deleteUser(testuser.getUsername());
   }
@@ -130,14 +130,13 @@ public class JsonIOTest {
    */
   @Test
   public void testDefaultCategory() {
-    assertEquals(0, new File(testPath +
-        "/default_categories").listFiles().length,
-        "default_categories folder should be empty");
+    assertEquals(0, new File(testPath
+        + "/default_categories").listFiles().length, "default_categories folder should be empty");
     List<String> testCategory = Arrays.asList("Hei", "pa", "deg");
 
     // Adds a testCategory in the default_categories folder
-    try (FileWriter fw = new FileWriter(testPath +
-        "/default_categories/testCategory.json", StandardCharsets.UTF_8)) {
+    try (FileWriter fw = new FileWriter(testPath
+        + "/default_categories/testCategory.json", StandardCharsets.UTF_8)) {
       new Gson().toJson(testCategory, fw);
     } catch (Exception e) {
       e.printStackTrace();
@@ -145,8 +144,8 @@ public class JsonIOTest {
 
     try {
       assertEquals(testCategory, jsonIO.getDefaultCategory("testCategory"),
-          "TestCategory should be equals retrieved category, but was: " +
-              jsonIO.getDefaultCategory("testCategory"));
+          "TestCategory should be equals retrieved category, but was: "
+              + jsonIO.getDefaultCategory("testCategory"));
     } catch (IOException e) {
       assertThrows(IOException.class, () -> jsonIO.getDefaultCategory("testCategory"));
     }
@@ -161,16 +160,16 @@ public class JsonIOTest {
    */
   @AfterAll
   public static void deleteDirectories() {
-    String path = JsonIO.getAbsolutePath("gr2325") +
-        "/WordDetective/persistence/src/test/java/persistence";
+    String path = JsonIO.getAbsolutePath("gr2325")
+        + "/WordDetective/persistence/src/test/java/persistence";
     try {
-      Files.deleteIfExists(Paths.get(path +
-          "/default_categories/testCategory.json"));
+      Files.deleteIfExists(Paths.get(path
+          + "/default_categories/testCategory.json"));
       Files.deleteIfExists(Paths.get(path + "/default_categories"));
       Files.deleteIfExists(Paths.get(path + "/users"));
     } catch (IOException e) {
-      System.out.println("Couldn't delete directory because, " +
-          e.getLocalizedMessage());
+      System.out.println("Couldn't delete directory because, "
+          + e.getLocalizedMessage());
       e.printStackTrace();
     }
   }

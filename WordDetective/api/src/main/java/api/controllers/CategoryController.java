@@ -21,7 +21,7 @@ public class CategoryController {
 
   /**
    * API endpoint for fetching og categories related to certain user.
-   * 
+   *
    * @param username Username of the suer to fetch the categories of.
    * @return Set<String> with all category names.
    */

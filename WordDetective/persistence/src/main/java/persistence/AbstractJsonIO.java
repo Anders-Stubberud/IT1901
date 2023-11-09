@@ -1,6 +1,7 @@
 package persistence;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -45,7 +46,7 @@ public interface AbstractJsonIO {
    *
    * @return - a {@link List} of strings containing all usernames
    */
-  List<String> getAllUsernames();
+  Collection<String> getAllUsernames();
 
   /**
    * Update user and store new data in database.
