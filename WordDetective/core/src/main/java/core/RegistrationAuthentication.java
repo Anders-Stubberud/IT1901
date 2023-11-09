@@ -24,7 +24,7 @@ public final class RegistrationAuthentication extends AbstractAuthentication {
     if (!isValidPassword(newPassword)) {
       return RegistrationStatus.PASSWORD_NOT_MATCH_REGEX;
     }
-    if (JsonIO.addUser(new User(newUsername, newPassword))) {
+    if (JsonIO.addUserStatic(new User(newUsername, newPassword))) {
       return RegistrationStatus.SUCCESS;
     }
     return RegistrationStatus.UPLOAD_ERROR;
