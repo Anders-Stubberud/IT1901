@@ -32,9 +32,4 @@ public class CategoryController {
     return userAccess.getAllCategories();
   }
 
-  public static void main(String[] args) {
-    UserAccess a = new UserAccess("guest");
-    System.out.println(a.getAllCategories());
-  }
-
 }

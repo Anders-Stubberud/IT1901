@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -96,7 +97,15 @@ public final class JsonIO implements AbstractJsonIO {
      *         user.
      */
     public Set<String> getAllCategories() {
-        return getPersistentFilenames("/default_categories");
+        File[] categoryFiles = new File(path + "/default_categories").listFiles();
+
+        if (categoryFiles != null) {
+            return Set.copyOf(Arrays.stream(categoryFiles)
+                    .map((category) -> category.getName().replace(".json", ""))
+                    .toList());
+        } else {
+            return Collections.emptySet();
+        }
     }
 
     /**
@@ -238,7 +247,15 @@ public final class JsonIO implements AbstractJsonIO {
 
     @Override
     public Collection<String> getAllUsernames() {
-        return getPersistentFilenames("/users");
+        File[] userFiles = new File(path + "/users").listFiles();
+
+        if (userFiles != null) {
+            return Arrays.stream(userFiles)
+                    .map((name) -> name.getName().replace(".json", ""))
+                    .toList();
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     /**

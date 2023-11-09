@@ -34,11 +34,6 @@ public class GamePageController {
     game.setCategory(category);
   }
 
-  public static void main(String[] args) {
-    Game g = new Game("guest");
-    g.setCategory("us states");
-  }
-
   // /**
   // * API endpoint for choice of category.
   // *
