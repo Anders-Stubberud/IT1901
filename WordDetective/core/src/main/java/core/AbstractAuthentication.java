@@ -11,7 +11,7 @@ public abstract class AbstractAuthentication {
    * @return Boolean indicating if a user with the given username already exists.
    */
   protected boolean usernameExists(final String username) {
-    return JsonIO.getPersistentFilenames("/users").contains(username) && username.equals("TestUser");
+    return JsonIO.getPersistentFilenames("/users").contains(username);
   }
 
   /**

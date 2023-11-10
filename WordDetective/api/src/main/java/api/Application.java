@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 import core.Game;
+import core.UserAccess;
 
 /**
  *
@@ -24,13 +25,28 @@ public class Application {
     }
 
     /**
-     * Session scoped bean used as reference to the instance of game object used in the gamepage controller.
+     * Session scoped bean used as reference to the instance of game object used in
+     * the gamepage controller.
+     * 
      * @return Bean for injection.
      */
     @Primary
     @Bean
     @Scope("session")
     public Game game() {
+        return null;
+    }
+
+    /**
+     * Session scoped bean used as reference to the instance of game object used in
+     * the gamepage controller.
+     * 
+     * @return Bean for injection.
+     */
+    @Primary
+    @Bean
+    @Scope("session")
+    public UserAccess userAccess() {
         return null;
     }
 

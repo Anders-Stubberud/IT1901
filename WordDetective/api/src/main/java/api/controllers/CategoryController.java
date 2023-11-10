@@ -3,6 +3,7 @@ package api.controllers;
 import java.util.Set;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,5 +32,20 @@ public class CategoryController {
     this.userAccess = new UserAccess(username);
     return userAccess.getAllCategories();
   }
+
+  // /**
+  // * API endpoint for fetching og categories related to certain user.
+  // *
+  // * @param username Username of the suer to fetch the categories of.
+  // * @return Set<String> with all category names.
+  // */
+  // @RequestMapping(value = "/CategoryController/getCategories", method =
+  // RequestMethod.POST)
+  // @ResponseStatus(HttpStatus.OK)
+  // // kan implementere enum for kategori opplastning
+  // public void addCustomCategory(@RequestBody final String requestBody) {
+  // userAccess.getJsonIO().updateCurrentUser(user ->
+  // user.addCustomCategories(categoryName, wordList));
+  // }
 
 }

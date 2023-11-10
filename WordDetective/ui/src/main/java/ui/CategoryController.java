@@ -26,16 +26,6 @@ public final class CategoryController implements Initializable {
      */
     private String username;
 
-    // /**
-    // * Database to get all default categories.
-    // */
-    // private JsonIO database = new JsonIO();
-
-    // /**
-    // * Reference to the FXML box containing available categories.
-    // */
-    // private boolean isGuest;
-
     /**
      * Boolean to indicate if the user is a guest or not.
      */
@@ -97,25 +87,11 @@ public final class CategoryController implements Initializable {
      * @throws IOException
      */
     @FXML
-    // Ser ikke ut som at files lastes inn.
     public void uploadCategory() {
-        // if (!username.equals("guest")) {
-        // FileChooser fileChooser = new FileChooser();
-        // fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON
-        // Files", "*.json"));
-        // File selectedFile = fileChooser.showOpenDialog(new Stage());
-        // if (selectedFile != null) {
-        // // Denne gir spotbugs error, dermed kommentert ut.
-        // // String filename = selectedFile.getName();
-
-        // jsonIOUser.addCustomCategories(categoryTitle, wordsList);
-        // // Store the new category in the user's data
-        // ApiConfig.updateUser(jsonIOUser);
-        // // Save changes in the JSON file using JsonIO class
-
-        // renderCategories(); // Update the UI to display the new categories
-        // }
-        // }
+        if (!username.equals("guest")) {
+            String words = customCategoryWords.getText();
+            System.out.println(words);
+        }
     }
 
     /**
