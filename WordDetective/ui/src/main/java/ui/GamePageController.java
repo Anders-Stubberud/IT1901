@@ -3,6 +3,7 @@ package ui;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
@@ -15,6 +16,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -31,6 +33,12 @@ public final class GamePageController extends AbstractController implements Init
 
     @FXML
     private Circle profileCircle, profileCircle1, profileCircle2, profileCircle3;
+
+    /**
+     * This is the anchor pane of game page
+     */
+    @FXML
+    private AnchorPane anchorPane;
 
     /**
      * The lettersCircle is the pane that contains the letters.
@@ -92,6 +100,9 @@ public final class GamePageController extends AbstractController implements Init
      */
     @FXML
     private ImageView backArrowImg;
+
+    @FXML
+    private ImageView imageGame;
 
     // /**
     // * a Game object used to controll the game.
@@ -346,6 +357,8 @@ public final class GamePageController extends AbstractController implements Init
     public void initialize(final URL location, final ResourceBundle resources) {
         setBackArrowImg(backArrowImg);
         try {
+            imageGame.setImage(
+                    new Image(new FileInputStream(Paths.get("assets").toAbsolutePath() + "/images/gamepagenew.png")));
             ApiConfig.newGame(username, currentCategory);
             rndwordMasterLetters();
             playerCircle = new Circle(centerX, centerY, radius,
