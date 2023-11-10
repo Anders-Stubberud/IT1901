@@ -49,7 +49,7 @@ public final class CategoryController implements Initializable {
      * FXML textarea where user writes their categories.
      */
     @FXML
-    private TextArea customCategoryName, customCategoryWords;
+    private TextArea categoryName, categoryWords, nameLabel, wordFormat;
 
     /**
      * FXML component containing the file-uploading information.
@@ -89,8 +89,15 @@ public final class CategoryController implements Initializable {
     @FXML
     public void uploadCategory() {
         if (!username.equals("guest")) {
-            String words = customCategoryWords.getText();
-            System.out.println(words);
+            String chosenCategoryName = categoryName.getText();
+            String words = categoryWords.getText();
+            String[] wordList = words.split("\n");
+            try {
+                ApiConfig.addCustomCategory(chosenCategoryName, wordList);
+                renderCategories();
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -122,6 +129,7 @@ public final class CategoryController implements Initializable {
     public void renderCategories() {
         pane.setVisible(false);
         try {
+            vbox.getChildren().clear();
             for (String category : ApiConfig.getCategories(username)) {
                 Button button = new Button(category);
                 button.setId(category);

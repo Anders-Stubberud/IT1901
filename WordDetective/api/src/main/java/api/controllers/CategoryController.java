@@ -1,5 +1,8 @@
 package api.controllers;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.http.HttpStatus;
@@ -33,19 +36,35 @@ public class CategoryController {
     return userAccess.getAllCategories();
   }
 
-  // /**
-  // * API endpoint for fetching og categories related to certain user.
-  // *
-  // * @param username Username of the suer to fetch the categories of.
-  // * @return Set<String> with all category names.
-  // */
-  // @RequestMapping(value = "/CategoryController/getCategories", method =
-  // RequestMethod.POST)
-  // @ResponseStatus(HttpStatus.OK)
-  // // kan implementere enum for kategori opplastning
-  // public void addCustomCategory(@RequestBody final String requestBody) {
-  // userAccess.getJsonIO().updateCurrentUser(user ->
-  // user.addCustomCategories(categoryName, wordList));
-  // }
+  /**
+   * API endpoint for fetching og categories related to certain user.
+   *
+   * @param username Username of the suer to fetch the categories of.
+   * @return Set<String> with all category names.
+   */
+  @RequestMapping(value = "/CategoryController/addCustomCategory", method = RequestMethod.POST)
+  @ResponseStatus(HttpStatus.OK)
+  // kan implementere enum for kategori opplastning
+  public void addCustomCategory(@RequestBody final String requestBody) {
+    String categoryName = requestBody
+        .split("\"categoryName\":")[1]
+        .split(",")[0]
+        .replaceAll("\"", "");
+    List<String> wordList = Arrays.asList(
+        requestBody
+            .split("\"wordList\":")[1]
+            .split("\\[")[1]
+            .split("]")[0]
+            .split(","));
+    try {
+      userAccess.getJsonIO().updateCurrentUser(
+          (user) -> {
+            user.addCustomCategories(categoryName, wordList);
+            return true;
+          });
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 
 }
