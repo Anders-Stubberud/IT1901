@@ -1,34 +1,23 @@
 package persistence;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.contains;
-
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-
 import com.google.gson.Gson;
-
 import types.User;
 
 public class JsonIOTest {
@@ -38,8 +27,14 @@ public class JsonIOTest {
    */
   private JsonIO jsonIO;
 
+  /**
+   * User instance used for testing.
+   */
   private User testUser;
 
+  /**
+   * Sets up required classes for testing.
+   */
   @BeforeEach
   public void setup() {
     testUser = new User("TestUser", "Password");

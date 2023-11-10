@@ -32,6 +32,10 @@ import types.User;
  */
 public final class JsonIO implements AbstractJsonIO {
 
+    /**
+     * Object used to represent the state of the current user's persistent json
+     * file.
+     */
     private User user;
 
     /**
@@ -57,7 +61,7 @@ public final class JsonIO implements AbstractJsonIO {
     /**
      * Type of a {@link List} of strings used for deserialitzing in gson.
      */
-    private static final Type listOfStringsType = new TypeToken<List<String>>() {
+    private static final Type LIST_OF_STRINGS_TYPE = new TypeToken<List<String>>() {
     }.getType();
 
     /**
@@ -135,10 +139,23 @@ public final class JsonIO implements AbstractJsonIO {
         return pathToResources;
     }
 
+    /**
+     * Retrieves all registered usernames.
+     *
+     * @return All registered usernames.
+     */
     public static Collection<String> getAllUsernames() {
         return getPersistentFilenames("/users");
     }
 
+    /**
+     * Provides an object representing the state of a given user's persistent json
+     * file.
+     *
+     * @param username The username of the user to represent.
+     * @return A User object correlating to the state of the provided user's json
+     *         file.
+     */
     public static User getUser(final String username) {
         try {
             String jsonString = Files.readString(Paths.get(pathToResources + "/users/" + username + ".json"));
@@ -169,6 +186,12 @@ public final class JsonIO implements AbstractJsonIO {
         }
     }
 
+    /**
+     * Deletes a user by removing the user's persistent json file.
+     *
+     * @param username The username of the user to delete.
+     * @return A boolean indicating if the deletion was successful.
+     */
     public static boolean deleteUser(final String username) {
         File userDel = new File(pathToResources + "/users/" + username + ".json");
         if (userDel.delete()) {
@@ -204,12 +227,20 @@ public final class JsonIO implements AbstractJsonIO {
         }
     }
 
+    /**
+     * Retrieves the words belonging to the porvided category.
+     *
+     * @param category The category to retrieve the words of.
+     * @return List of all words in the category.
+     * @throws IOException If any issues are encountered during interaction with the
+     *                     files.
+     */
     public static List<String> getDefaultCategory(final String category) throws IOException {
         try {
             String answers = Files.readString(
                     Paths.get(pathToResources + "/default_categories/"
                             + category.replace(" ", "_") + ".json"));
-            return gson.fromJson(answers, listOfStringsType);
+            return gson.fromJson(answers, LIST_OF_STRINGS_TYPE);
         } catch (IOException e) {
             throw new IllegalArgumentException("Couldn't get category " + category + " because: " + e.getMessage());
         }

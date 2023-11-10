@@ -144,14 +144,15 @@ public final class ApiConfig {
   }
 
   /**
-   * Fetches the categories available to the given user.
+   * Adds a custom category to the user's custom categories.
    *
-   * @param username The username of the user to fetch the categories of.
-   * @return Set<String> containing all categories available to the given user.
+   * @param categoryName The name of the new custom category.
+   * @param wordList     The wordlist correlating to the new custom category.
    * @throws IOException          If any issues are encountered during interaction
    *                              with the files.
    * @throws InterruptedException If thread is interrupted.
    */
+  // TODO kanskje returnere en indikasjon på om opplastningen fungerte eller ikke
   protected static void addCustomCategory(final String categoryName, final String[] wordList)
       throws IOException, InterruptedException {
     String url = BASEURL + "CategoryController/addCustomCategory";

@@ -1,5 +1,8 @@
 package api;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +25,11 @@ public class Application {
      */
     public static void main(final String[] args) {
         SpringApplication.run(Application.class, args);
+        try {
+            System.out.println("\n\n\n" + "IP: " + InetAddress.getLocalHost().getHostAddress() + "\n\n\n");
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

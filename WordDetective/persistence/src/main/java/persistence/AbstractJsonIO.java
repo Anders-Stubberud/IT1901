@@ -26,7 +26,7 @@ public interface AbstractJsonIO {
    * @param function Functional interface to access the desired property.
    * @return The retrieved property.
    */
-  <T> T getUserProperty(final Function<User, T> function);
+  <T> T getUserProperty(Function<User, T> function);
 
   /**
    * Update user and store new data in database.
@@ -49,6 +49,6 @@ public interface AbstractJsonIO {
    * @throws RuntimeException If the given category is present neither among the
    *                          default nor the custom categories.
    */
-  List<String> getCategoryWordlist(final String category) throws IOException, RuntimeException;
+  List<String> getCategoryWordlist(String category) throws IOException, RuntimeException;
 
 }

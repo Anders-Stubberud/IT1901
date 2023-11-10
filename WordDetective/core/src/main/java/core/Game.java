@@ -44,12 +44,6 @@ public final class Game extends UserAccess implements AbstractGame {
         this.isGuestUser = username.equals("guest");
     }
 
-    public static void main(String[] args) {
-        Game game = new Game("guest");
-        game.setCategory("us states");
-        game.getSubstring();
-    }
-
     /**
      * Delegates the task of fetching the wordlist of the requested category.
      */
