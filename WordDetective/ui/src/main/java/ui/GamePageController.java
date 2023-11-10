@@ -44,6 +44,12 @@ public final class GamePageController implements Initializable {
 
     @FXML
     private Pane innerWindow;
+
+    /**
+     * The gameOverPage is the pane that comes after game end.
+     */
+    @FXML
+    private Pane gameOverPage;
     /**
      * The playerInputField is the textfield where the player writes the word.
      */
@@ -88,13 +94,21 @@ public final class GamePageController implements Initializable {
      */
     private String username;
     /**
-     * The layoutX is the X position of the game.
+     * The layoutX is the X position of the lettersCircle.
      */
     private final int layoutX = 470;
     /**
-     * The layoutY is the Y position of the game.
+     * The layoutY is the Y position of the lettersCircle.
      */
-    private final int layoutY = 30;
+    private final int layoutY = 70;
+    /**
+     * The letterVelocity is the velocity of the moving letter circle.
+     */
+    private double letterVelocity = 30;
+    /**
+     * Variable holding current animation.
+     */
+    private TranslateTransition currentAnimation;
     /**
      * The layoutCenter is the center of the game.
      */
@@ -141,6 +155,11 @@ public final class GamePageController implements Initializable {
     private String currentCategory;
 
     /**
+     * The player circle display on screen.
+     */
+    private Circle playerCircle;
+
+    /**
      * Constructor initializing the object.
      *
      * @param usernameParameter username.
@@ -168,7 +187,10 @@ public final class GamePageController implements Initializable {
      * @param targetY  - Y position of target
      * @param duration - Duration of animation in seconds
      */
-    public void moveLettersTo(final double targetX, final double targetY, final int duration) {
+    public void moveLettersTo(final double targetX, final double targetY, final double duration) {
+        if (currentAnimation != null) {
+            currentAnimation.stop();
+        }
         TranslateTransition translate = new TranslateTransition();
         translate.setNode(lettersCircle);
         translate.setDuration(Duration.seconds(duration));
@@ -176,14 +198,28 @@ public final class GamePageController implements Initializable {
                                                                                // center
         translate.setByX(targetX - lettersCircle.getLayoutX() - layoutCenter);
         translate.play();
+
+        currentAnimation = translate;
         translate.setOnFinished((event) -> {
-            lettersCircle.setLayoutX(layoutX); // Reset layout to defualt values
-            lettersCircle.setLayoutY(layoutY);
-            lettersCircle.setTranslateX(0); // Move lettersCircle to default value
-            lettersCircle.setTranslateY(0);
-            translate.stop();
+            gameOverPage.setVisible(true);
         });
 
+    }
+
+    /**
+     * Reset the letter circle to original position and starts transaltion again.
+     */
+    public void resetLettersPos() {
+        if (currentAnimation != null) {
+            currentAnimation.stop(); // Stop any ongoing animation
+        }
+
+        lettersCircle.setLayoutX(layoutX);
+        lettersCircle.setLayoutY(layoutY);
+        lettersCircle.setTranslateX(0);
+        lettersCircle.setTranslateY(0);
+        letterVelocity = letterVelocity * 0.95;
+        moveLettersTo(playerCircle.getCenterX(), playerCircle.getCenterY(), letterVelocity);
     }
 
     /**
@@ -202,6 +238,7 @@ public final class GamePageController implements Initializable {
                     points.setText(String.valueOf(newPoints));
                     playerInputField.setText("");
                     rndwordMasterLetters();
+                    resetLettersPos();
                 } else {
                     // Shake inputfield
                     TranslateTransition shake = new TranslateTransition();
@@ -279,6 +316,7 @@ public final class GamePageController implements Initializable {
         if (showHowToPlay) {
             howToPlay.setVisible(false);
             showHowToPlay = false;
+            moveLettersTo(playerCircle.getCenterX(), playerCircle.getCenterY(), 30);
         } else {
             howToPlay.setVisible(true);
             showHowToPlay = true;
@@ -294,10 +332,10 @@ public final class GamePageController implements Initializable {
                 e.printStackTrace();
             }
             rndwordMasterLetters();
-            Circle activePlayer = new Circle(centerX, centerY, radius,
+            playerCircle = new Circle(centerX, centerY, radius,
                     new ImagePattern(new Image(new FileInputStream("./assets/images/Brage.png"))));
 
-            innerWindow.getChildren().addAll(activePlayer);
+            innerWindow.getChildren().addAll(playerCircle);
             // createPlayers(true);
             outputField.setStyle("-fx-font: 24 arial;");
             // Change textfield format till uppercase

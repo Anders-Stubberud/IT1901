@@ -147,7 +147,8 @@ public final class CategoryController implements Initializable {
         pane.setVisible(false);
         try {
             for (String category : ApiConfig.getCategories(username)) {
-                Button button = new Button(category);
+                String formattedCategory = formatString(category); // Legger til formatting på kategorien
+                Button button = new Button(formattedCategory);
                 button.setId(category);
                 button.setUserData(category);
                 button.setPadding(
