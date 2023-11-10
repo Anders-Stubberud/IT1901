@@ -25,6 +25,12 @@ public final class CategoryController extends AbstractController implements Init
     private String username;
 
     /**
+     * Anchor pane of page.
+     */
+    @FXML
+    private AnchorPane categoryPage;
+
+    /**
      * Vbox containing categories.
      */
     @FXML
@@ -35,7 +41,7 @@ public final class CategoryController extends AbstractController implements Init
      * a file.
      */
     @FXML
-    private Button showCustomCatBtn, uploadBtn;
+    private Button showCustomCatBtn, upload;
 
     /**
      * FXML component providing scrolling throught the available categories.
@@ -126,9 +132,12 @@ public final class CategoryController extends AbstractController implements Init
      */
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
+        setBackArrowImg(backArrowImg);
+        startBGVideo(categoryPage);
+        renderCategories();
         renderCategories();
         if (username.equals("guest")) {
-            customCategory.setVisible(false);
+            showCustomCatBtn.setVisible(false);
             upload.setOpacity(0);
         }
     }
@@ -195,17 +204,6 @@ public final class CategoryController extends AbstractController implements Init
      */
     public void backToMainPage() {
         changeSceneTo("App.fxml", backArrowbtn);
-    }
-
-    /**
-     * initialization of the Category controller triggers a query retrieving all
-     * available categories.
-     */
-    @Override
-    public void initialize(final URL location, final ResourceBundle resources) {
-        setBackArrowImg(backArrowImg);
-        startBGVideo(categoryPage);
-        renderCategories();
     }
 
 }
