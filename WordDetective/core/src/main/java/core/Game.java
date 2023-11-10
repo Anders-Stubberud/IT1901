@@ -56,11 +56,6 @@ public final class Game extends UserAccess implements AbstractGame {
         }
     }
 
-    // @Override
-    // public String getChosenCategory() {
-    // return chosenCategory;
-    // }
-
     @Override
     public List<String> getWordList() {
         return this.wordlist;
@@ -81,7 +76,6 @@ public final class Game extends UserAccess implements AbstractGame {
             int startIndexSubstring = Math.max(random.nextInt(wordLength) - 2, 0);
             int endIndexSubstring = startIndexSubstring + 2 + random.nextInt(2);
             substring = word.substring(startIndexSubstring, endIndexSubstring);
-            System.out.println(word);
         } while (substring.contains(" "));
 
         return substring;

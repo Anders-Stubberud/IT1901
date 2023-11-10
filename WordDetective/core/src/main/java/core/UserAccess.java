@@ -27,7 +27,7 @@ public class UserAccess {
    *
    * @return The instances JsonIO.
    */
-  protected JsonIO getJsonIO() {
+  public JsonIO getJsonIO() {
     return jsonIO;
   }
 

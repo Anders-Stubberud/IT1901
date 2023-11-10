@@ -1,80 +1,66 @@
 package persistence;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
-
+import java.util.Set;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import com.google.gson.Gson;
-
 import types.User;
 
 public class JsonIOTest {
 
   /**
-   * The path used for testing.
-   */
-  private Path testPath = Paths
-      .get(JsonIO.getAbsolutePath("gr2325")
-          + "/WordDetective/persistence/src/test/java/persistence");
-  /**
    * JsonIO object.
    */
-  private JsonIO jsonIO = new JsonIO(testPath);
-  /**
-   * User for testing.
-   */
-  private User testuser;
+  private JsonIO jsonIO;
 
   /**
-   * Setup before each test.
+   * User instance used for testing.
+   */
+  private User testUser;
+
+  /**
+   * Sets up required classes for testing.
    */
   @BeforeEach
-  public void init() {
-    testuser = new User("Test", "Test");
-    // Set up directories in test
-    new File(testPath + "/users").mkdir();
-    new File(testPath + "/default_categories").mkdir();
+  public void setup() {
+    testUser = new User("TestUser", "Password");
   }
 
   /**
-   * Test constructor.
+   * Test user added.
    */
   @Test
-  public void testConstructor() {
-    assertDoesNotThrow(() -> new JsonIO(testPath));
+  public void testUserDeleteAndAdd() {
+    JsonIO.deleteUser(testUser.getUsername());
+    assertFalse(JsonIO.getAllUsernames().contains("TestUser"));
+    JsonIO.addUser(testUser);
+    assertTrue(JsonIO.getAllUsernames().contains("TestUser"));
   }
 
   /**
    * Test adding and deleting a user.
    */
   @Test
-  public void testAddDeleteUser() {
-    jsonIO.addUser(testuser);
-    assertEquals(1, new File(testPath + "/users").listFiles().length);
-    assertTrue(jsonIO.getAllUsernames().contains(testuser.getUsername()));
-    assertThrows(IllegalArgumentException.class, () -> jsonIO.addUser(testuser),
+  public void testUserOccupied() {
+    assertThrows(IllegalArgumentException.class, () -> JsonIO.addUser(testUser),
         "Should not be able to add an existing user");
 
-    assertThrows(IllegalArgumentException.class, () -> jsonIO.deleteUser("NonexistingUser"),
+    assertThrows(IllegalArgumentException.class, () -> JsonIO.deleteUser("NonexistingUser"),
         "Should not be able to delete a non existing user");
-    jsonIO.deleteUser(testuser.getUsername());
-    assertEquals(0, new File(testPath + "/users").listFiles().length);
   }
 
   /**
@@ -82,17 +68,15 @@ public class JsonIOTest {
    */
   @Test
   public void testGetUser() {
-    jsonIO.addUser(testuser);
-    assertEquals(testuser.getUsername(),
-        jsonIO.getUser(testuser.getUsername()).getUsername());
-    assertEquals(testuser.getPassword(),
-        jsonIO.getUser(testuser.getUsername()).getPassword());
-    assertEquals(testuser.getHighScore(),
-        jsonIO.getUser(testuser.getUsername()).getHighScore());
-    assertEquals(testuser.getCustomCategories(),
-        jsonIO.getUser(testuser.getUsername()).getCustomCategories());
-    assertThrows(RuntimeException.class, () -> jsonIO.getUser("Not existing user"));
-    jsonIO.deleteUser(testuser.getUsername());
+    assertEquals(testUser.getUsername(),
+        JsonIO.getUser(testUser.getUsername()).getUsername());
+    assertEquals(testUser.getPassword(),
+        JsonIO.getUser(testUser.getUsername()).getPassword());
+    assertEquals(testUser.getHighScore(),
+        JsonIO.getUser(testUser.getUsername()).getHighScore());
+    assertEquals(testUser.getCustomCategories(),
+        JsonIO.getUser(testUser.getUsername()).getCustomCategories());
+    assertThrows(RuntimeException.class, () -> JsonIO.getUser("Not existing user"));
   }
 
   /**
@@ -100,20 +84,22 @@ public class JsonIOTest {
    */
   @Test
   public void testUpdateUser() {
-    jsonIO.addUser(testuser);
-    assertEquals(testuser.getCustomCategories(),
-        jsonIO.getUser(testuser.getUsername()).getCustomCategories(),
+    assertEquals(testUser.getCustomCategories(),
+        JsonIO.getUser(testUser.getUsername()).getCustomCategories(),
         "TestUser should have 0 custom categories");
-
-    testuser.setHighscore(10);
     List<String> testCategory = Arrays.asList("Test", "Test2");
-    testuser.addCustomCategories("TestCategory", testCategory);
-    System.out.println(testuser.getUsername());
-    System.out.println(testuser.getPassword());
-    System.out.println(testuser.getCustomCategories().toString());
-    jsonIO.updateUser(testuser);
-
-    User retrivedUser = jsonIO.getUser(testuser.getUsername());
+    try {
+      jsonIO = new JsonIO(testUser.getUsername());
+      jsonIO.updateCurrentUser(
+          (user) -> {
+            user.setHighscore(10);
+            user.addCustomCategories("TestCategory", testCategory);
+            return true;
+          });
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    User retrivedUser = JsonIO.getUser(testUser.getUsername());
     assertEquals(1, retrivedUser.getCustomCategories().size());
     assertTrue(retrivedUser.getCustomCategories().containsValue(testCategory),
         "User should now have only TestCategory as a custom category, but has: "
@@ -122,7 +108,25 @@ public class JsonIOTest {
     assertEquals(10, retrivedUser.getHighScore(), "Highscore should be 10 not "
         + retrivedUser.getHighScore());
 
-    jsonIO.deleteUser(testuser.getUsername());
+    try {
+      jsonIO = new JsonIO(testUser.getUsername());
+      jsonIO.updateCurrentUser(
+          (user) -> {
+            user.setHighscore(0);
+            user.deleteCustomCategories("TestCategory");
+            return true;
+          });
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    retrivedUser = JsonIO.getUser(testUser.getUsername());
+    assertEquals(0, retrivedUser.getCustomCategories().size());
+    assertFalse(retrivedUser.getCustomCategories().containsValue(testCategory),
+        "User should not have any custom categories, but has: "
+            + retrivedUser.getCustomCategories().keySet());
+
+    assertEquals(0, retrivedUser.getHighScore(), "Highscore should be 0 not "
+        + retrivedUser.getHighScore());
   }
 
   /**
@@ -130,12 +134,12 @@ public class JsonIOTest {
    */
   @Test
   public void testDefaultCategory() {
-    assertEquals(0, new File(testPath
-        + "/default_categories").listFiles().length, "default_categories folder should be empty");
-    List<String> testCategory = Arrays.asList("Hei", "pa", "deg");
+    Set<String> categories = new HashSet<>(Set.of("us states", "countries", "fruits"));
+    assertTrue(JsonIO.getPersistentFilenames("/default_categories").containsAll(categories));
 
     // Adds a testCategory in the default_categories folder
-    try (FileWriter fw = new FileWriter(testPath
+    List<String> testCategory = Arrays.asList("Hei", "pa", "deg");
+    try (FileWriter fw = new FileWriter(JsonIO.getPathToResources()
         + "/default_categories/testCategory.json", StandardCharsets.UTF_8)) {
       new Gson().toJson(testCategory, fw);
     } catch (Exception e) {
@@ -143,16 +147,16 @@ public class JsonIOTest {
     }
 
     try {
-      assertEquals(testCategory, jsonIO.getDefaultCategory("testCategory"),
-          "TestCategory should be equals retrieved category, but was: "
-              + jsonIO.getDefaultCategory("testCategory"));
+      assertEquals(testCategory, JsonIO.getDefaultCategory("testCategory"),
+          "TestCategory should be equal to retrieved category, but was: "
+              + JsonIO.getDefaultCategory("testCategory"));
     } catch (IOException e) {
-      assertThrows(IOException.class, () -> jsonIO.getDefaultCategory("testCategory"));
+      assertThrows(IOException.class, () -> JsonIO.getDefaultCategory("testCategory"));
     }
-    assertEquals(1, jsonIO.getAllCategories().size());
-    assertTrue(jsonIO.getAllCategories().contains("testCategory"));
-    assertFalse(jsonIO.getAllCategories().contains("Non existing"));
-
+    Collection<String> defaultCategories = JsonIO.getPersistentFilenames("/default_categories");
+    assertEquals(9, defaultCategories.size());
+    assertTrue(defaultCategories.contains("testCategory"));
+    assertFalse(defaultCategories.contains("Non existing"));
   }
 
   /**
@@ -160,16 +164,10 @@ public class JsonIOTest {
    */
   @AfterAll
   public static void deleteDirectories() {
-    String path = JsonIO.getAbsolutePath("gr2325")
-        + "/WordDetective/persistence/src/test/java/persistence";
     try {
-      Files.deleteIfExists(Paths.get(path
+      Files.deleteIfExists(Paths.get(JsonIO.getPathToResources()
           + "/default_categories/testCategory.json"));
-      Files.deleteIfExists(Paths.get(path + "/default_categories"));
-      Files.deleteIfExists(Paths.get(path + "/users"));
     } catch (IOException e) {
-      System.out.println("Couldn't delete directory because, "
-          + e.getLocalizedMessage());
       e.printStackTrace();
     }
   }

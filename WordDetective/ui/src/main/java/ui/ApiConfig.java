@@ -10,6 +10,7 @@ import java.net.http.HttpRequest.BodyPublisher;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Set;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -140,6 +141,26 @@ public final class ApiConfig {
     String url = BASEURL + "CategoryController/getCategories" + "?username=" + param1;
     HttpResponse<String> response = performGetRequest(url);
     return GSON.fromJson(response.body(), listOfStringsType);
+  }
+
+  /**
+   * Adds a custom category to the user's custom categories.
+   *
+   * @param categoryName The name of the new custom category.
+   * @param wordList     The wordlist correlating to the new custom category.
+   * @throws IOException          If any issues are encountered during interaction
+   *                              with the files.
+   * @throws InterruptedException If thread is interrupted.
+   */
+  // TODO kanskje returnere en indikasjon på om opplastningen fungerte eller ikke
+  protected static void addCustomCategory(final String categoryName, final String[] wordList)
+      throws IOException, InterruptedException {
+    String url = BASEURL + "CategoryController/addCustomCategory";
+    String type = "application/json";
+    String jsonBody = String.format("{\"categoryName\":\"%s\",\"wordList\":%s}",
+        categoryName, Arrays.toString(wordList));
+    BodyPublisher body = HttpRequest.BodyPublishers.ofString(jsonBody);
+    performPostRequest(url, type, body);
   }
 
   /**

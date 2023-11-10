@@ -43,7 +43,7 @@ public class GameTest {
      */
     @BeforeEach
     public void setUp() {
-        testUser = new User("Test", "user");
+        testUser = new User("TestUser", "Password");
         testUser.addCustomCategories("Custom", Arrays.asList("1", "3", "4"));
         game = new Game(testUser.getUsername());
     }
@@ -55,7 +55,6 @@ public class GameTest {
     @DisplayName("Test constructor")
     public void constructorTest() {
         Game testGame = new Game(testUser.getUsername());
-        assertNotNull(new Game(""), "Game should not be null");
         assertNotNull(testGame, "Game should not be null");
     }
 

@@ -41,7 +41,7 @@ public final class CategoryController extends AbstractController implements Init
      * a file.
      */
     @FXML
-    private Button showCustomCatBtn, uploadBtn;
+    private Button showCustomCatBtn, upload;
 
     /**
      * FXML component providing scrolling throught the available categories.
@@ -53,7 +53,7 @@ public final class CategoryController extends AbstractController implements Init
      * FXML textarea where user writes their categories.
      */
     @FXML
-    private TextArea customCategoryName, customCategoryWords;
+    private TextArea categoryName, categoryWords, nameLabel, wordFormat;
 
     /**
      * FXML component containing the file-uploading information.
@@ -102,25 +102,18 @@ public final class CategoryController extends AbstractController implements Init
      * @throws IOException
      */
     @FXML
-    // Ser ikke ut som at files lastes inn.
     public void uploadCategory() {
-        // if (!username.equals("guest")) {
-        // FileChooser fileChooser = new FileChooser();
-        // fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON
-        // Files", "*.json"));
-        // File selectedFile = fileChooser.showOpenDialog(new Stage());
-        // if (selectedFile != null) {
-        // // Denne gir spotbugs error, dermed kommentert ut.
-        // // String filename = selectedFile.getName();
-
-        // jsonIOUser.addCustomCategories(categoryTitle, wordsList);
-        // // Store the new category in the user's data
-        // ApiConfig.updateUser(jsonIOUser);
-        // // Save changes in the JSON file using JsonIO class
-
-        // renderCategories(); // Update the UI to display the new categories
-        // }
-        // }
+        if (!username.equals("guest")) {
+            String chosenCategoryName = categoryName.getText();
+            String words = categoryWords.getText();
+            String[] wordList = words.split("\n");
+            try {
+                ApiConfig.addCustomCategory(chosenCategoryName, wordList);
+                renderCategories();
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -134,6 +127,22 @@ public final class CategoryController extends AbstractController implements Init
     private static final int HORIZONTAL_PADDING = 10;
 
     /**
+     * initialization of the Category controller triggers a query retrieving all
+     * available categories.
+     */
+    @Override
+    public void initialize(final URL location, final ResourceBundle resources) {
+        setBackArrowImg(backArrowImg);
+        startBGVideo(categoryPage);
+        renderCategories();
+        renderCategories();
+        if (username.equals("guest")) {
+            showCustomCatBtn.setVisible(false);
+            upload.setOpacity(0);
+        }
+    }
+
+    /**
      * Renders the available categories in the GUI.
      */
     public void renderCategories() {
@@ -141,6 +150,7 @@ public final class CategoryController extends AbstractController implements Init
             showCustomCatBtn.setVisible(false);
         }
         try {
+            vbox.getChildren().clear();
             for (String category : ApiConfig.getCategories(username)) {
                 String formattedCategory = formatString(category); // Legger til formatting på kategorien
                 Button button = new Button(formattedCategory);
@@ -194,17 +204,6 @@ public final class CategoryController extends AbstractController implements Init
      */
     public void backToMainPage() {
         changeSceneTo("App.fxml", backArrowbtn);
-    }
-
-    /**
-     * initialization of the Category controller triggers a query retrieving all
-     * available categories.
-     */
-    @Override
-    public void initialize(final URL location, final ResourceBundle resources) {
-        setBackArrowImg(backArrowImg);
-        startBGVideo(categoryPage);
-        renderCategories();
     }
 
 }
