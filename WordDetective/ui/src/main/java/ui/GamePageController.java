@@ -1,7 +1,6 @@
 package ui;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -13,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -23,7 +23,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
 
-public final class GamePageController implements Initializable {
+public final class GamePageController extends AbstractController implements Initializable {
 
     /**
      * The profileCircle is the circle that represents the player.
@@ -80,6 +80,18 @@ public final class GamePageController implements Initializable {
      */
     @FXML
     private Button closeHTPBtn, openHTPBtn;
+
+    /**
+     * Button for going back to Category page.
+     */
+    @FXML
+    private Button backArrowBtn;
+
+    /**
+     * Imageview of back arrow png.
+     */
+    @FXML
+    private ImageView backArrowImg;
 
     // /**
     // * a Game object used to controll the game.
@@ -323,14 +335,18 @@ public final class GamePageController implements Initializable {
         }
     }
 
+    /**
+     * Change scene back to categor page.
+     */
+    public void backToCategories() {
+        changeSceneTo("Category.fxml", backArrowBtn, new CategoryFactory(username));
+    }
+
     @Override // Runs on start of the application
     public void initialize(final URL location, final ResourceBundle resources) {
+        setBackArrowImg(backArrowImg);
         try {
-            try {
-                ApiConfig.newGame(username, currentCategory);
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
-            }
+            ApiConfig.newGame(username, currentCategory);
             rndwordMasterLetters();
             playerCircle = new Circle(centerX, centerY, radius,
                     new ImagePattern(new Image(new FileInputStream("./assets/images/Brage.png"))));
@@ -346,11 +362,8 @@ public final class GamePageController implements Initializable {
             }));
             playerInputField.requestFocus();
             categoryDisplay.setText("Category: " + currentCategory.toUpperCase().replace("_", " "));
-            try {
-                highScore.setText(String.valueOf(ApiConfig.getHighScore()));
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
-            }
+            highScore.setText(String.valueOf(ApiConfig.getHighScore()));
+
             // Add shutdownhook that updates user highscore when closing application
             Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
                 public void run() {
@@ -365,7 +378,7 @@ public final class GamePageController implements Initializable {
                     }
                 }
             }, "Shutdown-thread"));
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

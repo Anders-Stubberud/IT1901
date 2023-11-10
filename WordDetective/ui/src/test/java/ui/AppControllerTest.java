@@ -58,7 +58,7 @@ public class AppControllerTest extends ApplicationTest {
   @Test
   public void isGuest() {
     clickOn("#appGuestBtn", MouseButton.PRIMARY);
-    Node elementPresentInCategory = lookup("#vBox").query();
+    Node elementPresentInCategory = lookup("#categoryPage").query();
     Assert.assertNotNull(elementPresentInCategory);
   }
 

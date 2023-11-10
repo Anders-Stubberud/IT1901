@@ -5,6 +5,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Circle?>
@@ -13,7 +15,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#checkWrittenWord" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: darkslategrey;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.GamePageController">
+<AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#checkWrittenWord" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: darkslategrey;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.GamePageController">
    <children>
       <Pane fx:id="innerWindow" prefHeight="600.0" prefWidth="1000.0">
          <children>
@@ -30,11 +32,6 @@
                   </Label>
                </children>
             </Pane>
-            <Label alignment="TOP_LEFT" layoutX="49.0" layoutY="28.0" maxWidth="-Infinity" text="00:30" textFill="WHITE" textOverrun="CLIP">
-               <font>
-                  <Font size="35.0" />
-               </font>
-            </Label>
             <TextField fx:id="playerInputField" alignment="CENTER" layoutX="363.0" layoutY="478.0" onKeyTyped="#checkWrittenWord" promptText="Write here" style="-fx-background-color: transparent;">
                <font>
                   <Font size="24.0" />
@@ -82,6 +79,15 @@
                   <Font size="23.0" />
                </font>
             </Text>
+            <Button fx:id="backArrowBtn" layoutX="40.0" layoutY="34.0" mnemonicParsing="false" onAction="#backToCategories" style="-fx-background-color: transparent;" text="Back">
+               <graphic>
+                  <ImageView fx:id="backArrowImg" fitHeight="61.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../assets/images/backArrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </children>
       </Pane>
       <Pane fx:id="howToPlay" layoutX="250.0" layoutY="50.0" prefHeight="458.0" prefWidth="500.0" style="-fx-background-color: darkslategray; -fx-background-radius: 20px;">
