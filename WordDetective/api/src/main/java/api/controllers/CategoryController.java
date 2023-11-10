@@ -37,10 +37,10 @@ public class CategoryController {
   }
 
   /**
-   * API endpoint for fetching og categories related to certain user.
+   * API endpoint for enabling a user to add a new custom category.
    *
-   * @param username Username of the suer to fetch the categories of.
-   * @return Set<String> with all category names.
+   * @param requestBody Requestbody containing the category's name and correlating
+   *                    wordlist.
    */
   @RequestMapping(value = "/CategoryController/addCustomCategory", method = RequestMethod.POST)
   @ResponseStatus(HttpStatus.OK)

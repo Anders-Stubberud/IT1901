@@ -35,7 +35,7 @@ public class Application {
     /**
      * Session scoped bean used as reference to the instance of game object used in
      * the gamepage controller.
-     * 
+     *
      * @return Bean for injection.
      */
     @Primary
@@ -48,7 +48,7 @@ public class Application {
     /**
      * Session scoped bean used as reference to the instance of game object used in
      * the gamepage controller.
-     * 
+     *
      * @return Bean for injection.
      */
     @Primary
