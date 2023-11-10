@@ -109,6 +109,7 @@ public final class CategoryController extends AbstractController implements Init
             String[] wordList = words.split("\n");
             try {
                 ApiConfig.addCustomCategory(chosenCategoryName, wordList);
+                addCategoryPane.setVisible(false);
                 renderCategories();
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
