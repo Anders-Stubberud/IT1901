@@ -2,11 +2,5 @@
   "username": "TestUser",
   "password": "Password",
   "highscore": 0,
-  "customCategories": {
-    "teste": [
-      "wqwert",
-      " ytrewq",
-      " asdfgh"
-    ]
-  }
+  "customCategories": {}
 }
