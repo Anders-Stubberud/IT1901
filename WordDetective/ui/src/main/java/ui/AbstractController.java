@@ -2,7 +2,6 @@ package ui;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
 
@@ -27,6 +26,14 @@ import javafx.util.Callback;
  * controllers.
  */
 public abstract class AbstractController {
+  /**
+   * The controls of the video playing in bg.
+   */
+  private MediaPlayer videoMP;
+  /**
+   * The constrols of the music in application.
+   */
+  private MediaPlayer soundMP;
 
   /**
    * Change the scene to a new fxml scene.
@@ -38,6 +45,9 @@ public abstract class AbstractController {
    */
   public void changeSceneTo(final String scene, final Button buttonPressed) {
     try {
+      if (soundMP != null) {
+        soundMP.stop();
+      }
       FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource(scene));
       Stage stage = (Stage) buttonPressed.getScene().getWindow();
       Parent parent = fxmlLoader.load();
@@ -63,6 +73,9 @@ public abstract class AbstractController {
       final Button buttonPressed,
       final Callback<Class<?>, Object> factory) {
     try {
+      if (soundMP != null) {
+        soundMP.stop();
+      }
       FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource(scene));
       fxmlLoader.setControllerFactory(factory);
       Stage stage = (Stage) buttonPressed.getScene().getWindow();
@@ -81,14 +94,13 @@ public abstract class AbstractController {
    * @param background - The {@link AnchorPane} to add the video to
    *
    */
-  public static void startBGVideo(final AnchorPane background) {
-    System.out.println();
+  public void startBGVideo(final AnchorPane background) {
     File video = new File(Paths.get("assets").toAbsolutePath()
         + "/video/WordDetectiveBackgroundVideo.mp4");
     File sound = new File(Paths.get("assets").toAbsolutePath()
         + "/music/WordDetectiveMusic.L.wav");
-    MediaPlayer videoMP = new MediaPlayer(new Media(video.toURI().toString()));
-    MediaPlayer soundMP = new MediaPlayer(new Media(sound.toURI().toString()));
+    videoMP = new MediaPlayer(new Media(video.toURI().toString()));
+    soundMP = new MediaPlayer(new Media(sound.toURI().toString()));
     MediaView videoMV = new MediaView(videoMP);
     MediaView soundMV = new MediaView(soundMP);
 
@@ -105,6 +117,7 @@ public abstract class AbstractController {
     soundMP.setCycleCount(Timeline.INDEFINITE);
     videoMP.play();
     soundMP.play();
+    videoMP.seek(null);
   }
 
   /**
@@ -112,7 +125,7 @@ public abstract class AbstractController {
    *
    * @param imageview - The {@link ImageView} to place the back arrow image in
    */
-  public void setBackArrowImg(ImageView imageview) {
+  public void setBackArrowImg(final ImageView imageview) {
     Image backArrow;
     try {
       backArrow = new Image(
