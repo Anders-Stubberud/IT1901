@@ -38,17 +38,17 @@ public class JsonIOTest {
   @BeforeEach
   public void setup() {
     testUser = new User("TestUser", "Password");
-    JsonIO.addUser(testUser);
   }
 
   /**
    * Test user added.
    */
   @Test
-  public void testUserAdded() {
-    assertTrue(JsonIO.getAllUsernames().contains("TestUser"));
+  public void testUserDeleteAndAdd() {
     JsonIO.deleteUser(testUser.getUsername());
     assertFalse(JsonIO.getAllUsernames().contains("TestUser"));
+    JsonIO.addUser(testUser);
+    assertTrue(JsonIO.getAllUsernames().contains("TestUser"));
   }
 
   /**
@@ -61,7 +61,6 @@ public class JsonIOTest {
 
     assertThrows(IllegalArgumentException.class, () -> JsonIO.deleteUser("NonexistingUser"),
         "Should not be able to delete a non existing user");
-    JsonIO.deleteUser(testUser.getUsername());
   }
 
   /**
@@ -78,7 +77,6 @@ public class JsonIOTest {
     assertEquals(testUser.getCustomCategories(),
         JsonIO.getUser(testUser.getUsername()).getCustomCategories());
     assertThrows(RuntimeException.class, () -> JsonIO.getUser("Not existing user"));
-    JsonIO.deleteUser(testUser.getUsername());
   }
 
   /**
@@ -89,10 +87,7 @@ public class JsonIOTest {
     assertEquals(testUser.getCustomCategories(),
         JsonIO.getUser(testUser.getUsername()).getCustomCategories(),
         "TestUser should have 0 custom categories");
-
-    testUser.setHighscore(10);
     List<String> testCategory = Arrays.asList("Test", "Test2");
-    testUser.addCustomCategories("TestCategory", testCategory);
     try {
       jsonIO = new JsonIO(testUser.getUsername());
       jsonIO.updateCurrentUser(
@@ -112,7 +107,26 @@ public class JsonIOTest {
 
     assertEquals(10, retrivedUser.getHighScore(), "Highscore should be 10 not "
         + retrivedUser.getHighScore());
-    JsonIO.deleteUser(testUser.getUsername());
+
+    try {
+      jsonIO = new JsonIO(testUser.getUsername());
+      jsonIO.updateCurrentUser(
+          (user) -> {
+            user.setHighscore(0);
+            user.deleteCustomCategories("TestCategory");
+            return true;
+          });
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    retrivedUser = JsonIO.getUser(testUser.getUsername());
+    assertEquals(0, retrivedUser.getCustomCategories().size());
+    assertFalse(retrivedUser.getCustomCategories().containsValue(testCategory),
+        "User should not have any custom categories, but has: "
+            + retrivedUser.getCustomCategories().keySet());
+
+    assertEquals(0, retrivedUser.getHighScore(), "Highscore should be 0 not "
+        + retrivedUser.getHighScore());
   }
 
   /**
@@ -143,7 +157,6 @@ public class JsonIOTest {
     assertEquals(9, defaultCategories.size());
     assertTrue(defaultCategories.contains("testCategory"));
     assertFalse(defaultCategories.contains("Non existing"));
-    JsonIO.deleteUser(testUser.getUsername());
   }
 
   /**
