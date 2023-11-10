@@ -272,7 +272,7 @@ public final class JsonIO implements AbstractJsonIO {
             while (reader.hasNext()) {
                 String name = reader.nextName();
                 if (name.equals(propertyName)) {
-                    return name;
+                    return reader.nextString();
                 } else {
                     reader.skipValue();
                 }

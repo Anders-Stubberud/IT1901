@@ -119,6 +119,7 @@ public final class CategoryController implements Initializable {
     public void initialize(final URL location, final ResourceBundle resources) {
         renderCategories();
         if (username.equals("guest")) {
+            customCategory.setVisible(false);
             upload.setOpacity(0);
         }
     }

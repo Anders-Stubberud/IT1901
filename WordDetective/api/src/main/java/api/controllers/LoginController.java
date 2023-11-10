@@ -33,9 +33,7 @@ public class LoginController {
     String[] components = requestBody.split("&");
     String username = components[0].split("=")[1];
     String password = components[1].split("=")[1];
-    if (authentication == null) {
-      authentication = new LoginAuthentication(username);
-    }
+    authentication = new LoginAuthentication(username);
     return authentication.authenticate(password);
   }
 
