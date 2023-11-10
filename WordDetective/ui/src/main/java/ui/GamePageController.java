@@ -1,7 +1,6 @@
 package ui;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -76,7 +75,7 @@ public final class GamePageController extends AbstractController implements Init
     @FXML
     private Button closeHTPBtn, openHTPBtn;
 
-    /*
+    /**
      * Button for going back to Category page.
      */
     @FXML
@@ -298,6 +297,9 @@ public final class GamePageController extends AbstractController implements Init
         }
     }
 
+    /**
+     * Change scene back to categor page.
+     */
     public void backToCategories() {
         changeSceneTo("Category.fxml", backArrowBtn, new CategoryFactory(username));
     }

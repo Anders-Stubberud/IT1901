@@ -16,7 +16,7 @@ public final class AppController extends AbstractController implements Initializ
      * The root pane of the App.fxml.
      */
     @FXML
-    private AnchorPane anchorPane;
+    private AnchorPane mainPage;
 
     /**
      * Buttons on the Front,Login page.
@@ -54,7 +54,7 @@ public final class AppController extends AbstractController implements Initializ
 
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
-        startBGVideo(anchorPane);
+        startBGVideo(mainPage);
     }
 
 }

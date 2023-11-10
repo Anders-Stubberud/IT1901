@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -11,30 +12,31 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="vBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: darkslategrey;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.CategoryController">
+<AnchorPane id="categoryPage" fx:id="categoryPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: darkslategrey;" stylesheets="@css/index.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.CategoryController">
    <children>
-      <ScrollPane fx:id="scrollpane" layoutX="329.0" layoutY="95.0" prefHeight="491.0" prefWidth="342.0" style="-fx-background-color: white;">
+      <ScrollPane fx:id="scrollpane" layoutX="329.0" layoutY="95.0" prefHeight="491.0" prefWidth="342.0" style="-fx-hbar-policy: NEVER;" styleClass="categoriesContainer">
          <padding>
             <Insets left="15.0" top="15.0" />
          </padding>
          <content>
-            <VBox fx:id="vbox" alignment="CENTER" prefHeight="460.0" prefWidth="310.0" style="-fx-background-color: white;">
+            <VBox fx:id="vbox" alignment="CENTER" prefHeight="472.0" prefWidth="322.0" styleClass="categoriesVbox">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
             </VBox>
          </content>
       </ScrollPane>
-      <Button fx:id="customCategory" layoutX="373.0" layoutY="33.0" mnemonicParsing="false" onAction="#loadCustomCategory" styleClass="btn" stylesheets="@css/index.css" text="Add custom category" />
-      <Pane fx:id="pane" layoutX="671.0" layoutY="95.0" prefHeight="493.0" prefWidth="280.0">
+      <Button fx:id="showCustomCatBtn" layoutX="373.0" layoutY="33.0" mnemonicParsing="false" onAction="#showCustomCategory" styleClass="btn" stylesheets="@css/index.css" text="Add custom category" />
+      <Pane fx:id="addCategoryPane" layoutX="671.0" layoutY="95.0" prefHeight="332.0" prefWidth="280.0" style="visibility: hidden;">
          <children>
             <TextArea fx:id="categoryName" layoutX="40.0" layoutY="63.0" prefHeight="25.0" prefWidth="231.0" wrapText="true" />
-            <Label layoutX="40.0" layoutY="237.0" prefHeight="67.0" prefWidth="130.0" text="&quot;WORD1&quot;,&#10;&quot;WORD2&quot;,&#10;etc...&#10;" textFill="WHITE" />
-            <Button fx:id="upload" layoutX="101.0" layoutY="374.0" mnemonicParsing="false" onAction="#uploadCategory" text="Upload" />
-            <TextArea fx:id="categoryWords" layoutX="40.0" layoutY="122.0" prefHeight="95.0" prefWidth="231.0" wrapText="true" />
+            <TextArea fx:id="categoryWords" layoutX="40.0" layoutY="136.0" prefHeight="95.0" prefWidth="231.0" promptText="Word1, Word2, Word3, etc..." wrapText="true" />
+            <Label layoutX="40.0" layoutY="31.0" prefHeight="32.0" prefWidth="95.0" text="Category Name:&#10;" textFill="WHITE" />
+            <Label layoutX="40.0" layoutY="108.0" prefHeight="32.0" prefWidth="95.0" text="Words:&#10;" textFill="WHITE" />
+            <Button fx:id="uploadBtn" layoutX="68.0" layoutY="263.0" mnemonicParsing="false" onAction="#uploadCategory" styleClass="btn" text="Upload" />
          </children>
       </Pane>
-      <Button fx:id="backArrowbtn" layoutX="37.0" layoutY="33.0" mnemonicParsing="false" onAction="#backToMainPage" style="-fx-background-color: transparent;" text="Back">
+      <Button fx:id="backArrowbtn" layoutX="37.0" layoutY="33.0" mnemonicParsing="false" onAction="#backToMainPage" style="-fx-background-color: #8f8769;" text="Back">
          <graphic>
             <ImageView fx:id="backArrowImg" fitHeight="23.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -44,4 +46,7 @@
          </graphic>
       </Button>
    </children>
+   <cursor>
+      <Cursor fx:constant="HAND" />
+   </cursor>
 </AnchorPane>

@@ -5,20 +5,17 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
 
 public final class CategoryController extends AbstractController implements Initializable {
 
@@ -27,18 +24,14 @@ public final class CategoryController extends AbstractController implements Init
      */
     private String username;
 
-    // /**
-    // * Database to get all default categories.
-    // */
-    // private JsonIO database = new JsonIO();
-
-    // /**
-    // * Reference to the FXML box containing available categories.
-    // */
-    // private boolean isGuest;
+    /**
+     * Anchor pane of page.
+     */
+    @FXML
+    private AnchorPane categoryPage;
 
     /**
-     * Boolean to indicate if the user is a guest or not.
+     * Vbox containing categories.
      */
     @FXML
     private VBox vbox;
@@ -48,7 +41,7 @@ public final class CategoryController extends AbstractController implements Init
      * a file.
      */
     @FXML
-    private Button customCategory, upload;
+    private Button showCustomCatBtn, uploadBtn;
 
     /**
      * FXML component providing scrolling throught the available categories.
@@ -66,7 +59,7 @@ public final class CategoryController extends AbstractController implements Init
      * FXML component containing the file-uploading information.
      */
     @FXML
-    private Pane pane;
+    private Pane addCategoryPane;
 
     /**
      * Button for going back to main page.
@@ -94,11 +87,11 @@ public final class CategoryController extends AbstractController implements Init
      * category.
      */
     @FXML
-    public void loadCustomCategory() {
-        if (pane.isVisible()) {
-            pane.setVisible(false);
+    public void showCustomCategory() {
+        if (addCategoryPane.isVisible()) {
+            addCategoryPane.setVisible(false);
         } else {
-            pane.setVisible(true);
+            addCategoryPane.setVisible(true);
         }
     }
 
@@ -144,11 +137,14 @@ public final class CategoryController extends AbstractController implements Init
      * Renders the available categories in the GUI.
      */
     public void renderCategories() {
-        pane.setVisible(false);
+        if (username.equals("guest")) {
+            showCustomCatBtn.setVisible(false);
+        }
         try {
             for (String category : ApiConfig.getCategories(username)) {
                 Button button = new Button(category);
                 button.setId(category);
+                button.getStyleClass().add("categoryBtn");
                 button.setUserData(category);
                 button.setPadding(
                         new Insets(VERTICAL_PADDING, HORIZONTAL_PADDING, VERTICAL_PADDING, HORIZONTAL_PADDING));
@@ -192,6 +188,9 @@ public final class CategoryController extends AbstractController implements Init
         return formattedString.toString().trim();
     }
 
+    /**
+     * Change scene back to main page.
+     */
     public void backToMainPage() {
         changeSceneTo("App.fxml", backArrowbtn);
     }
@@ -203,10 +202,8 @@ public final class CategoryController extends AbstractController implements Init
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         setBackArrowImg(backArrowImg);
+        startBGVideo(categoryPage);
         renderCategories();
-        if (username.equals("guest")) {
-            upload.setOpacity(0);
-        }
     }
 
 }

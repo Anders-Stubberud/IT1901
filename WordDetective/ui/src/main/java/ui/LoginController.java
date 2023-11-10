@@ -13,12 +13,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
-public class LoginController extends AbstractController implements Initializable {
+public final class LoginController extends AbstractController implements Initializable {
     /**
-     * Anchor pane of login.fxml
+     * Anchor pane of login.fxml.
      */
     @FXML
-    private AnchorPane anchorPane;
+    private AnchorPane loginPage;
     /**
      * Label for marking of incorrect password.
      */
@@ -45,26 +45,19 @@ public class LoginController extends AbstractController implements Initializable
     private Button login, registerUser, backArrowbtn;
 
     /**
-     * Imageview of backbutton
+     * Imageview of backbutton.
      */
     @FXML
     private ImageView backArrowImg;
-    /**
-     * Constant for display of incorrect password.
-     */
-    private static final int DISPLAY_ERROR_DURATION_MS = 3000;
 
-    private void displayError(final String error) {
-        errorDisplay.setText(error);
+    /**
+     * Display an error message.
+     *
+     * @param message - The message to display
+     */
+    private void displayError(final String message) {
+        errorDisplay.setText(message);
         errorDisplay.setOpacity(1);
-        new java.util.Timer().schedule(
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        errorDisplay.setOpacity(0);
-                    }
-                },
-                DISPLAY_ERROR_DURATION_MS);
     }
 
     /**
@@ -114,8 +107,9 @@ public class LoginController extends AbstractController implements Initializable
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(final URL location, final ResourceBundle resources) {
         setBackArrowImg(backArrowImg);
+        startBGVideo(loginPage);
     }
 
 }

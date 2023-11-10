@@ -11,14 +11,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
-public class RegistrationController extends AbstractController implements Initializable {
+public final class RegistrationController extends AbstractController implements Initializable {
 
     /**
-     * Duration of the error displayed useed if username is taken.
+     * Anchorpane of page.
      */
-    private static final int DISPLAY_ERROR_DURATION_MS = 3000;
-
+    @FXML
+    private AnchorPane registrationPage;
     /**
      * FXML component used to display error.
      */
@@ -45,22 +46,19 @@ public class RegistrationController extends AbstractController implements Initia
     private Button signUp, backArrowbtn;
 
     /**
-     * ImageView of back arrow
+     * ImageView of back arrow.
      */
     @FXML
     private ImageView backArrowImg;
 
-    private void displayError(final String error) {
-        errorDisplay.setText(error);
+    /**
+     * Display error if not valid username or password.
+     *
+     * @param message - The error message to display
+     */
+    private void displayError(final String message) {
+        errorDisplay.setText(message);
         errorDisplay.setOpacity(1);
-        new java.util.Timer().schedule(
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        errorDisplay.setOpacity(0);
-                    }
-                },
-                DISPLAY_ERROR_DURATION_MS);
     }
 
     /**
@@ -81,14 +79,11 @@ public class RegistrationController extends AbstractController implements Initia
                     displayError("The username \"" + username + "\" is already taken.");
                     break;
                 case USERNAME_NOT_MATCH_REGEX:
-                    // TODO mer brukervennlig forklaring
-                    displayError("The username \"" + username + "\" should be minimum 2 characters and not be 'guest'");
+                    displayError("The username should be minimum 2 characters and not be 'guest'");
                     break;
                 case PASSWORD_NOT_MATCH_REGEX:
-                    // TODO mer brukervennlig forklaring
-                    displayError("The password \"" + password
-                            + "\" needs to be more then 4 characters, contain at least 1 number, "
-                            + "1 lowercase letter, 1 uppercase letter and 1 special character '#$%&/?!+'");
+                    displayError("The password needs to be more then 4 characters, contain at least 1 number,"
+                            + " 1 lowercase letter and 1 uppercase letter");
                     break;
                 case UPLOAD_ERROR:
                     displayError("Error during instantiation of new user.");
@@ -109,8 +104,9 @@ public class RegistrationController extends AbstractController implements Initia
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(final URL location, final ResourceBundle resources) {
         setBackArrowImg(backArrowImg);
+        startBGVideo(registrationPage);
     }
 
 }
