@@ -37,11 +37,11 @@ public final class CategoryController extends AbstractController implements Init
     private VBox vbox;
 
     /**
-     * FXML buttons for respectively displaying the upload informatin, and to upload
-     * a file.
+     * FXML buttons for respectively displaying the upload information, upload
+     * to a file, and to toggle off the category information pane.
      */
     @FXML
-    private Button showCustomCatBtn, upload;
+    private Button showCustomCatBtn, upload, categoryInformationButton;
 
     /**
      * FXML component providing scrolling throught the available categories.
@@ -56,10 +56,11 @@ public final class CategoryController extends AbstractController implements Init
     private TextArea categoryName, categoryWords, nameLabel, wordFormat;
 
     /**
-     * FXML component containing the file-uploading information.
+     * FXML components containing respectively the file-uploading information and
+     * category information.
      */
     @FXML
-    private Pane addCategoryPane;
+    private Pane addCategoryPane, categoryInformationPane;
 
     /**
      * Button for going back to main page.
@@ -80,6 +81,14 @@ public final class CategoryController extends AbstractController implements Init
      */
     public CategoryController(final String usernameParameter) {
         this.username = usernameParameter;
+    }
+
+    /**
+     * Closes the category information pane.
+     */
+    @FXML
+    public void closeCategoryInformation() {
+        categoryInformationPane.setVisible(false);
     }
 
     /**
