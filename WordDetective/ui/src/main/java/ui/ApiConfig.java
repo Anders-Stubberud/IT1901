@@ -89,6 +89,27 @@ public final class ApiConfig {
   }
 
   /**
+   * Boilerplate method for sending PUT requests.
+   *
+   * @param url  The URL to send the request to.
+   * @param type Indicating the content of the request.
+   * @param body Parameters supplied to the request.
+   * @return HttpResponse<String> containing the result.
+   * @throws IOException          If any issues are encountered during interaction
+   *                              with the files.
+   * @throws InterruptedException If thread is interrupted.
+   */
+  private static HttpResponse<String> performPutRequest(final String url, final String type, final BodyPublisher body)
+      throws IOException, InterruptedException {
+    HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(url))
+        .header("Content-Type", type)
+        .PUT(body)
+        .build();
+    return CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+  }
+
+  /**
    * Checks if username and password is a match.
    *
    * @param username The provided username.
@@ -155,12 +176,11 @@ public final class ApiConfig {
   // TODO kanskje returnere en indikasjon på om opplastningen fungerte eller ikke
   protected static void addCustomCategory(final String categoryName, final String[] wordList)
       throws IOException, InterruptedException {
-    String url = BASEURL + "CategoryController/addCustomCategory";
+    String url = BASEURL + "CategoryController/addCustomCategory/" + categoryName;
     String type = "application/json";
-    String jsonBody = String.format("{\"categoryName\":\"%s\",\"wordList\":%s}",
-        categoryName, Arrays.toString(wordList));
+    String jsonBody = String.format("{\"wordList\":%s}", Arrays.toString(wordList));
     BodyPublisher body = HttpRequest.BodyPublishers.ofString(jsonBody);
-    performPostRequest(url, type, body);
+    performPutRequest(url, type, body);
   }
 
   /**
@@ -208,7 +228,7 @@ public final class ApiConfig {
     String url = BASEURL + "GamePageController/savePlayerHighscore";
     String type = "text/plain";
     BodyPublisher body = BodyPublishers.ofString(highscore);
-    performPostRequest(url, type, body);
+    performPutRequest(url, type, body);
   }
 
   // Lage en funskjon som caller på endpointet laget i api
