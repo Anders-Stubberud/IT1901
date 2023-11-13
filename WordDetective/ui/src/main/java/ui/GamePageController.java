@@ -384,7 +384,8 @@ public final class GamePageController extends AbstractController implements Init
      */
     public void restartGame() { // Metode for å restarte gamet
         try {
-            // ApiConfig.savePlayerHighscore(points.getText()); // Trying to fix highscore update
+            // ApiConfig.savePlayerHighscore(points.getText()); // Trying to fix highscore
+            // update
             if (!username.equals("guest")) {
                 highScore.setText(String.valueOf(ApiConfig.getHighScore()));
                 System.out.println("This runnssss");
@@ -425,7 +426,8 @@ public final class GamePageController extends AbstractController implements Init
         setBackArrowImg(backArrowImg);
         try {
             imageGame.setImage(
-                    new Image(new FileInputStream(Paths.get("assets").toAbsolutePath() + "/images/gamepagenew.png")));
+                    new Image(new FileInputStream(
+                            Paths.get("runtime/assets").toAbsolutePath() + "/images/gamepagenew.png")));
             ApiConfig.newGame(username, currentCategory);
             rndwordMasterLetters();
             playerCircle = new Circle(centerX, centerY, radius,
