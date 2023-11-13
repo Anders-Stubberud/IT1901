@@ -241,8 +241,7 @@ public final class GamePageController extends AbstractController implements Init
             playerInputField.setText("");
             try {
 
-                ApiConfig.savePlayerHighscore(points.getText()); // Prøver å fikse at highscore oppdateres om ny
-                                                                 // highscore
+                ApiConfig.savePlayerHighscore(points.getText()); // Trying to fix highscore update
                 gameOverHighScore.setText(String.valueOf(ApiConfig.getHighScore()));
                 gameOverScore.setText(points.getText());
                 if (username.equals("guest")) {
@@ -385,8 +384,7 @@ public final class GamePageController extends AbstractController implements Init
      */
     public void restartGame() { // Metode for å restarte gamet
         try {
-            // ApiConfig.savePlayerHighscore(points.getText()); // Prøver å fikse at
-            // highscore kommer opp hvis ny highscore
+            // ApiConfig.savePlayerHighscore(points.getText()); // Trying to fix highscore update
             if (!username.equals("guest")) {
                 highScore.setText(String.valueOf(ApiConfig.getHighScore()));
                 System.out.println("This runnssss");
