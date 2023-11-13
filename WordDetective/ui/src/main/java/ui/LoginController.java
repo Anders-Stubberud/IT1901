@@ -68,6 +68,10 @@ public final class LoginController extends AbstractController implements Initial
         try {
             String username = usernameField.getText();
             String password = passwordField.getText();
+            if (username.isBlank() || password.isBlank()) {
+                displayError("Cannot have blank fields.");
+                return;
+            }
             switch (ApiConfig.performLogin(username, password)) {
                 case SUCCESS:
                     changeSceneTo("Category.fxml", login, new CategoryFactory(username));
