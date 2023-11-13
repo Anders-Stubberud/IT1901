@@ -102,7 +102,7 @@ public final class GamePageController extends AbstractController implements Init
     private ImageView backArrowImg;
 
     /**
-     * Image for background
+     * Image for background.
      */
     @FXML
     private ImageView imageGame;
@@ -375,12 +375,14 @@ public final class GamePageController extends AbstractController implements Init
 
     /**
      * Changes the current scene back to category page.
-     * 
      */
     public void backToCategories() {
         changeSceneTo("Category.fxml", backArrowBtn, new CategoryFactory(username));
     }
 
+    /**
+     * Restarts the game in the current category.
+     */
     public void restartGame() { // Metode for å restarte gamet
         try {
             // ApiConfig.savePlayerHighscore(points.getText()); // Prøver å fikse at
