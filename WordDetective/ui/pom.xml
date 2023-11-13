@@ -132,6 +132,13 @@
                 <configuration>
                     <!-- syntax: module-name/full-app-class-name -->
                     <mainClass>project.ui/ui.App</mainClass>
+                    <compress>2</compress>
+                    <noHeaderFiles>true</noHeaderFiles>
+                    <stripDebug>true</stripDebug>
+                    <noManPages>true</noManPages>
+                    <launcher>worddetectivefx</launcher>
+                    <jlinkImageName>worddetectivefx</jlinkImageName>
+                    <jlinkZipName>worddetectivefx</jlinkZipName>
                 </configuration>
             </plugin>
 
@@ -141,6 +148,31 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <configuration>
                     <propertyName>argLine</propertyName>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.panteleyev</groupId>
+                <artifactId>jpackage-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <configuration>
+                    <name>WordDetective</name>
+                    <appVersion>1.0.0</appVersion>
+                    <vendor>project</vendor>
+                    <destination>target/dist</destination>
+                    <module>project.ui/project.ui.App</module>
+                    <runtimeImage>target/worddetectivefx</runtimeImage>
+                    <javaOptions>
+                        <option>-Dfile.encoding=UTF-8</option>
+                    </javaOptions>
+                    <!-- linux options-->
+                    <linuxShortcut>true</linuxShortcut>
+                    <linuxMenuGroup>WordDetectiveFX</linuxMenuGroup>
+                    <!-- windows options-->
+                    <winDirChooser>true</winDirChooser>
+                    <winShortcut>true</winShortcut>
+                    <winMenu>true</winMenu>
+                    <winMenuGroup>WordDetectiveFX</winMenuGroup>
                 </configuration>
             </plugin>
 
