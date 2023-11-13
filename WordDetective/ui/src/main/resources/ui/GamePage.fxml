@@ -151,12 +151,12 @@
                   <Font size="40.0" />
                </font>
             </Label>
-            <Button layoutX="38.0" layoutY="374.0" mnemonicParsing="false" styleClass="btn" stylesheets="@css/index.css" text="Go Back">
+            <Button fx:id="returnBtn" layoutX="38.0" layoutY="374.0" mnemonicParsing="false" onAction="#backToCategories" styleClass="btn" stylesheets="@css/index.css" text="Go Back">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button layoutX="285.0" layoutY="375.0" mnemonicParsing="false" styleClass="btn" stylesheets="@css/index.css" text="Restart">
+            <Button fx:id="restartBtn" layoutX="285.0" layoutY="375.0" mnemonicParsing="false" onAction="#restartGame" styleClass="btn" stylesheets="@css/index.css" text="Restart">
                <font>
                   <Font size="18.0" />
                </font>

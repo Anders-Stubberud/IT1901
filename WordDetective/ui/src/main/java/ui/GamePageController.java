@@ -104,6 +104,16 @@ public final class GamePageController extends AbstractController implements Init
     @FXML
     private ImageView imageGame;
 
+    /**
+     * Buttons on game over pane to return or restart
+     */
+    @FXML
+    private Button returnBtn, restartBtn;
+    /**
+     * Labels to show previous highscore and score for this game
+     */
+    @FXML
+    private Label gameOverHighScore, gameOverScore;
     // /**
     // * a Game object used to controll the game.
     // */
@@ -225,6 +235,14 @@ public final class GamePageController extends AbstractController implements Init
         currentAnimation = translate;
         translate.setOnFinished((event) -> {
             gameOverPage.setVisible(true);
+            try {
+                ApiConfig.savePlayerHighscore(points.getText()); // Prøver å fikse at highscore oppdateres om ny highscore
+                gameOverHighScore.setText(String.valueOf(ApiConfig.getHighScore()));
+                gameOverScore.setText(points.getText());
+
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
         });
 
     }
@@ -351,6 +369,27 @@ public final class GamePageController extends AbstractController implements Init
      */
     public void backToCategories() {
         changeSceneTo("Category.fxml", backArrowBtn, new CategoryFactory(username));
+    }
+
+    public void restartGame() { // Metode for å restarte gamet
+        try {
+            // ApiConfig.savePlayerHighscore(points.getText()); // Prøver å fikse at highscore kommer opp hvis ny highscore
+            highScore.setText(String.valueOf(ApiConfig.getHighScore()));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+        if (username.equals("guest")) {
+            highScore.setText(points.getText());
+        }
+        rndwordMasterLetters();
+        letterVelocity = 30;
+        gameOverPage.setVisible(false);
+        resetLettersPos();
+        points.setText("0");
+
     }
 
     @Override // Runs on start of the application
