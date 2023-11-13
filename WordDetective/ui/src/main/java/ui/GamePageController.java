@@ -3,6 +3,7 @@ package ui;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
@@ -15,6 +16,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -31,6 +33,12 @@ public final class GamePageController extends AbstractController implements Init
 
     @FXML
     private Circle profileCircle, profileCircle1, profileCircle2, profileCircle3;
+
+    /**
+     * This is the anchor pane of game page.
+     */
+    @FXML
+    private AnchorPane anchorPane;
 
     /**
      * The lettersCircle is the pane that contains the letters.
@@ -93,6 +101,22 @@ public final class GamePageController extends AbstractController implements Init
     @FXML
     private ImageView backArrowImg;
 
+    /**
+     * Image for background.
+     */
+    @FXML
+    private ImageView imageGame;
+
+    /**
+     * Buttons on game over pane to return or restart.
+     */
+    @FXML
+    private Button returnBtn, restartBtn;
+    /**
+     * Labels to show previous highscore and score for this game.
+     */
+    @FXML
+    private Label gameOverHighScore, gameOverScore;
     // /**
     // * a Game object used to controll the game.
     // */
@@ -214,6 +238,19 @@ public final class GamePageController extends AbstractController implements Init
         currentAnimation = translate;
         translate.setOnFinished((event) -> {
             gameOverPage.setVisible(true);
+            playerInputField.setText("");
+            try {
+
+                ApiConfig.savePlayerHighscore(points.getText()); // Trying to fix highscore update
+                gameOverHighScore.setText(String.valueOf(ApiConfig.getHighScore()));
+                gameOverScore.setText(points.getText());
+                if (username.equals("guest")) {
+                    gameOverHighScore.setText(highScore.getText());
+                }
+
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
         });
 
     }
@@ -336,16 +373,59 @@ public final class GamePageController extends AbstractController implements Init
     }
 
     /**
-     * Change scene back to categor page.
+     * Changes the current scene back to category page.
      */
     public void backToCategories() {
         changeSceneTo("Category.fxml", backArrowBtn, new CategoryFactory(username));
+    }
+
+    /**
+     * Restarts the game in the current category.
+     */
+    public void restartGame() { // Metode for å restarte gamet
+        try {
+            // ApiConfig.savePlayerHighscore(points.getText()); // Trying to fix highscore update
+            if (!username.equals("guest")) {
+                highScore.setText(String.valueOf(ApiConfig.getHighScore()));
+                System.out.println("This runnssss");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+        if (username.equals("guest")) { // To check and update highscore if player is guest
+            int currentHighScore = Integer.parseInt(gameOverHighScore.getText());
+            int currentPoints = Integer.parseInt(points.getText());
+            System.out.println("Highscore " + currentHighScore);
+            System.out.println("Points " + currentPoints);
+
+            if (currentPoints > currentHighScore) {
+                highScore.setText(String.valueOf(currentPoints));
+                gameOverHighScore.setText(String.valueOf(currentPoints));
+                System.out.println("This runs");
+            } else {
+                highScore.setText(String.valueOf(currentHighScore));
+
+            }
+        }
+        playerInputField.setText("");
+        outputField.getChildren().clear();
+        rndwordMasterLetters();
+        letterVelocity = 30;
+        gameOverPage.setVisible(false);
+        resetLettersPos();
+        points.setText("0");
+
     }
 
     @Override // Runs on start of the application
     public void initialize(final URL location, final ResourceBundle resources) {
         setBackArrowImg(backArrowImg);
         try {
+            imageGame.setImage(
+                    new Image(new FileInputStream(Paths.get("assets").toAbsolutePath() + "/images/gamepagenew.png")));
             ApiConfig.newGame(username, currentCategory);
             rndwordMasterLetters();
             playerCircle = new Circle(centerX, centerY, radius,

@@ -15,8 +15,12 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#checkWrittenWord" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: darkslategrey;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.GamePageController">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#checkWrittenWord" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: darkslategrey;" stylesheets="@css/index.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.GamePageController">
    <children>
+      <ImageView fx:id="imageGame" fitHeight="600.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="false">
+         <image>
+            <Image url="@../../../../assets/images/gamepagenew.png" />
+         </image></ImageView>
       <Pane fx:id="innerWindow" prefHeight="600.0" prefWidth="1000.0">
          <children>
             <Pane fx:id="lettersCircle" layoutX="470.0" layoutY="71.0" prefHeight="60.0" prefWidth="60.0">
@@ -46,7 +50,7 @@
                </font>
             </Label>
             <TextFlow fx:id="outputField" layoutX="353.0" layoutY="478.0" prefHeight="45.0" prefWidth="294.5" style="-fx-border-color: black;" textAlignment="CENTER" />
-            <Button fx:id="openHTPBtn" layoutX="461.0" layoutY="556.0" mnemonicParsing="false" onAction="#howToPlay" style="-fx-background-color: black; -fx-text-fill: white;" text="How to Play">
+            <Button fx:id="openHTPBtn" layoutX="403.0" layoutY="550.0" mnemonicParsing="false" onAction="#howToPlay" styleClass="categoryBtn" stylesheets="@css/index.css" text="How to Play">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -59,7 +63,7 @@
                   <Font size="30.0" />
                </font>
             </Label>
-            <Label fx:id="categoryDisplay" alignment="CENTER" contentDisplay="CENTER" layoutX="161.0" layoutY="9.0" maxWidth="-Infinity" prefHeight="45.0" prefWidth="679.0" text="Category:" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP">
+            <Label fx:id="categoryDisplay" alignment="CENTER" contentDisplay="CENTER" layoutX="161.0" layoutY="9.0" maxWidth="-Infinity" prefHeight="45.0" prefWidth="679.0" style="-fx-background-color: #49361E; -fx-background-radius: 15px;" text="Category:" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP">
                <font>
                   <Font size="30.0" />
                </font>
@@ -90,33 +94,33 @@
             </Button>
          </children>
       </Pane>
-      <Pane fx:id="howToPlay" layoutX="250.0" layoutY="50.0" prefHeight="458.0" prefWidth="500.0" style="-fx-background-color: darkslategray; -fx-background-radius: 20px;">
+      <Pane fx:id="howToPlay" layoutX="250.0" layoutY="50.0" prefHeight="458.0" prefWidth="500.0" style="-fx-background-color: BEB77B; -fx-background-radius: 20px;">
          <effect>
             <DropShadow />
          </effect>
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="131.0" layoutY="18.0" text="How To Play" textAlignment="CENTER" textFill="WHITE">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="131.0" layoutY="18.0" text="How To Play" textAlignment="CENTER">
                <font>
                   <Font size="48.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="32.0" layoutY="105.0" prefHeight="19.0" prefWidth="452.0" text="1. You will be given letters by the WordMaster up top" textAlignment="CENTER" textFill="WHITE">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="32.0" layoutY="105.0" prefHeight="19.0" prefWidth="452.0" text="1. You will be given letters by the WordMaster up top" textAlignment="CENTER">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
             <Line endX="234.611083984375" layoutX="196.0" layoutY="88.0" startX="-119.52337646484375" stroke="#868686" />
-            <Label alignment="CENTER" contentDisplay="TOP" layoutX="28.0" layoutY="148.0" prefHeight="51.0" prefWidth="452.0" text="2. Your task is to write a word containing those letters in the order given" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" wrapText="true">
+            <Label alignment="CENTER" contentDisplay="TOP" layoutX="28.0" layoutY="148.0" prefHeight="51.0" prefWidth="452.0" text="2. Your task is to write a word containing those letters in the order given" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" contentDisplay="TOP" layoutX="27.0" layoutY="208.0" prefHeight="51.0" prefWidth="452.0" text="3.  If you are playing a category. All the words you write need to be in that category. (The active category can be viewed above the WordMaster)" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" wrapText="true">
+            <Label alignment="CENTER" contentDisplay="TOP" layoutX="27.0" layoutY="208.0" prefHeight="51.0" prefWidth="452.0" text="3.  If you are playing a category. All the words you write need to be in that category. (The active category can be viewed above the WordMaster)" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
-            <Button fx:id="closeHTPBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="227.0" layoutY="328.0" mnemonicParsing="false" onAction="#howToPlay" style="-fx-background-color: black;" text="Close" textFill="WHITE">
+            <Button fx:id="closeHTPBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="173.0" layoutY="331.0" mnemonicParsing="false" onAction="#howToPlay" styleClass="btn" text="Close" textFill="WHITE">
                <effect>
                   <DropShadow />
                </effect>
@@ -124,27 +128,51 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
+            <Line endX="224.5572509765625" endY="1.52587890625E-5" layoutX="202.0" layoutY="135.0" startX="-105.85470581054688" startY="1.52587890625E-5" stroke="#868686" />
+            <Line endX="276.0" layoutX="204.0" layoutY="199.0" startX="-176.0" stroke="#868686" />
+            <Line endX="282.9530029296875" layoutX="196.0" layoutY="269.0" startX="-167.35873413085938" stroke="#868686" />
          </children>
       </Pane>
-      <Pane id="gameOverPage" fx:id="gameOverPage" layoutX="200.0" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: darkslategrey; -fx-background-radius: 20px;" visible="false">
+      <Pane id="gameOverPage" fx:id="gameOverPage" layoutX="250.0" layoutY="50.0" prefHeight="458.0" prefWidth="500.0" style="-fx-background-color: BEB77B; -fx-background-radius: 20px;" visible="false">
          <children>
-            <Label layoutX="205.0" layoutY="147.0" text="Game Over" textAlignment="CENTER" textFill="WHITE">
+            <Line endX="101.3841552734375" layoutX="247.0" layoutY="115.0" startX="-92.89474487304688" stroke="#868686" />
+            <Label fx:id="gameOverScore" layoutX="303.0" layoutY="194.0" text="0" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="gameOverHighScore" layoutX="303.0" layoutY="146.0" text="0" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="154.0" layoutY="59.0" text="Game Over" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="40.0" />
                </font>
             </Label>
-            <Button layoutX="117.0" layoutY="466.0" mnemonicParsing="false" text="Go Back">
+            <Button fx:id="returnBtn" layoutX="38.0" layoutY="374.0" mnemonicParsing="false" onAction="#backToCategories" styleClass="btn" stylesheets="@css/index.css" text="Go Back">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button layoutX="396.0" layoutY="466.0" mnemonicParsing="false" text="Restart">
+            <Button fx:id="restartBtn" layoutX="285.0" layoutY="375.0" mnemonicParsing="false" onAction="#restartGame" styleClass="btn" stylesheets="@css/index.css" text="Restart">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <Label layoutX="212.0" layoutY="255.0" text="Previous Highscore" textFill="WHITE" />
-            <Label layoutX="249.0" layoutY="283.0" text="Score" textFill="WHITE" />
+            <Label layoutX="160.0" layoutY="145.0" text="Previous Highscore:" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="247.0" layoutY="194.0" text="Score:" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Line endX="85.3004150390625" layoutX="230.0" layoutY="171.0" startX="-68.85568237304688" stroke="#868686" />
+            <Line endX="38.07696533203125" layoutX="275.0" layoutY="220.0" startX="-30.090484619140625" stroke="#868686" />
          </children>
          <effect>
             <DropShadow />
