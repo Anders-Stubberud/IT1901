@@ -235,10 +235,16 @@ public final class GamePageController extends AbstractController implements Init
         currentAnimation = translate;
         translate.setOnFinished((event) -> {
             gameOverPage.setVisible(true);
+            playerInputField.setText("");
             try {
-                ApiConfig.savePlayerHighscore(points.getText()); // Prøver å fikse at highscore oppdateres om ny highscore
+
+                ApiConfig.savePlayerHighscore(points.getText()); // Prøver å fikse at highscore oppdateres om ny
+                                                                 // highscore
                 gameOverHighScore.setText(String.valueOf(ApiConfig.getHighScore()));
                 gameOverScore.setText(points.getText());
+                if (username.equals("guest")) {
+                    gameOverHighScore.setText(highScore.getText());
+                }
 
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
@@ -373,17 +379,41 @@ public final class GamePageController extends AbstractController implements Init
 
     public void restartGame() { // Metode for å restarte gamet
         try {
-            // ApiConfig.savePlayerHighscore(points.getText()); // Prøver å fikse at highscore kommer opp hvis ny highscore
-            highScore.setText(String.valueOf(ApiConfig.getHighScore()));
+            // ApiConfig.savePlayerHighscore(points.getText()); // Prøver å fikse at
+            // highscore kommer opp hvis ny highscore
+            if (!username.equals("guest")) {
+                highScore.setText(String.valueOf(ApiConfig.getHighScore()));
+                System.out.println("This runnssss");
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
 
         }
 
-        if (username.equals("guest")) {
-            highScore.setText(points.getText());
+        // if ((username.equals("guest"))
+        // && (Integer.parseInt(highScore.getText()) <
+        // Integer.parseInt(points.getText()))) {
+        // highScore.setText(points.getText());
+
+        // }
+        if (username.equals("guest")) { // To check and update highscore if player is guest
+            int currentHighScore = Integer.parseInt(gameOverHighScore.getText());
+            int currentPoints = Integer.parseInt(points.getText());
+            System.out.println("Highscore " + currentHighScore);
+            System.out.println("Points " + currentPoints);
+
+            if (currentPoints > currentHighScore) {
+                highScore.setText(String.valueOf(currentPoints));
+                gameOverHighScore.setText(String.valueOf(currentPoints));
+                System.out.println("This runs");
+            } else {
+                highScore.setText(String.valueOf(currentHighScore));
+
+            }
         }
+        playerInputField.setText("");
+        outputField.getChildren().clear();
         rndwordMasterLetters();
         letterVelocity = 30;
         gameOverPage.setVisible(false);
