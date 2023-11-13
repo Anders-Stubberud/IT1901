@@ -397,12 +397,6 @@ public final class GamePageController extends AbstractController implements Init
 
         }
 
-        // if ((username.equals("guest"))
-        // && (Integer.parseInt(highScore.getText()) <
-        // Integer.parseInt(points.getText()))) {
-        // highScore.setText(points.getText());
-
-        // }
         if (username.equals("guest")) { // To check and update highscore if player is guest
             int currentHighScore = Integer.parseInt(gameOverHighScore.getText());
             int currentPoints = Integer.parseInt(points.getText());
