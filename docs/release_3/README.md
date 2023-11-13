@@ -37,7 +37,7 @@ The requirements for the third release have been fulfilled in the following mann
 
     - Information pane in category page
 
-      For first time user's the purpose of chosing categories may not be clear. Thus, we have implemented a pane in the category page which gives information regarding what the purpose of chosing a category is.
+      For first time user's the purpose of choosing categories may not be clear. Thus, we have implemented a pane in the category page which gives information regarding what the purpose of choosing a category is.
 
   - _Use of the API_
 
@@ -64,3 +64,13 @@ The requirements for the third release have been fulfilled in the following mann
     The REST server thus supports HTTP POST, GET, PUT, and DELETE requests.
     We have used the mentioned request formats according to their intended purposes;
     POST requests to send data to the server, GET requests to read/retrieve data from the server, PUT requests to modify data on the server, and DELETE to delete data on the server.
+
+  - _Class diagram_
+
+    A class diagram, highlighting the most central parts of the application. These classes were chosen because they represent the core logic of what happens on the backend.
+    ![Class diagram](class_diagram.png)
+
+  - _Sequence diagram_
+
+    Sequence diagram showcasing the logic behind the login-operation.
+    ![sequence diagram](sequence_diagram.png)

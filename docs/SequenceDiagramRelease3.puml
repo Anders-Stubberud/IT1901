@@ -1,0 +1,26 @@
+@startuml
+actor user as user
+participant UI as UI
+participant api as api
+participant core as core
+participant persistence as persistence
+
+user -> UI : performLogin(String username, String password)
+
+UI -> api : API request, performLogin(String requestBody)
+
+api -> core : Authenticate(String password)
+
+core -> persistence : usernameExists(String username)
+
+core -> persistence : usernameAndPasswordMatch(String username, String password)
+
+persistence -> core : LoginResult
+
+core -> api : LoginResult
+
+api -> UI : API response, LoginResult
+
+UI -> user : LoginResult
+
+@enduml
