@@ -71,6 +71,10 @@ public final class RegistrationController extends AbstractController implements 
         try {
             String username = newUsername.getText();
             String password = newPassword.getText();
+            if (username.isBlank() || password.isBlank()) {
+                displayError("Cannot have blank fields.");
+                return;
+            }
             switch (ApiConfig.registrationResult(username, password)) {
                 case SUCCESS:
                     changeSceneTo("Category.fxml", signUp, new CategoryFactory(username));
