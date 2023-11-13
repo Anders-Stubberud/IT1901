@@ -1,18 +1,24 @@
 package ui;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
-public class LoginController {
+public final class LoginController extends AbstractController implements Initializable {
+    /**
+     * Anchor pane of login.fxml.
+     */
+    @FXML
+    private AnchorPane loginPage;
     /**
      * Label for marking of incorrect password.
      */
@@ -36,24 +42,22 @@ public class LoginController {
      * "registerNewUser".
      */
     @FXML
-    private Button login, registerUser;
+    private Button login, registerUser, backArrowbtn;
 
     /**
-     * Constant for display of incorrect password.
+     * Imageview of backbutton.
      */
-    private static final int DISPLAY_ERROR_DURATION_MS = 3000;
+    @FXML
+    private ImageView backArrowImg;
 
-    private void displayError(final String error) {
-        errorDisplay.setText(error);
+    /**
+     * Display an error message.
+     *
+     * @param message - The message to display
+     */
+    private void displayError(final String message) {
+        errorDisplay.setText(message);
         errorDisplay.setOpacity(1);
-        new java.util.Timer().schedule(
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        errorDisplay.setOpacity(0);
-                    }
-                },
-                DISPLAY_ERROR_DURATION_MS);
     }
 
     /**
@@ -64,14 +68,9 @@ public class LoginController {
         try {
             String username = usernameField.getText();
             String password = passwordField.getText();
-            switch (ApiConfig.loginControllerPerformLogin(username, password)) {
+            switch (ApiConfig.performLogin(username, password)) {
                 case SUCCESS:
-                    FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
-                    fxmlLoader.setControllerFactory(new CategoryFactory(username));
-                    Parent parent = fxmlLoader.load();
-                    Stage stage = (Stage) login.getScene().getWindow();
-                    stage.setScene(new Scene(parent));
-                    stage.show();
+                    changeSceneTo("Category.fxml", login, new CategoryFactory(username));
                     break;
                 case USERNAME_DOES_NOT_EXIST:
                     displayError("Username does not exist.");
@@ -96,15 +95,21 @@ public class LoginController {
      */
     @FXML
     public void registerNewUser() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Registration.fxml"));
-            Parent parent = fxmlLoader.load();
-            Stage stage = (Stage) login.getScene().getWindow();
-            stage.setScene(new Scene(parent));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        changeSceneTo("Registration.fxml", registerUser);
+    }
+
+    /**
+     * Change scene back to main page.
+     */
+    @FXML
+    public void backToMainPage() {
+        changeSceneTo("App.fxml", backArrowbtn);
+    }
+
+    @Override
+    public void initialize(final URL location, final ResourceBundle resources) {
+        setBackArrowImg(backArrowImg);
+        startBGVideo(loginPage);
     }
 
 }

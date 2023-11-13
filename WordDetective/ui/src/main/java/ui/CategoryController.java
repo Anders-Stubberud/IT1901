@@ -5,49 +5,43 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.control.TextArea;
-import javafx.stage.Stage;
+import javafx.scene.image.ImageView;
 
-public final class CategoryController implements Initializable {
+public final class CategoryController extends AbstractController implements Initializable {
 
     /**
      * The current user.
      */
     private String username;
 
-    // /**
-    // * Database to get all default categories.
-    // */
-    // private JsonIO database = new JsonIO();
-
-    // /**
-    // * Reference to the FXML box containing available categories.
-    // */
-    // private boolean isGuest;
+    /**
+     * Anchor pane of page.
+     */
+    @FXML
+    private AnchorPane categoryPage;
 
     /**
-     * Boolean to indicate if the user is a guest or not.
+     * Vbox containing categories.
      */
     @FXML
     private VBox vbox;
 
     /**
-     * FXML buttons for respectively displaying the upload informatin, and to upload
-     * a file.
+     * FXML buttons for respectively displaying the upload information, upload
+     * to a file, and to toggle off the category information pane.
      */
     @FXML
-    private Button customCategory, upload;
+    private Button showCustomCatBtn, upload, categoryInformationButton;
 
     /**
      * FXML component providing scrolling throught the available categories.
@@ -59,13 +53,25 @@ public final class CategoryController implements Initializable {
      * FXML textarea where user writes their categories.
      */
     @FXML
-    private TextArea customCategoryName, customCategoryWords;
+    private TextArea categoryName, categoryWords, nameLabel, wordFormat;
 
     /**
-     * FXML component containing the file-uploading information.
+     * FXML components containing respectively the file-uploading information and
+     * category information.
      */
     @FXML
-    private Pane pane;
+    private Pane addCategoryPane, categoryInformationPane;
+
+    /**
+     * Button for going back to main page.
+     */
+    @FXML
+    private Button backArrowbtn;
+    /**
+     * Imageview of back arrow png.
+     */
+    @FXML
+    private ImageView backArrowImg;
 
     /**
      * Constructor used for controlling whether or not to retrieve custom
@@ -78,15 +84,23 @@ public final class CategoryController implements Initializable {
     }
 
     /**
+     * Closes the category information pane.
+     */
+    @FXML
+    public void closeCategoryInformation() {
+        categoryInformationPane.setVisible(false);
+    }
+
+    /**
      * Toggles the visibility of the option for the user to upload a custom
      * category.
      */
     @FXML
-    public void loadCustomCategory() {
-        if (pane.isVisible()) {
-            pane.setVisible(false);
+    public void showCustomCategory() {
+        if (addCategoryPane.isVisible()) {
+            addCategoryPane.setVisible(false);
         } else {
-            pane.setVisible(true);
+            addCategoryPane.setVisible(true);
         }
     }
 
@@ -97,25 +111,19 @@ public final class CategoryController implements Initializable {
      * @throws IOException
      */
     @FXML
-    // Ser ikke ut som at files lastes inn.
     public void uploadCategory() {
-        // if (!username.equals("guest")) {
-        // FileChooser fileChooser = new FileChooser();
-        // fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON
-        // Files", "*.json"));
-        // File selectedFile = fileChooser.showOpenDialog(new Stage());
-        // if (selectedFile != null) {
-        // // Denne gir spotbugs error, dermed kommentert ut.
-        // // String filename = selectedFile.getName();
-
-        // jsonIOUser.addCustomCategories(categoryTitle, wordsList);
-        // // Store the new category in the user's data
-        // ApiConfig.updateUser(jsonIOUser);
-        // // Save changes in the JSON file using JsonIO class
-
-        // renderCategories(); // Update the UI to display the new categories
-        // }
-        // }
+        if (!username.equals("guest")) {
+            String chosenCategoryName = categoryName.getText();
+            String words = categoryWords.getText();
+            String[] wordList = words.split("\n");
+            try {
+                ApiConfig.addCustomCategory(chosenCategoryName, wordList);
+                addCategoryPane.setVisible(false);
+                renderCategories();
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -134,8 +142,12 @@ public final class CategoryController implements Initializable {
      */
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
+        setBackArrowImg(backArrowImg);
+        startBGVideo(categoryPage);
+        renderCategories();
         renderCategories();
         if (username.equals("guest")) {
+            showCustomCatBtn.setVisible(false);
             upload.setOpacity(0);
         }
     }
@@ -144,11 +156,16 @@ public final class CategoryController implements Initializable {
      * Renders the available categories in the GUI.
      */
     public void renderCategories() {
-        pane.setVisible(false);
+        if (username.equals("guest")) {
+            showCustomCatBtn.setVisible(false);
+        }
         try {
-            for (String category : ApiConfig.categoryControllerGetCategories(username)) {
-                Button button = new Button(category);
+            vbox.getChildren().clear();
+            for (String category : ApiConfig.getCategories(username)) {
+                String formattedCategory = formatString(category); // Legger til formatting på kategorien
+                Button button = new Button(formattedCategory);
                 button.setId(category);
+                button.getStyleClass().add("categoryBtn");
                 button.setUserData(category);
                 button.setPadding(
                         new Insets(VERTICAL_PADDING, HORIZONTAL_PADDING, VERTICAL_PADDING, HORIZONTAL_PADDING));
@@ -159,16 +176,7 @@ public final class CategoryController implements Initializable {
                 vbox.getChildren().add(ekstraPlass);
 
                 button.setOnAction(event -> {
-                    try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("GamePage.fxml"));
-                        fxmlLoader.setControllerFactory(new GamePageFactory(username, category));
-                        Parent parent = fxmlLoader.load();
-                        Stage stage = (Stage) button.getScene().getWindow();
-                        stage.setScene(new Scene(parent));
-                        stage.show();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    changeSceneTo("GamePage.fxml", button, new GamePageFactory(username, category));
                 });
             }
         } catch (IOException | InterruptedException e) {
@@ -199,6 +207,13 @@ public final class CategoryController implements Initializable {
         }
 
         return formattedString.toString().trim();
+    }
+
+    /**
+     * Change scene back to main page.
+     */
+    public void backToMainPage() {
+        changeSceneTo("App.fxml", backArrowbtn);
     }
 
 }

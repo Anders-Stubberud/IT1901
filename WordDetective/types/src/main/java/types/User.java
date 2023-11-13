@@ -39,11 +39,17 @@ public final class User {
      * @param password The password of the new user.
      */
     public User(final String username, final String password) {
-        // this.customCategories = new HashMap<>();
         this.highscore = 0;
         this.customCategories = new HashMap<String, List<String>>();
         this.name = username;
         this.pwd = password;
+    }
+
+    /**
+     * Empty constructor for setting up a User as guest.
+     */
+    public User() {
+        this.name = "guest";
     }
 
     /**

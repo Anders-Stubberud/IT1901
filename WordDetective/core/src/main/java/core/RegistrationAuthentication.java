@@ -1,6 +1,6 @@
 package core;
 
-import persistence.JsonUtilities;
+import persistence.JsonIO;
 import types.RegistrationStatus;
 import types.User;
 
@@ -24,7 +24,7 @@ public final class RegistrationAuthentication extends AbstractAuthentication {
     if (!isValidPassword(newPassword)) {
       return RegistrationStatus.PASSWORD_NOT_MATCH_REGEX;
     }
-    if (JsonUtilities.successfullyAddedUserPersistently(new User(newUsername, newPassword))) {
+    if (JsonIO.addUser(new User(newUsername, newPassword))) {
       return RegistrationStatus.SUCCESS;
     }
     return RegistrationStatus.UPLOAD_ERROR;
@@ -38,7 +38,7 @@ public final class RegistrationAuthentication extends AbstractAuthentication {
    */
   @Override
   protected boolean isValidPassword(final String password) {
-    return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{4,}$");
+    return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[#$%&/?!+]).{5,}$");
   }
 
   /**

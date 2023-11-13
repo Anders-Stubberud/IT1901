@@ -2,48 +2,31 @@ package persistence;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import types.User;
 
 public interface AbstractJsonIO {
 
-  // /**
-  // * Add a user to the database.
-  // *
-  // * @param user - The user to add
-  // */
-  // abstract boolean addedUserSuccessfully(User user);
+  /**
+   * Fetches the names of all the categories available to the current user.
+   *
+   * @return Set<String> containing all the categories available to the current
+   *         user.
+   */
+  Set<String> getAllCategories();
 
   /**
-   * Delete user from database.
+   * Provides absolute path to current working directory.
+   * Retrieves a certain property from the current user.
    *
-   * @param username The username of the user to delete.
-   *
+   * @param <T>      Specification of return type.
+   * @param function Functional interface to access the desired property.
+   * @return The retrieved property.
    */
-  void deleteUser(String username);
-
-  /**
-   * Get user as a {@link User} from database.
-   *
-   * @return - A {@link User} object
-   */
-  User loadCurrentUser();
-
-  /**
-   * Get user as a Json String.
-   *
-   * @param username - The user to get
-   * @return - The user as a String
-   */
-  String getUserAsJson(String username);
-
-  /**
-   * get all the user's usernames in the database.
-   *
-   * @return - a {@link List} of strings containing all usernames
-   */
-  List<String> getAllUsernames();
+  <T> T getUserProperty(Function<User, T> function);
 
   /**
    * Update user and store new data in database.
@@ -57,17 +40,15 @@ public interface AbstractJsonIO {
   void updateCurrentUser(Predicate<User> predicate) throws IOException;
 
   /**
-   * Get a defaultCategory as a {@link List}.
+   * Fetches the words contained in the wordlist of the given category.
    *
-   * @param category - The category to get
-   * @return - A {@link List} of answers from that category
+   * @param category The category to fetch the wordlist of.
+   * @return List<String> containing all the words in the categories wordlist.
+   * @throws IOException      If any issues are encountered during interaction
+   *                          with the files.
+   * @throws RuntimeException If the given category is present neither among the
+   *                          default nor the custom categories.
    */
-  List<String> getDefaultCategory(String category) throws IOException;
+  List<String> getCategoryWordlist(String category) throws IOException, RuntimeException;
 
-  // /**
-  // * Get all the current default categories.
-  // *
-  // * @return - A {@link HashMap} of category names and respective answers
-  // */
-  // abstract HashMap<String, List<String>> getAllDefaultCategories();
 }

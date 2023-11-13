@@ -42,8 +42,6 @@ public final class Game extends UserAccess implements AbstractGame {
     public Game(final String username) {
         super(username);
         this.isGuestUser = username.equals("guest");
-        // this.user = jsonIO.getCurrentUser();
-        // this.wordlist = new ArrayList<>();
     }
 
     /**
@@ -54,15 +52,9 @@ public final class Game extends UserAccess implements AbstractGame {
         try {
             this.wordlist = getJsonIO().getCategoryWordlist(category);
         } catch (IOException e) {
-            // TODO passende exception
             e.printStackTrace();
         }
     }
-
-    // @Override
-    // public String getChosenCategory() {
-    // return chosenCategory;
-    // }
 
     @Override
     public List<String> getWordList() {
@@ -75,20 +67,15 @@ public final class Game extends UserAccess implements AbstractGame {
     }
 
     @Override
-    public String getRandomWord() {
+    public String getSubstring() {
         String word = wordlist.get(random.nextInt(wordlist.size()));
-        return word;
-    }
 
-    @Override
-    public String getRandomSubstring(final String word) {
         String substring;
         do {
             int wordLength = word.length();
             int startIndexSubstring = Math.max(random.nextInt(wordLength) - 2, 0);
             int endIndexSubstring = startIndexSubstring + 2 + random.nextInt(2);
             substring = word.substring(startIndexSubstring, endIndexSubstring);
-            System.out.println(word);
         } while (substring.contains(" "));
 
         return substring;
@@ -97,6 +84,15 @@ public final class Game extends UserAccess implements AbstractGame {
     @Override
     public boolean checkValidWord(final String substring, final String guess) {
         return guess.matches(".*" + substring + ".*") && wordlist.contains(guess);
+    }
+
+    /**
+     * Delegates the task of retrieving the user's highscore.
+     *
+     * @return The user's highscore
+     */
+    public int getPlayerHighscore() {
+        return isGuestUser ? 0 : getJsonIO().getUserProperty(user -> user.getHighScore());
     }
 
     @Override

@@ -1,7 +1,6 @@
 package ui;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -13,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -23,7 +23,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
 
-public final class GamePageController implements Initializable {
+public final class GamePageController extends AbstractController implements Initializable {
 
     /**
      * The profileCircle is the circle that represents the player.
@@ -44,6 +44,12 @@ public final class GamePageController implements Initializable {
 
     @FXML
     private Pane innerWindow;
+
+    /**
+     * The gameOverPage is the pane that comes after game end.
+     */
+    @FXML
+    private Pane gameOverPage;
     /**
      * The playerInputField is the textfield where the player writes the word.
      */
@@ -75,6 +81,18 @@ public final class GamePageController implements Initializable {
     @FXML
     private Button closeHTPBtn, openHTPBtn;
 
+    /**
+     * Button for going back to Category page.
+     */
+    @FXML
+    private Button backArrowBtn;
+
+    /**
+     * Imageview of back arrow png.
+     */
+    @FXML
+    private ImageView backArrowImg;
+
     // /**
     // * a Game object used to controll the game.
     // */
@@ -88,13 +106,21 @@ public final class GamePageController implements Initializable {
      */
     private String username;
     /**
-     * The layoutX is the X position of the game.
+     * The layoutX is the X position of the lettersCircle.
      */
     private final int layoutX = 470;
     /**
-     * The layoutY is the Y position of the game.
+     * The layoutY is the Y position of the lettersCircle.
      */
-    private final int layoutY = 30;
+    private final int layoutY = 70;
+    /**
+     * The letterVelocity is the velocity of the moving letter circle.
+     */
+    private double letterVelocity = 30;
+    /**
+     * Variable holding current animation.
+     */
+    private TranslateTransition currentAnimation;
     /**
      * The layoutCenter is the center of the game.
      */
@@ -141,6 +167,11 @@ public final class GamePageController implements Initializable {
     private String currentCategory;
 
     /**
+     * The player circle display on screen.
+     */
+    private Circle playerCircle;
+
+    /**
      * Constructor initializing the object.
      *
      * @param usernameParameter username.
@@ -168,7 +199,10 @@ public final class GamePageController implements Initializable {
      * @param targetY  - Y position of target
      * @param duration - Duration of animation in seconds
      */
-    public void moveLettersTo(final double targetX, final double targetY, final int duration) {
+    public void moveLettersTo(final double targetX, final double targetY, final double duration) {
+        if (currentAnimation != null) {
+            currentAnimation.stop();
+        }
         TranslateTransition translate = new TranslateTransition();
         translate.setNode(lettersCircle);
         translate.setDuration(Duration.seconds(duration));
@@ -176,14 +210,28 @@ public final class GamePageController implements Initializable {
                                                                                // center
         translate.setByX(targetX - lettersCircle.getLayoutX() - layoutCenter);
         translate.play();
+
+        currentAnimation = translate;
         translate.setOnFinished((event) -> {
-            lettersCircle.setLayoutX(layoutX); // Reset layout to defualt values
-            lettersCircle.setLayoutY(layoutY);
-            lettersCircle.setTranslateX(0); // Move lettersCircle to default value
-            lettersCircle.setTranslateY(0);
-            translate.stop();
+            gameOverPage.setVisible(true);
         });
 
+    }
+
+    /**
+     * Reset the letter circle to original position and starts transaltion again.
+     */
+    public void resetLettersPos() {
+        if (currentAnimation != null) {
+            currentAnimation.stop(); // Stop any ongoing animation
+        }
+
+        lettersCircle.setLayoutX(layoutX);
+        lettersCircle.setLayoutY(layoutY);
+        lettersCircle.setTranslateX(0);
+        lettersCircle.setTranslateY(0);
+        letterVelocity = letterVelocity * 0.95;
+        moveLettersTo(playerCircle.getCenterX(), playerCircle.getCenterY(), letterVelocity);
     }
 
     /**
@@ -202,6 +250,7 @@ public final class GamePageController implements Initializable {
                     points.setText(String.valueOf(newPoints));
                     playerInputField.setText("");
                     rndwordMasterLetters();
+                    resetLettersPos();
                 } else {
                     // Shake inputfield
                     TranslateTransition shake = new TranslateTransition();
@@ -264,10 +313,8 @@ public final class GamePageController implements Initializable {
      */
     public void rndwordMasterLetters() {
         try {
-            String string = ApiConfig.gamePageControllerGetRandomWord();
-            substring = ApiConfig.gamePageControllerGetSubstring(string);
+            substring = ApiConfig.getSubstring();
             letters.setText(substring.toUpperCase());
-            System.out.println(string);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -281,25 +328,30 @@ public final class GamePageController implements Initializable {
         if (showHowToPlay) {
             howToPlay.setVisible(false);
             showHowToPlay = false;
+            moveLettersTo(playerCircle.getCenterX(), playerCircle.getCenterY(), 30);
         } else {
             howToPlay.setVisible(true);
             showHowToPlay = true;
         }
     }
 
+    /**
+     * Change scene back to categor page.
+     */
+    public void backToCategories() {
+        changeSceneTo("Category.fxml", backArrowBtn, new CategoryFactory(username));
+    }
+
     @Override // Runs on start of the application
     public void initialize(final URL location, final ResourceBundle resources) {
+        setBackArrowImg(backArrowImg);
         try {
-            try {
-                ApiConfig.newGame(username, currentCategory);
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
-            }
+            ApiConfig.newGame(username, currentCategory);
             rndwordMasterLetters();
-            Circle activePlayer = new Circle(centerX, centerY, radius,
+            playerCircle = new Circle(centerX, centerY, radius,
                     new ImagePattern(new Image(new FileInputStream("./assets/images/Brage.png"))));
 
-            innerWindow.getChildren().addAll(activePlayer);
+            innerWindow.getChildren().addAll(playerCircle);
             // createPlayers(true);
             outputField.setStyle("-fx-font: 24 arial;");
             // Change textfield format till uppercase
@@ -310,6 +362,7 @@ public final class GamePageController implements Initializable {
             }));
             playerInputField.requestFocus();
             categoryDisplay.setText("Category: " + currentCategory.toUpperCase().replace("_", " "));
+            highScore.setText(String.valueOf(ApiConfig.getHighScore()));
 
             // Add shutdownhook that updates user highscore when closing application
             Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
@@ -325,7 +378,7 @@ public final class GamePageController implements Initializable {
                     }
                 }
             }, "Shutdown-thread"));
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
