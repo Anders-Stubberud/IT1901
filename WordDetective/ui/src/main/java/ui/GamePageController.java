@@ -35,7 +35,7 @@ public final class GamePageController extends AbstractController implements Init
     private Circle profileCircle, profileCircle1, profileCircle2, profileCircle3;
 
     /**
-     * This is the anchor pane of game page
+     * This is the anchor pane of game page.
      */
     @FXML
     private AnchorPane anchorPane;
@@ -101,16 +101,19 @@ public final class GamePageController extends AbstractController implements Init
     @FXML
     private ImageView backArrowImg;
 
+    /**
+     * Image for background
+     */
     @FXML
     private ImageView imageGame;
 
     /**
-     * Buttons on game over pane to return or restart
+     * Buttons on game over pane to return or restart.
      */
     @FXML
     private Button returnBtn, restartBtn;
     /**
-     * Labels to show previous highscore and score for this game
+     * Labels to show previous highscore and score for this game.
      */
     @FXML
     private Label gameOverHighScore, gameOverScore;
@@ -371,7 +374,8 @@ public final class GamePageController extends AbstractController implements Init
     }
 
     /**
-     * Change scene back to categor page.
+     * Changes the current scene back to category page.
+     * 
      */
     public void backToCategories() {
         changeSceneTo("Category.fxml", backArrowBtn, new CategoryFactory(username));
