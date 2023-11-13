@@ -22,7 +22,7 @@
                   <Font size="34.0" />
                </font>
             </Label>
-            <Label fx:id="errorDisplay" focusTraversable="false" layoutX="15.0" layoutY="233.0" opacity="0.0" prefHeight="69.0" prefWidth="271.0" textAlignment="CENTER" textFill="#8d0d0d" wrapText="true">
+            <Label fx:id="errorDisplay" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="15.0" layoutY="233.0" opacity="0.0" prefHeight="69.0" prefWidth="271.0" textAlignment="CENTER" textFill="#8d0d0d" wrapText="true">
                <font>
                   <Font size="12.0" />
                </font>
