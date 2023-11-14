@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Collections;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -93,6 +94,8 @@ public class GameTest {
     @Test
     @DisplayName("Check that guesses are valid")
     public void testCheckValidWord() {
+        game.setWordList(Collections.emptyList());
+        assertFalse(game.checkValidWord("s", "Test"), "Failed for empty wordlist'");
         game.setWordList(multipleTestList);
         assertTrue(game.checkValidWord("s", "Test"), "Failed for 's' and 'Test'");
         assertTrue(game.checkValidWord("es", "Test"), "Failed for 'es' and 'Test'");
