@@ -4,9 +4,9 @@ metadata:
 components:
   - name: gr2325
     container:
-      image: andervs/it1901:latest
+      image: docker.io/adrianstoica/it1901:latest
       memoryLimit: 3Gi
-      endpoints:  
+      endpoints:
         - exposure: public
           name: 6080-tcp-desktop-ui
           protocol: http
@@ -34,6 +34,6 @@ components:
 commands:
   - id: changedir
     exec:
-      component: todolist
-      commandLine: cd todolist
+      component: WordDetective
+      commandLine: cd WordDetective
       label: change directory
