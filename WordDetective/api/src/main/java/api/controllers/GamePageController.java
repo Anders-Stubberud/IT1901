@@ -34,18 +34,6 @@ public class GamePageController {
     game.setCategory(category);
   }
 
-  // /**
-  // * API endpoint for choice of category.
-  // *
-  // * @param category The category selected by the user.
-  // */
-  // @RequestMapping(value = "/GamePageController/setCategory", method =
-  // RequestMethod.POST)
-  // @ResponseStatus(HttpStatus.OK)
-  // public void setCategory(final @RequestBody String category) {
-  // game.setCategory(category);
-  // }
-
   /**
    * API endpoint for fetching a randomly generated substring from a randomly
    * pulled word.
@@ -53,10 +41,10 @@ public class GamePageController {
    * @return A substring generated from a word randomly pulled from the current
    *         wordlist.
    */
-  @RequestMapping(value = "/GamePageController/getSubstring", method = RequestMethod.GET)
+  @RequestMapping(value = "/GamePageController/getWord", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
-  public String getSubstring() {
-    return game.getSubstring();
+  public String getWord() {
+    return game.getWord();
   }
 
   /**
