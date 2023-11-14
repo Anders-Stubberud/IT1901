@@ -4,7 +4,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.util.Random;
 import java.util.ResourceBundle;
+
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -117,10 +119,12 @@ public final class GamePageController extends AbstractController implements Init
      */
     @FXML
     private Label gameOverHighScore, gameOverScore;
-    // /**
-    // * a Game object used to controll the game.
-    // */
-    // private Game game;
+
+    /**
+     * The current word used for showing at game over.
+     */
+    @FXML
+    private Label currentWordLabel;
     /**
      * The substring is the letters that the player has to use.
      */
@@ -191,9 +195,19 @@ public final class GamePageController extends AbstractController implements Init
     private String currentCategory;
 
     /**
+     * The current word used to obtain the substring.
+     */
+    private String currentWord;
+
+    /**
      * The player circle display on screen.
      */
     private Circle playerCircle;
+
+    /**
+     * Random object used to provide substrings.
+     */
+    private Random random;
 
     /**
      * Constructor initializing the object.
@@ -204,6 +218,7 @@ public final class GamePageController extends AbstractController implements Init
     public GamePageController(final String usernameParameter, final String categoryParameter) {
         this.username = usernameParameter;
         this.currentCategory = categoryParameter;
+        random = new Random();
     }
 
     /**
@@ -241,9 +256,10 @@ public final class GamePageController extends AbstractController implements Init
             playerInputField.setText("");
             try {
 
-                ApiConfig.savePlayerHighscore(points.getText()); // Trying to fix highscore update
+                ApiConfig.savePlayerHighscore(points.getText());
                 gameOverHighScore.setText(String.valueOf(ApiConfig.getHighScore()));
                 gameOverScore.setText(points.getText());
+                currentWordLabel.setText("The word the substring was taken from was: " + currentWord.toUpperCase());
                 if (username.equals("guest")) {
                     gameOverHighScore.setText(highScore.getText());
                 }
@@ -282,7 +298,7 @@ public final class GamePageController extends AbstractController implements Init
         if (ke.getCode().equals(KeyCode.ENTER)) { // If pressed Enter, then check word
             String playerGuess = playerInputField.getText();
             try {
-                if (ApiConfig.checkValidWord(playerGuess, playerGuess)) {
+                if (ApiConfig.checkValidWord(substring, playerGuess)) {
                     int newPoints = Integer.parseInt(points.getText()) + 1;
                     points.setText(String.valueOf(newPoints));
                     playerInputField.setText("");
@@ -349,12 +365,31 @@ public final class GamePageController extends AbstractController implements Init
      * The length of the letters is either 2 or 3.
      */
     public void rndwordMasterLetters() {
+        substring = getSubstring();
+        letters.setText(substring.toUpperCase());
+    }
+
+    /**
+     * Gets a random substring from the current word.
+     *
+     * @return The substring
+     *
+     */
+    public String getSubstring() {
         try {
-            substring = ApiConfig.getSubstring();
-            letters.setText(substring.toUpperCase());
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            currentWord = ApiConfig.getWord();
+
+            do {
+                int wordLength = currentWord.length();
+                int startIndexSubstring = Math.max(random.nextInt(wordLength) - 2, 0);
+                int endIndexSubstring = startIndexSubstring + 2 + random.nextInt(2);
+                substring = currentWord.substring(startIndexSubstring, endIndexSubstring);
+            } while (substring.contains(" "));
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to get substring because of: " + e.getMessage());
         }
+
+        return substring;
     }
 
     /**

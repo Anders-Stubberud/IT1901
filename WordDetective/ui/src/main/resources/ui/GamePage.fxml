@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#checkWrittenWord" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: darkslategrey;" stylesheets="@css/index.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.GamePageController">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#checkWrittenWord" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: darkslategrey;" stylesheets="@css/index.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.GamePageController">
    <children>
       <ImageView fx:id="imageGame" fitHeight="600.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="false">
          <image>
@@ -173,6 +173,11 @@
             </Label>
             <Line endX="85.3004150390625" layoutX="230.0" layoutY="171.0" startX="-68.85568237304688" stroke="#868686" />
             <Line endX="38.07696533203125" layoutX="275.0" layoutY="220.0" startX="-30.090484619140625" stroke="#868686" />
+            <Label fx:id="currentWordLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="39.0" layoutY="247.0" prefHeight="60.0" prefWidth="424.0" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
          </children>
          <effect>
             <DropShadow />

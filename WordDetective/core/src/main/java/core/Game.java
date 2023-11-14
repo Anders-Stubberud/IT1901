@@ -67,18 +67,8 @@ public final class Game extends UserAccess implements AbstractGame {
     }
 
     @Override
-    public String getSubstring() {
-        String word = wordlist.get(random.nextInt(wordlist.size()));
-
-        String substring;
-        do {
-            int wordLength = word.length();
-            int startIndexSubstring = Math.max(random.nextInt(wordLength) - 2, 0);
-            int endIndexSubstring = startIndexSubstring + 2 + random.nextInt(2);
-            substring = word.substring(startIndexSubstring, endIndexSubstring);
-        } while (substring.contains(" "));
-
-        return substring;
+    public String getWord() {
+        return wordlist.get(random.nextInt(wordlist.size()));
     }
 
     @Override

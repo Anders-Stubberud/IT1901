@@ -49,7 +49,7 @@ public abstract class AbstractController {
       if (soundMP != null) {
         soundMP.stop();
       }
-      FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource(scene));
+      FXMLLoader fxmlLoader = new FXMLLoader(AbstractController.class.getResource(scene));
       Stage stage = (Stage) buttonPressed.getScene().getWindow();
       Parent parent = fxmlLoader.load();
       stage.setScene(new Scene(parent));
@@ -77,7 +77,7 @@ public abstract class AbstractController {
       if (soundMP != null) {
         soundMP.stop();
       }
-      FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource(scene));
+      FXMLLoader fxmlLoader = new FXMLLoader(AbstractController.class.getResource(scene));
       fxmlLoader.setControllerFactory(factory);
       Stage stage = (Stage) buttonPressed.getScene().getWindow();
       Parent parent = fxmlLoader.load();

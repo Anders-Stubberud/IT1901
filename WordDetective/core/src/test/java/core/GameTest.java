@@ -84,7 +84,7 @@ public class GameTest {
     public void testGetRandomSubstring() {
         game.setWordList(singleTestList);
         for (int i = 0; i < NUMBER_OF_TESTS; i++) {
-            assertTrue("Test".contains(game.getSubstring()));
+            assertTrue("Test".contains(game.getWord()));
         }
     }
 

@@ -208,9 +208,9 @@ public final class ApiConfig {
    *                              with the files.
    * @throws InterruptedException If thread is interrupted.
    */
-  protected static String getSubstring()
+  protected static String getWord()
       throws IOException, InterruptedException {
-    String url = BASEURL + "GamePageController/getSubstring";
+    String url = BASEURL + "GamePageController/getWord";
     HttpResponse<String> response = performGetRequest(url);
     return response.body();
   }
