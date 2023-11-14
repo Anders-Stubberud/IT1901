@@ -1,5 +1,6 @@
 package core;
 
+import java.util.HashMap;
 import java.util.Set;
 import persistence.JsonIO;
 
@@ -32,13 +33,14 @@ public class UserAccess {
   }
 
   /**
-   * Delegates the task of finding all categories available to the user.
+   * Get all categories available to the current user.
+   * Custom and default categories are separated.
    *
-   * @return Set<String> containing all categories available to the given user.
+   * @return a {@link Hashmap} containing all categories available to the current
    */
   // kan brukes videre av Game for velging av ny kategori underveis i en
   // spill-økt.
-  public Set<String> getAllCategories() {
+  public HashMap<String, Set<String>> getAllCategories() {
     return jsonIO.getAllCategories();
   }
 

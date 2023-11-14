@@ -2,6 +2,7 @@ package api.controllers;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -31,7 +32,7 @@ public class CategoryController {
    */
   @RequestMapping(value = "/CategoryController/getCategories", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
-  public Set<String> getCategories(final @RequestParam("username") String username) {
+  public HashMap<String, Set<String>> getCategories(final @RequestParam("username") String username) {
     this.userAccess = new UserAccess(username);
     return userAccess.getAllCategories();
   }

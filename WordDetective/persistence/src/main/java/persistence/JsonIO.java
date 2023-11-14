@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -76,8 +77,11 @@ public final class JsonIO implements AbstractJsonIO {
     }
 
     @Override
-    public Set<String> getAllCategories() {
-        return Stream.concat(DEFAULT_CATEGORY_NAMES.stream(), customCategoryNames.stream()).collect(Collectors.toSet());
+    public HashMap<String, Set<String>> getAllCategories() {
+        HashMap<String, Set<String>> categories = new HashMap<>();
+        categories.put("default", DEFAULT_CATEGORY_NAMES);
+        categories.put("custom", customCategoryNames);
+        return categories;
     }
 
     @Override
