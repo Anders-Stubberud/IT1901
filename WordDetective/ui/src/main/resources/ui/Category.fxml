@@ -40,6 +40,7 @@
       </Pane>
       <Pane fx:id="addCategoryPane" layoutX="691.0" layoutY="109.0" prefHeight="420.0" prefWidth="280.0" style="visibility: hidden;" styleClass="notepad">
          <children>
+            <Label fx:id="uploadErrorDisplay" alignment="CENTER" contentDisplay="CENTER" layoutX="23.0" layoutY="264.0" prefHeight="32.0" prefWidth="236.0" textAlignment="CENTER" textFill="#b51c1c" />
             <TextArea fx:id="categoryName" layoutX="40.0" layoutY="72.0" prefHeight="37.0" prefWidth="200.0" wrapText="true" />
             <Button fx:id="upload" layoutX="59.0" layoutY="305.0" mnemonicParsing="false" onAction="#uploadCategory" styleClass="btn" text="Upload" />
             <TextArea fx:id="categoryWords" layoutX="40.0" layoutY="169.0" prefHeight="95.0" prefWidth="200.0" promptText="Apple, Banana, Pear etc." wrapText="true">
@@ -47,7 +48,7 @@
                   <Font size="16.0" />
                </font></TextArea>
             <Label layoutX="40.0" layoutY="55.0" text="Category Name" textFill="WHITE" />
-            <Label layoutX="40.0" layoutY="152.0" text="Words in this category" textFill="WHITE" />
+            <Label layoutX="25.0" layoutY="152.0" text="Words in this category (Not case sensitive)" textFill="WHITE" />
          </children>
       </Pane>
       <Button fx:id="backArrowbtn" layoutX="37.0" layoutY="33.0" mnemonicParsing="false" onAction="#backToMainPage" style="-fx-background-color: #8f8769;" text="Back">
