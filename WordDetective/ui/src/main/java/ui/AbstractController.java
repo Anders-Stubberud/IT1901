@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -135,5 +136,17 @@ public abstract class AbstractController {
       System.out.println("Couldn't find image because: " + e.getMessage());
     }
     imageview.setImage(backArrow);
+  }
+
+  /**
+   * Display an error message.
+   *
+   * @param message      - The message to display
+   * @param errorDisplay - The {@link Label} to display the message in
+   */
+  public void displayError(final String message, final Label errorDisplay) {
+    errorDisplay.setStyle("-fx-text-fill: red;");
+    errorDisplay.setText(message);
+    errorDisplay.setOpacity(1);
   }
 }
