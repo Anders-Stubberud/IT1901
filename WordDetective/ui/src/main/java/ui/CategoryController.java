@@ -32,6 +32,16 @@ public final class CategoryController extends AbstractController implements Init
     private String username;
 
     /**
+     * constant used for vertical padding of category choices.
+     */
+    private static final int VERTICAL_PADDING = 15;
+
+    /**
+     * constant used for horizontal padding of category choices.
+     */
+    private static final int HORIZONTAL_PADDING = 10;
+
+    /**
      * Anchor pane of page.
      */
     @FXML
@@ -140,28 +150,30 @@ public final class CategoryController extends AbstractController implements Init
     }
 
     /**
-     * constant used for vertical padding of category choices.
+     * Deletes a category from the database.
+     *
+     * @param category - Category to be deleted
+     *
      */
-    private static final int VERTICAL_PADDING = 15;
+    public void deleteCategory(final String category) {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("WARNING");
+        alert.setHeaderText("You are about to delete the category " + category);
+        alert.setContentText("Are you sure you want to delete this category?");
 
-    /**
-     * constant used for horizontal padding of category choices.
-     */
-    private static final int HORIZONTAL_PADDING = 10;
+        Optional<ButtonType> result = alert.showAndWait();
 
-    /**
-     * initialization of the Category controller triggers a query retrieving all
-     * available categories.
-     */
-    @Override
-    public void initialize(final URL location, final ResourceBundle resources) {
-        setBackArrowImg(backArrowImg);
-        startBGVideo(categoryPage);
-        renderCategories();
-        renderCategories();
-        if (username.equals("guest")) {
-            showCustomCatBtn.setVisible(false);
-            upload.setOpacity(0);
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            System.out.println("Deleting category" + category);
+            try {
+                ApiConfig.deleteCustomCategory(category);
+                System.out.println("Category deleted");
+                renderCategories();
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Cancelled");
         }
     }
 
@@ -210,9 +222,18 @@ public final class CategoryController extends AbstractController implements Init
                 }
             }
         } catch (IOException | InterruptedException e) {
-            // TODO informere bruker om at kategorier ikke ble lastet inn rett
-            e.printStackTrace();
+            Label errorDisplay = new Label();
+            displayError("Couldn't load categories. Please try again", errorDisplay);
+            vbox.getChildren().clear();
+            vbox.getChildren().add(errorDisplay);
         }
+    }
+
+    /**
+     * Change scene back to main page.
+     */
+    public void backToMainPage() {
+        changeSceneTo("App.fxml", backArrowbtn);
     }
 
     /**
@@ -240,37 +261,18 @@ public final class CategoryController extends AbstractController implements Init
     }
 
     /**
-     * Change scene back to main page.
+     * initialization of the Category controller triggers a query retrieving all
+     * available categories.
      */
-    public void backToMainPage() {
-        changeSceneTo("App.fxml", backArrowbtn);
-    }
-
-    /**
-     * Deletes a category from the database.
-     *
-     * @param category - Category to be deleted
-     *
-     */
-    public void deleteCategory(final String category) {
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("WARNING");
-        alert.setHeaderText("You are about to delete the category " + category);
-        alert.setContentText("Are you sure you want to delete this category?");
-
-        Optional<ButtonType> result = alert.showAndWait();
-
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            System.out.println("Deleting category" + category);
-            try {
-                ApiConfig.deleteCustomCategory(category);
-                System.out.println("Category deleted");
-                renderCategories();
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println("Cancelled");
+    @Override
+    public void initialize(final URL location, final ResourceBundle resources) {
+        setBackArrowImg(backArrowImg);
+        startBGVideo(categoryPage);
+        renderCategories();
+        renderCategories();
+        if (username.equals("guest")) {
+            showCustomCatBtn.setVisible(false);
+            upload.setOpacity(0);
         }
     }
 
