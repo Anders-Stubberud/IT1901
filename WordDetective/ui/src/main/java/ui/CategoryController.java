@@ -2,7 +2,9 @@ package ui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -161,23 +164,37 @@ public final class CategoryController extends AbstractController implements Init
         }
         try {
             vbox.getChildren().clear();
-            for (String category : ApiConfig.getCategories(username)) {
-                String formattedCategory = formatString(category); // Legger til formatting på kategorien
-                Button button = new Button(formattedCategory);
-                button.setId(category);
-                button.getStyleClass().add("categoryBtn");
-                button.setUserData(category);
-                button.setPadding(
-                        new Insets(VERTICAL_PADDING, HORIZONTAL_PADDING, VERTICAL_PADDING, HORIZONTAL_PADDING));
-                button.setFont(new Font(VERTICAL_PADDING));
-                vbox.getChildren().add(button);
-                Label ekstraPlass = new Label("");
-                ekstraPlass.setPadding(new Insets(VERTICAL_PADDING, 0, 0, 0));
-                vbox.getChildren().add(ekstraPlass);
+            for (Map.Entry<String, Set<String>> categorySet : ApiConfig.getCategories(username).entrySet()) {
+                for (String category : categorySet.getValue()) {
+                    String formattedCategory = formatString(category); // Legger til formatting på kategorien
+                    // Make button
+                    Button button = new Button(formattedCategory);
+                    button.setId(category);
+                    button.getStyleClass().add("categoryBtn");
+                    button.setUserData(category);
+                    button.setPadding(
+                            new Insets(VERTICAL_PADDING, HORIZONTAL_PADDING, VERTICAL_PADDING, HORIZONTAL_PADDING));
+                    button.setFont(new Font(VERTICAL_PADDING));
 
-                button.setOnAction(event -> {
-                    changeSceneTo("GamePage.fxml", button, new GamePageFactory(username, category));
-                });
+                    if (categorySet.getKey().equals("custom")) {
+                        HBox hbox = new HBox();
+                        hbox.setSpacing(10);
+                        hbox.setAlignment(javafx.geometry.Pos.CENTER);
+                        Button deleteButton = new Button("X");
+                        deleteButton.getStyleClass().add("deleteBtn");
+                        hbox.getChildren().addAll(button, deleteButton);
+                        vbox.getChildren().add(hbox);
+                    } else {
+                        vbox.getChildren().add(button);
+                    }
+                    Label ekstraPlass = new Label("");
+                    ekstraPlass.setPadding(new Insets(VERTICAL_PADDING, 0, 0, 0));
+                    vbox.getChildren().add(ekstraPlass);
+
+                    button.setOnAction(event -> {
+                        changeSceneTo("GamePage.fxml", button, new GamePageFactory(username, category));
+                    });
+                }
             }
         } catch (IOException | InterruptedException e) {
             // TODO informere bruker om at kategorier ikke ble lastet inn rett
