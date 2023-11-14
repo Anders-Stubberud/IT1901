@@ -28,7 +28,7 @@
          </content>
       </ScrollPane>
       <Button fx:id="showCustomCatBtn" layoutX="373.0" layoutY="33.0" mnemonicParsing="false" onAction="#showCustomCategory" styleClass="btn" stylesheets="@css/index.css" text="Add custom category" />
-      <Pane fx:id="categoryInformationPane" layoutX="293.0" layoutY="115.0" prefHeight="396.0" prefWidth="415.0" styleClass="notepad" visible="false">
+      <Pane fx:id="categoryInformationPane" layoutX="293.0" layoutY="115.0" prefHeight="396.0" prefWidth="415.0" styleClass="notepad">
          <children>
             <Label layoutX="48.0" layoutY="42.0" lineSpacing="10.0" prefHeight="206.0" prefWidth="336.0" text="You can now choose your category of choice. The words used in the game will be selcted from the category you choose. If none of the categories are tempting, you can upload your own custom category (this requires you to be a registered user)." textFill="WHITE" wrapText="true">
                <font>
@@ -38,7 +38,7 @@
             <Button fx:id="categoryInformationButton" layoutX="104.0" layoutY="264.0" mnemonicParsing="false" onAction="#closeCategoryInformation" styleClass="btn" text="Okaay, lets go!" />
          </children>
       </Pane>
-      <Pane fx:id="addCategoryPane" layoutX="691.0" layoutY="109.0" prefHeight="420.0" prefWidth="280.0" style="visibility: ;" styleClass="notepad">
+      <Pane fx:id="addCategoryPane" layoutX="691.0" layoutY="109.0" prefHeight="420.0" prefWidth="280.0" style="visibility: hidden;" styleClass="notepad">
          <children>
             <TextArea fx:id="categoryName" layoutX="40.0" layoutY="72.0" prefHeight="37.0" prefWidth="200.0" wrapText="true" />
             <Button fx:id="upload" layoutX="59.0" layoutY="305.0" mnemonicParsing="false" onAction="#uploadCategory" styleClass="btn" text="Upload" />
