@@ -6,6 +6,7 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Random;
 import java.util.ResourceBundle;
+
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -204,6 +205,11 @@ public final class GamePageController extends AbstractController implements Init
     private Circle playerCircle;
 
     /**
+     * Random object used to provide substrings.
+     */
+    private Random random;
+
+    /**
      * Constructor initializing the object.
      *
      * @param usernameParameter username.
@@ -212,6 +218,7 @@ public final class GamePageController extends AbstractController implements Init
     public GamePageController(final String usernameParameter, final String categoryParameter) {
         this.username = usernameParameter;
         this.currentCategory = categoryParameter;
+        random = new Random();
     }
 
     /**
@@ -291,7 +298,7 @@ public final class GamePageController extends AbstractController implements Init
         if (ke.getCode().equals(KeyCode.ENTER)) { // If pressed Enter, then check word
             String playerGuess = playerInputField.getText();
             try {
-                if (ApiConfig.checkValidWord(playerGuess, playerGuess)) {
+                if (ApiConfig.checkValidWord(substring, playerGuess)) {
                     int newPoints = Integer.parseInt(points.getText()) + 1;
                     points.setText(String.valueOf(newPoints));
                     playerInputField.setText("");
@@ -362,10 +369,16 @@ public final class GamePageController extends AbstractController implements Init
         letters.setText(substring.toUpperCase());
     }
 
+    /**
+     * Gets a random substring from the current word.
+     *
+     * @return The substring
+     *
+     */
     public String getSubstring() {
         try {
             currentWord = ApiConfig.getWord();
-            Random random = new Random();
+
             do {
                 int wordLength = currentWord.length();
                 int startIndexSubstring = Math.max(random.nextInt(wordLength) - 2, 0);
