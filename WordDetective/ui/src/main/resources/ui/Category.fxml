@@ -28,7 +28,7 @@
          </content>
       </ScrollPane>
       <Button fx:id="showCustomCatBtn" layoutX="373.0" layoutY="33.0" mnemonicParsing="false" onAction="#showCustomCategory" styleClass="btn" stylesheets="@css/index.css" text="Add custom category" />
-      <Pane fx:id="categoryInformationPane" layoutX="293.0" layoutY="115.0" prefHeight="396.0" prefWidth="415.0" styleClass="notepad">
+      <Pane fx:id="categoryInformationPane" layoutX="293.0" layoutY="115.0" prefHeight="396.0" prefWidth="415.0" styleClass="notepad" visible="false">
          <children>
             <Label layoutX="48.0" layoutY="42.0" lineSpacing="10.0" prefHeight="206.0" prefWidth="336.0" text="You can now choose your category of choice. The words used in the game will be selcted from the category you choose. If none of the categories are tempting, you can upload your own custom category (this requires you to be a registered user)." textFill="WHITE" wrapText="true">
                <font>
@@ -38,13 +38,16 @@
             <Button fx:id="categoryInformationButton" layoutX="104.0" layoutY="264.0" mnemonicParsing="false" onAction="#closeCategoryInformation" styleClass="btn" text="Okaay, lets go!" />
          </children>
       </Pane>
-      <Pane fx:id="addCategoryPane" layoutX="671.0" layoutY="95.0" prefHeight="332.0" prefWidth="280.0" style="visibility: hidden;">
+      <Pane fx:id="addCategoryPane" layoutX="691.0" layoutY="109.0" prefHeight="420.0" prefWidth="280.0" style="visibility: ;" styleClass="notepad">
          <children>
             <TextArea fx:id="categoryName" layoutX="40.0" layoutY="72.0" prefHeight="37.0" prefWidth="200.0" wrapText="true" />
-            <Button fx:id="upload" layoutX="101.0" layoutY="374.0" mnemonicParsing="false" onAction="#uploadCategory" text="Upload" />
-            <TextArea fx:id="categoryWords" layoutX="40.0" layoutY="247.0" prefHeight="95.0" prefWidth="200.0" wrapText="true" />
-            <TextArea fx:id="nameLabel" editable="false" layoutX="40.0" layoutY="25.0" prefHeight="38.0" prefWidth="130.0" text="Add category name:" />
-            <TextArea fx:id="wordFormat" editable="false" layoutX="40.0" layoutY="140.0" prefHeight="95.0" prefWidth="200.0" text="Add category words on format:&#10;(All letters capitalized)&#10;WORD1&#10;WORD2&#10;etc..." />
+            <Button fx:id="upload" layoutX="59.0" layoutY="305.0" mnemonicParsing="false" onAction="#uploadCategory" styleClass="btn" text="Upload" />
+            <TextArea fx:id="categoryWords" layoutX="40.0" layoutY="169.0" prefHeight="95.0" prefWidth="200.0" promptText="Apple, Banana, Pear etc." wrapText="true">
+               <font>
+                  <Font size="16.0" />
+               </font></TextArea>
+            <Label layoutX="40.0" layoutY="55.0" text="Category Name" textFill="WHITE" />
+            <Label layoutX="40.0" layoutY="152.0" text="Words in this category" textFill="WHITE" />
          </children>
       </Pane>
       <Button fx:id="backArrowbtn" layoutX="37.0" layoutY="33.0" mnemonicParsing="false" onAction="#backToMainPage" style="-fx-background-color: #8f8769;" text="Back">
