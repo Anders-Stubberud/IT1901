@@ -36,7 +36,7 @@ public class GameTest {
     /**
      * Wordlist used for testing with multiple strings.
      */
-    private List<String> multipleTestList = Arrays.asList("Test1", "Test2", "Test3");
+    private List<String> multipleTestList = Arrays.asList("Test", "Test1", "Test2", "Test3");
 
     /**
      * Sets up two instances of the Category class to be used in the tests.
