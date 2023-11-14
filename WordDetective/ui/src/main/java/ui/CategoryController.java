@@ -2,19 +2,26 @@ package ui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 
 public final class CategoryController extends AbstractController implements Initializable {
@@ -23,6 +30,16 @@ public final class CategoryController extends AbstractController implements Init
      * The current user.
      */
     private String username;
+
+    /**
+     * constant used for vertical padding of category choices.
+     */
+    private static final int VERTICAL_PADDING = 15;
+
+    /**
+     * constant used for horizontal padding of category choices.
+     */
+    private static final int HORIZONTAL_PADDING = 10;
 
     /**
      * Anchor pane of page.
@@ -63,6 +80,12 @@ public final class CategoryController extends AbstractController implements Init
     private Pane addCategoryPane, categoryInformationPane;
 
     /**
+     * A pane that pops up when the user wants to delete a category.
+     */
+    @FXML
+    private Pane showAreYouSure;
+
+    /**
      * Button for going back to main page.
      */
     @FXML
@@ -72,6 +95,12 @@ public final class CategoryController extends AbstractController implements Init
      */
     @FXML
     private ImageView backArrowImg;
+
+    /**
+     * Label for displaying error when uploading.
+     */
+    @FXML
+    private Label uploadErrorDisplay;
 
     /**
      * Constructor used for controlling whether or not to retrieve custom
@@ -113,42 +142,60 @@ public final class CategoryController extends AbstractController implements Init
     @FXML
     public void uploadCategory() {
         if (!username.equals("guest")) {
-            String chosenCategoryName = categoryName.getText();
-            String words = categoryWords.getText();
-            String[] wordList = words.split("\n");
+            String chosenCategoryName = categoryName.getText().trim();
+            String chosenCategoryWords = categoryWords.getText();
+            if (chosenCategoryName.isBlank() || chosenCategoryWords.isBlank()) {
+                displayError("Cannot have blank fields.", uploadErrorDisplay);
+                return;
+            }
+            if (!chosenCategoryWords.contains(",")) {
+                displayError("Please separate words with a comma.", uploadErrorDisplay);
+                return;
+            }
+            String[] wordList = chosenCategoryWords.toUpperCase()
+                    .trim()
+                    .replaceAll(" ", "")
+                    .replaceAll("\n", "")
+                    .split(",");
             try {
                 ApiConfig.addCustomCategory(chosenCategoryName, wordList);
+                // Reset fields
+                categoryName.clear();
+                categoryWords.clear();
+                uploadErrorDisplay.setText("");
                 addCategoryPane.setVisible(false);
                 renderCategories();
             } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
+                displayError("Error when trying to add category", uploadErrorDisplay);
             }
         }
     }
 
     /**
-     * constant used for vertical padding of category choices.
+     * Deletes a category from the database.
+     *
+     * @param category - Category to be deleted
+     *
      */
-    private static final int VERTICAL_PADDING = 15;
+    public void deleteCategory(final String category) {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("WARNING");
+        alert.setHeaderText("You are about to delete the category " + category);
+        alert.setContentText("Are you sure you want to delete this category?");
 
-    /**
-     * constant used for horizontal padding of category choices.
-     */
-    private static final int HORIZONTAL_PADDING = 10;
+        Optional<ButtonType> result = alert.showAndWait();
 
-    /**
-     * initialization of the Category controller triggers a query retrieving all
-     * available categories.
-     */
-    @Override
-    public void initialize(final URL location, final ResourceBundle resources) {
-        setBackArrowImg(backArrowImg);
-        startBGVideo(categoryPage);
-        renderCategories();
-        renderCategories();
-        if (username.equals("guest")) {
-            showCustomCatBtn.setVisible(false);
-            upload.setOpacity(0);
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            System.out.println("Deleting category" + category);
+            try {
+                ApiConfig.deleteCustomCategory(category);
+                System.out.println("Category deleted");
+                renderCategories();
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Cancelled");
         }
     }
 
@@ -161,28 +208,54 @@ public final class CategoryController extends AbstractController implements Init
         }
         try {
             vbox.getChildren().clear();
-            for (String category : ApiConfig.getCategories(username)) {
-                String formattedCategory = formatString(category); // Legger til formatting på kategorien
-                Button button = new Button(formattedCategory);
-                button.setId(category);
-                button.getStyleClass().add("categoryBtn");
-                button.setUserData(category);
-                button.setPadding(
-                        new Insets(VERTICAL_PADDING, HORIZONTAL_PADDING, VERTICAL_PADDING, HORIZONTAL_PADDING));
-                button.setFont(new Font(VERTICAL_PADDING));
-                vbox.getChildren().add(button);
-                Label ekstraPlass = new Label("");
-                ekstraPlass.setPadding(new Insets(VERTICAL_PADDING, 0, 0, 0));
-                vbox.getChildren().add(ekstraPlass);
+            vbox.setSpacing(40); // Space between each object in vbox
 
-                button.setOnAction(event -> {
-                    changeSceneTo("GamePage.fxml", button, new GamePageFactory(username, category));
-                });
+            for (Map.Entry<String, Set<String>> categorySet : ApiConfig.getCategories(username).entrySet()) {
+                for (String category : categorySet.getValue()) {
+
+                    String formattedCategory = formatString(category); // Legger til formatting på kategorien
+                    // Make button
+                    Button button = new Button(formattedCategory);
+                    button.setId(category);
+                    button.getStyleClass().add("categoryBtn");
+                    button.setUserData(category);
+                    button.setPadding(
+                            new Insets(VERTICAL_PADDING, HORIZONTAL_PADDING, VERTICAL_PADDING, HORIZONTAL_PADDING));
+                    button.setFont(new Font(VERTICAL_PADDING));
+
+                    if (categorySet.getKey().equals("custom")) {
+                        HBox hbox = new HBox();
+                        hbox.setSpacing(10);
+                        hbox.setAlignment(javafx.geometry.Pos.CENTER);
+                        Button deleteButton = new Button("X");
+                        deleteButton.getStyleClass().add("deleteBtn");
+                        deleteButton.setOnAction((event) -> {
+                            deleteCategory(button.getText());
+                        });
+                        hbox.getChildren().addAll(button, deleteButton);
+                        vbox.getChildren().add(0, hbox);
+                    } else {
+                        vbox.getChildren().add(button);
+                    }
+
+                    button.setOnAction(event -> {
+                        changeSceneTo("GamePage.fxml", button, new GamePageFactory(username, category));
+                    });
+                }
             }
         } catch (IOException | InterruptedException e) {
-            // TODO informere bruker om at kategorier ikke ble lastet inn rett
-            e.printStackTrace();
+            Label errorDisplay = new Label();
+            displayError("Couldn't load categories. Please try again", errorDisplay);
+            vbox.getChildren().clear();
+            vbox.getChildren().add(errorDisplay);
         }
+    }
+
+    /**
+     * Change scene back to main page.
+     */
+    public void backToMainPage() {
+        changeSceneTo("App.fxml", backArrowbtn);
     }
 
     /**
@@ -210,10 +283,19 @@ public final class CategoryController extends AbstractController implements Init
     }
 
     /**
-     * Change scene back to main page.
+     * initialization of the Category controller triggers a query retrieving all
+     * available categories.
      */
-    public void backToMainPage() {
-        changeSceneTo("App.fxml", backArrowbtn);
+    @Override
+    public void initialize(final URL location, final ResourceBundle resources) {
+        setBackArrowImg(backArrowImg);
+        startBGVideo(categoryPage);
+        renderCategories();
+        renderCategories();
+        if (username.equals("guest")) {
+            showCustomCatBtn.setVisible(false);
+            upload.setOpacity(0);
+        }
     }
 
 }

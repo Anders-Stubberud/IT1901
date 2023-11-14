@@ -1,6 +1,7 @@
 package persistence;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
@@ -12,11 +13,12 @@ public interface AbstractJsonIO {
 
   /**
    * Fetches the names of all the categories available to the current user.
+   * Custom and default categories are separated.
    *
-   * @return Set<String> containing all the categories available to the current
+   * @return a {@link Hashmap} containing all categories available to the current
    *         user.
    */
-  Set<String> getAllCategories();
+  HashMap<String, Set<String>> getAllCategories();
 
   /**
    * Provides absolute path to current working directory.

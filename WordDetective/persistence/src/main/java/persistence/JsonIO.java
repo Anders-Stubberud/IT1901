@@ -11,14 +11,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -76,8 +75,11 @@ public final class JsonIO implements AbstractJsonIO {
     }
 
     @Override
-    public Set<String> getAllCategories() {
-        return Stream.concat(DEFAULT_CATEGORY_NAMES.stream(), customCategoryNames.stream()).collect(Collectors.toSet());
+    public HashMap<String, Set<String>> getAllCategories() {
+        HashMap<String, Set<String>> categories = new HashMap<>();
+        categories.put("default", DEFAULT_CATEGORY_NAMES);
+        categories.put("custom", customCategoryNames);
+        return categories;
     }
 
     @Override
@@ -96,6 +98,8 @@ public final class JsonIO implements AbstractJsonIO {
             } else {
                 throw new IOException("User not found in " + pathToResources);
             }
+        } else {
+            throw new IOException("Error updating user");
         }
     }
 
@@ -308,5 +312,4 @@ public final class JsonIO implements AbstractJsonIO {
             throw new RuntimeException("Directory not present in " + pathToResources);
         }
     }
-
 }

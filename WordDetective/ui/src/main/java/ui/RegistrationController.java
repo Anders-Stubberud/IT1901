@@ -52,16 +52,6 @@ public final class RegistrationController extends AbstractController implements 
     private ImageView backArrowImg;
 
     /**
-     * Display error if not valid username or password.
-     *
-     * @param message - The error message to display
-     */
-    private void displayError(final String message) {
-        errorDisplay.setText(message);
-        errorDisplay.setOpacity(1);
-    }
-
-    /**
      * Method fired when "signUp" is pressed. Launches category selection if
      * username is not taken.
      *
@@ -72,7 +62,7 @@ public final class RegistrationController extends AbstractController implements 
             String username = newUsername.getText();
             String password = newPassword.getText();
             if (username.isBlank() || password.isBlank()) {
-                displayError("Cannot have blank fields.");
+                displayError("Cannot have blank fields.", errorDisplay);
                 return;
             }
             switch (ApiConfig.registrationResult(username, password)) {
@@ -80,20 +70,20 @@ public final class RegistrationController extends AbstractController implements 
                     changeSceneTo("Category.fxml", signUp, new CategoryFactory(username));
                     break;
                 case USERNAME_TAKEN:
-                    displayError("The username \"" + username + "\" is already taken.");
+                    displayError("The username \"" + username + "\" is already taken.", errorDisplay);
                     break;
                 case USERNAME_NOT_MATCH_REGEX:
-                    displayError("The username should be minimum 2 characters and not be 'guest'");
+                    displayError("The username should be minimum 2 characters and not be 'guest'", errorDisplay);
                     break;
                 case PASSWORD_NOT_MATCH_REGEX:
                     displayError("The password needs to be more then 4 characters, contain at least 1 number,"
-                            + " 1 lowercase letter and 1 uppercase letter");
+                            + " 1 lowercase letter and 1 uppercase letter", errorDisplay);
                     break;
                 case UPLOAD_ERROR:
-                    displayError("Error during instantiation of new user.");
+                    displayError("Error during instantiation of new user.", errorDisplay);
                     break;
                 default:
-                    displayError("Unknown error occured.");
+                    displayError("Unknown error occured.", errorDisplay);
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
