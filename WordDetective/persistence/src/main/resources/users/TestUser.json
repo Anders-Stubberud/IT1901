@@ -1,13 +1,6 @@
 {
   "username": "TestUser",
   "password": "Password",
-  "highscore": 3,
-  "customCategories": {
-    "Biler": [
-      "BIL",
-      " BIL",
-      " BIL",
-      " BIL"
-    ]
-  }
+  "highscore": 0,
+  "customCategories": {}
 }
