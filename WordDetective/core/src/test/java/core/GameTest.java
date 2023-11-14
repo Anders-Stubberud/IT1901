@@ -106,7 +106,7 @@ public class GameTest {
     @DisplayName("Check setting of high score")
     public void testHighscore() {
         assertEquals(0, game.getPlayerHighscore(), "High score should be 0 on start");
-        game.savePlayerHighscore(100);
-        assertEquals(100, game.getPlayerHighscore(), "High score should be 100, but was " + game.getPlayerHighscore());
+        game.savePlayerHighscore(300);
+        assertEquals(300, game.getPlayerHighscore(), "High score should be 100, but was " + game.getPlayerHighscore());
     }
 }
