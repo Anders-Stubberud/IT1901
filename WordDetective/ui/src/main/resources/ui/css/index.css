@@ -97,6 +97,11 @@
     -fx-border-width: 3px;
 }
 
+
+.deleteBtn {
+    -fx-background-color:  rgb(197, 22, 22);
+}
+
 /*-------------------Category.fxml---------------------*/
 
 
