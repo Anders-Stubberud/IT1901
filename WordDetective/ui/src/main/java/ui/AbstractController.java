@@ -145,7 +145,7 @@ public abstract class AbstractController {
    * @param errorDisplay - The {@link Label} to display the message in
    */
   public void displayError(final String message, final Label errorDisplay) {
-    errorDisplay.setStyle("-fx-text-fill: red;");
+    errorDisplay.setStyle("-fx-text-fill: #b51c1c;");
     errorDisplay.setText(message);
     errorDisplay.setOpacity(1);
   }
