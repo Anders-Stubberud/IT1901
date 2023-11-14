@@ -94,12 +94,12 @@ public class GameTest {
     @DisplayName("Check that guesses are valid")
     public void testCheckValidWord() {
         game.setWordList(multipleTestList);
-        assertTrue(game.checkValidWord("s", "Test"));
-        assertTrue(game.checkValidWord("es", "Test"));
-        assertTrue(game.checkValidWord("st2", "Test2"));
-        assertFalse(game.checkValidWord("Tes", "Test4"));
-        assertFalse(game.checkValidWord("2", "Test"));
-        assertFalse(game.checkValidWord("es", "Test4"));
+        assertTrue(game.checkValidWord("s", "Test"), "Failed for 's' and 'Test'");
+        assertTrue(game.checkValidWord("es", "Test"), "Failed for 'es' and 'Test'");
+        assertTrue(game.checkValidWord("st2", "Test2"), "Failed for 'st2' and 'Test2'");
+        assertFalse(game.checkValidWord("Tes", "Test4"), "Failed for 'Tes' and 'Test4'");
+        assertFalse(game.checkValidWord("2", "Test"), "Failed for '2' and 'Test'");
+        assertFalse(game.checkValidWord("es", "Test4"), "Failed for 'es' and 'Test4'");
     }
 
     @Test
