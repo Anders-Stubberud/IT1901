@@ -14,7 +14,7 @@ public interface AbstractJsonIO {
   /**
    * Fetches the names of all the categories available to the current user.
    * Custom and default categories are separated.
-   * 
+   *
    * @return a {@link Hashmap} containing all categories available to the current
    *         user.
    */
