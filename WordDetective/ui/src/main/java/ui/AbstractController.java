@@ -95,9 +95,9 @@ public abstract class AbstractController {
    *
    */
   public void startBGVideo(final AnchorPane background) {
-    File video = new File(Paths.get("assets").toAbsolutePath()
+    File video = new File(Paths.get("runtime/assets").toAbsolutePath()
         + "/video/WordDetectiveBackgroundVideo.mp4");
-    File sound = new File(Paths.get("assets").toAbsolutePath()
+    File sound = new File(Paths.get("runtime/assets").toAbsolutePath()
         + "/music/WordDetectiveMusic.L.wav");
     videoMP = new MediaPlayer(new Media(video.toURI().toString()));
     soundMP = new MediaPlayer(new Media(sound.toURI().toString()));

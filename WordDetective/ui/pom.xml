@@ -136,9 +136,9 @@
                     <noHeaderFiles>true</noHeaderFiles>
                     <stripDebug>true</stripDebug>
                     <noManPages>true</noManPages>
-                    <launcher>worddetectivefx</launcher>
-                    <jlinkImageName>worddetectivefx</jlinkImageName>
-                    <jlinkZipName>worddetectivefx</jlinkZipName>
+                    <launcher>worddetectivelauncher</launcher>
+                    <jlinkImageName>worddetectivelauncher</jlinkImageName>
+                    <jlinkZipName>worddetectivelauncher</jlinkZipName>
                 </configuration>
             </plugin>
 
@@ -156,23 +156,23 @@
                 <artifactId>jpackage-maven-plugin</artifactId>
                 <version>1.6.0</version>
                 <configuration>
-                    <name>WordDetective</name>
+                    <name>WordDetective_SubstringEdition</name>
                     <appVersion>1.0.0</appVersion>
-                    <vendor>project</vendor>
+                    <vendor>gr2325</vendor>
                     <destination>target/dist</destination>
-                    <module>project.ui/project.ui.App</module>
-                    <runtimeImage>target/worddetectivefx</runtimeImage>
+                    <module>project.ui/ui.App</module>
+                    <runtimeImage>target/worddetectivelauncher</runtimeImage>
                     <javaOptions>
                         <option>-Dfile.encoding=UTF-8</option>
                     </javaOptions>
                     <!-- linux options-->
                     <linuxShortcut>true</linuxShortcut>
-                    <linuxMenuGroup>WordDetectiveFX</linuxMenuGroup>
+                    <linuxMenuGroup>WordDetective_SubstringEdition</linuxMenuGroup>
                     <!-- windows options-->
                     <winDirChooser>true</winDirChooser>
                     <winShortcut>true</winShortcut>
                     <winMenu>true</winMenu>
-                    <winMenuGroup>WordDetectiveFX</winMenuGroup>
+                    <winMenuGroup>WordDetective_SubstringEdition</winMenuGroup>
                 </configuration>
             </plugin>
 
