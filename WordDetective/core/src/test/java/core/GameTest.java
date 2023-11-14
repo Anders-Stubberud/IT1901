@@ -104,6 +104,7 @@ public class GameTest {
         assertFalse(game.checkValidWord("2", "Test"), "Failed for '2' and 'Test'");
         assertFalse(game.checkValidWord("es", "Test4"), "Failed for 'es' and 'Test4'");
         assertTrue(game.checkValidWord("", "Test2"), "Failed for '' and 'Test4'");
+        assertFalse(game.checkValidWord("es", "Tes"), "Failed for word not in wordlist");
     }
 
     @Test
