@@ -2,6 +2,8 @@ package ui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -97,6 +99,12 @@ public final class CategoryController extends AbstractController implements Init
     private ImageView backArrowImg;
 
     /**
+     * Label for displaying error when uploading.
+     */
+    @FXML
+    private Label uploadErrorDisplay;
+
+    /**
      * Constructor used for controlling whether or not to retrieve custom
      * categories.
      *
@@ -136,15 +144,31 @@ public final class CategoryController extends AbstractController implements Init
     @FXML
     public void uploadCategory() {
         if (!username.equals("guest")) {
-            String chosenCategoryName = categoryName.getText();
-            String words = categoryWords.getText();
-            String[] wordList = words.split("\n");
+            String chosenCategoryName = categoryName.getText().trim();
+            String chosenCategoryWords = categoryWords.getText();
+            if (chosenCategoryName.isBlank() || chosenCategoryWords.isBlank()) {
+                displayError("Cannot have blank fields.", uploadErrorDisplay);
+                return;
+            }
+            if (!chosenCategoryWords.contains(",")) {
+                displayError("Please separate words with a comma.", uploadErrorDisplay);
+                return;
+            }
+            String[] wordList = chosenCategoryWords.toUpperCase()
+                    .trim()
+                    .replaceAll(" ", "")
+                    .replaceAll("\n", "")
+                    .split(",");
             try {
                 ApiConfig.addCustomCategory(chosenCategoryName, wordList);
+                // Reset fields
+                categoryName.clear();
+                categoryWords.clear();
+                uploadErrorDisplay.setText("");
                 addCategoryPane.setVisible(false);
                 renderCategories();
             } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
+                displayError("Error when trying to add category", uploadErrorDisplay);
             }
         }
     }
@@ -186,8 +210,11 @@ public final class CategoryController extends AbstractController implements Init
         }
         try {
             vbox.getChildren().clear();
+            vbox.setSpacing(40); // Space between each object in vbox
+
             for (Map.Entry<String, Set<String>> categorySet : ApiConfig.getCategories(username).entrySet()) {
                 for (String category : categorySet.getValue()) {
+
                     String formattedCategory = formatString(category); // Legger til formatting på kategorien
                     // Make button
                     Button button = new Button(formattedCategory);
@@ -208,13 +235,10 @@ public final class CategoryController extends AbstractController implements Init
                             deleteCategory(button.getText());
                         });
                         hbox.getChildren().addAll(button, deleteButton);
-                        vbox.getChildren().add(hbox);
+                        vbox.getChildren().add(0, hbox);
                     } else {
                         vbox.getChildren().add(button);
                     }
-                    Label ekstraPlass = new Label("");
-                    ekstraPlass.setPadding(new Insets(VERTICAL_PADDING, 0, 0, 0));
-                    vbox.getChildren().add(ekstraPlass);
 
                     button.setOnAction(event -> {
                         changeSceneTo("GamePage.fxml", button, new GamePageFactory(username, category));
