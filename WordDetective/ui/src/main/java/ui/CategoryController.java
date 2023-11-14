@@ -3,13 +3,16 @@ package ui;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
@@ -18,6 +21,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 
 public final class CategoryController extends AbstractController implements Initializable {
@@ -64,6 +68,12 @@ public final class CategoryController extends AbstractController implements Init
      */
     @FXML
     private Pane addCategoryPane, categoryInformationPane;
+
+    /**
+     * A pane that pops up when the user wants to delete a category.
+     */
+    @FXML
+    private Pane showAreYouSure;
 
     /**
      * Button for going back to main page.
@@ -182,6 +192,9 @@ public final class CategoryController extends AbstractController implements Init
                         hbox.setAlignment(javafx.geometry.Pos.CENTER);
                         Button deleteButton = new Button("X");
                         deleteButton.getStyleClass().add("deleteBtn");
+                        deleteButton.setOnAction((event) -> {
+                            deleteCategory(button.getText());
+                        });
                         hbox.getChildren().addAll(button, deleteButton);
                         vbox.getChildren().add(hbox);
                     } else {
@@ -231,6 +244,34 @@ public final class CategoryController extends AbstractController implements Init
      */
     public void backToMainPage() {
         changeSceneTo("App.fxml", backArrowbtn);
+    }
+
+    /**
+     * Deletes a category from the database.
+     *
+     * @param category - Category to be deleted
+     *
+     */
+    public void deleteCategory(final String category) {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("WARNING");
+        alert.setHeaderText("You are about to delete the category " + category);
+        alert.setContentText("Are you sure you want to delete this category?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            System.out.println("Deleting category" + category);
+            try {
+                ApiConfig.deleteCustomCategory(category);
+                System.out.println("Category deleted");
+                renderCategories();
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Cancelled");
+        }
     }
 
 }
