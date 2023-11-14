@@ -166,6 +166,24 @@ public final class ApiConfig {
   }
 
   /**
+   * Deletes a custom category from the user's custom categories.
+   *
+   * @param categoryName The category to delete.
+   * @throws IOException          If any issues are encountered during interaction
+   *                              with the files.
+   * @throws InterruptedException If thread is interrupted.
+   */
+  protected static void deleteCustomCategory(final String categoryName)
+      throws IOException, InterruptedException {
+    String url = BASEURL + "CategoryController/deleteCustomCategory";
+    String type = "application/json";
+    String jsonBody = String.format("categoryName:\"%s\"",
+        categoryName);
+    BodyPublisher body = HttpRequest.BodyPublishers.ofString(jsonBody);
+    performPostRequest(url, type, body);
+  }
+
+  /**
    * Instantiates the game for the given user.
    *
    * @param username The username of the user to instantiate the game for.

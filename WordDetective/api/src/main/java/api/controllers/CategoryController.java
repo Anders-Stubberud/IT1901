@@ -68,4 +68,27 @@ public class CategoryController {
     }
   }
 
+  /**
+   * API endpoint for enabling a user to add a new custom category.
+   *
+   * @param requestBody Requestbody containing the category's name and correlating
+   *                    wordlist.
+   */
+  @RequestMapping(value = "/CategoryController/deleteCustomCategory", method = RequestMethod.POST)
+  @ResponseStatus(HttpStatus.OK)
+  public void deleteCustomCategory(@RequestBody final String requestBody) {
+    String categoryName = requestBody
+        .split(":")[1]
+        .replaceAll("\"", "");
+    System.out.println(categoryName);
+    try {
+      userAccess.getJsonIO().updateCurrentUser(
+          (user) -> {
+            user.deleteCustomCategories(categoryName);
+            return true;
+          });
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 }

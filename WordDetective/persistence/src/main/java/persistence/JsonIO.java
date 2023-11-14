@@ -18,8 +18,6 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -100,6 +98,8 @@ public final class JsonIO implements AbstractJsonIO {
             } else {
                 throw new IOException("User not found in " + pathToResources);
             }
+        } else {
+            throw new IOException("Error updating user");
         }
     }
 
@@ -312,5 +312,4 @@ public final class JsonIO implements AbstractJsonIO {
             throw new RuntimeException("Directory not present in " + pathToResources);
         }
     }
-
 }
