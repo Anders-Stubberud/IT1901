@@ -40,12 +40,14 @@ public class CategoryController {
   /**
    * API endpoint for enabling a user to add a new custom category.
    *
-   * @param requestBody Requestbody containing the category's name and correlating
-   *                    wordlist.
+   * @param requestBody  Requestbody containing the category's name and
+   *                     correlating
+   *                     wordlist.
+   * @param categoryName The name for the given category.
    */
   @RequestMapping(value = "/CategoryController/addCustomCategory/{categoryName}", method = RequestMethod.PUT)
   @ResponseStatus(HttpStatus.OK)
-  public void addCustomCategory(@PathVariable String categoryName, @RequestBody final String requestBody) {
+  public void addCustomCategory(@PathVariable final String categoryName, @RequestBody final String requestBody) {
     List<String> wordList = Arrays.asList(
         requestBody
             .split("\"wordList\":")[1]
