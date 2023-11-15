@@ -118,19 +118,27 @@ WordDetective
 │
 └── ui
     │
-    └──  src
-       ├── main
-       │   └── java
-       │       └── ui
-       │           └── contains controller files and factory files
-       │
-       ├── test
-       │   └── java
-       │       └── ui
-       │           └── contains ui tests
-       │
-       └── resources
-                   └── contains fxml files
+    ├── assets
+    │   ├── images
+    │   ├── music
+    │   └── video
+    │
+    ├── src
+    │   ├── main
+    │   │   ├── java
+    │   │   │   └── ui
+    │   │   │       └── contains controller files and factory files
+    │   │   │
+    │   │   └── resources
+    │   │       └── contains fxml files
+    │   │
+    │   └── test
+    │       └── java
+    │           └── ui
+    │               └── contains ui tests
+    │
+    └── target
+        └── [Compiled Classes and JARs]
 ```
 
 # Version Requirements
