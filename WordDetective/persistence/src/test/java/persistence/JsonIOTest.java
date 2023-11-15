@@ -169,7 +169,7 @@ public class JsonIOTest {
    */
   @Test
   public void testGetWordlist() {
-    JsonIO jsonIO = new JsonIO(testUser.getUsername());
+    jsonIO = new JsonIO(testUser.getUsername());
     Set<String> states = new HashSet<>(Arrays.asList(
         "ALABAMA", "ALASKA", "ARIZONA", "ARKANSAS", "CALIFORNIA", "COLORADO", "CONNECTICUT", "DELAWARE",
         "FLORIDA", "GEORGIA", "HAWAII", "IDAHO", "ILLINOIS", "INDIANA", "IOWA", "KANSAS", "KENTUCKY",
@@ -199,7 +199,7 @@ public class JsonIOTest {
    */
   @Test
   public void testGetAllCategories() {
-    JsonIO jsonIO = new JsonIO(testUser.getUsername());
+    jsonIO = new JsonIO(testUser.getUsername());
     Set<String> actualDefaultCategories = new HashSet<>(Arrays.asList(
         "chemical elements", "fruits", "major oceans and lakes", "us states", "countries",
         "programming languages", "colors", "100 most common carbrands"));
