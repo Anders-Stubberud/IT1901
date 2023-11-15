@@ -20,7 +20,9 @@ Further details about the application is located in the [WordDetective README](W
 
 ## Releases of WordDetective:
 
-([Release 1](docs/release1/README.md))([Release 2](docs/release2/README.md))
+([Release 1](docs/release1/README.md))
+([Release 2](docs/release2/README.md))
+([Release 3](docs/release3/README.md))
 
 # Description of content
 
@@ -28,11 +30,19 @@ The root directory primarily contains the "docs" folder and the "WordDetective" 
 <br>
 The "docs" folder contains the documentation of the various releases.
 <br>
-The "WordDetective" folder contains the code of the project, and is made up of the "core" and "ui" folders.
+The "WordDetective" folder contains the code of the project, and is made up of the following modules:
+api, core, persistence, types, and ui.
 <br>
-The "core" folder contains the backend java files and their correlating tests.
+The api module contains the server configuration and various controllers. The controllers hold the API endpoints which are requested by the UI. Once the API controllers receives a request, it delegates the task to the core module.
 <br>
-The "ui" folder contains files related to the frontend of the application, such as fxml files and their respective java controller files.
+The core module contains the core logic of the program. Tasks requiring access to persistently stored user information is delegated to the persistence module.
+<br>
+The persistence module accesses the persistent user files to retrieve user information.
+<br>
+The ui module contains files related to the frontend of the application, such as fxml files and their respective java controller files.
+<br>
+The types module contains the "User" class, which is used to store the user persistently, and enums for login and registration, which is used for giving feedback.
+<br>
 
 _Tentative sketch of folder structure_
 
