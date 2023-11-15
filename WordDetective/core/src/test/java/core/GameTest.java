@@ -9,10 +9,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Collections;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import persistence.JsonIO;
 import types.User;
 
 public class GameTest {
@@ -25,7 +27,7 @@ public class GameTest {
     /**
      * User in the game.
      */
-    private User testUser;
+    private static User testUser;
     /**
      * Digit for the number of tests.
      */
@@ -116,5 +118,10 @@ public class GameTest {
         assertEquals(300, game.getPlayerHighscore(), "High score should be 300, but was " + game.getPlayerHighscore());
         game.savePlayerHighscore(200);
         assertEquals(300, game.getPlayerHighscore(), "High score should be 300, but was " + game.getPlayerHighscore());
+    }
+
+    @AfterAll
+    public static void cleanUpAfterAllTests() {
+        testUser.setHighscore(0);
     }
 }
