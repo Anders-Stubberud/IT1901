@@ -36,7 +36,7 @@
                   </Label>
                </children>
             </Pane>
-            <TextField fx:id="playerInputField" alignment="CENTER" layoutX="363.0" layoutY="478.0" onKeyTyped="#checkWrittenWord" promptText="Write here" style="-fx-background-color: transparent;">
+            <TextField fx:id="playerInputField" alignment="CENTER" layoutX="363.0" layoutY="478.0" onKeyTyped="#checkWrittenWord" promptText="Write here" styleClass="playerInputField">
                <font>
                   <Font size="24.0" />
                </font>

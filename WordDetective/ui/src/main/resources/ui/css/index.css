@@ -105,3 +105,11 @@
 /*-------------------Category.fxml---------------------*/
 
 
+
+
+/*-------------------Game.fxml---------------------*/
+
+.playerInputField {
+    -fx-background-color: transparent;
+    -fx-opacity: 0;
+}

@@ -103,13 +103,39 @@ public final class CategoryController extends AbstractController implements Init
     private Label uploadErrorDisplay;
 
     /**
+     * Api object used for calling backend application.
+     */
+    private ApiConfig api;
+
+    /**
      * Constructor used for controlling whether or not to retrieve custom
      * categories.
      *
      * @param usernameParameter - A user
      */
     public CategoryController(final String usernameParameter) {
+        if (usernameParameter == null) {
+            throw new NullPointerException("Username cannot be null");
+        }
         this.username = usernameParameter;
+        api = new ApiConfig();
+    }
+
+    /**
+     * Empty constructor used for testing. {@code username} is set to "test".
+     */
+    public CategoryController() {
+        this.username = "test";
+        api = new ApiConfig();
+    }
+
+    /**
+     * Sets the api object.
+     *
+     * @param newApi - Api object
+     */
+    public void setApi(final ApiConfig newApi) {
+        this.api = newApi;
     }
 
     /**
@@ -149,7 +175,7 @@ public final class CategoryController extends AbstractController implements Init
                 return;
             }
             if (!chosenCategoryWords.contains(",")) {
-                displayError("Please separate words with a comma.", uploadErrorDisplay);
+                displayError("Wrong format, Please separate words with a comma.", uploadErrorDisplay);
                 return;
             }
             String[] wordList = chosenCategoryWords.toUpperCase()
@@ -158,7 +184,7 @@ public final class CategoryController extends AbstractController implements Init
                     .replaceAll("\n", "")
                     .split(",");
             try {
-                ApiConfig.addCustomCategory(chosenCategoryName, wordList);
+                api.addCustomCategory(chosenCategoryName, wordList);
                 // Reset fields
                 categoryName.clear();
                 categoryWords.clear();
@@ -188,7 +214,7 @@ public final class CategoryController extends AbstractController implements Init
         if (result.isPresent() && result.get() == ButtonType.OK) {
             System.out.println("Deleting category" + category);
             try {
-                ApiConfig.deleteCustomCategory(category);
+                api.deleteCustomCategory(category);
                 System.out.println("Category deleted");
                 renderCategories();
             } catch (IOException | InterruptedException e) {
@@ -210,7 +236,7 @@ public final class CategoryController extends AbstractController implements Init
             vbox.getChildren().clear();
             vbox.setSpacing(40); // Space between each object in vbox
 
-            for (Map.Entry<String, Set<String>> categorySet : ApiConfig.getCategories(username).entrySet()) {
+            for (Map.Entry<String, Set<String>> categorySet : api.getCategories(username).entrySet()) {
                 for (String category : categorySet.getValue()) {
 
                     String formattedCategory = formatString(category); // Legger til formatting på kategorien
@@ -294,7 +320,6 @@ public final class CategoryController extends AbstractController implements Init
         renderCategories();
         if (username.equals("guest")) {
             showCustomCatBtn.setVisible(false);
-            upload.setOpacity(0);
         }
     }
 

@@ -52,11 +52,22 @@ public final class RegistrationController extends AbstractController implements 
     private ImageView backArrowImg;
 
     /**
+     * Api object used for calling backend application.
+     */
+    private ApiConfig api;
+
+    /**
+     * Constructor for RegistrationController.
+     */
+    public RegistrationController() {
+        api = new ApiConfig();
+    }
+
+    /**
      * Method fired when "signUp" is pressed. Launches category selection if
      * username is not taken.
      *
      */
-    @FXML
     public void fireSignUp() {
         try {
             String username = newUsername.getText();
@@ -65,7 +76,7 @@ public final class RegistrationController extends AbstractController implements 
                 displayError("Cannot have blank fields.", errorDisplay);
                 return;
             }
-            switch (ApiConfig.registrationResult(username, password)) {
+            switch (api.registrationResult(username, password)) {
                 case SUCCESS:
                     changeSceneTo("Category.fxml", signUp, new CategoryFactory(username));
                     break;
@@ -73,7 +84,7 @@ public final class RegistrationController extends AbstractController implements 
                     displayError("The username \"" + username + "\" is already taken.", errorDisplay);
                     break;
                 case USERNAME_NOT_MATCH_REGEX:
-                    displayError("The username should be minimum 2 characters and not be 'guest'", errorDisplay);
+                    displayError("The username needs to be minimum 2 characters and not be 'guest'", errorDisplay);
                     break;
                 case PASSWORD_NOT_MATCH_REGEX:
                     displayError("The password needs to be more then 4 characters, contain at least 1 number,"
@@ -88,6 +99,15 @@ public final class RegistrationController extends AbstractController implements 
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Sets the api object.
+     *
+     * @param newApi - The api object to set.
+     */
+    public void setApi(final ApiConfig newApi) {
+        this.api = newApi;
     }
 
     /**

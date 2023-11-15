@@ -51,6 +51,18 @@ public final class LoginController extends AbstractController implements Initial
     private ImageView backArrowImg;
 
     /**
+     * Api object used for calling backend application.
+     */
+    private ApiConfig api;
+
+    /**
+     * Constructor for LoginController.
+     */
+    public LoginController() {
+        api = new ApiConfig();
+    }
+
+    /**
      * Method fired when pressing the "login" button. Loads the category window.
      */
     @FXML
@@ -62,7 +74,7 @@ public final class LoginController extends AbstractController implements Initial
                 displayError("Cannot have blank fields.", errorDisplay);
                 return;
             }
-            switch (ApiConfig.performLogin(username, password)) {
+            switch (api.performLogin(username, password)) {
                 case SUCCESS:
                     changeSceneTo("Category.fxml", login, new CategoryFactory(username));
                     break;
@@ -90,6 +102,15 @@ public final class LoginController extends AbstractController implements Initial
     @FXML
     public void registerNewUser() {
         changeSceneTo("Registration.fxml", registerUser);
+    }
+
+    /**
+     * Getter for api.
+     *
+     * @param newApi - the api to use.
+     */
+    public void setApi(final ApiConfig newApi) {
+        this.api = newApi;
     }
 
     /**
