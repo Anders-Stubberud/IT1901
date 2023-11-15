@@ -164,6 +164,9 @@ public class JsonIOTest {
     assertFalse(defaultCategories.contains("Non existing"));
   }
 
+  /**
+   * Test get word list.
+   */
   @Test
   public void testGetWordlist() {
     JsonIO jsonIO = new JsonIO(testUser.getUsername());
