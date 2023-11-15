@@ -181,12 +181,12 @@ public class GamePageControllerTest {
     assertEquals(actualHighscore, highscore);
 
     // Foreløpig bruteforce
-    JsonIO jsonIO = new JsonIO("TestUser");
-    jsonIO.updateCurrentUser(
-        (user) -> {
-          user.setHighscore(0);
-          return true;
-        });
+    // JsonIO jsonIO = new JsonIO("TestUser");
+    // jsonIO.updateCurrentUser(
+    // (user) -> {
+    // user.setHighscore(0);
+    // return true;
+    // });
 
   }
 
