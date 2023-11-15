@@ -48,6 +48,7 @@ public abstract class AbstractController {
     try {
       if (soundMP != null) {
         soundMP.stop();
+        videoMP.stop();
       }
       FXMLLoader fxmlLoader = new FXMLLoader(AbstractController.class.getResource(scene));
       Stage stage = (Stage) buttonPressed.getScene().getWindow();
@@ -130,7 +131,7 @@ public abstract class AbstractController {
     Image backArrow;
     try {
       backArrow = new Image(
-          new FileInputStream(new File(Paths.get("assets").toAbsolutePath() + "/images/backArrow.png")));
+          new FileInputStream(new File(Paths.get("runtime/assets").toAbsolutePath() + "/images/backArrow.png")));
     } catch (Exception e) {
       backArrow = null;
       System.out.println("Couldn't find image because: " + e.getMessage());

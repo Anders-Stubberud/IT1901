@@ -29,7 +29,6 @@ public class GamePageController {
     String[] components = requestBody.split("&");
     String username = components[0].split("=")[1];
     String category = components[1].split("=")[1];
-    System.out.println("\n\nusername: " + username + "\ncategory: " + category + "\n\n");
     game = new Game(username);
     game.setCategory(category);
   }
@@ -68,7 +67,7 @@ public class GamePageController {
    *
    * @param highscore The score to potentially save to file.
    */
-  @RequestMapping(value = "/GamePageController/savePlayerHighscore", method = RequestMethod.POST)
+  @RequestMapping(value = "/GamePageController/savePlayerHighscore", method = RequestMethod.PUT)
   @ResponseStatus(HttpStatus.OK)
   public void savePlayerHighscore(@RequestBody final String highscore) {
     game.savePlayerHighscore(Integer.parseInt(highscore));

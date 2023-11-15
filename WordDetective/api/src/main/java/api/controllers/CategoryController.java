@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,23 +41,20 @@ public class CategoryController {
   /**
    * API endpoint for enabling a user to add a new custom category.
    *
-   * @param requestBody Requestbody containing the category's name and correlating
-   *                    wordlist.
+   * @param requestBody  Requestbody containing the category's name and
+   *                     correlating
+   *                     wordlist.
+   * @param categoryName The name for the given category.
    */
-  @RequestMapping(value = "/CategoryController/addCustomCategory", method = RequestMethod.POST)
+  @RequestMapping(value = "/CategoryController/addCustomCategory/{categoryName}", method = RequestMethod.PUT)
   @ResponseStatus(HttpStatus.OK)
-  // kan implementere enum for kategori opplastning
-  public void addCustomCategory(@RequestBody final String requestBody) {
-    String categoryName = requestBody
-        .split("\"categoryName\":")[1]
-        .split(",")[0]
-        .replaceAll("\"", "");
+  public void addCustomCategory(@PathVariable final String categoryName, @RequestBody final String requestBody) {
     List<String> wordList = Arrays.asList(
         requestBody
             .split("\"wordList\":")[1]
             .split("\\[")[1]
             .split("]")[0]
-            .split(","));
+            .split(", "));
     try {
       userAccess.getJsonIO().updateCurrentUser(
           (user) -> {
@@ -71,16 +69,11 @@ public class CategoryController {
   /**
    * API endpoint for enabling a user to add a new custom category.
    *
-   * @param requestBody Requestbody containing the category's name and correlating
-   *                    wordlist.
+   * @param categoryName The category's name and correlating wordlist.
    */
-  @RequestMapping(value = "/CategoryController/deleteCustomCategory", method = RequestMethod.POST)
+  @RequestMapping(value = "/CategoryController/deleteCustomCategory/{categoryName}", method = RequestMethod.DELETE)
   @ResponseStatus(HttpStatus.OK)
-  public void deleteCustomCategory(@RequestBody final String requestBody) {
-    String categoryName = requestBody
-        .split(":")[1]
-        .replaceAll("\"", "");
-    System.out.println(categoryName);
+  public void deleteCustomCategory(@PathVariable final String categoryName) {
     try {
       userAccess.getJsonIO().updateCurrentUser(
           (user) -> {
@@ -91,4 +84,5 @@ public class CategoryController {
       e.printStackTrace();
     }
   }
+
 }

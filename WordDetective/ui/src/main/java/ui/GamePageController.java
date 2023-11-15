@@ -190,6 +190,11 @@ public final class GamePageController extends AbstractController implements Init
     private boolean showHowToPlay = true;
 
     /**
+     * Boolean that determines if yoy have already seen how to play.
+     */
+    private boolean hasShownHowToPlay = false;
+
+    /**
      * Variable holding the category of the given game.
      */
     private String currentCategory = "";
@@ -424,9 +429,13 @@ public final class GamePageController extends AbstractController implements Init
      */
     @FXML
     public void howToPlay() {
-        if (showHowToPlay) {
+        if (hasShownHowToPlay && showHowToPlay) {
             howToPlay.setVisible(false);
             showHowToPlay = false;
+        } else if (showHowToPlay) {
+            howToPlay.setVisible(false);
+            showHowToPlay = false;
+            hasShownHowToPlay = true;
             moveLettersTo(playerCircle.getCenterX(), playerCircle.getCenterY(), 30);
         } else {
             howToPlay.setVisible(true);
@@ -488,8 +497,8 @@ public final class GamePageController extends AbstractController implements Init
                             Paths.get("assets").toAbsolutePath() + "/images/gamepagenew.png")));
             api.newGame(username, currentCategory);
             rndwordMasterLetters();
-            playerCircle = new Circle(centerX, centerY, radius, new ImagePattern(new Image(new FileInputStream(
-                    Paths.get("assets").toAbsolutePath() + "/images/Brage.png"))));
+            playerCircle = new Circle(centerX, centerY, radius,
+                    new ImagePattern(new Image(new FileInputStream("./runtime/assets/images/Brage.png"))));
 
             innerWindow.getChildren().addAll(playerCircle);
             outputField.setStyle("-fx-font: 24 arial;");

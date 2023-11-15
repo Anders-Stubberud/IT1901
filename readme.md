@@ -20,7 +20,9 @@ Further details about the application is located in the [WordDetective README](W
 
 ## Releases of WordDetective:
 
-([Release 1](docs/release1/README.md))([Release 2](docs/release2/README.md))
+([Release 1](docs/release1/README.md))
+([Release 2](docs/release2/README.md))
+([Release 3](docs/release3/README.md))
 
 # Description of content
 
@@ -28,52 +30,124 @@ The root directory primarily contains the "docs" folder and the "WordDetective" 
 <br>
 The "docs" folder contains the documentation of the various releases.
 <br>
-The "WordDetective" folder contains the code of the project, and is made up of the "core" and "ui" folders.
+The "WordDetective" folder contains the code of the project, and is made up of the following modules:
+api, core, persistence, types, and ui.
 <br>
-The "core" folder contains the backend java files and their correlating tests.
+The api module contains the server configuration and various controllers. The controllers hold the API endpoints which are requested by the UI. Once the API controllers receives a request, it delegates the task to the core module.
 <br>
-The "ui" folder contains files related to the frontend of the application, such as fxml files and their respective java controller files.
+The core module contains the core logic of the program. Tasks requiring access to persistently stored user information is delegated to the persistence module.
+<br>
+The persistence module accesses the persistent user files to retrieve user information.
+<br>
+The ui module contains files related to the frontend of the application, such as fxml files and their respective java controller files.
+<br>
+The types module contains the "User" class, which is used to store the user persistently, and enums for login and registration, which is used for giving feedback.
+<br>
 
 _Tentative sketch of folder structure_
 
 ```
 WordDetective
 │
-└── core
+├── api
 │   │
-│   └── src
-│      ├── main
-│      │   ├── java
-│      │   │   └── core
-│      │   │        └── contains core logic files and persistence with gson files
-│      │   │
-│      │   └── resources
-│      │              ├── default_categories
-│      │              │                    └── contains all the default categories, in JSON files
-│      │              ├──default_stats
-│      │              │              └── contains stats contributed by all guest users, in JSON format.
-│      │              ├──users
-│      ├── test              └── contains all registered user along with their information, in JSON format.
-│          └── java
-│              └── core
-│                  └── contains test classes for core logic and persistence
+│   ├── src
+│   │   ├── main
+│   │   │   ├── java
+│   │   │   │   └── api
+│   │   │   │       └── controllers
+│   │   │   │           └── [API Controller Files]
+│   │   │   │
+│   │   │   └── resources
+│   │   │       └── [Resource File for API for springboot]
+│   │   │
+│   │   └── test
+│   │       └── java
+│   │           └── api
+│   │               └── [API Test Files]
+│   │
+│   └── target
+│       └── [Compiled Classes and JARs]
 │
+├── config
+│   ├── checkstyle
+│   │   └── [Checkstyle Configuration Files]
+│   │
+│   └── spotbugs
+│       └── [SpotBugs Configuration Files]
+│
+├── core
+│   │
+│   ├── src
+│   │   ├── main
+│   │   │    └── java
+│   │   │         └── core
+│   │   │               └── [Core logic files]
+│   │   │
+│   │   └── test
+│   │       └── java
+│   │           └── core
+│   │               └── [Test classes for core logic and persistence]
+│   │
+│   └── target
+│       └── [Compiled Classes and JARs]
+│
+├── persistence
+│   ├── src
+│   │   ├── main
+│   │   │   ├── java
+│   │   │   │   └── persistence
+│   │   │   │       └── [Persistence Classes]
+│   │   │   │
+│   │   │   └── resources
+│   │   │       ├── default_categories
+│   │   │       └── users
+│   │   │
+│   │   └── test
+│   │       └── java
+│   │           └── persistence
+│   │               └── [Persistence Test Classes]
+│   │
+│   └── target
+│       └── [Compiled Classes and JARs]
+│
+├── types
+│   ├── main
+│   │   ├── java
+│   │   │   └── types
+│   │   │       └── [Type Classes]
+│   │   │
+│   ├── test
+│   │   └── java
+│   │       └── types
+│   │           └── [Type Test Classes]
+│   │
+│   └── target
+│       └── [Compiled Classes and JARs]
 │
 └── ui
     │
-    └──  src
-       ├── main
-       │   └── java
-       │       └── ui
-       │           └── contains controller files and factory files
-       │
-       ├── test
-       │   └── java
-       │       └── ui
-       │           └── contains ui tests
-       │
-       └── resources
-                   └── contains fxml files
+    ├── assets
+    │   ├── images
+    │   ├── music
+    │   └── video
+    │
+    ├── src
+    │   ├── main
+    │   │   ├── java
+    │   │   │   └── ui
+    │   │   │       └── [Controller files and factory files]
+    │   │   │
+    │   │   └── resources
+    │   │       └── [Fxml files]
+    │   │
+    │   └── test
+    │       └── java
+    │           └── ui
+    │               └── [Ui tests]
+    │
+    └── target
+        └── [Compiled Classes and JARs]
 ```
 
 # Version Requirements
@@ -98,10 +172,20 @@ WordDetective
 <br>
 <i>for che: </i><code>mvn clean install -Pskip-ui-tests<code>
 
+**Create Desktop application**
+
+- <code>mvn -f ui/pom javafx:jlink</code>
+  - This will create a folder named "worddetectivelauncher", and an equivalent zip file in ui/target. Since we have included javafx media for mp4 background video, the "assets" folder in the ui module must be manually added to the runtime image. This is as simple as copying the "assets" folder into the "worddetectivelauncher" folder, and then update the zip file accordingly.
+- <code>mvn -f ui/pom.xml jpackage:jpackage</code>
+- change directory to ui/target/dist, and use: start WordDetective_SubstringEdition-1.0.0.exe
+- Follow the instructions given by the setup wizard.
+
 # Running application
 
 **Run application**
 <br>
+Spin up the server: <code>mvn -f api/pom.xml spring-boot:run</code>
+_open new terminal_
 <code>mvn -f ui/pom.xml javafx:run</code>
 
 # Running WordDetective test suite
