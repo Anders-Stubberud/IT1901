@@ -142,7 +142,11 @@ public abstract class AbstractController {
    * Display an error message.
    *
    * @param message      - The message to display
-   * @param errorDisplay - The {@link Label} to display the message in
+   * @param errorDisplay - The {@link
+   *
+   *
+   *
+   *                     Label} to display the message in
    */
   public void displayError(final String message, final Label errorDisplay) {
     errorDisplay.setStyle("-fx-text-fill: #b51c1c;");
