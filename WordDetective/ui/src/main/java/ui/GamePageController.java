@@ -190,6 +190,11 @@ public final class GamePageController extends AbstractController implements Init
     private boolean showHowToPlay = true;
 
     /**
+     * Boolean that determines if yoy have already seen how to play.
+     */
+    private boolean hasShownHowToPlay = false;
+
+    /**
      * Variable holding the category of the given game.
      */
     private String currentCategory;
@@ -397,9 +402,13 @@ public final class GamePageController extends AbstractController implements Init
      */
     @FXML
     public void howToPlay() {
-        if (showHowToPlay) {
+        if (hasShownHowToPlay && showHowToPlay) {
             howToPlay.setVisible(false);
             showHowToPlay = false;
+        } else if (showHowToPlay) {
+            howToPlay.setVisible(false);
+            showHowToPlay = false;
+            hasShownHowToPlay = true;
             moveLettersTo(playerCircle.getCenterX(), playerCircle.getCenterY(), 30);
         } else {
             howToPlay.setVisible(true);
