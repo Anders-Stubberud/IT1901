@@ -23,15 +23,15 @@ import types.LoginStatus;
 
 public final class LoginControllerTest extends ApplicationTest {
 
-  // /**
-  // * The root of the application is used as reference to the DOM.
-  // */
-  // private Parent root;
+  /**
+   * The root of the application is used as reference to the DOM.
+   */
+  private Parent root;
 
-  // /**
-  // * The loader used for instantiation.
-  // */
-  // private FXMLLoader fxmlLoader;
+  /**
+   * The loader used for instantiation.
+   */
+  private FXMLLoader fxmlLoader;
 
   /**
    * The label used to display error.

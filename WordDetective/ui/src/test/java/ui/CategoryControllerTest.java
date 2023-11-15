@@ -35,7 +35,7 @@ public class CategoryControllerTest extends ApplicationTest {
     // /**
     // * The root of the application is used as reference to the DOM.
     // */
-    // private Parent root;
+    private Parent root;
 
     /**
      * Vbox containing categories.

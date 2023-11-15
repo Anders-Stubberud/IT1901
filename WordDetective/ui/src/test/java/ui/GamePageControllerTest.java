@@ -23,6 +23,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.testfx.framework.junit5.ApplicationTest;
 // import org.testfx.matcher.control.LabeledMatchers;
+import org.testfx.matcher.control.LabeledMatchers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
