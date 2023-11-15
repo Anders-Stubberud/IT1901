@@ -110,7 +110,7 @@ public class GameTest {
     }
 
     /**
-     * Test getPlayerHighscore and savePlayerHighScore
+     * Test getPlayerHighscore and savePlayerHighScore.
      */
     @Test
     @DisplayName("Check setting of high score")
@@ -123,7 +123,7 @@ public class GameTest {
     }
 
     /**
-     * Reset highscore after running tests
+     * Reset highscore after running tests.
      */
     @AfterAll
     public static void cleanUpAfterAllTests() {

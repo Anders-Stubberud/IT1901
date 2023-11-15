@@ -3,9 +3,11 @@ package core;
 import types.LoginStatus;
 
 import org.junit.jupiter.api.Test;
-import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class LoginAuthenticationTest {
 
@@ -28,7 +30,7 @@ public class LoginAuthenticationTest {
   }
 
   /**
-   * Test logging in succesfully
+   * Test logging in succesfully.
    */
   @Test
   public void testAuthenticateSuccess() {
@@ -36,8 +38,9 @@ public class LoginAuthenticationTest {
     assertEquals(LoginStatus.SUCCESS, loginAuth.authenticate("Password"));
   }
 
-  /*
+  /**
    * Test read authentication error.
+   * Use mockito to test this.
    */
   @Test
   public void testAuthenticateReadError() {
@@ -53,13 +56,4 @@ public class LoginAuthenticationTest {
     // Call the authenticate method, which should now return READ_ERROR
     assertEquals(LoginStatus.READ_ERROR, loginAuthMock.authenticate("triggerReadError"));
   }
-
-  @Test
-  public void testIsValidPassword() {
-    // Implement tests for the isValidPassword method
-    // Make sure to cover the missed instructions and branches
-  }
-
-  // Add additional test methods as needed to cover missed lines and methods
-
 }
