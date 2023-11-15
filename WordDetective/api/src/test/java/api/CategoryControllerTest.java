@@ -1,13 +1,11 @@
 package api;
 
-import api.controllers.CategoryController;
 import persistence.JsonIO;
 
 import com.google.gson.Gson;
 import com.hackerrank.test.utility.Order;
 import com.hackerrank.test.utility.OrderedTestRunner;
 import com.hackerrank.test.utility.TestWatchman;
-import org.mockito.InjectMocks;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import java.util.HashSet;
@@ -80,9 +78,19 @@ public class CategoryControllerTest {
     TestWatchman.watchman.createReport(LoginControllerTest.class);
   }
 
+  /**
+   * Mock instance used to retrieve information from API without setting up the
+   * server.
+   */
   @Autowired
   private MockMvc mockMvc;
 
+  /**
+   * Template to reduce redundant code.
+   *
+   * @return Map between categorytype and their respective cateogries.
+   * @throws Exception If errors are encountered.
+   */
   private Map<String, Set<String>> testTemplate() throws Exception {
     String response = mockMvc.perform(get("/CategoryController/getCategories")
         .param("username", "TestUser")
@@ -99,6 +107,11 @@ public class CategoryControllerTest {
     return responseMap;
   }
 
+  /**
+   * Test correct fetch of categories.
+   *
+   * @throws Exception If errors are encountered.
+   */
   @Test
   @Order(1)
   public void testGetCategories() throws Exception {
@@ -109,16 +122,21 @@ public class CategoryControllerTest {
 
     Map<String, Set<String>> responseMap = testTemplate();
 
-    Set<String> default_categories = new HashSet<String>(responseMap.get("default"));
-    Set<String> custom_categories = new HashSet<String>(responseMap.get("custom"));
-    Set<String> results = new HashSet<>(default_categories);
-    results.addAll(custom_categories);
+    Set<String> defaultCategories = new HashSet<String>(responseMap.get("default"));
+    Set<String> customCategories = new HashSet<String>(responseMap.get("custom"));
+    Set<String> results = new HashSet<>(defaultCategories);
+    results.addAll(customCategories);
 
     // Tests based on set equality. A ⊆ B and B ⊆ A <=> A = B.
     assertTrue(categories.containsAll(results));
     assertTrue(results.containsAll(categories));
   }
 
+  /**
+   * Test correct add of custom category..
+   *
+   * @throws Exception If errors are encountered.
+   */
   @Test
   @Order(2)
   public void testAddCustomCategory() throws Exception {
@@ -137,13 +155,15 @@ public class CategoryControllerTest {
     assertTrue(categoriesAfterAdd.contains("TestCategory"));
   }
 
+  /**
+   * Test correct delete of custom category.
+   *
+   * @throws Exception If errors are encountered.
+   */
   @Test
   @Order(FINALTEST)
   public void testDeleteCustomCategory() throws Exception {
     String categoryName = "TestCategory";
-
-    Set<String> categoriesBeforeDelete = testTemplate().get("custom");
-    System.out.println("\n\n\n" + categoriesBeforeDelete + "\n\n\n");
 
     // Bruteforce løsning før deleteUser fra dev er på plass
     JsonIO jsonIO = new JsonIO("TestUser");
@@ -154,7 +174,6 @@ public class CategoryControllerTest {
             return true;
           });
     } catch (IOException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
 

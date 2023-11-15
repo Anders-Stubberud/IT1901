@@ -1,37 +1,12 @@
 package api;
 
-import api.controllers.CategoryController;
-import api.controllers.GamePageController;
-import api.controllers.RegistrationController;
-import core.UserAccess;
 import persistence.JsonIO;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.hackerrank.test.utility.Order;
 import com.hackerrank.test.utility.OrderedTestRunner;
 import com.hackerrank.test.utility.TestWatchman;
-
-import types.LoginStatus;
-import types.RegistrationStatus;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import java.util.HashSet;
-import java.util.Set;
-import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
-import java.util.Collection;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -45,10 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.rules.SpringClassRule;
 import org.springframework.test.context.junit4.rules.SpringMethodRule;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.http.MediaType;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -98,84 +70,101 @@ public class GamePageControllerTest {
     TestWatchman.watchman.createReport(LoginControllerTest.class);
   }
 
+  /**
+   * Mock instance used to retrieve information from API without setting up the
+   * server.
+   */
   @Autowired
   private MockMvc mockMvc;
 
-  private boolean testTemplate(String username, String password) throws Exception {
-    return true;
+  /**
+   * Template to reduce redundant code.
+   *
+   * @param username Username of the current user.
+   * @param category Category selected by the current user.
+   * @throws Exception If there is an error while contacting the API.
+   */
+  private void templateNewGame(final String username, final String category) throws Exception {
+    String requestBody = "username=" + username + "&category=" + category;
+    mockMvc.perform(post("/GamePageController/newGame")
+        .content(requestBody)
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk());
   }
 
+  /**
+   * Template to reduce redundant code.
+   *
+   * @param endpoint  Specifies where to sent the request.
+   * @param mediaType Specifies the type of the content sent to the API.
+   * @return String containing the response from the API
+   * @throws Exception If there is an error while contacting the API.
+   */
+  private String templateGetRequest(final String endpoint, final MediaType mediaType) throws Exception {
+    return mockMvc.perform(get(endpoint)
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(mediaType))
+        .andReturn()
+        .getResponse()
+        .getContentAsString();
+  }
+
+  /**
+   * Tests correct setup of new game instance.
+   *
+   * @throws Exception If there is an error while contacting the API.
+   */
   @Test
   @Order(1)
   public void testNewGame() throws Exception {
-    String requestBody = "username=TestUser&category=colors";
-    mockMvc.perform(post("/GamePageController/newGame")
-        .content(requestBody)
-        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk());
+    templateNewGame("TestUser", "colors");
   }
 
+  /**
+   * Tests that the API returns a substring when requested.
+   *
+   * @throws Exception If there is an error while contacting the API.
+   */
   @Test
   @Order(2)
   public void testGetSubString() throws Exception {
-    String requestBody = "username=TestUser&category=colors";
-    mockMvc.perform(post("/GamePageController/newGame")
-        .content(requestBody)
-        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk());
-
-    String response = mockMvc.perform(get("/GamePageController/getSubstring")
-        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-        .andExpect(content().contentType(new MediaType("text", "plain", StandardCharsets.UTF_8)))
-        .andReturn()
-        .getResponse()
-        .getContentAsString();
+    templateNewGame("TestUser", "colors");
+    String response = templateGetRequest("/GamePageController/getSubstring",
+        new MediaType("text", "plain", StandardCharsets.UTF_8));
     assertNotNull(response);
   }
 
+  /**
+   * Tests correct retrieval of user highscore.
+   *
+   * @throws Exception If there is an error while contacting the API.
+   */
   @Test
   @Order(3)
   public void testGetHighscore() throws Exception {
-    String requestBody = "username=TestUser&category=colors";
-    mockMvc.perform(post("/GamePageController/newGame")
-        .content(requestBody)
-        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk());
-
-    String response = mockMvc.perform(get("/GamePageController/getPlayerHighscore")
-        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-        .andReturn()
-        .getResponse()
-        .getContentAsString();
+    templateNewGame("TestUser", "colors");
+    String response = templateGetRequest("/GamePageController/getPlayerHighscore", MediaType.APPLICATION_JSON);
     Integer highscore = Integer.parseInt(response);
     Integer actualHighscore = 0;
     assertEquals(actualHighscore, highscore);
   }
 
+  /**
+   * Tests that the highscore get set correcty.
+   *
+   * @throws Exception If there is an error while contacting the API.
+   */
   @Test
   @Order(FINALTEST)
   public void testSetHighscore() throws Exception {
-    String requestBody = "username=TestUser&category=colors";
-    mockMvc.perform(post("/GamePageController/newGame")
-        .content(requestBody)
-        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk());
-
+    templateNewGame("TestUser", "colors");
     mockMvc.perform(post("/GamePageController/savePlayerHighscore")
         .content("100")
         .contentType(MediaType.TEXT_PLAIN))
         .andExpect(status().isOk());
 
-    String response = mockMvc.perform(get("/GamePageController/getPlayerHighscore")
-        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-        .andReturn()
-        .getResponse()
-        .getContentAsString();
+    String response = templateGetRequest("/GamePageController/getPlayerHighscore", MediaType.APPLICATION_JSON);
     Integer highscore = Integer.parseInt(response);
     Integer actualHighscore = 100;
     assertEquals(actualHighscore, highscore);
@@ -185,13 +174,7 @@ public class GamePageControllerTest {
         .contentType(MediaType.TEXT_PLAIN))
         .andExpect(status().isOk());
 
-    response = mockMvc.perform(get("/GamePageController/getPlayerHighscore")
-        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-        .andReturn()
-        .getResponse()
-        .getContentAsString();
+    response = templateGetRequest("/GamePageController/getPlayerHighscore", MediaType.APPLICATION_JSON);
     highscore = Integer.parseInt(response);
     // Only write if highscore is higher
     actualHighscore = 100;

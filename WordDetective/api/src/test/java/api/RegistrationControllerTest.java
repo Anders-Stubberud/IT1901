@@ -1,25 +1,17 @@
 package api;
 
-import api.controllers.RegistrationController;
-import core.UserAccess;
 import persistence.JsonIO;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.hackerrank.test.utility.Order;
 import com.hackerrank.test.utility.OrderedTestRunner;
 import com.hackerrank.test.utility.TestWatchman;
-
-import types.LoginStatus;
 import types.RegistrationStatus;
-import org.mockito.InjectMocks;
 import static org.junit.Assert.assertSame;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.lang.reflect.Type;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -79,10 +71,22 @@ public class RegistrationControllerTest {
     TestWatchman.watchman.createReport(LoginControllerTest.class);
   }
 
+  /**
+   * Mock instance used to retrieve information from API without setting up the
+   * server.
+   */
   @Autowired
   private MockMvc mockMvc;
 
-  private RegistrationStatus testTemplate(String username, String password) throws Exception {
+  /**
+   * Template to reduce redundant code.
+   *
+   * @param username The new username provided by the user.
+   * @param password The new password provided by the user.
+   * @return RegistrationStatus indicating the result of the registration.
+   * @throws Exception If any errors are encountered while contacting the API.
+   */
+  private RegistrationStatus testTemplate(final String username, final String password) throws Exception {
     String response = mockMvc.perform(get("/RegistrationController/registrationResult")
         .param("username", username)
         .param("password", password)
@@ -97,6 +101,11 @@ public class RegistrationControllerTest {
     return new Gson().fromJson(response, type);
   }
 
+  /**
+   * Test successful registration with valid credentials.
+   *
+   * @throws Exception If any errors are encountered while contacting the API
+   */
   @Test
   @Order(1)
   public void testRegistrationSuccess() throws Exception {
@@ -106,6 +115,11 @@ public class RegistrationControllerTest {
     JsonIO.deleteUser("NewUser123");
   }
 
+  /**
+   * Test correct error when username is taken.
+   *
+   * @throws Exception If any errors are encountered while contacting the API
+   */
   @Test
   @Order(2)
   public void testRegistrationUsernameTaken() throws Exception {
@@ -113,6 +127,11 @@ public class RegistrationControllerTest {
     assertSame(RegistrationStatus.USERNAME_TAKEN, result);
   }
 
+  /**
+   * Test correct error when username does not match the set criteria.
+   *
+   * @throws Exception If any errors are encountered while contacting the API
+   */
   @Test
   @Order(3)
   public void testRegistrationUsernameNotMatchRegex() throws Exception {
@@ -120,6 +139,11 @@ public class RegistrationControllerTest {
     assertSame(RegistrationStatus.USERNAME_NOT_MATCH_REGEX, result);
   }
 
+  /**
+   * Test correct error when password does not match the set criteria.
+   *
+   * @throws Exception If any errors are encountered while contacting the API
+   */
   @Test
   @Order(FINALTEST)
   public void testRegistrationPasswordNotMatchRegex() throws Exception {

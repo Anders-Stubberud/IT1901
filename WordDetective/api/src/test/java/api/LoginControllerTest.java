@@ -70,10 +70,22 @@ public class LoginControllerTest {
     TestWatchman.watchman.createReport(LoginControllerTest.class);
   }
 
+  /**
+   * Mock instance used to retrieve information from API without setting up the
+   * server.
+   */
   @Autowired
   private MockMvc mockMvc;
 
-  private LoginStatus testTemplate(String username, String password) throws Exception {
+  /**
+   * Template to reduce redundant code.
+   *
+   * @param username Username provided by the user to log in with.
+   * @param password Password provided by the user to log in to given user.
+   * @return LoginStatus indicating the result of the login.
+   * @throws Exception
+   */
+  private LoginStatus testTemplate(final String username, final String password) throws Exception {
     String requestBody = "username=" + username + "&password=" + password;
     String response = mockMvc.perform(post("/LoginController/performLogin")
         .content(requestBody)
@@ -88,6 +100,11 @@ public class LoginControllerTest {
     return new Gson().fromJson(response, type);
   }
 
+  /**
+   * Test login with valid login credentials.
+   *
+   * @throws Exception If any errors are encountered while contacting the API
+   */
   @Test
   @Order(1)
   public void testLoginSuccessful() throws Exception {
@@ -95,6 +112,11 @@ public class LoginControllerTest {
     assertSame(LoginStatus.SUCCESS, result);
   }
 
+  /**
+   * Test correct handling of login with incorrect password.
+   *
+   * @throws Exception If any errors are encountered while contacting the API
+   */
   @Test
   @Order(2)
   public void testLoginIncorrectPassword() throws Exception {
@@ -102,6 +124,11 @@ public class LoginControllerTest {
     assertSame(LoginStatus.INCORRECT_PASSWORD, result);
   }
 
+  /**
+   * Test login with unvalid username.
+   *
+   * @throws Exception If any errors are encountered while contacting the API
+   */
   @Test
   @Order(FINALTEST)
   public void testLoginInvalidUsername() throws Exception {

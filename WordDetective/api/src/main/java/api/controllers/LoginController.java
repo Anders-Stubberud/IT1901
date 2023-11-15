@@ -18,7 +18,7 @@ public class LoginController {
    * LoginAuthentication instance to provide access to required persistently
    * stored user information.
    */
-  public LoginAuthentication authentication;
+  private LoginAuthentication authentication;
 
   /**
    * API endpoint for check of valid login information.

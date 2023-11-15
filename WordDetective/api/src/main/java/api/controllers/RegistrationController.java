@@ -21,7 +21,7 @@ public class RegistrationController {
   /**
    * API endpoint for registration of User. Returns constant indicating result of
    * registration.
-   * 
+   *
    * @param username The provided username of the new user.
    * @param password The provided password of the new user.
    * @return SUCCESS, USERNAME_TAKEN, USERNAME_NOT_MATCH_REGEX,

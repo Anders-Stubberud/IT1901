@@ -56,18 +56,18 @@ public class RegistrationControllerTest extends ApplicationTest {
   /**
    * Tests that a user can not be created if the username is already in use.
    */
-  @Test
-  public void testUsernameTaken() {
-    // clickOn("#newUsername", MouseButton.PRIMARY);
-    // write("occupiedUser");
-    // clickOn("#newPassword", MouseButton.PRIMARY);
-    // write("occupied");
-    // clickOn("#signUp", MouseButton.PRIMARY);
-    // int opacity = (int) ((Label) root.lookup("#usernameTaken")).getOpacity();
-    // Assert.assertEquals(
-    // "The opacity of the 'occupied username' label should be 1",
-    // 1, opacity);
-  }
+  // @Test
+  // public void testUsernameTaken() {
+  // clickOn("#newUsername", MouseButton.PRIMARY);
+  // write("occupiedUser");
+  // clickOn("#newPassword", MouseButton.PRIMARY);
+  // write("occupied");
+  // clickOn("#signUp", MouseButton.PRIMARY);
+  // int opacity = (int) ((Label) root.lookup("#usernameTaken")).getOpacity();
+  // Assert.assertEquals(
+  // "The opacity of the 'occupied username' label should be 1",
+  // 1, opacity);
+  // }
 
   // /**
   // * Tests that a user with valid username can be created.

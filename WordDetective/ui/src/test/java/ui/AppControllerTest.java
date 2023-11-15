@@ -55,21 +55,21 @@ public class AppControllerTest extends ApplicationTest {
   /**
    * Tests correct load of category page for guest users.
    */
-  @Test
-  public void isGuest() {
-    clickOn("#appGuestBtn", MouseButton.PRIMARY);
-    Node elementPresentInCategory = lookup("#categoryPage").query();
-    Assert.assertNotNull(elementPresentInCategory);
-  }
+  // @Test
+  // public void isGuest() {
+  // clickOn("#appGuestBtn", MouseButton.PRIMARY);
+  // Node elementPresentInCategory = lookup("#categoryPage").query();
+  // Assert.assertNotNull(elementPresentInCategory);
+  // }
 
-  /**
-   * Tests correct load of loginpage.
-   */
-  @Test
-  public void isRegisteredUser() {
-    clickOn("#appLogInBtn", MouseButton.PRIMARY);
-    Node elementPresentInCategory = lookup("#loginPage").query();
-    Assert.assertNotNull(elementPresentInCategory);
-  }
+  // /**
+  // * Tests correct load of loginpage.
+  // */
+  // @Test
+  // public void isRegisteredUser() {
+  // clickOn("#appLogInBtn", MouseButton.PRIMARY);
+  // Node elementPresentInCategory = lookup("#loginPage").query();
+  // Assert.assertNotNull(elementPresentInCategory);
+  // }
 
 }

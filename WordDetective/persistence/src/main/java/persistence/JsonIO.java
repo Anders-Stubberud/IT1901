@@ -103,20 +103,6 @@ public final class JsonIO implements AbstractJsonIO {
         }
     }
 
-    public static void main(String[] args) {
-        JsonIO j = new JsonIO("TestUser");
-        try {
-            j.updateCurrentUser(
-                    (user) -> {
-                        user.deleteCustomCategories("TestCategory");
-                        return true;
-                    });
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public List<String> getCategoryWordlist(final String category) throws IOException, RuntimeException {
         if (DEFAULT_CATEGORY_NAMES.contains(category)) {
