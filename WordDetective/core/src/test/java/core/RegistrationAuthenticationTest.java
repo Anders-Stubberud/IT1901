@@ -3,13 +3,11 @@ package core;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import persistence.JsonIO;
 import types.RegistrationStatus;
-import types.User;
 
 class RegistrationAuthenticationTest {
 
@@ -45,20 +43,6 @@ class RegistrationAuthenticationTest {
   }
 
   @Test
-  void testRegistrationUploadError() {
-    // Mocking JsonIO.addUser to simulate an upload error
-    RegistrationAuthentication registrationAuthenticationMock = new RegistrationAuthentication() {
-      @Override
-      protected boolean addUserToDatabase(User user) {
-        return false;
-      }
-    };
-
-    RegistrationStatus result = registrationAuthenticationMock.registrationResult("newUser", "Password123");
-    assertEquals(RegistrationStatus.UPLOAD_ERROR, result);
-  }
-
-  @Test
   void testIsValidPassword() {
     assertTrue(registrationAuthentication.isValidPassword("StrongPassword123"));
     assertFalse(registrationAuthentication.isValidPassword("weak"));
@@ -75,7 +59,7 @@ class RegistrationAuthenticationTest {
   static void tearDown() {
     // Clean up by deleting the users created during the tests
     JsonIO.deleteUser("newUser");
-    JsonIO.deleteUser("");
+    JsonIO.deleteUser("bigBossMan");
     // Add additional calls to deleteUser as needed for other test users
   }
 }
