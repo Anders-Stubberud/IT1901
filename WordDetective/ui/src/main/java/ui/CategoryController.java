@@ -103,6 +103,11 @@ public final class CategoryController extends AbstractController implements Init
     private Label uploadErrorDisplay;
 
     /**
+     * Api object used for calling backend application.
+     */
+    private ApiConfig api;
+
+    /**
      * Constructor used for controlling whether or not to retrieve custom
      * categories.
      *
@@ -110,6 +115,7 @@ public final class CategoryController extends AbstractController implements Init
      */
     public CategoryController(final String usernameParameter) {
         this.username = usernameParameter;
+        api = new ApiConfig();
     }
 
     /**
@@ -158,7 +164,7 @@ public final class CategoryController extends AbstractController implements Init
                     .replaceAll("\n", "")
                     .split(",");
             try {
-                ApiConfig.addCustomCategory(chosenCategoryName, wordList);
+                api.addCustomCategory(chosenCategoryName, wordList);
                 // Reset fields
                 categoryName.clear();
                 categoryWords.clear();
@@ -188,7 +194,7 @@ public final class CategoryController extends AbstractController implements Init
         if (result.isPresent() && result.get() == ButtonType.OK) {
             System.out.println("Deleting category" + category);
             try {
-                ApiConfig.deleteCustomCategory(category);
+                api.deleteCustomCategory(category);
                 System.out.println("Category deleted");
                 renderCategories();
             } catch (IOException | InterruptedException e) {
@@ -210,7 +216,7 @@ public final class CategoryController extends AbstractController implements Init
             vbox.getChildren().clear();
             vbox.setSpacing(40); // Space between each object in vbox
 
-            for (Map.Entry<String, Set<String>> categorySet : ApiConfig.getCategories(username).entrySet()) {
+            for (Map.Entry<String, Set<String>> categorySet : api.getCategories(username).entrySet()) {
                 for (String category : categorySet.getValue()) {
 
                     String formattedCategory = formatString(category); // Legger til formatting på kategorien

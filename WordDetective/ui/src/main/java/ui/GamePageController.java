@@ -22,6 +22,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -128,7 +129,7 @@ public final class GamePageController extends AbstractController implements Init
     /**
      * The substring is the letters that the player has to use.
      */
-    private String substring;
+    private String substring = "";
     /**
      * The current user.
      */
@@ -192,22 +193,27 @@ public final class GamePageController extends AbstractController implements Init
     /**
      * Variable holding the category of the given game.
      */
-    private String currentCategory;
+    private String currentCategory = "";
 
     /**
      * The current word used to obtain the substring.
      */
-    private String currentWord;
+    private String currentWord = "";
 
     /**
      * The player circle display on screen.
      */
-    private Circle playerCircle;
+    private Circle playerCircle = new Circle();
 
     /**
      * Random object used to provide substrings.
      */
     private Random random;
+
+    /**
+     * Api object used for calling backend application.
+     */
+    private ApiConfig api;
 
     /**
      * Constructor initializing the object.
@@ -219,6 +225,7 @@ public final class GamePageController extends AbstractController implements Init
         this.username = usernameParameter;
         this.currentCategory = categoryParameter;
         random = new Random();
+        api = new ApiConfig();
     }
 
     /**
@@ -228,6 +235,21 @@ public final class GamePageController extends AbstractController implements Init
      */
     public GamePageController(final String category) {
         this("guest", category);
+        api = new ApiConfig();
+    }
+
+    public GamePageController() {
+        this("guest", null);
+        api = new ApiConfig();
+    }
+
+    /**
+     * Sets the api object.
+     *
+     * @param api - The api object to set.
+     */
+    public void setApi(final ApiConfig api) {
+        this.api = api;
     }
 
     /**
@@ -256,8 +278,8 @@ public final class GamePageController extends AbstractController implements Init
             playerInputField.setText("");
             try {
 
-                ApiConfig.savePlayerHighscore(points.getText());
-                gameOverHighScore.setText(String.valueOf(ApiConfig.getHighScore()));
+                api.savePlayerHighscore(points.getText());
+                gameOverHighScore.setText(String.valueOf(api.getHighScore()));
                 gameOverScore.setText(points.getText());
                 currentWordLabel.setText("The word the substring was taken from was: " + currentWord.toUpperCase());
                 if (username.equals("guest")) {
@@ -298,7 +320,7 @@ public final class GamePageController extends AbstractController implements Init
         if (ke.getCode().equals(KeyCode.ENTER)) { // If pressed Enter, then check word
             String playerGuess = playerInputField.getText();
             try {
-                if (ApiConfig.checkValidWord(substring, playerGuess)) {
+                if (api.checkValidWord(substring, playerGuess)) {
                     int newPoints = Integer.parseInt(points.getText()) + 1;
                     points.setText(String.valueOf(newPoints));
                     playerInputField.setText("");
@@ -377,7 +399,7 @@ public final class GamePageController extends AbstractController implements Init
      */
     public String getSubstring() {
         try {
-            currentWord = ApiConfig.getWord();
+            currentWord = api.getWord();
 
             do {
                 int wordLength = currentWord.length();
@@ -417,13 +439,10 @@ public final class GamePageController extends AbstractController implements Init
     /**
      * Restarts the game in the current category.
      */
-    public void restartGame() { // Metode for å restarte gamet
+    public void restartGame() {
         try {
-            // ApiConfig.savePlayerHighscore(points.getText()); // Trying to fix highscore
-            // update
             if (!username.equals("guest")) {
-                highScore.setText(String.valueOf(ApiConfig.getHighScore()));
-                System.out.println("This runnssss");
+                highScore.setText(String.valueOf(api.getHighScore()));
             }
 
         } catch (Exception e) {
@@ -462,34 +481,29 @@ public final class GamePageController extends AbstractController implements Init
         try {
             imageGame.setImage(
                     new Image(new FileInputStream(
-                            Paths.get("runtime/assets").toAbsolutePath() + "/images/gamepagenew.png")));
-            ApiConfig.newGame(username, currentCategory);
+                            Paths.get("assets").toAbsolutePath() + "/images/gamepagenew.png")));
+            api.newGame(username, currentCategory);
             rndwordMasterLetters();
-            playerCircle = new Circle(centerX, centerY, radius,
-                    new ImagePattern(new Image(new FileInputStream("./assets/images/Brage.png"))));
+            playerCircle = new Circle(centerX, centerY, radius, Color.WHITE);
 
             innerWindow.getChildren().addAll(playerCircle);
-            // createPlayers(true);
             outputField.setStyle("-fx-font: 24 arial;");
             // Change textfield format till uppercase
             playerInputField.setTextFormatter(new TextFormatter<>((change) -> {
                 change.setText(change.getText().toUpperCase());
-                playerInputField.setStyle("-fx-opacity: 0");
                 return change;
             }));
             playerInputField.requestFocus();
-            categoryDisplay.setText("Category: " + currentCategory.toUpperCase().replace("_", " "));
-            highScore.setText(String.valueOf(ApiConfig.getHighScore()));
+            categoryDisplay.setText("Category: " + currentCategory);
+            highScore.setText(String.valueOf(api.getHighScore()));
 
             // Add shutdownhook that updates user highscore when closing application
             Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
                 public void run() {
                     if (!username.equals("guest")) {
                         try {
-                            // game.savePlayerHighscore(Integer.valueOf(points.getText()));
-                            ApiConfig.savePlayerHighscore(points.getText());
+                            api.savePlayerHighscore(points.getText());
                         } catch (NumberFormatException | IOException | InterruptedException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                     }
