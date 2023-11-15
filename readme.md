@@ -59,7 +59,7 @@ WordDetective
 │   │   │   │           └── [API Controller Files]
 │   │   │   │
 │   │   │   └── resources
-│   │   │       └── [Resource Files for API]
+│   │   │       └── [Resource File for API for springboot]
 │   │   │
 │   │   └── test
 │   │       └── java
