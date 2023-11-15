@@ -222,6 +222,9 @@ public final class GamePageController extends AbstractController implements Init
      * @param categoryParameter category of the given game.
      */
     public GamePageController(final String usernameParameter, final String categoryParameter) {
+        if (usernameParameter.equals(null) || categoryParameter.equals(null)) {
+            throw new NullPointerException("Username or category cannot be null");
+        }
         this.username = usernameParameter;
         this.currentCategory = categoryParameter;
         random = new Random();
@@ -239,7 +242,7 @@ public final class GamePageController extends AbstractController implements Init
     }
 
     public GamePageController() {
-        this("guest", null);
+        this("guest", "");
         api = new ApiConfig();
     }
 
@@ -466,7 +469,6 @@ public final class GamePageController extends AbstractController implements Init
             }
         }
         playerInputField.setText("");
-        outputField.getChildren().clear();
         rndwordMasterLetters();
         letterVelocity = 30;
         gameOverPage.setVisible(false);
