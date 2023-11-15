@@ -72,13 +72,12 @@ public class CategoryController {
    * @param requestBody Requestbody containing the category's name and correlating
    *                    wordlist.
    */
-  @RequestMapping(value = "/CategoryController/deleteCustomCategory", method = RequestMethod.POST)
+  // @RequestMapping(value = "/CategoryController/deleteCustomCategory", method =
+  // RequestMethod.POST)
+  // @ResponseStatus(HttpStatus.OK)
+  @RequestMapping(value = "/CategoryController/deleteCustomCategory/{categoryName}", method = RequestMethod.DELETE)
   @ResponseStatus(HttpStatus.OK)
-  public void deleteCustomCategory(@RequestBody final String requestBody) {
-    String categoryName = requestBody
-        .split(":")[1]
-        .replaceAll("\"", "");
-    System.out.println(categoryName);
+  public void deleteCustomCategory(@PathVariable String categoryName) {
     try {
       userAccess.getJsonIO().updateCurrentUser(
           (user) -> {
@@ -89,5 +88,21 @@ public class CategoryController {
       e.printStackTrace();
     }
   }
+
+  // public void deleteCustomCategory(@RequestBody final String requestBody) {
+  // String categoryName = requestBody
+  // .split(":")[1]
+  // .replaceAll("\"", "");
+  // System.out.println(categoryName);
+  // try {
+  // userAccess.getJsonIO().updateCurrentUser(
+  // (user) -> {
+  // user.deleteCustomCategories(categoryName);
+  // return true;
+  // });
+  // } catch (IOException e) {
+  // e.printStackTrace();
+  // }
+  // }
 
 }

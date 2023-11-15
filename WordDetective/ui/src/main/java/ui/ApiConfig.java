@@ -110,6 +110,16 @@ public final class ApiConfig {
     return CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
   }
 
+  private static HttpResponse<String> performDeleteRequest(final String url, final String type)
+      throws IOException, InterruptedException {
+    HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(url))
+        .header("Content-Type", type)
+        .DELETE()
+        .build();
+    return CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+  }
+
   /**
    * Checks if username and password is a match.
    *
@@ -195,12 +205,9 @@ public final class ApiConfig {
    */
   protected static void deleteCustomCategory(final String categoryName)
       throws IOException, InterruptedException {
-    String url = BASEURL + "CategoryController/deleteCustomCategory";
+    String url = BASEURL + "CategoryController/deleteCustomCategory/" + categoryName;
     String type = "application/json";
-    String jsonBody = String.format("categoryName:\"%s\"",
-        categoryName);
-    BodyPublisher body = HttpRequest.BodyPublishers.ofString(jsonBody);
-    performPostRequest(url, type, body);
+    performDeleteRequest(url, type);
   }
 
   /**

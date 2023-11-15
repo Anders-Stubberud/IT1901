@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.http.MediaType;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -158,7 +159,7 @@ public class GamePageControllerTest {
   @Order(FINALTEST)
   public void testSetHighscore() throws Exception {
     templateNewGame("TestUser", "colors");
-    mockMvc.perform(post("/GamePageController/savePlayerHighscore")
+    mockMvc.perform(put("/GamePageController/savePlayerHighscore")
         .content("300")
         .contentType(MediaType.TEXT_PLAIN))
         .andExpect(status().isOk());
@@ -168,7 +169,7 @@ public class GamePageControllerTest {
     Integer actualHighscore = 300;
     assertEquals(actualHighscore, highscore);
 
-    mockMvc.perform(post("/GamePageController/savePlayerHighscore")
+    mockMvc.perform(put("/GamePageController/savePlayerHighscore")
         .content("300")
         .contentType(MediaType.TEXT_PLAIN))
         .andExpect(status().isOk());
