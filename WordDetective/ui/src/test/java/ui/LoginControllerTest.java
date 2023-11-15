@@ -7,14 +7,12 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.testfx.framework.junit5.ApplicationTest;
 
 import javafx.fxml.FXMLLoader;
-
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -23,7 +21,7 @@ import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 import types.LoginStatus;
 
-public class LoginControllerTest extends ApplicationTest {
+public final class LoginControllerTest extends ApplicationTest {
 
   /**
    * The root of the application is used as reference to the DOM.
@@ -123,6 +121,9 @@ public class LoginControllerTest extends ApplicationTest {
 
   }
 
+  /**
+   * Tests that a user can login if correct username and password.
+   */
   public void testSuccessfulLogin() {
     write("ExistingUser", usernameField);
     write("CorrectPassword", passwordField);

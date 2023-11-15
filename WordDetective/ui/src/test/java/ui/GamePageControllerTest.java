@@ -4,7 +4,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doNothing;
@@ -12,14 +11,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Stream;
 
-import org.junit.BeforeClass;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -29,7 +24,6 @@ import org.mockito.Mockito;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.control.LabeledMatchers;
 
-import core.Game;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -38,20 +32,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
-public class GamePageControllerTest extends ApplicationTest {
+public final class GamePageControllerTest extends ApplicationTest {
 
   /**
    * The root of the application is used as reference to the DOM.
    */
   private Parent root;
 
-  /*
+  /**
    * FXML components used for testing.
    */
   @FXML
@@ -138,6 +129,9 @@ public class GamePageControllerTest extends ApplicationTest {
     assertTrue(htp.isVisible());
   }
 
+  /**
+   * Test if restart game works.
+   */
   @Test
   public void restartGame() {
     testGuess("TESTWORD", true);
@@ -157,32 +151,11 @@ public class GamePageControllerTest extends ApplicationTest {
    */
   @Test
   public void goBack() {
-    clickOn("#backBtn");
+    clickOn("#backArrowBtn");
     Node elementPresentInCategory = lookup("#categoryPage").query();
     assertNotNull(elementPresentInCategory);
 
   }
-
-  // @Test
-  // public void testMoveLettersTo() {
-  // Double layoutX, layoutY = 0.0;
-  // Pane letters = (Pane) root.lookup("#lettersCircle");
-  // System.out.println("LEtter Circel: " + letters.getLayoutX() + " Y: " +
-  // letters.getLayoutY());
-  // layoutX = letters.getLayoutX();
-  // layoutY = letters.getLayoutY();
-  // controller.moveLettersTo(100, 100, 0.1);
-  // try {
-  // Thread.sleep(1000);
-  // letters = (Pane) root.lookup("#lettersCircle");
-  // assertNotEquals(layoutX, letters.getLayoutX(), "hadX: " + layoutX + "
-  // currentX: " + letters.getLayoutX());
-  // assertNotEquals(layoutY, letters.getLayoutY(), "hadY: " + layoutY + "
-  // currentY: " + letters.getLayoutY());
-  // } catch (InterruptedException e) {
-  // e.printStackTrace();
-  // }
-  // }
 
   /**
    * Tests if the input from the user is displayed correctly.
@@ -194,6 +167,12 @@ public class GamePageControllerTest extends ApplicationTest {
     assertTrue(getInput().equals("TESTWORD"));
   }
 
+  /**
+   * Tests guesses gets right feedback.
+   *
+   * @param guess     - Guess
+   * @param isCorrect - Is the guess correct
+   */
   @ParameterizedTest
   @MethodSource("testWriteWords")
   public void testGuess(final String guess, final boolean isCorrect) {
@@ -235,13 +214,6 @@ public class GamePageControllerTest extends ApplicationTest {
   }
 
   /**
-   * Helper method to clean inputfield.
-   */
-  private void cleanInput() {
-    ((TextField) getRootNode().lookup("#playerInputField")).setText("");
-  }
-
-  /**
    * Helper method to close the HowToPlay popup window.
    */
   private void closeHowToPlay() {
@@ -250,6 +222,9 @@ public class GamePageControllerTest extends ApplicationTest {
 
   /**
    * Helper method to write input instant.
+   *
+   * @param string    - String to write
+   * @param textfield - Textfield to write to
    */
   private void write(final String string, final TextField textfield) {
     textfield.setText(string);

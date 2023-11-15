@@ -208,6 +208,16 @@ public class ApiConfig {
     return response.body();
   }
 
+  /**
+   * Checks if the given word is a valid guess.
+   *
+   * @param substring The substring of the word to check.
+   * @param guess     The guess to check.
+   * @return Boolean indicating if the guess is valid.
+   * @throws IOException          If any issues are encountered during interaction
+   *                              with the files.
+   * @throws InterruptedException If thread is interrupted.
+   */
   protected boolean checkValidWord(final String substring, final String guess)
       throws IOException, InterruptedException {
     String param1 = URLEncoder.encode(substring, StandardCharsets.UTF_8.toString());
@@ -217,6 +227,14 @@ public class ApiConfig {
     return Boolean.parseBoolean(response.body());
   }
 
+  /**
+   * Saves the current score of the game.
+   *
+   * @param highscore The score to save.
+   * @throws IOException          If any issues are encountered during interaction
+   *                              with the files.
+   * @throws InterruptedException If thread is interrupted.
+   */
   protected void savePlayerHighscore(final String highscore) throws IOException, InterruptedException {
     String url = BASEURL + "GamePageController/savePlayerHighscore";
     String type = "text/plain";
@@ -224,7 +242,14 @@ public class ApiConfig {
     performPostRequest(url, type, body);
   }
 
-  // Lage en funskjon som caller på endpointet laget i api
+  /**
+   * Fetches the current highscore of the user.
+   *
+   * @return The current highscore of the user.
+   * @throws IOException          If any issues are encountered during interaction
+   *                              with the files.
+   * @throws InterruptedException If thread is interrupted.
+   */
   protected int getHighScore() throws IOException, InterruptedException {
     String url = BASEURL + "GamePageController/getPlayerHighscore";
     HttpResponse<String> response = performGetRequest(url);

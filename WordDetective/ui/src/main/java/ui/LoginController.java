@@ -107,10 +107,10 @@ public final class LoginController extends AbstractController implements Initial
     /**
      * Getter for api.
      *
-     * @return api
+     * @param newApi - the api to use.
      */
-    public void setApi(final ApiConfig api) {
-        this.api = api;
+    public void setApi(final ApiConfig newApi) {
+        this.api = newApi;
     }
 
     /**

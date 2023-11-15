@@ -56,6 +56,9 @@ public final class RegistrationController extends AbstractController implements 
      */
     private ApiConfig api;
 
+    /**
+     * Constructor for RegistrationController.
+     */
     public RegistrationController() {
         api = new ApiConfig();
     }
@@ -101,10 +104,10 @@ public final class RegistrationController extends AbstractController implements 
     /**
      * Sets the api object.
      *
-     * @param api - The api object to set.
+     * @param newApi - The api object to set.
      */
-    public void setApi(final ApiConfig api) {
-        this.api = api;
+    public void setApi(final ApiConfig newApi) {
+        this.api = newApi;
     }
 
     /**

@@ -22,7 +22,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -241,6 +240,9 @@ public final class GamePageController extends AbstractController implements Init
         api = new ApiConfig();
     }
 
+    /**
+     * Empty Constuctor for initialising controller.
+     */
     public GamePageController() {
         this("guest", "");
         api = new ApiConfig();
@@ -249,10 +251,10 @@ public final class GamePageController extends AbstractController implements Init
     /**
      * Sets the api object.
      *
-     * @param api - The api object to set.
+     * @param newApi - The api object to set.
      */
-    public void setApi(final ApiConfig api) {
-        this.api = api;
+    public void setApi(final ApiConfig newApi) {
+        this.api = newApi;
     }
 
     /**
@@ -486,7 +488,8 @@ public final class GamePageController extends AbstractController implements Init
                             Paths.get("assets").toAbsolutePath() + "/images/gamepagenew.png")));
             api.newGame(username, currentCategory);
             rndwordMasterLetters();
-            playerCircle = new Circle(centerX, centerY, radius, Color.WHITE);
+            playerCircle = new Circle(centerX, centerY, radius, new ImagePattern(new Image(new FileInputStream(
+                    Paths.get("assets").toAbsolutePath() + "/images/Brage.png"))));
 
             innerWindow.getChildren().addAll(playerCircle);
             outputField.setStyle("-fx-font: 24 arial;");
