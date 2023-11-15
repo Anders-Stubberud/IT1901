@@ -194,6 +194,9 @@ public class JsonIOTest {
 
   }
 
+  /**
+   * Tests getting all categories.
+   */
   @Test
   public void testGetAllCategories() {
     JsonIO jsonIO = new JsonIO(testUser.getUsername());
