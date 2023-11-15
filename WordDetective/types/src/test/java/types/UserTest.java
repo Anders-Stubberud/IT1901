@@ -2,6 +2,8 @@ package types;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -73,6 +75,10 @@ public class UserTest {
 
     validUser.deleteCustomCategories("TestCategory");
     assertNull(validUser.getCustomCategories().get("TestCategory"), "TestCategory should have been deleted");
+
+    assertThrows(RuntimeException.class, () -> {
+      validUser.deleteCustomCategories("nonEistingCategory");
+    });
 
   }
 
