@@ -108,10 +108,20 @@ WordDetective
 <br>
 <i>for che: </i><code>mvn clean install -Pskip-ui-tests<code>
 
+**Create Desktop application**
+
+- <code>mvn -f ui/pom javafx:jlink</code>
+  - This will create a folder named "worddetectivelauncher", and an equivalent zip file in ui/target. Since we have included javafx media for mp4 background video, the "assets" folder in the ui module must be manually added to the runtime image. This is as simple as copying the "assets" folder into the "worddetectivelauncher" folder, and then update the zip file accordingly.
+- <code>mvn -f ui/pom.xml jpackage:jpackage</code>
+- change directory to ui/target/dist, and use: start WordDetective_SubstringEdition-1.0.0.exe
+- Follow the instructions given by the setup wizard.
+
 # Running application
 
 **Run application**
 <br>
+Spin up the server: <code>mvn -f api/pom.xml spring-boot:run</code>
+_open new terminal_
 <code>mvn -f ui/pom.xml javafx:run</code>
 
 # Running WordDetective test suite
