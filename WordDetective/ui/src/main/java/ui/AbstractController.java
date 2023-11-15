@@ -48,6 +48,7 @@ public abstract class AbstractController {
     try {
       if (soundMP != null) {
         soundMP.stop();
+        videoMP.stop();
       }
       FXMLLoader fxmlLoader = new FXMLLoader(AbstractController.class.getResource(scene));
       Stage stage = (Stage) buttonPressed.getScene().getWindow();
