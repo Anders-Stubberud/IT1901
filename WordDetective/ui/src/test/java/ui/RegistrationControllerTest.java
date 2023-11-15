@@ -1,5 +1,6 @@
 package ui;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -18,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
+import types.RegistrationStatus;
 
 public class RegistrationControllerTest extends ApplicationTest {
 
@@ -50,11 +52,6 @@ public class RegistrationControllerTest extends ApplicationTest {
    */
   @InjectMocks
   private RegistrationController controller = new RegistrationController();
-
-  /**
-   * The loader used for instantiation.
-   */
-  private FXMLLoader fxmlLoader;
 
   /**
    * Instantiates the stage.
