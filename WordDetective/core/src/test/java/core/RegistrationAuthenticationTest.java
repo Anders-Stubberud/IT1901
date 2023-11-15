@@ -2,6 +2,7 @@ package core;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -70,8 +71,8 @@ class RegistrationAuthenticationTest {
     assertFalse(registrationAuthentication.isValidUsername("guestUsername"));
   }
 
-  @AfterEach
-  void tearDown() {
+  @AfterAll
+  static void tearDown() {
     // Clean up by deleting the users created during the tests
     JsonIO.deleteUser("newUser");
     JsonIO.deleteUser("");
