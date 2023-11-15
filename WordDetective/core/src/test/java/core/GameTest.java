@@ -77,7 +77,8 @@ public class GameTest {
     }
 
     /**
-     * Checks that a randomly generated substring from a randomly pulled word is indeed recognized as a valid substring.
+     * Checks that a randomly generated substring from a randomly pulled word is
+     * indeed recognized as a valid substring.
      */
     @Test
     @DisplayName("Check valid substring of word")
