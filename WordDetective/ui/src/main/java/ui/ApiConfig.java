@@ -11,6 +11,7 @@ import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Set;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -43,7 +44,7 @@ public final class ApiConfig {
   /**
    * Type of json parsing result.
    */
-  private static Type listOfStringsType = new TypeToken<Set<String>>() {
+  private static Type hashMapOfStringandSet = new TypeToken<HashMap<String, Set<String>>>() {
   }.getType();
 
   /**
@@ -130,17 +131,18 @@ public final class ApiConfig {
    * Fetches the categories available to the given user.
    *
    * @param username The username of the user to fetch the categories of.
-   * @return Set<String> containing all categories available to the given user.
+   * @return a {@link Hashmap} containing all categories available to the current
+   *         user.
    * @throws IOException          If any issues are encountered during interaction
    *                              with the files.
    * @throws InterruptedException If thread is interrupted.
    */
-  protected static Set<String> getCategories(final String username)
+  protected static HashMap<String, Set<String>> getCategories(final String username)
       throws IOException, InterruptedException {
     String param1 = URLEncoder.encode(username, StandardCharsets.UTF_8.toString());
     String url = BASEURL + "CategoryController/getCategories" + "?username=" + param1;
     HttpResponse<String> response = performGetRequest(url);
-    return GSON.fromJson(response.body(), listOfStringsType);
+    return GSON.fromJson(response.body(), hashMapOfStringandSet);
   }
 
   /**
@@ -159,6 +161,24 @@ public final class ApiConfig {
     String type = "application/json";
     String jsonBody = String.format("{\"categoryName\":\"%s\",\"wordList\":%s}",
         categoryName, Arrays.toString(wordList));
+    BodyPublisher body = HttpRequest.BodyPublishers.ofString(jsonBody);
+    performPostRequest(url, type, body);
+  }
+
+  /**
+   * Deletes a custom category from the user's custom categories.
+   *
+   * @param categoryName The category to delete.
+   * @throws IOException          If any issues are encountered during interaction
+   *                              with the files.
+   * @throws InterruptedException If thread is interrupted.
+   */
+  protected static void deleteCustomCategory(final String categoryName)
+      throws IOException, InterruptedException {
+    String url = BASEURL + "CategoryController/deleteCustomCategory";
+    String type = "application/json";
+    String jsonBody = String.format("categoryName:\"%s\"",
+        categoryName);
     BodyPublisher body = HttpRequest.BodyPublishers.ofString(jsonBody);
     performPostRequest(url, type, body);
   }
@@ -188,9 +208,9 @@ public final class ApiConfig {
    *                              with the files.
    * @throws InterruptedException If thread is interrupted.
    */
-  protected static String getSubstring()
+  protected static String getWord()
       throws IOException, InterruptedException {
-    String url = BASEURL + "GamePageController/getSubstring";
+    String url = BASEURL + "GamePageController/getWord";
     HttpResponse<String> response = performGetRequest(url);
     return response.body();
   }

@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -48,7 +49,7 @@ public abstract class AbstractController {
       if (soundMP != null) {
         soundMP.stop();
       }
-      FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource(scene));
+      FXMLLoader fxmlLoader = new FXMLLoader(AbstractController.class.getResource(scene));
       Stage stage = (Stage) buttonPressed.getScene().getWindow();
       Parent parent = fxmlLoader.load();
       stage.setScene(new Scene(parent));
@@ -76,7 +77,7 @@ public abstract class AbstractController {
       if (soundMP != null) {
         soundMP.stop();
       }
-      FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource(scene));
+      FXMLLoader fxmlLoader = new FXMLLoader(AbstractController.class.getResource(scene));
       fxmlLoader.setControllerFactory(factory);
       Stage stage = (Stage) buttonPressed.getScene().getWindow();
       Parent parent = fxmlLoader.load();
@@ -95,9 +96,9 @@ public abstract class AbstractController {
    *
    */
   public void startBGVideo(final AnchorPane background) {
-    File video = new File(Paths.get("runtime/assets").toAbsolutePath()
+    File video = new File(Paths.get("assets").toAbsolutePath()
         + "/video/WordDetectiveBackgroundVideo.mp4");
-    File sound = new File(Paths.get("runtime/assets").toAbsolutePath()
+    File sound = new File(Paths.get("assets").toAbsolutePath()
         + "/music/WordDetectiveMusic.L.wav");
     videoMP = new MediaPlayer(new Media(video.toURI().toString()));
     soundMP = new MediaPlayer(new Media(sound.toURI().toString()));
@@ -135,5 +136,17 @@ public abstract class AbstractController {
       System.out.println("Couldn't find image because: " + e.getMessage());
     }
     imageview.setImage(backArrow);
+  }
+
+  /**
+   * Display an error message.
+   *
+   * @param message      - The message to display
+   * @param errorDisplay - The {@link Label} to display the message in
+   */
+  public void displayError(final String message, final Label errorDisplay) {
+    errorDisplay.setStyle("-fx-text-fill: #b51c1c;");
+    errorDisplay.setText(message);
+    errorDisplay.setOpacity(1);
   }
 }

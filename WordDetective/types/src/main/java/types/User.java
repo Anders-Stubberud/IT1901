@@ -122,7 +122,9 @@ public final class User {
      * @param category - The category to delete
      */
     public void deleteCustomCategories(final String category) {
-        this.customCategories.remove(category);
+        if (this.customCategories.remove(category) == null) {
+            throw new RuntimeException("Category" + category + "does not exist");
+        }
     }
 
 }

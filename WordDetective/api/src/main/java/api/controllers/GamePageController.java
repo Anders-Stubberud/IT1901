@@ -40,10 +40,10 @@ public class GamePageController {
    * @return A substring generated from a word randomly pulled from the current
    *         wordlist.
    */
-  @RequestMapping(value = "/GamePageController/getSubstring", method = RequestMethod.GET)
+  @RequestMapping(value = "/GamePageController/getWord", method = RequestMethod.GET)
   @ResponseStatus(HttpStatus.OK)
-  public String getSubstring() {
-    return game.getSubstring();
+  public String getWord() {
+    return game.getWord();
   }
 
   /**

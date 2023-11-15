@@ -13,13 +13,6 @@ public interface AbstractGame {
    */
   void setCategory(String category) throws IllegalArgumentException;
 
-  // /**
-  // * Get the chosen category chosen by the player.
-  // *
-  // * @return players chosen category as {@link String}
-  // */
-  // String getChosenCategory();
-
   /**
    * Set new wordlist.
    *
@@ -35,11 +28,11 @@ public interface AbstractGame {
   List<String> getWordList();
 
   /**
-   * Randomly generates a substring from the randomly chosen word.
+   * Get a random word from the wordlist.
    *
-   * @return A randomly generated substring from the randomly chosen word.
+   * @return A random word from the wordlist as {@link String}.
    */
-  String getSubstring();
+  String getWord();
 
   /**
    * Checks if the guess is present in wordlist and wether the substring is

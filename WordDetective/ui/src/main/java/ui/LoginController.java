@@ -51,16 +51,6 @@ public final class LoginController extends AbstractController implements Initial
     private ImageView backArrowImg;
 
     /**
-     * Display an error message.
-     *
-     * @param message - The message to display
-     */
-    private void displayError(final String message) {
-        errorDisplay.setText(message);
-        errorDisplay.setOpacity(1);
-    }
-
-    /**
      * Method fired when pressing the "login" button. Loads the category window.
      */
     @FXML
@@ -69,7 +59,7 @@ public final class LoginController extends AbstractController implements Initial
             String username = usernameField.getText();
             String password = passwordField.getText();
             if (username.isBlank() || password.isBlank()) {
-                displayError("Cannot have blank fields.");
+                displayError("Cannot have blank fields.", errorDisplay);
                 return;
             }
             switch (ApiConfig.performLogin(username, password)) {
@@ -77,16 +67,16 @@ public final class LoginController extends AbstractController implements Initial
                     changeSceneTo("Category.fxml", login, new CategoryFactory(username));
                     break;
                 case USERNAME_DOES_NOT_EXIST:
-                    displayError("Username does not exist.");
+                    displayError("Username does not exist.", errorDisplay);
                     break;
                 case INCORRECT_PASSWORD:
-                    displayError("Incorrect password.");
+                    displayError("Incorrect password.", errorDisplay);
                     break;
                 case READ_ERROR:
-                    displayError("Error during extraction of password.");
+                    displayError("Error during extraction of password.", errorDisplay);
                     break;
                 default:
-                    displayError("Unknown error occured.");
+                    displayError("Unknown error occured.", errorDisplay);
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
