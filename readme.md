@@ -49,7 +49,31 @@ _Tentative sketch of folder structure_
 ```
 WordDetective
 │
-└── core
+├── api
+│   │
+│   └── src
+│       ├── main
+│       │   ├── java
+│       │   │   └── api
+│       │   │       └── controllers
+│       │   │           └── [API Controller Files]
+│       │   │
+│       │   └── resources
+│       │           └── [Resource Files for API]
+│       │
+│       └── test
+│           └── java
+│               └── api
+│                   └── [API Test Files]
+│
+├── config
+│   ├── checkstyle
+│   │   └── [Checkstyle Configuration Files]
+│   │
+│   └── spotbugs
+│       └── [SpotBugs Configuration Files]
+│
+├── core
 │   │
 │   └── src
 │      ├── main
@@ -57,17 +81,40 @@ WordDetective
 │      │   │   └── core
 │      │   │        └── contains core logic files and persistence with gson files
 │      │   │
-│      │   └── resources
-│      │              ├── default_categories
-│      │              │                    └── contains all the default categories, in JSON files
-│      │              ├──default_stats
-│      │              │              └── contains stats contributed by all guest users, in JSON format.
-│      │              ├──users
-│      ├── test              └── contains all registered user along with their information, in JSON format.
+│      └── test              └── contains all registered user along with their information, in JSON format.
 │          └── java
 │              └── core
 │                  └── contains test classes for core logic and persistence
 │
+├── persistence
+│   ├── src
+│   │   ├── main
+│   │   │   ├── java
+│   │   │   │   └── persistence
+│   │   │   │       └── [Persistence Classes]
+│   │   │   │
+│   │   │   └── resources
+│   │   │       ├── default_categories
+│   │   │       └── users
+│   │   │
+│   │   └── test
+│   │       └── java
+│   │           └── persistence
+│   │               └── [Persistence Test Classes]
+│   │
+│   └── target
+│       └── [Compiled Classes and JARs]
+│
+├── types
+│   ├── main
+│   │   ├── java
+│   │   │   └── types
+│   │   │       └── [Type Classes]
+│   │   │
+│   └── test
+│       └── java
+│           └── types
+│               └── [Type Test Classes]
 │
 └── ui
     │
