@@ -114,5 +114,7 @@ public class GameTest {
         assertEquals(0, game.getPlayerHighscore(), "High score should be 0 on start");
         game.savePlayerHighscore(300);
         assertEquals(300, game.getPlayerHighscore(), "High score should be 300, but was " + game.getPlayerHighscore());
+        game.savePlayerHighscore(200);
+        assertEquals(300, game.getPlayerHighscore(), "High score should be 300, but was " + game.getPlayerHighscore());
     }
 }
