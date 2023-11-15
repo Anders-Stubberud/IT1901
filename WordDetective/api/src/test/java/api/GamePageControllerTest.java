@@ -128,9 +128,9 @@ public class GamePageControllerTest {
    */
   @Test
   @Order(2)
-  public void testGetSubString() throws Exception {
+  public void testGetWord() throws Exception {
     templateNewGame("TestUser", "colors");
-    String response = templateGetRequest("/GamePageController/getSubstring",
+    String response = templateGetRequest("/GamePageController/getWord",
         new MediaType("text", "plain", StandardCharsets.UTF_8));
     assertNotNull(response);
   }
@@ -160,24 +160,24 @@ public class GamePageControllerTest {
   public void testSetHighscore() throws Exception {
     templateNewGame("TestUser", "colors");
     mockMvc.perform(post("/GamePageController/savePlayerHighscore")
-        .content("100")
+        .content("300")
         .contentType(MediaType.TEXT_PLAIN))
         .andExpect(status().isOk());
 
     String response = templateGetRequest("/GamePageController/getPlayerHighscore", MediaType.APPLICATION_JSON);
     Integer highscore = Integer.parseInt(response);
-    Integer actualHighscore = 100;
+    Integer actualHighscore = 300;
     assertEquals(actualHighscore, highscore);
 
     mockMvc.perform(post("/GamePageController/savePlayerHighscore")
-        .content("0")
+        .content("300")
         .contentType(MediaType.TEXT_PLAIN))
         .andExpect(status().isOk());
 
     response = templateGetRequest("/GamePageController/getPlayerHighscore", MediaType.APPLICATION_JSON);
     highscore = Integer.parseInt(response);
     // Only write if highscore is higher
-    actualHighscore = 100;
+    actualHighscore = 300;
     assertEquals(actualHighscore, highscore);
 
     // Foreløpig bruteforce
