@@ -1,6 +1,13 @@
 {
   "username": "TestUser",
   "password": "Password",
-  "highscore": 0,
-  "customCategories": {}
+  "highscore": 1,
+  "customCategories": {
+    "teste": [
+      "ANDERS",
+      "DAG",
+      "BENGT",
+      "MADS"
+    ]
+  }
 }

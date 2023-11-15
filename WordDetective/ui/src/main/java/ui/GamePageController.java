@@ -462,11 +462,11 @@ public final class GamePageController extends AbstractController implements Init
         try {
             imageGame.setImage(
                     new Image(new FileInputStream(
-                            Paths.get("assets").toAbsolutePath() + "/images/gamepagenew.png")));
+                            Paths.get("runtime/assets").toAbsolutePath() + "/images/gamepagenew.png")));
             ApiConfig.newGame(username, currentCategory);
             rndwordMasterLetters();
             playerCircle = new Circle(centerX, centerY, radius,
-                    new ImagePattern(new Image(new FileInputStream("./assets/images/Brage.png"))));
+                    new ImagePattern(new Image(new FileInputStream("./runtime/assets/images/Brage.png"))));
 
             innerWindow.getChildren().addAll(playerCircle);
             // createPlayers(true);
