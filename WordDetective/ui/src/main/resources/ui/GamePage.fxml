@@ -94,7 +94,7 @@
             </Button>
          </children>
       </Pane>
-      <Pane fx:id="howToPlay" layoutX="250.0" layoutY="50.0" prefHeight="458.0" prefWidth="500.0" style="-fx-background-color: BEB77B; -fx-background-radius: 20px;" visible="false">
+      <Pane fx:id="howToPlay" layoutX="250.0" layoutY="50.0" prefHeight="458.0" prefWidth="500.0" style="-fx-background-color: BEB77B; -fx-background-radius: 20px;">
          <effect>
             <DropShadow />
          </effect>
