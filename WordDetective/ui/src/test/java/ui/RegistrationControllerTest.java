@@ -68,61 +68,6 @@ public class RegistrationControllerTest extends ApplicationTest {
   }
 
   /**
-   * Tests that a user can not be created if the username is already in use.
-   */
-  @Test
-  public void testUsernameTaken() {
-    write("TestUser", usernameField);
-    write("Password", passwordField);
-    // clickOn("#signUp", MouseButton.PRIMARY);
-    // assertTrue(errorDisplay.getText().contains("already taken"),
-    // "The error display should say something about the username being taken, but
-    // was:"
-    // + errorDisplay.getText());
-  }
-
-  /**
-   * Tests that a user can not be created the username doesn't match the criteria.
-   */
-  @Test
-  public void testWrongUsername() {
-    write("T", usernameField);
-    write("Pasword123", passwordField);
-    // clickOn("#signUp", MouseButton.PRIMARY);
-    // assertTrue(errorDisplay.getText().contains("username needs"),
-    // "The error display should say something about what is required in a username,
-    // but was:"
-    // + errorDisplay.getText());
-  }
-
-  /**
-   * Tests that a user cannot be created the password doesn't match the criteria.
-   * Make sure user does not exist in database.
-   */
-  @Test
-  public void testWrongPassword() {
-    write("ValidUserThatShouldntBeInDatabase", usernameField);
-    write("P", passwordField);
-    // clickOn("#signUp", MouseButton.PRIMARY);
-    // assertTrue(errorDisplay.getText().contains("password needs"),
-    // "The error display should say something about what is required in a password,
-    // but was:"
-    // + errorDisplay.getText());
-
-  }
-
-  /**
-   * Tests that a user with valid username and password can be created.
-   *
-   */
-  @Test
-  public void testCreateNewUser() {
-    write("ValidUserThatShouldntBeInDatabase", usernameField);
-    write("Password123", passwordField);
-
-  }
-
-  /**
    * write a string to a textfield instant.
    *
    * @param string    - the string to write

@@ -4,17 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
 import javafx.fxml.FXMLLoader;
-// import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-// import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 
 public class LoginControllerTest extends ApplicationTest {
@@ -61,32 +58,6 @@ public class LoginControllerTest extends ApplicationTest {
     clickOn("#login");
     assertTrue(errorDisplay.getText().contains("blank fields"),
         "The error display should say something about blank fields, but was:" + errorDisplay.getText());
-  }
-
-  /**
-   * Tests if the program notifies about incorrect login information.
-   */
-  @Test
-  public void testWrongUsername() {
-    write("NotAUser", usernameField);
-    write("password123", passwordField);
-    // clickOn("#login");
-    // assertTrue(errorDisplay.getText().contains("not exist"),
-    // "The error display should say something about the user not existing, " +
-    // errorDisplay.getText());
-  }
-
-  /**
-   * Tests if the program notifies about incorrect login information.
-   */
-  @Test
-  public void testWrongPassword() {
-    write("TestUser", usernameField);
-    write("NotTheCorrectPassword", passwordField);
-    // clickOn("#login");
-    // assertTrue(errorDisplay.getText().contains("Incorrect password"),
-    // "The error display should say something about the password being incorrect, "
-    // + errorDisplay.getText());
   }
 
   /**
