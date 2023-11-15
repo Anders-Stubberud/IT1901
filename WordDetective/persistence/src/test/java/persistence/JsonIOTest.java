@@ -180,6 +180,22 @@ public class JsonIOTest {
       e.printStackTrace();
     }
 
+    assertThrows(RuntimeException.class, () -> {
+      jsonIO.getCategoryWordlist("non existing category");
+    });
+
+  }
+
+  @Test
+  public void testGetAllCategories() {
+    JsonIO jsonIO = new JsonIO(testUser.getUsername());
+    Set<String> actualDefaultCategories = new HashSet<>(Arrays.asList(
+        "chemical elements", "fruits", "major oceans and lakes", "us states", "countries",
+        "programming languages", "colors", "100 most common carbrands"));
+    Set<String> retrievedDefaultcategories = jsonIO.getAllCategories().get("default");
+    // Tests based on set equality: A ⊆ B and B ⊆ A <=> A = B
+    assertTrue(actualDefaultCategories.containsAll(retrievedDefaultcategories));
+    assertTrue(retrievedDefaultcategories.containsAll(actualDefaultCategories));
   }
 
   /**
