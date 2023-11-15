@@ -211,6 +211,7 @@ public class JsonIOTest {
 
   /**
    * Test the getPersistentProperty method.
+   * @throws IOException
    */
   @Test
   public void testGetPersistentProperty() throws IOException {
@@ -233,6 +234,10 @@ public class JsonIOTest {
     tempFile.delete();
   }
 
+  /**
+   * Test username and password match.
+   * @throws IOException
+   */
   @Test
     public void testUsernameAndPasswordMatch() throws IOException {
         // Test case 1: Matching username and password
