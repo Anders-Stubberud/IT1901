@@ -4,19 +4,31 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import org.mockito.Spy;
+
+
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.DateFormat.Field;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import com.google.gson.Gson;
 import types.User;
 
@@ -198,6 +210,46 @@ public class JsonIOTest {
     assertTrue(retrievedDefaultcategories.containsAll(actualDefaultCategories));
   }
 
+  /**
+   * Test the getPersistentProperty method.
+   */
+  @Test
+  public void testGetPersistentProperty() throws IOException {
+    // Create a temporary JSON file for testing
+    File tempFile = File.createTempFile("test", ".json");
+    try (FileWriter writer = new FileWriter(tempFile, StandardCharsets.UTF_8)) {
+      writer.write("{\"property1\": \"value1\", \"property2\": \"value2\"}");
+    }
+
+    // Test case 1: Property found
+    String propertyValue = JsonIO.getPersistentProperty("property1", tempFile.getAbsolutePath());
+    assertEquals("value1", propertyValue);
+
+    // Test case 2: Property not found
+    IOException exception = assertThrows(IOException.class,
+        () -> JsonIO.getPersistentProperty("nonexistentProperty", tempFile.getAbsolutePath()));
+    assertEquals("Property not found", exception.getMessage());
+
+    // Clean up the temporary file
+    tempFile.delete();
+  }
+
+  @Test
+    public void testUsernameAndPasswordMatch() throws IOException {
+        // Test case 1: Matching username and password
+        assertTrue(JsonIO.usernameAndPasswordMatch(testUser.getUsername(), testUser.getPassword()),
+                "Should return true for matching username and password");
+
+        // Test case 2: Non-matching password
+        assertFalse(JsonIO.usernameAndPasswordMatch(testUser.getUsername(), "WrongPassword"),
+                "Should return false for non-matching password");
+
+        // Test case 3: IOException when reading property
+        IOException exception = assertThrows(IOException.class,
+                () -> JsonIO.usernameAndPasswordMatch("NonexistentUser", "somePassword"));
+        assertEquals("Error reading property", exception.getMessage(),
+                "Should throw IOException with the specified message");
+    }
   /**
    * Delete newly created directories for clean up.
    */
