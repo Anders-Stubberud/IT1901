@@ -80,14 +80,14 @@ WordDetective
 │   │
 │   ├── src
 │   │   ├── main
-│   │   │   ├── java
-│   │   │   │   └── core
-│   │   │   │        └── contains core logic files and persistence with gson files
-│   │   │   │
-│   │   └── test              └── contains all registered user along with their information, in JSON format.
+│   │   │    └── java
+│   │   │         └── core
+│   │   │               └── [Core logic files]
+│   │   │
+│   │   └── test
 │   │       └── java
 │   │           └── core
-│   │               └── contains test classes for core logic and persistence
+│   │               └── [Test classes for core logic and persistence]
 │   │
 │   └── target
 │       └── [Compiled Classes and JARs]
@@ -136,15 +136,15 @@ WordDetective
     │   ├── main
     │   │   ├── java
     │   │   │   └── ui
-    │   │   │       └── contains controller files and factory files
+    │   │   │       └── [Controller files and factory files]
     │   │   │
     │   │   └── resources
-    │   │       └── contains fxml files
+    │   │       └── [Fxml files]
     │   │
     │   └── test
     │       └── java
     │           └── ui
-    │               └── contains ui tests
+    │               └── [Ui tests]
     │
     └── target
         └── [Compiled Classes and JARs]
