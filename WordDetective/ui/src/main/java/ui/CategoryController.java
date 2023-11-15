@@ -114,8 +114,28 @@ public final class CategoryController extends AbstractController implements Init
      * @param usernameParameter - A user
      */
     public CategoryController(final String usernameParameter) {
+        if (usernameParameter == null) {
+            throw new NullPointerException("Username cannot be null");
+        }
         this.username = usernameParameter;
         api = new ApiConfig();
+    }
+
+    /**
+     * Empty constructor used for testing. {@code username} is set to "test".
+     */
+    public CategoryController() {
+        this.username = "test";
+        api = new ApiConfig();
+    }
+
+    /**
+     * Sets the api object.
+     *
+     * @param newApi - Api object
+     */
+    public void setApi(final ApiConfig newApi) {
+        this.api = newApi;
     }
 
     /**
@@ -155,7 +175,7 @@ public final class CategoryController extends AbstractController implements Init
                 return;
             }
             if (!chosenCategoryWords.contains(",")) {
-                displayError("Please separate words with a comma.", uploadErrorDisplay);
+                displayError("Wrong format, Please separate words with a comma.", uploadErrorDisplay);
                 return;
             }
             String[] wordList = chosenCategoryWords.toUpperCase()
@@ -300,7 +320,6 @@ public final class CategoryController extends AbstractController implements Init
         renderCategories();
         if (username.equals("guest")) {
             showCustomCatBtn.setVisible(false);
-            upload.setOpacity(0);
         }
     }
 
