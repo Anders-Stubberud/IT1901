@@ -14,7 +14,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import persistence.JsonIO;
 import types.User;
 
 public class GameTest {
@@ -110,6 +109,9 @@ public class GameTest {
         assertFalse(game.checkValidWord("es", "Tes"), "Failed for word not in wordlist");
     }
 
+    /**
+     * Test getPlayerHighscore and savePlayerHighScore
+     */
     @Test
     @DisplayName("Check setting of high score")
     public void testHighscore() {
@@ -120,6 +122,9 @@ public class GameTest {
         assertEquals(300, game.getPlayerHighscore(), "High score should be 300, but was " + game.getPlayerHighscore());
     }
 
+    /**
+     * Reset highscore after running tests
+     */
     @AfterAll
     public static void cleanUpAfterAllTests() {
         testUser.setHighscore(0);

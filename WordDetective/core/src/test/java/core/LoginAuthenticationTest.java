@@ -9,28 +9,36 @@ import static org.mockito.ArgumentMatchers.anyString;
 
 public class LoginAuthenticationTest {
 
+  /**
+   * Check login into a user that has not been made.
+   */
   @Test
   public void testAuthenticateUsernameDoesNotExist() {
     LoginAuthentication loginAuth = new LoginAuthentication("nonexistentUser");
     assertEquals(LoginStatus.USERNAME_DOES_NOT_EXIST, loginAuth.authenticate("somePassword"));
   }
 
+  /**
+   * Check login into a user that exists but the password does not match.
+   */
   @Test
   public void testAuthenticateIncorrectPassword() {
-    // Replace "existingUser" and "correctPassword" with valid values from your
-    // system
     LoginAuthentication loginAuth = new LoginAuthentication("TestUser");
     assertEquals(LoginStatus.INCORRECT_PASSWORD, loginAuth.authenticate("incorrectPassword"));
   }
 
+  /**
+   * Test logging in succesfully
+   */
   @Test
   public void testAuthenticateSuccess() {
-    // Replace "existingUser" and "correctPassword" with valid values from your
-    // system
     LoginAuthentication loginAuth = new LoginAuthentication("TestUser");
     assertEquals(LoginStatus.SUCCESS, loginAuth.authenticate("Password"));
   }
 
+  /*
+   * Test read authentication error.
+   */
   @Test
   public void testAuthenticateReadError() {
     // Mock the LoginAuthentication class
