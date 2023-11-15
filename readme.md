@@ -51,20 +51,23 @@ WordDetective
 │
 ├── api
 │   │
-│   └── src
-│       ├── main
-│       │   ├── java
-│       │   │   └── api
-│       │   │       └── controllers
-│       │   │           └── [API Controller Files]
-│       │   │
-│       │   └── resources
-│       │           └── [Resource Files for API]
-│       │
-│       └── test
-│           └── java
-│               └── api
-│                   └── [API Test Files]
+│   ├── src
+│   │   ├── main
+│   │   │   ├── java
+│   │   │   │   └── api
+│   │   │   │       └── controllers
+│   │   │   │           └── [API Controller Files]
+│   │   │   │
+│   │   │   └── resources
+│   │   │       └── [Resource Files for API]
+│   │   │
+│   │   └── test
+│   │       └── java
+│   │           └── api
+│   │               └── [API Test Files]
+│   │
+│   └── target
+│       └── [Compiled Classes and JARs]
 │
 ├── config
 │   ├── checkstyle
@@ -75,16 +78,19 @@ WordDetective
 │
 ├── core
 │   │
-│   └── src
-│      ├── main
-│      │   ├── java
-│      │   │   └── core
-│      │   │        └── contains core logic files and persistence with gson files
-│      │   │
-│      └── test              └── contains all registered user along with their information, in JSON format.
-│          └── java
-│              └── core
-│                  └── contains test classes for core logic and persistence
+│   ├── src
+│   │   ├── main
+│   │   │   ├── java
+│   │   │   │   └── core
+│   │   │   │        └── contains core logic files and persistence with gson files
+│   │   │   │
+│   │   └── test              └── contains all registered user along with their information, in JSON format.
+│   │       └── java
+│   │           └── core
+│   │               └── contains test classes for core logic and persistence
+│   │
+│   └── target
+│       └── [Compiled Classes and JARs]
 │
 ├── persistence
 │   ├── src
@@ -111,10 +117,13 @@ WordDetective
 │   │   │   └── types
 │   │   │       └── [Type Classes]
 │   │   │
-│   └── test
-│       └── java
-│           └── types
-│               └── [Type Test Classes]
+│   ├── test
+│   │   └── java
+│   │       └── types
+│   │           └── [Type Test Classes]
+│   │
+│   └── target
+│       └── [Compiled Classes and JARs]
 │
 └── ui
     │
