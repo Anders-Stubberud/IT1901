@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -157,6 +159,30 @@ public class JsonIOTest {
     assertEquals(9, defaultCategories.size());
     assertTrue(defaultCategories.contains("testCategory"));
     assertFalse(defaultCategories.contains("Non existing"));
+  }
+
+  /**
+   * Test the getPersistentProperty method.
+   */
+  @Test
+  public void testGetPersistentProperty() throws IOException {
+    // Create a temporary JSON file for testing
+    File tempFile = File.createTempFile("test", ".json");
+    try (FileWriter writer = new FileWriter(tempFile, StandardCharsets.UTF_8)) {
+      writer.write("{\"property1\": \"value1\", \"property2\": \"value2\"}");
+    }
+
+    // Test case 1: Property found
+    String propertyValue = JsonIO.getPersistentProperty("property1", tempFile.getAbsolutePath());
+    assertEquals("value1", propertyValue);
+
+    // Test case 2: Property not found
+    IOException exception = assertThrows(IOException.class,
+        () -> JsonIO.getPersistentProperty("nonexistentProperty", tempFile.getAbsolutePath()));
+    assertEquals("Property not found", exception.getMessage());
+
+    // Clean up the temporary file
+    tempFile.delete();
   }
 
   /**
