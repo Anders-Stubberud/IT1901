@@ -1,59 +1,80 @@
-import static org.junit.Assert.*;
+package core;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import persistence.JsonIO;
 import types.RegistrationStatus;
+import types.User;
 
-public class RegistrationAuthenticationTest {
+class RegistrationAuthenticationTest {
 
-    private RegistrationAuthentication registrationAuthentication;
+  private RegistrationAuthentication registrationAuthentication;
 
-    @Before
-    public void setUp() {
-        registrationAuthentication = new RegistrationAuthentication();
-    }
+  @BeforeEach
+  void setUp() {
+    registrationAuthentication = new RegistrationAuthentication();
+  }
 
-    @Test
-    public void testRegistrationSuccess() {
-        String newUsername = "testUser";
-        String newPassword = "Test@123";
-        RegistrationStatus result = registrationAuthentication.registrationResult(newUsername, newPassword);
-        assertEquals(RegistrationStatus.SUCCESS, result);
-    }
+  @Test
+  void testRegistrationSuccess() {
+    RegistrationStatus result = registrationAuthentication.registrationResult("newUser", "Password123");
+    assertEquals(RegistrationStatus.SUCCESS, result);
+  }
 
-    @Test
-    public void testUsernameTaken() {
-        String existingUsername = "existingUser";
-        String newPassword = "Test@123";
-        RegistrationStatus result = registrationAuthentication.registrationResult(existingUsername, newPassword);
-        assertEquals(RegistrationStatus.USERNAME_TAKEN, result);
-    }
+  @Test
+  void testRegistrationUsernameTaken() {
+    RegistrationStatus result = registrationAuthentication.registrationResult("newUser", "Password123");
+    assertEquals(RegistrationStatus.USERNAME_TAKEN, result);
+  }
 
-    @Test
-    public void testInvalidUsername() {
-        String invalidUsername = "invalid#user";
-        String newPassword = "Test@123";
-        RegistrationStatus result = registrationAuthentication.registrationResult(invalidUsername, newPassword);
-        assertEquals(RegistrationStatus.USERNAME_NOT_MATCH_REGEX, result);
-    }
+  @Test
+  void testRegistrationInvalidUsername() {
+    RegistrationStatus result = registrationAuthentication.registrationResult("invalidUsername$", "Password123");
+    assertEquals(RegistrationStatus.USERNAME_NOT_MATCH_REGEX, result);
+  }
 
-    @Test
-    public void testInvalidPassword() {
-        String newUsername = "testUser";
-        String invalidPassword = "invalidPassword";
-        RegistrationStatus result = registrationAuthentication.registrationResult(newUsername, invalidPassword);
-        assertEquals(RegistrationStatus.PASSWORD_NOT_MATCH_REGEX, result);
-    }
+  @Test
+  void testRegistrationInvalidPassword() {
+    RegistrationStatus result = registrationAuthentication.registrationResult("bigBossMan", "weak");
+    assertEquals(RegistrationStatus.PASSWORD_NOT_MATCH_REGEX, result);
+  }
 
-    @Test
-    public void testUploadError() {
-        // Assuming there might be an issue with the JSON upload
-        String newUsername = "testUser";
-        String newPassword = "Test@123";
-        // Mock the addUser method to simulate an upload error
-        JsonIO.setMockAddUserResult(false);
-        RegistrationStatus result = registrationAuthentication.registrationResult(newUsername, newPassword);
-        assertEquals(RegistrationStatus.UPLOAD_ERROR, result);
-    }
+  @Test
+  void testRegistrationUploadError() {
+    // Mocking JsonIO.addUser to simulate an upload error
+    RegistrationAuthentication registrationAuthenticationMock = new RegistrationAuthentication() {
+      @Override
+      protected boolean addUserToDatabase(User user) {
+        return false;
+      }
+    };
+
+    RegistrationStatus result = registrationAuthenticationMock.registrationResult("newUser", "Password123");
+    assertEquals(RegistrationStatus.UPLOAD_ERROR, result);
+  }
+
+  @Test
+  void testIsValidPassword() {
+    assertTrue(registrationAuthentication.isValidPassword("StrongPassword123"));
+    assertFalse(registrationAuthentication.isValidPassword("weak"));
+  }
+
+  @Test
+  void testIsValidUsername() {
+    assertTrue(registrationAuthentication.isValidUsername("validUsername123"));
+    assertFalse(registrationAuthentication.isValidUsername("invalidUsername$"));
+    assertFalse(registrationAuthentication.isValidUsername("guestUsername"));
+  }
+
+  @AfterEach
+  void tearDown() {
+    // Clean up by deleting the users created during the tests
+    JsonIO.deleteUser("newUser");
+    JsonIO.deleteUser("");
+    // Add additional calls to deleteUser as needed for other test users
+  }
 }
