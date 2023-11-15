@@ -1,8 +1,11 @@
 package ui;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
@@ -89,7 +92,7 @@ public class GamePageControllerTest extends ApplicationTest {
       doNothing().when(apiMock).newGame("guest", null);
       doNothing().when(apiMock).savePlayerHighscore(Mockito.anyString());
       when(apiMock.getWord()).thenReturn("TESTWORD");
-      when(apiMock.getHighScore()).thenReturn(0);
+      when(apiMock.getHighScore()).thenReturn(10);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
@@ -104,9 +107,24 @@ public class GamePageControllerTest extends ApplicationTest {
     stage.show();
   }
 
+  /**
+   * Setup before each test.
+   */
   @BeforeEach
   public void setUp() {
     closeHowToPlay();
+  }
+
+  /**
+   * Test constructors.
+   */
+  @Test
+  public void testConstructor() {
+    assertDoesNotThrow(() -> new GamePageController());
+    assertDoesNotThrow(() -> new GamePageController("guest"));
+    assertDoesNotThrow(() -> new GamePageController("guest", "TESTWORD"));
+    assertThrows(NullPointerException.class, () -> new GamePageController(null));
+    assertThrows(NullPointerException.class, () -> new GamePageController(null, null));
   }
 
   /**
@@ -122,15 +140,27 @@ public class GamePageControllerTest extends ApplicationTest {
 
   @Test
   public void restartGame() {
+    testGuess("TESTWORD", true);
     Pane gameOverPane = (Pane) root.lookup("#gameOverPage");
     gameOverPane.setVisible(true);
     try {
-      when(apiMock.getHighScore()).thenReturn(10);
+      when(apiMock.getHighScore()).thenReturn(1);
       clickOn("#restartBtn");
-      assertEquals(10, highScore.getText());
+      assertEquals(1, Integer.parseInt(highScore.getText()));
     } catch (IOException | InterruptedException e) {
       e.printStackTrace();
     }
+  }
+
+  /**
+   * Tests if go back to category page.
+   */
+  @Test
+  public void goBack() {
+    clickOn("#backBtn");
+    Node elementPresentInCategory = lookup("#categoryPage").query();
+    assertNotNull(elementPresentInCategory);
+
   }
 
   // @Test
