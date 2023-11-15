@@ -1,7 +1,5 @@
 package api;
 
-import persistence.JsonIO;
-
 import com.google.gson.Gson;
 import com.hackerrank.test.utility.Order;
 import com.hackerrank.test.utility.OrderedTestRunner;
@@ -25,12 +23,11 @@ import org.springframework.test.context.junit4.rules.SpringClassRule;
 import org.springframework.test.context.junit4.rules.SpringMethodRule;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.http.MediaType;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.io.IOException;
 import java.lang.reflect.Type;
 import com.google.gson.reflect.TypeToken;
 
@@ -144,8 +141,9 @@ public class CategoryControllerTest {
 
     assertFalse(categoriesBeforeAdd.contains("TestCategory"));
 
-    String requestBody = "{\"categoryName\":\"TestCategory\",\"wordList\":[word1,word2]}";
-    mockMvc.perform(post("/CategoryController/addCustomCategory")
+    String requestBody = "{\"categoryName\":\"TestCategory\",\"wordList\":[TESTWORD]}";
+    mockMvc.perform(put("/CategoryController/addCustomCategory/{categoryName}",
+        "TestCategory")
         .content(requestBody)
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk());
@@ -163,22 +161,38 @@ public class CategoryControllerTest {
   @Test
   @Order(FINALTEST)
   public void testDeleteCustomCategory() throws Exception {
-    String categoryName = "TestCategory";
+    // Assuming the category exists before deletion
+    Set<String> categoriesBeforeDelete = testTemplate().get("custom");
 
-    // Bruteforce løsning før deleteUser fra dev er på plass
-    JsonIO jsonIO = new JsonIO("TestUser");
-    try {
-      jsonIO.updateCurrentUser(
-          (user) -> {
-            user.deleteCustomCategories(categoryName);
-            return true;
-          });
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    assertTrue(categoriesBeforeDelete.contains("TestCategory"));
 
+    // Perform the delete request
+    mockMvc.perform(delete("/CategoryController/deleteCustomCategory/{categoryName}",
+        "TestCategory")
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk());
+
+    // Verify that the category is deleted
     Set<String> categoriesAfterDelete = testTemplate().get("custom");
-    assertFalse(categoriesAfterDelete.contains(categoryName));
+    assertFalse(categoriesAfterDelete.contains("TestCategory"));
   }
+  // public void testDeleteCustomCategory() throws Exception {
+  // String categoryName = "TestCategory";
+
+  // // Bruteforce løsning før deleteUser fra dev er på plass
+  // JsonIO jsonIO = new JsonIO("TestUser");
+  // try {
+  // jsonIO.updateCurrentUser(
+  // (user) -> {
+  // user.deleteCustomCategories(categoryName);
+  // return true;
+  // });
+  // } catch (IOException e) {
+  // e.printStackTrace();
+  // }
+
+  // Set<String> categoriesAfterDelete = testTemplate().get("custom");
+  // assertFalse(categoriesAfterDelete.contains(categoryName));
+  // }
 
 }
