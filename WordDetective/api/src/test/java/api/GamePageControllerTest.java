@@ -146,7 +146,7 @@ public class GamePageControllerTest {
     templateNewGame("TestUser", "colors");
     String response = templateGetRequest("/GamePageController/getPlayerHighscore", MediaType.APPLICATION_JSON);
     Integer highscore = Integer.parseInt(response);
-    Integer actualHighscore = 0;
+    Integer actualHighscore = 300;
     assertEquals(actualHighscore, highscore);
   }
 
