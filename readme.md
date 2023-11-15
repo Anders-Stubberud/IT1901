@@ -49,41 +49,105 @@ _Tentative sketch of folder structure_
 ```
 WordDetective
 │
-└── core
+├── api
 │   │
-│   └── src
-│      ├── main
-│      │   ├── java
-│      │   │   └── core
-│      │   │        └── contains core logic files and persistence with gson files
-│      │   │
-│      │   └── resources
-│      │              ├── default_categories
-│      │              │                    └── contains all the default categories, in JSON files
-│      │              ├──default_stats
-│      │              │              └── contains stats contributed by all guest users, in JSON format.
-│      │              ├──users
-│      ├── test              └── contains all registered user along with their information, in JSON format.
-│          └── java
-│              └── core
-│                  └── contains test classes for core logic and persistence
+│   ├── src
+│   │   ├── main
+│   │   │   ├── java
+│   │   │   │   └── api
+│   │   │   │       └── controllers
+│   │   │   │           └── [API Controller Files]
+│   │   │   │
+│   │   │   └── resources
+│   │   │       └── [Resource File for API for springboot]
+│   │   │
+│   │   └── test
+│   │       └── java
+│   │           └── api
+│   │               └── [API Test Files]
+│   │
+│   └── target
+│       └── [Compiled Classes and JARs]
 │
+├── config
+│   ├── checkstyle
+│   │   └── [Checkstyle Configuration Files]
+│   │
+│   └── spotbugs
+│       └── [SpotBugs Configuration Files]
+│
+├── core
+│   │
+│   ├── src
+│   │   ├── main
+│   │   │    └── java
+│   │   │         └── core
+│   │   │               └── [Core logic files]
+│   │   │
+│   │   └── test
+│   │       └── java
+│   │           └── core
+│   │               └── [Test classes for core logic and persistence]
+│   │
+│   └── target
+│       └── [Compiled Classes and JARs]
+│
+├── persistence
+│   ├── src
+│   │   ├── main
+│   │   │   ├── java
+│   │   │   │   └── persistence
+│   │   │   │       └── [Persistence Classes]
+│   │   │   │
+│   │   │   └── resources
+│   │   │       ├── default_categories
+│   │   │       └── users
+│   │   │
+│   │   └── test
+│   │       └── java
+│   │           └── persistence
+│   │               └── [Persistence Test Classes]
+│   │
+│   └── target
+│       └── [Compiled Classes and JARs]
+│
+├── types
+│   ├── main
+│   │   ├── java
+│   │   │   └── types
+│   │   │       └── [Type Classes]
+│   │   │
+│   ├── test
+│   │   └── java
+│   │       └── types
+│   │           └── [Type Test Classes]
+│   │
+│   └── target
+│       └── [Compiled Classes and JARs]
 │
 └── ui
     │
-    └──  src
-       ├── main
-       │   └── java
-       │       └── ui
-       │           └── contains controller files and factory files
-       │
-       ├── test
-       │   └── java
-       │       └── ui
-       │           └── contains ui tests
-       │
-       └── resources
-                   └── contains fxml files
+    ├── assets
+    │   ├── images
+    │   ├── music
+    │   └── video
+    │
+    ├── src
+    │   ├── main
+    │   │   ├── java
+    │   │   │   └── ui
+    │   │   │       └── [Controller files and factory files]
+    │   │   │
+    │   │   └── resources
+    │   │       └── [Fxml files]
+    │   │
+    │   └── test
+    │       └── java
+    │           └── ui
+    │               └── [Ui tests]
+    │
+    └── target
+        └── [Compiled Classes and JARs]
 ```
 
 # Version Requirements
