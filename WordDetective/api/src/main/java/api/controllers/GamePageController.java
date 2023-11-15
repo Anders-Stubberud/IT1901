@@ -29,7 +29,6 @@ public class GamePageController {
     String[] components = requestBody.split("&");
     String username = components[0].split("=")[1];
     String category = components[1].split("=")[1];
-    System.out.println("\n\nusername: " + username + "\ncategory: " + category + "\n\n");
     game = new Game(username);
     game.setCategory(category);
   }
