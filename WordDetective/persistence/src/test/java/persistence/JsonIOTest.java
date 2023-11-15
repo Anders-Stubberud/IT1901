@@ -171,6 +171,29 @@ public class JsonIOTest {
     assertFalse(defaultCategories.contains("Non existing"));
   }
 
+  @Test
+  public void testGetWordlist() {
+    JsonIO jsonIO = new JsonIO(testUser.getUsername());
+    Set<String> states = new HashSet<>(Arrays.asList(
+        "ALABAMA", "ALASKA", "ARIZONA", "ARKANSAS", "CALIFORNIA", "COLORADO", "CONNECTICUT", "DELAWARE",
+        "FLORIDA", "GEORGIA", "HAWAII", "IDAHO", "ILLINOIS", "INDIANA", "IOWA", "KANSAS", "KENTUCKY",
+        "LOUISIANA", "MAINE", "MARYLAND", "MASSACHUSETTS", "MICHIGAN", "MINNESOTA", "MISSISSIPPI", "MISSOURI",
+        "MONTANA", "NEBRASKA", "NEVADA", "NEW HAMPSHIRE", "NEW JERSEY", "NEW MEXICO", "NEW YORK",
+        "NORTH CAROLINA", "NORTH DAKOTA", "OHIO", "OKLAHOMA", "OREGON", "PENNSYLVANIA", "RHODE ISLAND",
+        "SOUTH CAROLINA", "SOUTH DAKOTA", "TENNESSEE", "TEXAS", "UTAH", "VERMONT", "VIRGINIA", "WASHINGTON",
+        "WEST VIRGINIA", "WISCONSIN", "WYOMING"));
+    try {
+      List<String> wordlist = jsonIO.getCategoryWordlist("us states");
+      // Tests based on set equality: A ⊆ B and B ⊆ A <=> A = B
+      assertTrue(states.containsAll(wordlist));
+      assertTrue(wordlist.containsAll(states));
+    } catch (IOException | RuntimeException e) {
+      assertTrue(false, "Error fetching categories");
+      e.printStackTrace();
+    }
+
+  }
+
   /**
    * Test the getPersistentProperty method.
    */
