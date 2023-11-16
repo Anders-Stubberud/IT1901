@@ -18,9 +18,9 @@ The requirements for the third release have been fulfilled in the following mann
     We have chosen to further develop our JavaFX application.
     Since the previous release, we have implemented:
 
-    - Easy upload of custom categories (only for registered users)
+    - Easy upload and deletion of custom categories (only for registered users)
 
-      Registered users are now able to upload their own custom categories. This feature is visible in the category page, where the user is able to paste in all the words making up the wordlist, as well as give the category a name. The wordlist will then be stored persistently to the user's json file.
+      Registered users are now able to upload their own custom categories. This feature is visible in the category page, where the user is able to paste in all the words making up the wordlist, as well as give the category a name. The wordlist will then be stored persistently to the user's json file. The user also has the delete their custom categories by simply pressing the "x" button next to the category in the categoy selector.
 
     - Navigation features
 
@@ -74,7 +74,6 @@ The requirements for the third release have been fulfilled in the following mann
 
     Sequence diagram showcasing the logic behind the login-operation and selection of category.
     ![sequence diagram](sequence_diagram.png)
-
 
   - _Package diagram_
 
