@@ -489,7 +489,9 @@ public final class GamePageController extends AbstractController implements Init
     }
 
     public String formatString(final String input) {
-        return null;
+        String[] words = input.split("_");
+        StringBuilder formattedString = new StringBuilder();
+        return formattedString.toString().trim();
     }
 
     @Override // Runs on start of the application
