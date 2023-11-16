@@ -2,12 +2,16 @@
 
 [Open in che](https://che.stud.ntnu.no/#https://gitlab.stud.idi.ntnu.no/it1901/groups-2023/gr2325/gr2325?new)
 <br>
-To download the program as a desktop application, click
-[here](./gr2325_WordDetective_Substring_Edition-1.0.0.exe).
-<br>
 \_NB! Che is not compatible with UI tests, so install with:\* `mvn clean install -Pskip-ui-tests` to run in che.
+See [challenges](./challenges.md) for more details.
 <br>
 \_This will also skip the jacoco report for the UI module. Install locally for full testing and full report.\*
+<br>
+To run the app with che, navigate to endpoint 6080 in the lower left corner, copy the url, and open the url in a new tab.
+<br>
+
+To download the program as a desktop application, click
+[here](./gr2325_WordDetective_Substring_Edition-1.0.0.exe) (not for mac).
 
 This project contains the IT1901 project for group 25.
 
