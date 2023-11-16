@@ -32,9 +32,9 @@ import javafx.stage.Stage;
 
 public class CategoryControllerTest extends ApplicationTest {
 
-    // /**
-    // * The root of the application is used as reference to the DOM.
-    // */
+    /**
+     * The root of the application is used as reference to the DOM.
+     */
     private Parent root;
 
     /**
