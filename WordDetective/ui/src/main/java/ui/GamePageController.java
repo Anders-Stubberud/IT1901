@@ -525,7 +525,8 @@ public final class GamePageController extends AbstractController implements Init
                 return change;
             }));
             playerInputField.requestFocus();
-            categoryDisplay.setText("Category: " + currentCategory);
+            String formattedCategory = formatString(currentCategory);
+            categoryDisplay.setText("Category: " + formattedCategory);
             highScore.setText(String.valueOf(api.getHighScore()));
 
             // Add shutdownhook that updates user highscore when closing application
