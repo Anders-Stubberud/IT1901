@@ -491,6 +491,17 @@ public final class GamePageController extends AbstractController implements Init
     public String formatString(final String input) {
         String[] words = input.split("_");
         StringBuilder formattedString = new StringBuilder();
+
+        for (String word : words) {
+            if (word.length() > 1) {
+                formattedString.append(Character.toUpperCase(word.charAt(0)))
+                        .append(word.substring(1).toLowerCase());
+            } else {
+                formattedString.append(word.toUpperCase());
+            }
+
+            formattedString.append(" ");
+        }
         return formattedString.toString().trim();
     }
 
