@@ -488,6 +488,10 @@ public final class GamePageController extends AbstractController implements Init
 
     }
 
+    public String formatString(final String input) {
+        return null;
+    }
+
     @Override // Runs on start of the application
     public void initialize(final URL location, final ResourceBundle resources) {
         setBackArrowImg(backArrowImg);
