@@ -74,3 +74,9 @@ The requirements for the third release have been fulfilled in the following mann
 
     Sequence diagram showcasing the logic behind the login-operation and selection of category.
     ![sequence diagram](sequence_diagram.png)
+
+
+  - _Package diagram_
+
+    Package diagram showing the modules dependencies.
+    ![Package diagram](package.png)
