@@ -139,9 +139,9 @@
                     <noHeaderFiles>true</noHeaderFiles>
                     <stripDebug>true</stripDebug>
                     <noManPages>true</noManPages>
-                    <launcher>worddetectivelauncher</launcher>
-                    <jlinkImageName>worddetectivelauncher</jlinkImageName>
-                    <jlinkZipName>worddetectivelauncher</jlinkZipName>
+                    <launcher>launch_worddetective</launcher>
+                    <jlinkImageName>launch_worddetective</jlinkImageName>
+                    <jlinkZipName>launch_worddetective</jlinkZipName>
                 </configuration>
             </plugin>
 
@@ -159,23 +159,23 @@
                 <artifactId>jpackage-maven-plugin</artifactId>
                 <version>1.6.0</version>
                 <configuration>
-                    <name>WordDetective_SubstringEdition</name>
+                    <name>gr2325_WordDetective_Substring_Edition</name>
                     <appVersion>1.0.0</appVersion>
                     <vendor>gr2325</vendor>
                     <destination>target/dist</destination>
                     <module>project.ui/ui.App</module>
-                    <runtimeImage>target/worddetectivelauncher</runtimeImage>
+                    <runtimeImage>target/launch_worddetective</runtimeImage>
                     <javaOptions>
                         <option>-Dfile.encoding=UTF-8</option>
                     </javaOptions>
                     <!-- linux options-->
                     <linuxShortcut>true</linuxShortcut>
-                    <linuxMenuGroup>WordDetective_SubstringEdition</linuxMenuGroup>
+                    <linuxMenuGroup>gr2325_WordDetective_Substring_Edition</linuxMenuGroup>
                     <!-- windows options-->
                     <winDirChooser>true</winDirChooser>
                     <winShortcut>true</winShortcut>
                     <winMenu>true</winMenu>
-                    <winMenuGroup>WordDetective_SubstringEdition</winMenuGroup>
+                    <winMenuGroup>gr2325_WordDetective_Substring_Edition</winMenuGroup>
                 </configuration>
             </plugin>
 

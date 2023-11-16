@@ -178,6 +178,7 @@ public final class CategoryController extends AbstractController implements Init
                 displayError("Wrong format, Please separate words with a comma.", uploadErrorDisplay);
                 return;
             }
+            chosenCategoryName = chosenCategoryName.toLowerCase().replace(" ", "_");
             String[] wordList = chosenCategoryWords.toUpperCase()
                     .trim()
                     .replaceAll(" ", "")
@@ -214,7 +215,7 @@ public final class CategoryController extends AbstractController implements Init
         if (result.isPresent() && result.get() == ButtonType.OK) {
             System.out.println("Deleting category" + category);
             try {
-                api.deleteCustomCategory(category);
+                api.deleteCustomCategory(category.toLowerCase().replace(" ", "_"));
                 System.out.println("Category deleted");
                 renderCategories();
             } catch (IOException | InterruptedException e) {

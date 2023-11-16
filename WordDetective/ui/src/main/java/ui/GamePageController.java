@@ -488,6 +488,28 @@ public final class GamePageController extends AbstractController implements Init
 
     }
 
+    /**
+     * This formats categories that appear in game page.
+     * @param input - category names.
+     * @return - formatted string.
+     */
+    public String formatString(final String input) {
+        String[] words = input.split(" ");
+        StringBuilder formattedString = new StringBuilder();
+
+        for (String word : words) {
+            if (word.length() > 1) {
+                formattedString.append(Character.toUpperCase(word.charAt(0)))
+                        .append(word.substring(1).toLowerCase());
+            } else {
+                formattedString.append(word.toUpperCase());
+            }
+
+            formattedString.append(" ");
+        }
+        return formattedString.toString().trim();
+    }
+
     @Override // Runs on start of the application
     public void initialize(final URL location, final ResourceBundle resources) {
         setBackArrowImg(backArrowImg);
@@ -508,7 +530,8 @@ public final class GamePageController extends AbstractController implements Init
                 return change;
             }));
             playerInputField.requestFocus();
-            categoryDisplay.setText("Category: " + currentCategory);
+            String formattedCategory = formatString(currentCategory);
+            categoryDisplay.setText("Category: " + formattedCategory);
             highScore.setText(String.valueOf(api.getHighScore()));
 
             // Add shutdownhook that updates user highscore when closing application
