@@ -226,7 +226,7 @@ public final class GamePageController extends AbstractController implements Init
      * @param categoryParameter category of the given game.
      */
     public GamePageController(final String usernameParameter, final String categoryParameter) {
-        if (usernameParameter.equals(null) || categoryParameter.equals(null)) {
+        if (usernameParameter == null || categoryParameter == null) {
             throw new NullPointerException("Username or category cannot be null");
         }
         this.username = usernameParameter;
@@ -494,7 +494,7 @@ public final class GamePageController extends AbstractController implements Init
         try {
             imageGame.setImage(
                     new Image(new FileInputStream(
-                            Paths.get("assets").toAbsolutePath() + "/images/gamepagenew.png")));
+                            Paths.get("runtime/assets").toAbsolutePath() + "/images/gamepagenew.png")));
             api.newGame(username, currentCategory);
             rndwordMasterLetters();
             playerCircle = new Circle(centerX, centerY, radius,

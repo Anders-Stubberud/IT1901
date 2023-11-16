@@ -3,6 +3,9 @@ package api;
 import com.hackerrank.test.utility.Order;
 import com.hackerrank.test.utility.OrderedTestRunner;
 import com.hackerrank.test.utility.TestWatchman;
+
+import persistence.JsonIO;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.nio.charset.StandardCharsets;
@@ -146,7 +149,7 @@ public class GamePageControllerTest {
     templateNewGame("TestUser", "colors");
     String response = templateGetRequest("/GamePageController/getPlayerHighscore", MediaType.APPLICATION_JSON);
     Integer highscore = Integer.parseInt(response);
-    Integer actualHighscore = 300;
+    Integer actualHighscore = 0;
     assertEquals(actualHighscore, highscore);
   }
 
@@ -160,33 +163,33 @@ public class GamePageControllerTest {
   public void testSetHighscore() throws Exception {
     templateNewGame("TestUser", "colors");
     mockMvc.perform(put("/GamePageController/savePlayerHighscore")
-        .content("300")
+        .content("100")
         .contentType(MediaType.TEXT_PLAIN))
         .andExpect(status().isOk());
 
     String response = templateGetRequest("/GamePageController/getPlayerHighscore", MediaType.APPLICATION_JSON);
     Integer highscore = Integer.parseInt(response);
-    Integer actualHighscore = 300;
+    Integer actualHighscore = 100;
     assertEquals(actualHighscore, highscore);
 
     mockMvc.perform(put("/GamePageController/savePlayerHighscore")
-        .content("300")
+        .content("200")
         .contentType(MediaType.TEXT_PLAIN))
         .andExpect(status().isOk());
 
     response = templateGetRequest("/GamePageController/getPlayerHighscore", MediaType.APPLICATION_JSON);
     highscore = Integer.parseInt(response);
     // Only write if highscore is higher
-    actualHighscore = 300;
+    actualHighscore = 200;
     assertEquals(actualHighscore, highscore);
 
-    // Foreløpig bruteforce
-    // JsonIO jsonIO = new JsonIO("TestUser");
-    // jsonIO.updateCurrentUser(
-    // (user) -> {
-    // user.setHighscore(0);
-    // return true;
-    // });
+    // cleanup
+    JsonIO jsonIO = new JsonIO("TestUser");
+    jsonIO.updateCurrentUser(
+        (user) -> {
+          user.setHighscore(0);
+          return true;
+        });
 
   }
 

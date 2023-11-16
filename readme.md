@@ -87,7 +87,7 @@ WordDetective
 │   │   └── test
 │   │       └── java
 │   │           └── core
-│   │               └── [Test classes for core logic and persistence]
+│   │               └── [Test classes for core logic]
 │   │
 │   └── target
 │       └── [Compiled Classes and JARs]
@@ -112,15 +112,19 @@ WordDetective
 │       └── [Compiled Classes and JARs]
 │
 ├── types
-│   ├── main
-│   │   ├── java
-│   │   │   └── types
-│   │   │       └── [Type Classes]
+│   ├── src
+│   │   ├── main
+│   │   │   ├── java
+│   │   │   │   └── types
+│   │   │   │       └── [Type Classes]
+│   │   │   │
+│   │   │   └── resources
+│   │   │       └── [Resource Files for Types]
 │   │   │
-│   ├── test
-│   │   └── java
-│   │       └── types
-│   │           └── [Type Test Classes]
+│   │   └── test
+│   │       └── java
+│   │           └── types
+│   │               └── [Type Test Classes]
 │   │
 │   └── target
 │       └── [Compiled Classes and JARs]

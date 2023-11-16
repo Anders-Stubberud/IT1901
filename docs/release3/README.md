@@ -6,21 +6,82 @@ Furthermore, we have continued with the work routines from the previous releases
 
 The requirements for the third release have been fulfilled in the following manner:
 
-- **Architecture**
+## Architecture
 
-  We have created a REST API using Spring Boot. The api has been granted it's own module, namely the "api" module. The api module contains a variety of controller classes, which listens for incoming requests. Once a controller in the API module receives a request, it delegates the task associated with the respective API endpoint to the correlating method in the core module.
-  Additionally, we have modified the UI controller classes to solely rely on the API module for access to the core functionality. Thus, every interaction between the UI module and the core module now goes via the api.
+### JavaFX Client
+The application still uses the JavaFX Client that was built in Release 2 during the second sprint. Through this third sprint we have added additional features which is listed under _Functionality_.
 
-- **Functionality**
+The UI does no longer uses <code>core</code> directly, but is changed to communicate the newly built use-case layer REST server that talks to <code>core</code>.
+
+As functionality has expanded in the third sprint. We have enden up making new TestFX integration tests to further test our code
+
+**Built with:**
+- [Java](https://www.java.com/en/)
+  - Uses Java 17.0.8
+- [JavaFX](https://openjfx.io/)
+  - client/ui application library for java
+
+**Dependencies:**
+- [JavaFX](https://openjfx.io/)
+- [Google Gson](https://github.com/google/gson)
+
+### Backend
+The backend application is now a refactor of the <code>core</code> layer used in release 2.
+We have created a REST API over HTTP that uses a Spring Boot server.
+
+The redefined backend follows a three-tier architecture. The distinct responsibilities are divided into the following layers:
+
+**1. Gateway (Public) Layer:**
+  This serves as the external interface accessible to clients. It is implemented through a set of Spring Boot Controllers, exposing the HTTP API.
+
+**2. Service (Use-Case) Layer:**
+  Positioned between the gateway and repository layers, this layer encapsulates the application logic, defining and enforcing the rules governing the domain. It serves as the orchestrator of business use cases.
+
+**3. Repository (Persistence) Layer:**
+Situated at the lowermost level, this layer is dedicated to the persistence and storage of domain entities. It interfaces with the underlying data storage mechanisms.
+
+
+This architectural aligns closely with the principles articulated in Uncle Bob's Clean Architecture, roughly display in this diagram:
+![Arcitecture_Diagram_Image](architecture_diagram.png)
+
+
+The four layers shown is represented in our application by:
+
+**1.Entites:**
+  Defined in the <code>types</code> module. This module contains only domain types used across the application
+
+**2.Use Cases:**
+  Defined in the <code>core</code> module. Contains the actions in the service layer, actions a client has at their disposal. The service layer also calls into the repsository layer which interacts with the <code>persistence</code> module.
+
+**3.Controllers**
+  the Controller layer is implemented through the Spring Controllers in the <code>api</code> module.
+
+**4.External interfaces/Ui:** are the consumers of the Controller level, in our case, the frontend application.
+
+By maintaining an architecture like this, the application is easier to scale and grow because you can define strict boundaries between what can depend on what.
+
+As we built a new REST server we've also added integration tests for the controllers in the api module
+
+**Built with:**
+- [Java](https://www.java.com/en/)
+  - Uses Java 19
+- [Spring Boot](https://spring.io/projects/spring-boot)
+  - An extensive and heavily tested server application framework for Java
+
+**Dependencies:**
+- [Spring Boot](https://spring.io/projects/spring-boot)
+- [Google Gson](https://github.com/google/gson)
+
+## Functionality
 
   - _New functionality from previous release_
 
     We have chosen to further develop our JavaFX application.
     Since the previous release, we have implemented:
 
-    - Easy upload of custom categories (only for registered users)
+    - Easy upload and deletion of custom categories (only for registered users)
 
-      Registered users are now able to upload their own custom categories. This feature is visible in the category page, where the user is able to paste in all the words making up the wordlist, as well as give the category a name. The wordlist will then be stored persistently to the user's json file.
+      Registered users are now able to upload their own custom categories. This feature is visible in the category page, where the user is able to paste in all the words making up the wordlist, as well as give the category a name. The wordlist will then be stored persistently to the user's json file. The user also has the delete their custom categories by simply pressing the "x" button next to the category in the categoy selector.
 
     - Navigation features
 
@@ -39,6 +100,10 @@ The requirements for the third release have been fulfilled in the following mann
 
       For first time user's the purpose of choosing categories may not be clear. Thus, we have implemented a pane in the category page which gives information regarding what the purpose of choosing a category is.
 
+    - Hidden word showcased on gameover
+
+      If you were not able to find out what word the substring was apart of you can now see what the hidden word was.
+
   - _Use of the API_
 
     As mentioned in the "Architecture" section, we have created an API which encapsulates the core functionaliy. Thus, when the user interacts with the UI, and there is a demand for information from the core functionality, the UI module sends a HTTP request to the API, which in turn delegates the task to the core module.
@@ -51,12 +116,43 @@ The requirements for the third release have been fulfilled in the following mann
   - _Tests and code quality_
 
     For code quality, we have continued using checkstyle and spotbugs. In addition to these tools, we have conducted thorough code reviews on each and every merge request. The merge requests which did not satisfy the code review received threads, which had to be resolved before the merge request was approved.
+    <br>
+    For testing, we have made sure to write tests for all modules. The tests are set up to run with maven with "mvn test", and jacoco reports can be created separately for each module by entering the module, and then use "mvn jacoco: report".
 
-- **Work routines**
+## Work routines
+  Our rutine has consisted of sprints where each sprint were dedicated to each milestone. This is the rutines we used to obtain a good work flow:
+  - <code>Milestones</code> As with the previous releases, we started this release with a milestone. The milestone would contain checkboxes of all the requirments and all issues needed to be done before the deadline.
 
-  As with the previous releases, we started this release with a milestone. Then, we created an issueboard for the milestone. From there, we created an issue for every task we had to complete in order to end up with our desired program. Before we started on an issue, we created a separate branch to solve the issue on. We primarily worked in pairs on the issues, and documented each added feature with a commit (with an appropriate commit message). Once we were satisfied with the code, we submitted a merge request. The group members which had not been involved with the respective issue conducted a code review on the merge request, to make sure the code held up to our standards. If the code reviewers deemed the code to satisfy our standars, the merge request was marked as approved, and it would be merged. Otherwise, the code reviewers would mark the code they disagreed with using threads, whereas these threads had to be resolved before the merge request was approved.
+  - <code>Sprints</code> Throughout the semester we've worked in sprints. Where each sprint was detecated to a milestones deadline.
 
-- **Documentation**
+  - <code>Issues</code> We've made issues for every task or change needed in the project. It would contain checkboxes explaining tasks to do in the particular issue. When felt necessary the issue would refer to a [user story](../../userstories.md).
+
+  - <code>Branches</code> For each issue a branch would be created containg the title of the issue. This way we always knew what a branch was supposed to contain and avoided merge conflicts with each others code.
+  - <code>Labels</code> Each issues would use labels to explain what kind of task it was and what importance it has. We would use labels such as **_Feature_**, **_Update_**, **_Test_**, **_Possible Implementaion_**, **_Required_**, **_Bug_** and many more.
+
+  - <code>IssueBoard</code> To keep track of all ongoing issues we had an IssueBoard which showed all issues not started, in progress and closed. This gave us a good overview of what people where working on when we weren't with each other.
+
+  - <code>Merge requests</code> Anytime an issue was complete the programmer had to make a merge request on Gitlab. This merge request would use a custom made template where the programmer would have to write:
+    1. **Tasks**: What the issue had as tasks to do.
+    2. **ChangeLog**: Bulletpoint list of everything that had been done, whether it was in the task or not.
+    3. **How to Test**: A manual on how a reviewer could test what the programmer had done
+
+    With this template, all merge request were equal, simple, clean and easy to read for a reviewer.
+
+    The merge request would contain all labels from the issue, a link to close the issue, who the assigneed programmer was and who had co-authored on this branch aswell as a CI/CD pipeline to go through before the merge request could be merged.
+
+  - <code>CI/CD Pipeline</code> Throughout the project each merge request had to succeed a pipeline which checked that the code could be:
+    1. Built: The code could successfully build the project with Mvn clean install and mvn compile
+    2. Test: The code can successfully run checkstyle, mvn test and spotbugs without error.
+    3. Clean: Cleanup of installed dependencies.
+
+    With this pipeline the project would always merge successful code and not give unpleasant errors for future branches
+  - <code>Code review</code> For each merge request, a person in the group was sat as a reviewer. This person would go trough the code changes and make a review. Commenting on changes that maybe were unnecessary. At the end the reviewer would approve the merge request and comment a message on the work done. Later the programmer could merge in their own merge request
+  - <code>Meetings</code> We had scheduled meetings every Tuesday where we would discuss the project and what we had done. This way we all would be on the same path as to where the project was heading.
+  - <code>Co authoring</code> Throughout the project we have co authored with each other. Sometimes this consisted of working on the same branch, but mainly it was programming together on one persons computer.
+
+
+## Documentation
 
   - _Documentation of REST server_
 
@@ -74,7 +170,6 @@ The requirements for the third release have been fulfilled in the following mann
 
     Sequence diagram showcasing the logic behind the login-operation and selection of category.
     ![sequence diagram](sequence_diagram.png)
-
 
   - _Package diagram_
 
