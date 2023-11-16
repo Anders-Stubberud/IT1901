@@ -30,6 +30,7 @@ project.persistence ..> deps.GoogleGson
 FXClient ..> project.types
 FXClient ..> deps.JavaFX
 FXClient ..> RESTServer
+FXClient ..> deps.GoogleGson
 
 RESTServer ..> project.core
 RESTServer ..> project.persistence
