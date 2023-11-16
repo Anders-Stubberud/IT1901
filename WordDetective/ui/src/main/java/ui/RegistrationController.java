@@ -1,30 +1,30 @@
 package ui;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-import core.UserIO;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
-public class RegistrationController {
-
-    /**
-     * Duration of the error displayed useed if username is taken.
-     */
-    private static final int DISPLAY_ERROR_DURATION_MS = 3000;
+public final class RegistrationController extends AbstractController implements Initializable {
 
     /**
-     * FXML component used to display error if provided username is taken.
+     * Anchorpane of page.
      */
     @FXML
-    private Label usernameTaken;
+    private AnchorPane registrationPage;
+    /**
+     * FXML component used to display error.
+     */
+    @FXML
+    private Label errorDisplay;
 
     /**
      * FXML component used for providing new username.
@@ -39,45 +39,88 @@ public class RegistrationController {
     private PasswordField newPassword;
 
     /**
-     * FXML component used for signing up.
+     * FXML button used for signing up.
+     * FXML button for backArrow
      */
     @FXML
-    private Button signUp;
+    private Button signUp, backArrowbtn;
+
+    /**
+     * ImageView of back arrow.
+     */
+    @FXML
+    private ImageView backArrowImg;
+
+    /**
+     * Api object used for calling backend application.
+     */
+    private ApiConfig api;
+
+    /**
+     * Constructor for RegistrationController.
+     */
+    public RegistrationController() {
+        api = new ApiConfig();
+    }
 
     /**
      * Method fired when "signUp" is pressed. Launches category selection if
      * username is not taken.
+     *
      */
-    @FXML
     public void fireSignUp() {
-        String providedUsername = newUsername.getText();
-        String providedPassword = newPassword.getText();
-        if (UserIO.getAllUsernames().contains(providedUsername)) {
-
-            usernameTaken.setOpacity(1);
-
-            new java.util.Timer().schedule(
-                    new java.util.TimerTask() {
-                        @Override
-                        public void run() {
-                            usernameTaken.setOpacity(0);
-                        }
-                    },
-                    DISPLAY_ERROR_DURATION_MS);
-
-        } else {
-            UserIO.insertNewUser(providedUsername, providedPassword);
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
-                fxmlLoader.setControllerFactory(new CategoryFactory(providedUsername));
-                Parent parent = fxmlLoader.load();
-                Stage stage = (Stage) signUp.getScene().getWindow();
-                stage.setScene(new Scene(parent));
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
+        try {
+            String username = newUsername.getText();
+            String password = newPassword.getText();
+            if (username.isBlank() || password.isBlank()) {
+                displayError("Cannot have blank fields.", errorDisplay);
+                return;
             }
+            switch (api.registrationResult(username, password)) {
+                case SUCCESS:
+                    changeSceneTo("Category.fxml", signUp, new CategoryFactory(username));
+                    break;
+                case USERNAME_TAKEN:
+                    displayError("The username \"" + username + "\" is already taken.", errorDisplay);
+                    break;
+                case USERNAME_NOT_MATCH_REGEX:
+                    displayError("The username needs to be minimum 2 characters and not be 'guest'", errorDisplay);
+                    break;
+                case PASSWORD_NOT_MATCH_REGEX:
+                    displayError("The password needs to be more then 4 characters, contain at least 1 number,"
+                            + " 1 lowercase letter and 1 uppercase letter", errorDisplay);
+                    break;
+                case UPLOAD_ERROR:
+                    displayError("Error during instantiation of new user.", errorDisplay);
+                    break;
+                default:
+                    displayError("Unknown error occured.", errorDisplay);
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
         }
+    }
+
+    /**
+     * Sets the api object.
+     *
+     * @param newApi - The api object to set.
+     */
+    public void setApi(final ApiConfig newApi) {
+        this.api = newApi;
+    }
+
+    /**
+     * Change scene back to login page.
+     */
+    public void toLoginPage() {
+        changeSceneTo("LoginPage.fxml", backArrowbtn);
+    }
+
+    @Override
+    public void initialize(final URL location, final ResourceBundle resources) {
+        setBackArrowImg(backArrowImg);
+        startBGVideo(registrationPage);
     }
 
 }

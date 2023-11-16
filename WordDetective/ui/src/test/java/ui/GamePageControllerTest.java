@@ -1,36 +1,42 @@
 package ui;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Stream;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.testfx.framework.junit5.ApplicationTest;
+// import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.matcher.control.LabeledMatchers;
 
-import core.GameLogic;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class GamePageControllerTest extends ApplicationTest {
+public final class GamePageControllerTest extends ApplicationTest {
 
   /**
    * The root of the application is used as reference to the DOM.
@@ -38,36 +44,27 @@ public class GamePageControllerTest extends ApplicationTest {
   private Parent root;
 
   /**
-   * Properties t0 get the gitlab CI pipeline to run headless for Integration
-   * tests.
+   * FXML components used for testing.
    */
-  @BeforeClass
-  public static void headless() {
-    System.setProperty("prism.verbose", "true");
-    System.setProperty("java.awt.headless", "true");
-    System.setProperty("testfx.robot", "glass");
-    System.setProperty("testfx.headless", "true");
-    System.setProperty("glass.platform", "Monocle");
-    System.setProperty("monocle.platform", "Headless");
-    System.setProperty("prism.order", "sw");
-    System.setProperty("prism.text", "t2k");
-    System.setProperty("testfx.setup.timeout", "2500");
-  }
+  @FXML
+  private Label score, highScore;
 
   /**
-   * Controller for GamePage.
+   * Mock of the api.
    */
+  @Mock
+  private ApiConfig apiMock = mock(ApiConfig.class);
+
+  /**
+   * Controller that injects the mocks.
+   */
+  @InjectMocks
   private GamePageController controller;
-  /**
-   * Gamelogic object.
-   *
-   */
-  private GameLogic gameMock;
 
   /**
-   * List for testing.
+   * Textfield where the user writes.
    */
-  private List<String> testList = new ArrayList<>(Arrays.asList("TESTWORD"));
+  private TextField playerInputField;
 
   /**
    * get the RootNode.
@@ -79,19 +76,136 @@ public class GamePageControllerTest extends ApplicationTest {
   }
 
   /**
-   * Constant used for extraction fo player input.
+   * Start application.
    */
-  private final int displayErrorDurationMs = 1100;
-
-  /**
-   * Closes the HowToPlay popup window.
-   */
-  public void closeHowToPlay() {
-    clickOn(LabeledMatchers.hasText("Close"));
+  @Override
+  public void start(final Stage stage) throws IOException {
+    try {
+      doNothing().when(apiMock).newGame("guest", null);
+      doNothing().when(apiMock).savePlayerHighscore(Mockito.anyString());
+      when(apiMock.getWord()).thenReturn("TESTWORD");
+      when(apiMock.getHighScore()).thenReturn(10);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+    FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("GamePage.fxml"));
+    root = fxmlLoader.load();
+    controller = fxmlLoader.getController();
+    controller.setApi(apiMock);
+    playerInputField = (TextField) root.lookup("#playerInputField");
+    score = (Label) root.lookup("#points");
+    highScore = (Label) root.lookup("#highScore");
+    stage.setScene(new Scene(root));
+    stage.show();
   }
 
   /**
-   * Get current input in textfield.
+   * Setup before each test.
+   */
+  @BeforeEach
+  public void setUp() {
+    closeHowToPlay();
+  }
+
+  /**
+   * Test constructors.
+   */
+  @Test
+  public void testConstructor() {
+    assertDoesNotThrow(() -> new GamePageController());
+    assertDoesNotThrow(() -> new GamePageController("guest"));
+    assertDoesNotThrow(() -> new GamePageController("guest", "TESTWORD"));
+    assertThrows(NullPointerException.class, () -> new GamePageController(null));
+    assertThrows(NullPointerException.class, () -> new GamePageController(null, null));
+  }
+
+  /**
+   * Tests if closing and opening howToPlay works.
+   */
+  @Test
+  public void testHowToPlay() {
+    Pane htp = (Pane) root.lookup("#howToPlay");
+    assertFalse(htp.isVisible());
+    clickOn("#openHTPBtn");
+    assertTrue(htp.isVisible());
+  }
+
+  /**
+   * Test if restart game works.
+   */
+  @Test
+  public void restartGame() {
+    testGuess("TESTWORD", true);
+    Pane gameOverPane = (Pane) root.lookup("#gameOverPage");
+    gameOverPane.setVisible(true);
+    try {
+      when(apiMock.getHighScore()).thenReturn(1);
+      clickOn("#restartBtn");
+      assertEquals(1, Integer.parseInt(highScore.getText()));
+    } catch (IOException | InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Tests if go back to category page.
+   */
+  @Test
+  public void goBack() {
+    clickOn("#backArrowBtn");
+    Node elementPresentInCategory = lookup("#categoryPage").query();
+    assertNotNull(elementPresentInCategory);
+
+  }
+
+  /**
+   * Tests if the input from the user is displayed correctly.
+   */
+  @Test
+  public void testWriteInput() {
+    assertTrue("TESTWORD".contains(controller.getSubstring()));
+    write("TESTWORD", playerInputField);
+    assertTrue(getInput().equals("TESTWORD"));
+  }
+
+  /**
+   * Tests guesses gets right feedback.
+   *
+   * @param guess     - Guess
+   * @param isCorrect - Is the guess correct
+   */
+  @ParameterizedTest
+  @MethodSource("testWriteWords")
+  public void testGuess(final String guess, final boolean isCorrect) {
+    try {
+      write(guess, playerInputField);
+      when(apiMock.getWord()).thenReturn("TESTWORD");
+      when(apiMock.checkValidWord(Mockito.anyString(), Mockito.anyString())).thenReturn(isCorrect);
+      press(KeyCode.ENTER);
+      if (isCorrect) {
+        assertTrue(playerInputField.getText().isBlank());
+      } else {
+        assertTrue(playerInputField.getText().equals(guess));
+      }
+    } catch (IOException | InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Stream of arguments for testing used in {@code testGuess}.
+   *
+   * @return - Stream of Arguments
+   */
+  private static Stream<Arguments> testWriteWords() {
+    return Stream.of(
+        Arguments.of("TESTWORD", true),
+        Arguments.of("TESTWORD", true),
+        Arguments.of("WRONGWORD", false));
+  }
+
+  /**
+   * Helper method to get current input in textfield.
    *
    * @return String in input field
    */
@@ -101,106 +215,20 @@ public class GamePageControllerTest extends ApplicationTest {
   }
 
   /**
-   * Clean inputfield.
+   * Helper method to close the HowToPlay popup window.
    */
-  private void cleanInput() {
-    ((TextField) getRootNode().lookup("#playerInputField")).setText("");
+  private void closeHowToPlay() {
+    clickOn(LabeledMatchers.hasText("Close"));
   }
 
   /**
-   * Start application.
-   */
-  @Override
-  public void start(final Stage stage) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("GamePage.fxml"));
-    root = fxmlLoader.load();
-    controller = fxmlLoader.getController();
-    stage.setScene(new Scene(root));
-    stage.show();
-  }
-
-  /**
-   * Extracts the players guess.
+   * Helper method to write input instant.
    *
-   * @return The players guess.
+   * @param string    - String to write
+   * @param textfield - Textfield to write to
    */
-  private String extractGuess() {
-    TextFlow extractedGuess = (TextFlow) root.lookup("#outputField");
-    if (extractedGuess == null) {
-      return null;
-    }
-    StringBuilder extractedText = new StringBuilder();
-    for (Node node : extractedGuess.getChildren()) {
-      if (node instanceof Text) {
-        Text textNode = (Text) node;
-        extractedText.append(textNode.getText());
-      }
-    }
-    return extractedText.toString();
-  }
-
-  /**
-   * Tests if the input from the user is displayed correctly.
-   */
-  @Test
-  public void testCorrectExtractOfGuess() {
-    String input = "This is for testing purposes";
-    write(input);
-    String extractedString = extractGuess();
-    Assert.assertEquals(input.toUpperCase(), extractedString);
-  }
-
-  /**
-   * Setup before each test. Uses mockups for future testing.
-   */
-  @BeforeEach
-  public void setUp() {
-    gameMock = mock(GameLogic.class);
-    // controller.setGame(gameMock);
-    gameMock.setCategory("Testing");
-    gameMock.setWordList(testList);
-    closeHowToPlay();
-  }
-
-  /**
-   * Check if guessed words is correct or incorrect.
-   *
-   * @param word          - The word to check
-   * @param wordIsCorrect - If the word is meant to be correct
-   */
-  private void isCorrect(final String word, final boolean wordIsCorrect) {
-    if (wordIsCorrect) {
-      assertTrue(testList.contains(word));
-    } else {
-      assertFalse(testList.contains(word));
-    }
-
-  }
-
-  /**
-   * Test writing a word input.
-   *
-   * @param word      - The word to write
-   * @param isCorrect - Is word correct
-   */
-  @ParameterizedTest
-  @MethodSource
-  public void testWriteWords(final String word, final boolean isCorrect) {
-    write(word);
-    isCorrect(getInput(), isCorrect);
-    cleanInput();
-  }
-
-  /**
-   * Stram of arguments for writing words.
-   *
-   * @return - Stream of Arguments
-   */
-  private static Stream<Arguments> testWriteWords() {
-    return Stream.of(
-        Arguments.of("TESTWORD", true),
-        Arguments.of("TESTWORD", true),
-        Arguments.of("WRONGWORD", false));
+  private void write(final String string, final TextField textfield) {
+    textfield.setText(string);
   }
 
 }

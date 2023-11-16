@@ -1,16 +1,22 @@
 package ui;
 
-import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+import javafx.scene.layout.AnchorPane;
 
-public final class AppController {
+public final class AppController extends AbstractController implements Initializable {
+
+    /**
+     * The root pane of the App.fxml.
+     */
+    @FXML
+    private AnchorPane mainPage;
 
     /**
      * Buttons on the Front,Login page.
@@ -31,45 +37,24 @@ public final class AppController {
     private FXMLLoader fxmlLoader;
 
     /**
-     * Goes back to Frontpage.
+     * Send user to Login page.
      */
     @FXML
-    public void handleUndo() {
-        undoButton.setVisible(false);
-        usernameTF.setVisible(false);
-        passwordTF.setVisible(false);
-        appGuestBtn.setVisible(true);
-        appLogInBtn.setVisible(true);
+    public void toLogIn() {
+        changeSceneTo("LoginPage.fxml", appLogInBtn);
     }
 
     /**
-     * Send user to game page.
+     * Send user to Category selection as guest.
      */
     @FXML
-    public void handleLogIn() {
-        try {
-            fxmlLoader = new FXMLLoader(this.getClass().getResource("LoginPage.fxml"));
-            Stage stage = (Stage) appLogInBtn.getScene().getWindow();
-            Parent parent = fxmlLoader.load();
-            stage.setScene(new Scene(parent));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    void toSelectCategory() {
+        changeSceneTo("Category.fxml", appGuestBtn, new CategoryFactory("guest"));
     }
 
-    @FXML
-    void launchGame() {
-        try {
-            fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
-            fxmlLoader.setControllerFactory(new CategoryFactory("guest"));
-            Parent parent = fxmlLoader.load();
-            Stage stage = (Stage) appGuestBtn.getScene().getWindow();
-            stage.setScene(new Scene(parent));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    @Override
+    public void initialize(final URL location, final ResourceBundle resources) {
+        startBGVideo(mainPage);
     }
 
 }

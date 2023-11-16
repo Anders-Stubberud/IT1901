@@ -36,6 +36,12 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
+        <dependency>
+            <groupId>it1901</groupId>
+            <artifactId>modules-persistence</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
         <!-- javafx -->
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -45,6 +51,11 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
+            <version>17.0.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
             <version>17.0.8</version>
         </dependency>
 
@@ -61,13 +72,16 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
         </dependency>
+
         <!-- Mockito for testing using mockups -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.4.0</version>
+            <version>1.10.19</version>
             <scope>test</scope>
         </dependency>
+
+
 
 
         <!-- test javafx with TextFX -->
@@ -121,6 +135,13 @@
                 <configuration>
                     <!-- syntax: module-name/full-app-class-name -->
                     <mainClass>project.ui/ui.App</mainClass>
+                    <compress>2</compress>
+                    <noHeaderFiles>true</noHeaderFiles>
+                    <stripDebug>true</stripDebug>
+                    <noManPages>true</noManPages>
+                    <launcher>launch_worddetective</launcher>
+                    <jlinkImageName>launch_worddetective</jlinkImageName>
+                    <jlinkZipName>launch_worddetective</jlinkZipName>
                 </configuration>
             </plugin>
 
@@ -130,6 +151,31 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <configuration>
                     <propertyName>argLine</propertyName>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.panteleyev</groupId>
+                <artifactId>jpackage-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <configuration>
+                    <name>gr2325_WordDetective_Substring_Edition</name>
+                    <appVersion>1.0.0</appVersion>
+                    <vendor>gr2325</vendor>
+                    <destination>target/dist</destination>
+                    <module>project.ui/ui.App</module>
+                    <runtimeImage>target/launch_worddetective</runtimeImage>
+                    <javaOptions>
+                        <option>-Dfile.encoding=UTF-8</option>
+                    </javaOptions>
+                    <!-- linux options-->
+                    <linuxShortcut>true</linuxShortcut>
+                    <linuxMenuGroup>gr2325_WordDetective_Substring_Edition</linuxMenuGroup>
+                    <!-- windows options-->
+                    <winDirChooser>true</winDirChooser>
+                    <winShortcut>true</winShortcut>
+                    <winMenu>true</winMenu>
+                    <winMenuGroup>gr2325_WordDetective_Substring_Edition</winMenuGroup>
                 </configuration>
             </plugin>
 

@@ -5,15 +5,14 @@ import javafx.util.Callback;
 public final class CategoryFactory implements Callback<Class<?>, Object> {
 
     /**
-     * Variable for holding the username used to create the category controller
-     * object.
+     * The user to store.
      */
     private final String username;
 
     /**
      * Constructor constructing the factory object.
      *
-     * @param usernameParameter
+     * @param usernameParameter - the user to store for the game
      */
     public CategoryFactory(final String usernameParameter) {
         this.username = usernameParameter;

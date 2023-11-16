@@ -1,21 +1,27 @@
 package ui;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.io.IOException;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.testfx.framework.junit5.ApplicationTest;
 
-import javafx.scene.control.Label;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
+import types.LoginStatus;
 
-public class LoginControllerTest extends ApplicationTest {
+public final class LoginControllerTest extends ApplicationTest {
 
   /**
    * The root of the application is used as reference to the DOM.
@@ -28,21 +34,26 @@ public class LoginControllerTest extends ApplicationTest {
   private FXMLLoader fxmlLoader;
 
   /**
-   * Properties to get the gitlab CI pipeline to run headless for Integration
-   * tests.
+   * The label used to display error.
    */
-  @BeforeClass
-  public static void headless() {
-    System.setProperty("prism.verbose", "true");
-    System.setProperty("java.awt.headless", "true");
-    System.setProperty("testfx.robot", "glass");
-    System.setProperty("testfx.headless", "true");
-    System.setProperty("glass.platform", "Monocle");
-    System.setProperty("monocle.platform", "Headless");
-    System.setProperty("prism.order", "sw");
-    System.setProperty("prism.text", "t2k");
-    System.setProperty("testfx.setup.timeout", "2500");
-  }
+  private Label errorDisplay;
+
+  /**
+   * The textfield used to provide username or password.
+   */
+  private TextField usernameField, passwordField;
+
+  /**
+   * Mock of the api.
+   */
+  @Mock
+  private ApiConfig apiMock = mock(ApiConfig.class);
+
+  /**
+   * Controller that injects the mocks.
+   */
+  @InjectMocks
+  private LoginController controller;
 
   /**
    * Instantiates the stage.
@@ -51,52 +62,90 @@ public class LoginControllerTest extends ApplicationTest {
   public void start(final Stage stage) throws IOException {
     fxmlLoader = new FXMLLoader(this.getClass().getResource("LoginPage.fxml"));
     root = fxmlLoader.load();
+    controller = fxmlLoader.getController();
+    controller.setApi(apiMock);
+    errorDisplay = (Label) root.lookup("#errorDisplay");
+    usernameField = (TextField) root.lookup("#usernameField");
+    passwordField = (TextField) root.lookup("#passwordField");
     stage.setScene(new Scene(root));
     stage.show();
   }
 
   /**
-   * Tests if the program notifies about incorrect login information.
+   * Tests that a user cannot login if the fields are blank.
    */
   @Test
-  public void testIncorrectCombination() {
-    clickOn("#username", MouseButton.PRIMARY);
-    write("incorrectCombination");
-    clickOn("#password", MouseButton.PRIMARY);
-    write("incorrectPassword");
-    clickOn("#login");
-    // If opacity of 'incorrect username/password' label is 1, the login has not
-    // been performed.
-    int opacity = (int) ((Label) root.lookup("#incorrect")).getOpacity();
-    Assert.assertEquals(
-        "The opacity of the 'incorrect username/password' should be 1",
-        1, opacity);
+  public void testBlankFields() {
+    clickOn("#login", MouseButton.PRIMARY);
+    assertTrue(usernameField.getText().isBlank());
+    assertTrue(passwordField.getText().isBlank());
+    assertTrue(errorDisplay.getText().contains("blank"),
+        "The error display should say something about blank fields, but was:" + errorDisplay.getText());
   }
 
   /**
-   * Tests if the correct category gets chosen once it is selected.
+   * Tests that a user can not login if wrong username.
    */
-  @Test
-  public void testCorrectCombination() {
-    clickOn("#username", MouseButton.PRIMARY);
-    write("registeredUser");
-    clickOn("#password", MouseButton.PRIMARY);
-    write("password123");
-    clickOn("#login");
-    // The vBox element is part of the categories page, so if login is
-    // successful, it will be present.
-    Node elementPresentInCategory = lookup("#vBox").query();
-    Assert.assertNotNull(elementPresentInCategory);
+  public void testWrongUsername() {
+    write("wrongUsername", usernameField);
+    write("password", passwordField);
+
+    try {
+      when(apiMock.performLogin(usernameField.getText(), passwordField.getText()))
+          .thenReturn(LoginStatus.USERNAME_DOES_NOT_EXIST);
+      clickOn("#login", MouseButton.PRIMARY);
+      assertTrue(errorDisplay.getText().contains("exist"),
+          "The error display should say something about username not existing, but was:" + errorDisplay.getText());
+    } catch (IOException | InterruptedException e) {
+      e.printStackTrace();
+    }
+
   }
 
   /**
-   * Tests that a user with valid credentials can be instantiated.
+   * Tests that a user can not login if wrong password.
    */
-  @Test
-  public void testRegisterNew() {
-    clickOn("#registerUser", MouseButton.PRIMARY);
-    Node elementPresentInRegistration = lookup("#newUsername").query();
-    Assert.assertNotNull(elementPresentInRegistration);
+  public void testWringPassword() {
+    write("ExistingUser", usernameField);
+    write("WrongPassword", passwordField);
+
+    try {
+      when(apiMock.performLogin(usernameField.getText(), passwordField.getText()))
+          .thenReturn(LoginStatus.INCORRECT_PASSWORD);
+      clickOn("#login", MouseButton.PRIMARY);
+      assertTrue(errorDisplay.getText().contains("incorrect"),
+          "The error display should say something about incorrect password, but was:" + errorDisplay.getText());
+    } catch (IOException | InterruptedException e) {
+      e.printStackTrace();
+    }
+
   }
 
+  /**
+   * Tests that a user can login if correct username and password.
+   */
+  public void testSuccessfulLogin() {
+    write("ExistingUser", usernameField);
+    write("CorrectPassword", passwordField);
+
+    try {
+      when(apiMock.performLogin(usernameField.getText(), passwordField.getText()))
+          .thenReturn(LoginStatus.SUCCESS);
+      clickOn("#login", MouseButton.PRIMARY);
+      assertEquals(0, errorDisplay.getOpacity());
+    } catch (IOException | InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * write a string to a textfield instant.
+   *
+   * @param string    - the string to write
+   * @param textfield - the textfield to write to
+   *
+   */
+  private void write(final String string, final TextField textfield) {
+    textfield.setText(string);
+  }
 }

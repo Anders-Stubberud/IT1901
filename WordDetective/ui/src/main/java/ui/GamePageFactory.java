@@ -19,13 +19,13 @@ public final class GamePageFactory implements Callback<Class<?>, Object> {
     /**
      * Constructor constructing the factory object.
      *
-     * @param usernameParameter used to set up correct instance fo the game.
-     * @param categoryParameter used to load the wordlist correlating to the
-     *                          category.
+     * @param newUser     - The user for game
+     * @param newCategory -used to load the wordlist correlating to the
+     *                    category.
      */
-    public GamePageFactory(final String usernameParameter, final String categoryParameter) {
-        this.username = usernameParameter;
-        this.category = categoryParameter;
+    public GamePageFactory(final String newUser, final String newCategory) {
+        this.username = newUser;
+        this.category = newCategory;
     }
 
     /**

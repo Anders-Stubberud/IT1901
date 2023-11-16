@@ -1,80 +1,97 @@
 package ui;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-import core.UserIO;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
-public class LoginController {
-
+public final class LoginController extends AbstractController implements Initializable {
+    /**
+     * Anchor pane of login.fxml.
+     */
+    @FXML
+    private AnchorPane loginPage;
     /**
      * Label for marking of incorrect password.
      */
     @FXML
-    private Label incorrect;
+    private Label errorDisplay;
 
     /**
      * FXML component for enabling user to provide username.
      */
     @FXML
-    private TextField username;
+    private TextField usernameField;
 
     /**
      * FXML component for enabling user to provide password.
      */
     @FXML
-    private PasswordField password;
+    private PasswordField passwordField;
 
     /**
      * FXML buttons providing access to respectively "performLogin" and
      * "registerNewUser".
      */
     @FXML
-    private Button login, registerUser;
+    private Button login, registerUser, backArrowbtn;
 
     /**
-     * Constant for display of incorrect password.
+     * Imageview of backbutton.
      */
-    private static final int DISPLAY_ERROR_DURATION_MS = 3000;
+    @FXML
+    private ImageView backArrowImg;
+
+    /**
+     * Api object used for calling backend application.
+     */
+    private ApiConfig api;
+
+    /**
+     * Constructor for LoginController.
+     */
+    public LoginController() {
+        api = new ApiConfig();
+    }
 
     /**
      * Method fired when pressing the "login" button. Loads the category window.
      */
     @FXML
     public void performLogin() {
-        String providedUsername = username.getText();
-        String providedPassword = password.getText();
-        if (UserIO.correctUsernameAndPassword(providedUsername, providedPassword)) {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Category.fxml"));
-                fxmlLoader.setControllerFactory(new CategoryFactory(providedUsername));
-                Parent parent = fxmlLoader.load();
-                Stage stage = (Stage) login.getScene().getWindow();
-                stage.setScene(new Scene(parent));
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
+        try {
+            String username = usernameField.getText();
+            String password = passwordField.getText();
+            if (username.isBlank() || password.isBlank()) {
+                displayError("Cannot have blank fields.", errorDisplay);
+                return;
             }
-        } else {
-
-            incorrect.setOpacity(1);
-
-            new java.util.Timer().schedule(
-                    new java.util.TimerTask() {
-                        @Override
-                        public void run() {
-                            incorrect.setOpacity(0);
-                        }
-                    },
-                    DISPLAY_ERROR_DURATION_MS);
+            switch (api.performLogin(username, password)) {
+                case SUCCESS:
+                    changeSceneTo("Category.fxml", login, new CategoryFactory(username));
+                    break;
+                case USERNAME_DOES_NOT_EXIST:
+                    displayError("Username does not exist.", errorDisplay);
+                    break;
+                case INCORRECT_PASSWORD:
+                    displayError("Incorrect password.", errorDisplay);
+                    break;
+                case READ_ERROR:
+                    displayError("Error during extraction of password.", errorDisplay);
+                    break;
+                default:
+                    displayError("Unknown error occured.", errorDisplay);
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -84,15 +101,30 @@ public class LoginController {
      */
     @FXML
     public void registerNewUser() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("Registration.fxml"));
-            Parent parent = fxmlLoader.load();
-            Stage stage = (Stage) login.getScene().getWindow();
-            stage.setScene(new Scene(parent));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        changeSceneTo("Registration.fxml", registerUser);
+    }
+
+    /**
+     * Getter for api.
+     *
+     * @param newApi - the api to use.
+     */
+    public void setApi(final ApiConfig newApi) {
+        this.api = newApi;
+    }
+
+    /**
+     * Change scene back to main page.
+     */
+    @FXML
+    public void backToMainPage() {
+        changeSceneTo("App.fxml", backArrowbtn);
+    }
+
+    @Override
+    public void initialize(final URL location, final ResourceBundle resources) {
+        setBackArrowImg(backArrowImg);
+        startBGVideo(loginPage);
     }
 
 }
