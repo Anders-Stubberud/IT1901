@@ -39,6 +39,10 @@ The requirements for the third release have been fulfilled in the following mann
 
       For first time user's the purpose of choosing categories may not be clear. Thus, we have implemented a pane in the category page which gives information regarding what the purpose of choosing a category is.
 
+    - Hidden word showcased on gameover
+
+      If you were not able to find out what word the substring was apart of you can now see what the hidden word was.
+
   - _Use of the API_
 
     As mentioned in the "Architecture" section, we have created an API which encapsulates the core functionaliy. Thus, when the user interacts with the UI, and there is a demand for information from the core functionality, the UI module sends a HTTP request to the API, which in turn delegates the task to the core module.
