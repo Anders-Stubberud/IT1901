@@ -489,7 +489,7 @@ public final class GamePageController extends AbstractController implements Init
     }
 
     public String formatString(final String input) {
-        String[] words = input.split("_");
+        String[] words = input.split(" ");
         StringBuilder formattedString = new StringBuilder();
 
         for (String word : words) {
