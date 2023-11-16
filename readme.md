@@ -87,7 +87,7 @@ WordDetective
 │   │   └── test
 │   │       └── java
 │   │           └── core
-│   │               └── [Test classes for core logic and persistence]
+│   │               └── [Test classes for core logic]
 │   │
 │   └── target
 │       └── [Compiled Classes and JARs]
