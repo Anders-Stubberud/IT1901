@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Collections;
@@ -14,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import persistence.JsonIO;
 import types.User;
 
 public class GameTest {
@@ -127,6 +130,15 @@ public class GameTest {
      */
     @AfterAll
     public static void cleanUpAfterAllTests() {
-        testUser.setHighscore(0);
+        JsonIO jsonIO = new JsonIO("TestUser");
+        try {
+            jsonIO.updateCurrentUser(
+                    (user) -> {
+                        user.setHighscore(0);
+                        return true;
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

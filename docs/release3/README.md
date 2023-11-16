@@ -55,6 +55,8 @@ The requirements for the third release have been fulfilled in the following mann
   - _Tests and code quality_
 
     For code quality, we have continued using checkstyle and spotbugs. In addition to these tools, we have conducted thorough code reviews on each and every merge request. The merge requests which did not satisfy the code review received threads, which had to be resolved before the merge request was approved.
+    <br>
+    For testing, we have made sure to write tests for all modules. The tests are set up to run with maven with "mvn test", and jacoco reports can be created separately for each module by entering the module, and then use "mvn jacoco: report".
 
 - **Work routines**
 
