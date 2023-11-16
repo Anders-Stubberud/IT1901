@@ -488,6 +488,11 @@ public final class GamePageController extends AbstractController implements Init
 
     }
 
+    /**
+     * This formats categories that appear in game page
+     * @param input
+     * @return
+     */
     public String formatString(final String input) {
         String[] words = input.split(" ");
         StringBuilder formattedString = new StringBuilder();
