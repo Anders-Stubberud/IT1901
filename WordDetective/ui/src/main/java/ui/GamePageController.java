@@ -226,7 +226,7 @@ public final class GamePageController extends AbstractController implements Init
      * @param categoryParameter category of the given game.
      */
     public GamePageController(final String usernameParameter, final String categoryParameter) {
-        if (usernameParameter.equals(null) || categoryParameter.equals(null)) {
+        if (usernameParameter == null || categoryParameter == null) {
             throw new NullPointerException("Username or category cannot be null");
         }
         this.username = usernameParameter;
