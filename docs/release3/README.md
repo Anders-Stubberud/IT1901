@@ -148,7 +148,7 @@ As we built a new REST server we've also added integration tests for the control
 
     With this pipeline the project would always merge successful code and not give unpleasant errors for future branches
   - <code>Code review</code> For each merge request, a person in the group was sat as a reviewer. This person would go trough the code changes and make a review. Commenting on changes that maybe were unnecessary. At the end the reviewer would approve the merge request and comment a message on the work done. Later the programmer could merge in their own merge request
-  - <code>Meetings</code> We had scheduled meetings every Tuesday where we would discuss the project and what we had done. This way we all would be on the same path as to where the project was heading.
+  - <code>Meetings</code> We tried following the scrum plan of having a daily meeting for 15min. These were sometimes forgotten, but catched up on during our weekly meetings we had on Tuesdays.
   - <code>Co authoring</code> Throughout the project we have co authored with each other. Sometimes this consisted of working on the same branch, but mainly it was programming together on one persons computer.
 
 
